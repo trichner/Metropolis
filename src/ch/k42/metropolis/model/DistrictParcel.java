@@ -42,6 +42,7 @@ public class DistrictParcel extends Parcel {
         if(random.getChance(60)){
             List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ, findRoad(),context.getContext(chunkX,chunkZ)); //just use context in one corner
             if(schems!=null&&schems.size()>0){
+                generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                 parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
                 parcel.populate(generator,chunk);
                 return;
@@ -57,6 +58,7 @@ public class DistrictParcel extends Parcel {
                 parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
                 parcel.populate(generator,chunk);
             }else {
+                generator.reportDebug("Haven't placed anything. Size: " + chunkSizeX + "x" + chunkSizeZ);
                 parcel = new EmptyParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
             }
             return; // in every case! we can't partition more! 1x1 should be available

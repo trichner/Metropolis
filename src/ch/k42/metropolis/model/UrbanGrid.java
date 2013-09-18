@@ -18,7 +18,8 @@ public class UrbanGrid extends Grid{
         super(provider,random,chunkX,chunkZ);
         placeHighways();
         district=new DistrictParcel(this,chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2);
-        //placeParcels(chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2);
+        //placeParcels(chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2,);
+        //fillParcels(chunkX+1,chunkZ+1,new EmptyParcel(this,chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2));
     }
 
     private void placeHighways(){ // places roads all around the grid
@@ -40,11 +41,6 @@ public class UrbanGrid extends Grid{
         // make sure it's positive and between [0, GRID_SIZE)
         int x = chunkX%GRID_SIZE;
         int z = chunkZ%GRID_SIZE;
-        x+=GRID_SIZE;
-        z+=GRID_SIZE;
-        x%=GRID_SIZE;
-        z%=GRID_SIZE;
-
 //        if(chunkX>=GRID_SIZE || chunkX<0 || chunkZ>=GRID_SIZE || chunkZ<0 ){
 //            throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
 //        }
@@ -56,11 +52,6 @@ public class UrbanGrid extends Grid{
         // make sure it's positive and between [0, GRID_SIZE)
         int x = chunkX%GRID_SIZE;
         int z = chunkZ%GRID_SIZE;
-        x+=GRID_SIZE;
-        z+=GRID_SIZE;
-        x%=GRID_SIZE;
-        z%=GRID_SIZE;
-
         //if(x>=GRID_SIZE || x<0 || z>=GRID_SIZE || z<0 ) throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
 
         parcels[x][z] = parcel;

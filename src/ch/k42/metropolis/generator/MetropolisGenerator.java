@@ -31,7 +31,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         @Override
         public void populate(World aWorld, Random random, Chunk chunk) {
             try {
-                reportDebug("populate");
+                //reportDebug("populate");
                 MetropolisGenerator.this.initializeWorldInfo(aWorld);
 
                 gridProvider.populate(MetropolisGenerator.this,chunk);
@@ -149,7 +149,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         try {
 
             initializeWorldInfo(aWorld);
-            reportDebug("generateBlockSections !!!");
+            //reportDebug("generateBlockSections");
             byte[][] chunk = new byte[world.getMaxHeight() / 16][];
             for (int x=0; x<16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z=0; z<16; z++) {
@@ -169,13 +169,13 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public byte[] generate(World world, Random random, int x, int z) {
-        reportDebug("generate !!!");
+        //reportDebug("generate !!!");
         return super.generate(world, random, x, z);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
     public short[][] generateExtBlockSections(World world, Random random, int x, int z, BiomeGrid biomes) {
-        reportDebug("generateExtBlockSections !!!");
+        //reportDebug("generateExtBlockSections !!!");
         return super.generateExtBlockSections(world, random, x, z, biomes);    //To change body of overridden methods use File | Settings | File Templates.
     }
 

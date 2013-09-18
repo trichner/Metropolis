@@ -38,7 +38,7 @@ public class RoadParcel extends Parcel {
 
     @Override
     public String toString() {
-        return "RoadParcel: " + road.toString();
+        return "RoadParcel +[" + chunkX +"]["+chunkZ+"]";
     }
 }
 

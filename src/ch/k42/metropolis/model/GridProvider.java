@@ -29,8 +29,8 @@ public class GridProvider {
         protected int gridX;
         protected int gridZ;
         public GridKey(int chunkX, int chunkZ) {
-            this.gridX = chunkX/GRID_SIZE;
-            this.gridZ = chunkZ/GRID_SIZE;
+            gridX = chunkX - (chunkX%GRID_SIZE); // (chunkX/GRID_SIZE) *GRID_SIZE; // FIXME bitops would be faster....
+            gridZ = chunkZ - (chunkZ%GRID_SIZE); // (chunkZ/GRID_SIZE) *GRID_SIZE; // TODO FIXME EVERYTHING
         }
 
         @Override
@@ -70,10 +70,6 @@ public class GridProvider {
     public Parcel getParcel(int chunkX, int chunkZ){
         int x = chunkX%GRID_SIZE;
         int z = chunkZ%GRID_SIZE;
-        x+=GRID_SIZE;
-        z+=GRID_SIZE;
-        x%=GRID_SIZE;
-        z%=GRID_SIZE;
         return getGrid(chunkX,chunkZ).getParcel(x,z);
     }
 
@@ -103,10 +99,6 @@ public class GridProvider {
     public void setParcel(int chunkX, int chunkZ, Parcel parcel){
         int x = chunkX%GRID_SIZE;
         int z = chunkZ%GRID_SIZE;
-        x+=GRID_SIZE;
-        z+=GRID_SIZE;
-        x%=GRID_SIZE;
-        z%=GRID_SIZE;
         getGrid(chunkX,chunkZ).setParcel(x,z,parcel);
     }
 
@@ -130,8 +122,12 @@ public class GridProvider {
     }
 
     private Optional<Grid> getNewGrid(int chunkX,int chunkZ){
+
+        int originX = chunkX - (chunkX%GRID_SIZE); // (chunkX/GRID_SIZE) *GRID_SIZE; // FIXME bitops would be faster....
+        int originZ = chunkZ - (chunkZ%GRID_SIZE); // (chunkZ/GRID_SIZE) *GRID_SIZE; // TODO FIXME EVERYTHING
+
         long seed = world.getSeed();
-        return Optional.of((Grid) new UrbanGrid(this,new GridRandom(seed,chunkX,chunkZ),chunkX,chunkZ)); // FIXME mooaaar grids
+        return Optional.of((Grid) new UrbanGrid(this,new GridRandom(seed,originX,originZ),originX,originZ)); // FIXME mooaaar grids
     }
 
 

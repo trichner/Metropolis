@@ -38,13 +38,6 @@ public class ClipboardProviderWorldEdit {
             this.context = context;
         }
 
-        public ClipboardKey(Clipboard clip) {
-            this.chunkSizeX = clip.chunkX;
-            this.chunkSizeZ = clip.chunkZ;
-            this.direction = clip.getDirection();
-            this.context = clip.getContextType();
-        }
-
         @Override
         public int hashCode() {
             return (((chunkSizeX << 16) ^ chunkSizeZ)*31+direction.hashCode())*541+context.hashCode();
@@ -166,20 +159,24 @@ public class ClipboardProviderWorldEdit {
                 try {
                     Clipboard clip=null;
 
-                    clip = new ClipboardWorldEdit(generator, schematicFile); //TODO not Facing anymore
+                    clip = new ClipboardWorldEdit(generator, schematicFile);
 
-                    //too big?
-                    ClipboardKey key = new ClipboardKey(clip);
-                    List<Clipboard> list = clipboards.get(key);
-                    if(list==null){
-                        list= new ArrayList();
+                    for (Direction d : clip.getDirections()) {
+                        for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
+                            ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,d,c);
+                            List<Clipboard> list = clipboards.get(key);
+                            if(list==null){
+                                list= new ArrayList();
+                            }
+                            // add the clip to the result
+                            list.add(clip);
+                            clipboards.put(key,list);
+                        }
                     }
-                    // add the clip to the result
-                    list.add(clip);
-                    clipboards.put(key,list);
-                    generator.reportMessage("[ClipboardProvider] Schematic "+schematicFile.getName() + "successfully loaded.");
+
+                    generator.reportMessage("[ClipboardProvider] Schematic "+schematicFile.getName() + " successfully loaded.");
                 } catch (Exception e) {
-                    generator.reportMessage("[ClipboardProvider] Schematic " + schematicFile.getName() + " could NOT be loaded");
+                    generator.reportException("[ClipboardProvider] Schematic " + schematicFile.getName() + " could NOT be loaded",e);
                 }
             }
 

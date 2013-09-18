@@ -121,7 +121,12 @@ public class GridProvider {
     }
 
     public void populate(MetropolisGenerator generator, Chunk chunk){
-        getParcel(chunk.getX(),chunk.getZ()).populate(generator,chunk);
+        Parcel p = getParcel(chunk.getX(),chunk.getZ());
+        if(p!=null){
+            p.populate(generator,chunk);
+        }else {
+            generator.reportDebug("found empty Parcel: ["+chunk.getX()+"]["+chunk.getZ()+"]");
+        }
     }
 
     private Optional<Grid> getNewGrid(int chunkX,int chunkZ){

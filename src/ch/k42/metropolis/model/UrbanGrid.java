@@ -25,30 +25,40 @@ public class UrbanGrid extends Grid{
         for(int i=0;i<GRID_SIZE;i++){
             setParcel(0,i,new RoadParcel(this,chunkX,chunkZ+i)); //
             setParcel(i,0,new RoadParcel(this,chunkX+i,chunkZ));
-            setParcel(i,GRID_SIZE,new RoadParcel(this,chunkX+i,chunkZ+GRID_SIZE-1));
-            setParcel(GRID_SIZE,i,new RoadParcel(this,chunkX+GRID_SIZE-1,chunkZ+i));
+            setParcel(i,GRID_SIZE-1,new RoadParcel(this,chunkX+i,chunkZ+GRID_SIZE-1));
+            setParcel(GRID_SIZE-1,i,new RoadParcel(this,chunkX+GRID_SIZE-1,chunkZ+i));
         }
     }
 
     @Override
     public Parcel getParcel(int chunkX, int chunkZ){
-        chunkX %= GRID_SIZE;
-        chunkZ %= GRID_SIZE;
+        // make sure it's positive and between [0, GRID_SIZE)
+        int x = chunkX%GRID_SIZE;
+        int z = chunkZ%GRID_SIZE;
+        x+=GRID_SIZE;
+        z+=GRID_SIZE;
+        x%=GRID_SIZE;
+        z%=GRID_SIZE;
 
-        if(chunkX>=GRID_SIZE || chunkX<0 || chunkZ>=GRID_SIZE || chunkZ<0 ){
-            throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
-        }
-        return parcels[chunkX][chunkZ];
+//        if(chunkX>=GRID_SIZE || chunkX<0 || chunkZ>=GRID_SIZE || chunkZ<0 ){
+//            throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
+//        }
+        return parcels[x][z];
     }
 
     @Override
     public void setParcel(int chunkX, int chunkZ, Parcel parcel) {
-        chunkX %= GRID_SIZE;
-        chunkZ %= GRID_SIZE;
+        // make sure it's positive and between [0, GRID_SIZE)
+        int x = chunkX%GRID_SIZE;
+        int z = chunkZ%GRID_SIZE;
+        x+=GRID_SIZE;
+        z+=GRID_SIZE;
+        x%=GRID_SIZE;
+        z%=GRID_SIZE;
 
-        if(chunkX>=GRID_SIZE || chunkX<0 || chunkZ>=GRID_SIZE || chunkZ<0 ) throw new IndexOutOfBoundsException("Parcel not found in this grid");
+        //if(x>=GRID_SIZE || x<0 || z>=GRID_SIZE || z<0 ) throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
 
-        parcels[chunkX][chunkZ] = parcel;
+        parcels[x][z] = parcel;
 
     }
 

@@ -2,6 +2,8 @@ package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.DecayOption;
+import ch.k42.metropolis.minions.Direction;
+import ch.k42.metropolis.model.ContextType;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -14,6 +16,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class ClipboardWorldEdit extends Clipboard {
 
@@ -102,6 +105,14 @@ public class ClipboardWorldEdit extends Clipboard {
             //generator.reportException("[WorldEdit] Could not resave " + metaFile.getAbsolutePath(), e);
         }
 
+        // TODO load from yaml
+        contextTypes = new ArrayList<ContextType>();
+        contextTypes.add(ContextType.ALL);
+        contextTypes.add(ContextType.ROAD);
+        directions = new ArrayList<Direction>();
+        directions.add(Direction.ALL);
+        directions.add(Direction.NONE);
+
         // load the actual blocks
         CuboidClipboard cuboid= SchematicFormat.getFormat(schemfile).load(schemfile);
 
@@ -110,9 +121,6 @@ public class ClipboardWorldEdit extends Clipboard {
         sizeZ = cuboid.getLength();
         sizeY = cuboid.getHeight();
 
-        if(sizeX!=sizeZ){
-            throw new RuntimeException("Schematic is not quadratic! But has pre-rotated file extensions");
-        }
         // grab the edge block
         BaseBlock edge = cuboid.getPoint(new Vector(0, groundLevelY, 0));
         edgeType = Material.getMaterial(edge.getType());

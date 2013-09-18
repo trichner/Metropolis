@@ -1,6 +1,7 @@
 package ch.k42.metropolis.WorldEdit;
 
 import java.io.File;
+import java.util.List;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
@@ -27,8 +28,8 @@ public abstract class Clipboard {
 	public boolean broadcastLocation = false;
 	public boolean decayable = true;
 
-    protected ContextType contextType;
-    protected Direction direction;
+    protected List<ContextType> contextTypes;
+    protected List<Direction> directions;
 
 
 
@@ -82,11 +83,11 @@ public abstract class Clipboard {
         return name;    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public ContextType getContextType() {
-        return contextType;
+    public List<ContextType> getContextTypes() {
+        return contextTypes;
     }
 
-    public Direction getDirection() {
-        return direction;
+    public List<Direction> getDirections() {
+        return directions;
     }
 }

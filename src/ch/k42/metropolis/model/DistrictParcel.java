@@ -5,7 +5,6 @@ import ch.k42.metropolis.minions.Direction;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.WorldEdit.*;
 import org.bukkit.Chunk;
-import org.bukkit.World;
 
 
 import java.util.List;
@@ -63,7 +62,7 @@ public class DistrictParcel extends Parcel {
                 partitionXwithRoads(grid,cut);
             }
         }else {
-            int cut = random.getRandomInt(1,chunkSizeX-1);
+            int cut = random.getRandomInt(1,chunkSizeZ-1);
             if(chunkSizeZ<5){
                 partitionZ(grid,cut);
             }else {
@@ -78,21 +77,21 @@ public class DistrictParcel extends Parcel {
     //==== -1 should be fine, since there 'should' be roads all around
     private Direction findRoad(){
         for(int i=0;i<chunkSizeX;i++){
-            Parcel p = grid.getParcel(chunkX&Grid.GRID_SIZE+i,chunkZ&Grid.GRID_SIZE-1);
+            Parcel p = grid.getParcel(chunkX+i,chunkZ-1); // any north?
             if(p!=null && p.getContextType().equals(ContextType.ROAD)){
                 return Direction.NORTH;
             }
-            p = grid.getParcel(chunkX&Grid.GRID_SIZE+i,chunkZ&Grid.GRID_SIZE+chunkSizeZ);
+            p = grid.getParcel(chunkX+i,chunkZ+chunkSizeZ); // any south?
             if(p!=null && p.getContextType().equals(ContextType.ROAD)){
                 return Direction.SOUTH;
             }
         }
         for(int i=0;i<chunkSizeZ;i++){
-            Parcel p = grid.getParcel(chunkX&Grid.GRID_SIZE-1,chunkZ&Grid.GRID_SIZE+i);
+            Parcel p = grid.getParcel(chunkX-1,chunkZ+i); // west?
             if(p!=null && p.getContextType().equals(ContextType.ROAD)){
                 return Direction.WEST;
             }
-            p = grid.getParcel(chunkX&Grid.GRID_SIZE+chunkSizeX+1,chunkZ&Grid.GRID_SIZE);
+            p = grid.getParcel(chunkX+chunkSizeX,chunkZ); //east?
             if(p!=null && p.getContextType().equals(ContextType.ROAD)){
                 return Direction.EAST;
             }
@@ -101,27 +100,27 @@ public class DistrictParcel extends Parcel {
     }
 
     private void partitionXwithRoads(Grid grid,int cut){
-        partition1 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE,cut,chunkSizeZ);
+        partition1 = new DistrictParcel(grid,chunkX,chunkZ,cut,chunkSizeZ);
         for(int i=chunkZ;i<chunkZ+chunkSizeZ;i++){
-            grid.setParcel(chunkX%Grid.GRID_SIZE,i%Grid.GRID_SIZE,new RoadParcel(grid,chunkX,i));
+            grid.setParcel(chunkX,i,new RoadParcel(grid,chunkX,i));
         }
-        partition2 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE+cut+1,chunkZ%Grid.GRID_SIZE,chunkSizeX-cut-1,chunkSizeZ);
+        partition2 = new DistrictParcel(grid,chunkX+cut+1,chunkZ,chunkSizeX-cut-1,chunkSizeZ);
     }
     private void partitionX(Grid grid,int cut){
-        partition1 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE,cut,chunkSizeZ);
-        partition2 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE+cut,chunkZ%Grid.GRID_SIZE,chunkSizeX-cut,chunkSizeZ);
+        partition1 = new DistrictParcel(grid,chunkX,chunkZ,cut,chunkSizeZ);
+        partition2 = new DistrictParcel(grid,chunkX+cut,chunkZ,chunkSizeX-cut,chunkSizeZ);
     }
 
 
     private void partitionZwithRoads(Grid grid,int cut){
-        partition1 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE,chunkSizeX,cut);
+        partition1 = new DistrictParcel(grid,chunkX,chunkZ,chunkSizeX,cut);
         for(int i=chunkX;i<chunkX+chunkSizeX;i++){
-            grid.setParcel(i%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE+cut,new RoadParcel(grid,i,chunkZ));
+            grid.setParcel(i,chunkZ+cut,new RoadParcel(grid,i,chunkZ));
         }
-        partition2 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE+cut+1,chunkSizeX,chunkSizeZ-cut-1);
+        partition2 = new DistrictParcel(grid,chunkX,chunkZ+cut+1,chunkSizeX,chunkSizeZ-cut-1);
     }
     private void partitionZ(Grid grid,int cut){
-        partition1 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE,chunkSizeX,cut);
-        partition2 = new DistrictParcel(grid,chunkX%Grid.GRID_SIZE,chunkZ%Grid.GRID_SIZE+cut,chunkSizeX,chunkSizeZ-cut);
+        partition1 = new DistrictParcel(grid,chunkX,chunkZ,chunkSizeX,cut);
+        partition2 = new DistrictParcel(grid,chunkX,chunkZ+cut,chunkSizeX,chunkSizeZ-cut);
     }
 }

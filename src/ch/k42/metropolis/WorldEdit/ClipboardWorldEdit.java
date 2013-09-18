@@ -112,6 +112,10 @@ public class ClipboardWorldEdit extends Clipboard {
         directions = new ArrayList<Direction>();
         directions.add(Direction.ALL);
         directions.add(Direction.NONE);
+        directions.add(Direction.NORTH);
+        directions.add(Direction.SOUTH);
+        directions.add(Direction.WEST);
+        directions.add(Direction.EAST);
 
         // load the actual blocks
         CuboidClipboard cuboid= SchematicFormat.getFormat(schemfile).load(schemfile);

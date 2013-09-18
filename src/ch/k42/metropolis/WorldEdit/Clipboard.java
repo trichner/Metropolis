@@ -80,7 +80,13 @@ public abstract class Clipboard {
 
     @Override
     public String toString() {
-        return name;    //To change body of overridden methods use File | Settings | File Templates.
+        return "Clipboard{" +
+                "sizeX=" + sizeX +
+                ", sizeZ=" + sizeZ +
+                ", name='" + name + '\'' +
+                ", chunkX=" + chunkX +
+                ", chunkZ=" + chunkZ +
+                '}';
     }
 
     public List<ContextType> getContextTypes() {
@@ -90,4 +96,6 @@ public abstract class Clipboard {
     public List<Direction> getDirections() {
         return directions;
     }
+
+
 }

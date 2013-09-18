@@ -22,18 +22,23 @@ public class RoadParcel extends Parcel {
 
     public RoadParcel(Grid grid,int chunkX,int chunkZ) {
         super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,ContextType.ROAD);
-        grid.fillParcels(chunkX+1,chunkZ+1,this);
+        grid.fillParcels(chunkX,chunkZ,this);
     }
 
     private Clipboard road;
 
     @Override
     void populate(MetropolisGenerator generator, Chunk chunk) {
+        if(chunk.getX()==(chunkX)&&chunk.getZ()==(chunkZ)){
+            List<Clipboard> list = generator.getClipboardProvider().getFit(chunkSizeX,chunkSizeZ,Direction.ALL,ContextType.ROAD);
+            road = list.get(grid.getRandom().getRandomInt(list.size()));
+            road.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+        }
+    }
 
-        List<Clipboard> list = generator.getClipboardProvider().getFit(chunkSizeX,chunkSizeZ,Direction.ALL,ContextType.ROAD);
-        road = list.get(grid.getRandom().getRandomInt(list.size()));
-
-        road.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+    @Override
+    public String toString() {
+        return "RoadParcel: " + road.toString();
     }
 }
 

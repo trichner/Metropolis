@@ -14,6 +14,10 @@ commands:
     description: Does magic
     usage: /metropolis
     permission: metropolis.command
+  freder:
+      description: retrieves info about the location
+      usage: /freder
+      permission: metropolis.command
 permissions:
   metropolis.*:
     description: Gives access to all Metropolis commands

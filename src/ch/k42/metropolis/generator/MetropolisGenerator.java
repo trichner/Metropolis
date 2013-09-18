@@ -140,36 +140,7 @@ public class MetropolisGenerator extends ChunkGenerator {
                 clipboardProvider = new ClipboardProviderWorldEdit(this);
             } catch (Exception e) {
                 plugin.getLogger().warning("Failed to load clipboard: " + e.getMessage());
-                //e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
-
-//            connectionKeyGen = new Odds(worldSeed + 1);
-//
-//            shapeProvider = ShapeProvider.loadProvider(this, new Odds(worldSeed + 2));
-//            lootProvider = LootProvider.loadProvider(this);
-//            spawnProvider = SpawnProvider.loadProvider(this);
-//            oreProvider = OreProvider.loadProvider(this);
-//            foliageProvider = FoliageProvider.loadProvider(this, new Odds(worldSeed + 3));
-//            odonymProvider = OdonymProvider.loadProvider(this, new Odds(worldSeed + 4));
-//            surfaceProvider = SurfaceProvider.loadProvider(this, new Odds(worldSeed + 5));
-//            balloonProvider = BalloonProvider.loadProvider(this);
-//            houseProvider = HouseProvider.loadProvider(this);
-
-
-
-
-
-//            // get ranges and contexts
-//            height = shapeProvider.getWorldHeight();
-//            seaLevel = shapeProvider.getSeaLevel();
-//            landRange = shapeProvider.getLandRange();
-//            seaRange = shapeProvider.getSeaRange();
-//            structureLevel = shapeProvider.getStructureLevel();
-//            streetLevel = shapeProvider.getStreetLevel();
-//
-//            // did we load any schematics?
-//            clipboardProvider.reportStatus(this);
-
         }
     }
 
@@ -177,26 +148,8 @@ public class MetropolisGenerator extends ChunkGenerator {
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
         try {
 
-                initializeWorldInfo(aWorld);
+            initializeWorldInfo(aWorld);
             reportDebug("generateBlockSections !!!");
-////            // place to work
-//            ByteChunk byteChunk = new ByteChunk(this, chunkX, chunkZ);
-//            //gridProvider.populate(this,byteChunk);
-//            byteChunk.setAllBlocks((byte)Material.AIR.getId());
-//
-//            // figure out what everything looks like
-//            PlatMap platmap = getPlatMap(chunkX, chunkZ);
-//            if (platmap != null) {
-//                //CityWorld.reportMessage("generate X,Z = " + chunkX + "," + chunkZ);
-//                platmap.generateChunk(byteChunk, biomes);
-//            }
-//
-//            // This was added by Sablednah
-//            // https://github.com/echurchill/CityWorld/pull/5
-//            // MOVED to the chunk populator by DaddyChurchill 10/27/12
-//            //CityWorldEvent event = new CityWorldEvent(chunkX, chunkZ, platmap.context, platmap.getPlatLots()[chunkX - platmap.originX][chunkZ - platmap.originZ]);
-//            //Bukkit.getServer().getPluginManager().callEvent(event);
-//
             byte[][] chunk = new byte[world.getMaxHeight() / 16][];
             for (int x=0; x<16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z=0; z<16; z++) {
@@ -213,38 +166,6 @@ public class MetropolisGenerator extends ChunkGenerator {
             return null;
         }
     }
-
-//    @Override
-//	public short[][] generateExtBlockSections(World world, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
-////		try {
-////
-////			initializeWorldInfo(world);
-////
-////			// place to work
-////			ShortChunk shortChunk = new ShortChunk(this, chunkX, chunkZ);
-////
-////			// figure out what everything looks like
-////			PlatMap platmap = getPlatMap(chunkX, chunkZ);
-////			if (platmap != null) {
-////				//CityWorld.reportMessage("generate X,Z = " + chunkX + "," + chunkZ);
-////				platmap.generateChunk(shortChunk, biomes);
-////			}
-////
-////			// This was added by Sablednah
-////			// https://github.com/echurchill/CityWorld/pull/5
-////			// MOVED to the chunk populator by DaddyChurchill 10/27/12
-////			//CityWorldEvent event = new CityWorldEvent(chunkX, chunkZ, platmap.context, platmap.getPlatLots()[chunkX - platmap.originX][chunkZ - platmap.originZ]);
-////			//Bukkit.getServer().getPluginManager().callEvent(event);
-////
-////			return shortChunk.blocks;
-////
-////		} catch (Exception e) {
-////			reportException("ChunkPopulator FAILED", e);
-////			return null;
-////		}
-//        return null;
-//	}
-
 
     @Override
     public byte[] generate(World world, Random random, int x, int z) {
@@ -270,12 +191,6 @@ public class MetropolisGenerator extends ChunkGenerator {
             // do nothing
         }
     }
-
-//    @Override
-//    public byte[][] generateBlockSections(World world, Random random, int x, int z, BiomeGrid biomes) {
-//        Bukkit.getLogger().warning("!!! generateBlockSections !!!");
-//        return super.generateBlockSections(world, random, x, z, biomes);    //To change body of overridden methods use File | Settings | File Templates.
-//    }
 
     private final static int spawnRadius = 100;
 
@@ -305,7 +220,6 @@ public class MetropolisGenerator extends ChunkGenerator {
     }
 
     public void reportMessage(String message1, String message2) {
-        //plugin.reportMessage(message1, message2);
         plugin.getLogger().info(message1 + "     " +message2);
     }
 

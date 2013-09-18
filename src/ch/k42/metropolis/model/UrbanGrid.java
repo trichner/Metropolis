@@ -18,6 +18,7 @@ public class UrbanGrid extends Grid{
         super(provider,random,chunkX,chunkZ);
         placeHighways();
         district=new DistrictParcel(this,chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2);
+        //placeParcels(chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2);
     }
 
     private void placeHighways(){ // places roads all around the grid
@@ -28,6 +29,11 @@ public class UrbanGrid extends Grid{
             setParcel(GRID_SIZE-1,i,new RoadParcel(this,chunkX+GRID_SIZE-1,chunkZ+i));
         }
     }
+
+    private void placeParcels(int chunkX,int chunkZ,int chunkSizeX,int chunkSizeZ){
+
+    }
+
 
     @Override
     public Parcel getParcel(int chunkX, int chunkZ){

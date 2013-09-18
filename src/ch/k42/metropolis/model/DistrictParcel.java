@@ -25,7 +25,7 @@ public class DistrictParcel extends Parcel {
 
     public DistrictParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
         super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,ContextType.UNDEFINED);
-        grid.fillParcels(chunkX+1,chunkZ+1,this);
+        grid.fillParcels(chunkX,chunkZ,this);
     }
 
     private Grid grid;
@@ -45,6 +45,8 @@ public class DistrictParcel extends Parcel {
                 parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
                 parcel.populate(generator,chunk);
                 return;
+            }else {
+                generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(chunkX,chunkZ));
             }
         }
 

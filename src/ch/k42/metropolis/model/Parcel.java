@@ -77,4 +77,15 @@ public abstract class Parcel {
     public void setChunkSizeZ(int chunkSizeZ) {
         this.chunkSizeZ = chunkSizeZ;
     }
+
+    @Override
+    public String toString() {
+        return "Parcel{" +
+                "chunkX=" + chunkX +
+                ", chunkZ=" + chunkZ +
+                ", chunkSizeX=" + chunkSizeX +
+                ", chunkSizeZ=" + chunkSizeZ +
+                ", contextType=" + contextType +
+                '}';
+    }
 }

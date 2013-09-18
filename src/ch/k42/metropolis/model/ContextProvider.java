@@ -17,6 +17,6 @@ public class ContextProvider {
     }
 
     public ContextType getContext(int chunkX,int chunkZ){
-        return ContextType.ALL;
+        return ContextType.HIGHRISE;
     }
 }

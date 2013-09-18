@@ -14,6 +14,5 @@ public enum ContextType {
     NEIGHBOURHOOD,
     INDUSTRIAL,
     FARM,
-    UNDEFINED,
-    ALL
+    UNDEFINED
 }

@@ -19,8 +19,8 @@ public class ClipboardParcel extends Parcel {
 
     private Clipboard clipboard;
 
-    public ClipboardParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, Clipboard clipboard) {
-        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
+    public ClipboardParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, Clipboard clipboard,ContextType contextType) {
+        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,contextType);
         this.clipboard = clipboard;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;

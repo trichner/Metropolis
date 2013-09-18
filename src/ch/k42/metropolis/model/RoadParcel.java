@@ -21,8 +21,8 @@ public class RoadParcel extends Parcel {
     private static final int chunkSizeZ = 1;
 
     public RoadParcel(Grid grid,int chunkX,int chunkZ) {
-        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
-        this.contextType = ContextType.ROAD;
+        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,ContextType.ROAD);
+        grid.fillParcels(chunkX+1,chunkZ+1,this);
     }
 
     private Clipboard road;

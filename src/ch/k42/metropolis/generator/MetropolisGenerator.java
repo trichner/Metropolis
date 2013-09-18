@@ -31,7 +31,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         @Override
         public void populate(World aWorld, Random random, Chunk chunk) {
             try {
-                Bukkit.getLogger().info("!!! populate !!!");
+                reportDebug("populate");
                 MetropolisGenerator.this.initializeWorldInfo(aWorld);
 
                 gridProvider.populate(MetropolisGenerator.this,chunk);
@@ -120,7 +120,7 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        Bukkit.getLogger().warning("!!! added block populator !!!");
+        reportDebug("added block populator !!!");
         return Arrays.asList((BlockPopulator) new MetropolisBlockPopulator());
     }
 
@@ -178,7 +178,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         try {
 
                 initializeWorldInfo(aWorld);
-            Bukkit.getLogger().info("!!! generateBlockSections !!!");
+            reportDebug("generateBlockSections !!!");
 ////            // place to work
 //            ByteChunk byteChunk = new ByteChunk(this, chunkX, chunkZ);
 //            //gridProvider.populate(this,byteChunk);
@@ -248,13 +248,13 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public byte[] generate(World world, Random random, int x, int z) {
-        Bukkit.getLogger().warning("!!! generate !!!");
+        reportDebug("generate !!!");
         return super.generate(world, random, x, z);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
     public short[][] generateExtBlockSections(World world, Random random, int x, int z, BiomeGrid biomes) {
-        Bukkit.getLogger().warning("!!! generateExtBlockSections !!!");
+        reportDebug("generateExtBlockSections !!!");
         return super.generateExtBlockSections(world, random, x, z, biomes);    //To change body of overridden methods use File | Settings | File Templates.
     }
 

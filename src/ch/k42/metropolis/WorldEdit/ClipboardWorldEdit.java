@@ -107,7 +107,7 @@ public class ClipboardWorldEdit extends Clipboard {
 
         // TODO load from yaml
         contextTypes = new ArrayList<ContextType>();
-        contextTypes.add(ContextType.ALL);
+        contextTypes.add(ContextType.HIGHRISE);
         contextTypes.add(ContextType.ROAD);
         directions = new ArrayList<Direction>();
         directions.add(Direction.ALL);

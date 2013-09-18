@@ -26,12 +26,13 @@ public abstract class Parcel {
     protected Grid grid;
 
 
-    protected Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
+    protected Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ,ContextType contextType) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.chunkSizeX = chunkSizeX;
         this.chunkSizeZ = chunkSizeZ;
         this.grid = grid;
+        this.contextType = contextType;
     }
 
     abstract void populate(MetropolisGenerator generator,Chunk chunk);

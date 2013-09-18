@@ -21,10 +21,11 @@ public class DistrictParcel extends Parcel {
     private DistrictParcel partition1; // if it gets partitioned, used this two to save them
     private DistrictParcel partition2;
 
-    private ClipboardParcel parcel = null;    //it it doesn't get partitioned, only placed, use this
+    private Parcel parcel = null;    //it it doesn't get partitioned, only placed, use this
 
     public DistrictParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
-        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
+        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,ContextType.UNDEFINED);
+        grid.fillParcels(chunkX+1,chunkZ+1,this);
     }
 
     private Grid grid;
@@ -41,15 +42,22 @@ public class DistrictParcel extends Parcel {
         if(random.getChance(60)){
             List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ, findRoad(),context.getContext(chunkX,chunkZ)); //just use context in one corner
             if(schems!=null&&schems.size()>0){
-                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())));
+                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
                 parcel.populate(generator,chunk);
                 return;
             }
         }
 
 
-        if((chunkSizeX<=1)&&(chunkSizeZ<=1)){ //no more iterations
-            return;
+        if((chunkSizeX<=2)&&(chunkSizeZ<=2)){ //no more iterations
+            List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ, findRoad(),context.getContext(chunkX,chunkZ)); //just use context in one corner
+            if(schems!=null&&schems.size()>0){
+                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
+                parcel.populate(generator,chunk);
+            }else {
+                parcel = new EmptyParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
+            }
+            return; // in every case! we can't partition more! 1x1 should be available
         }
 
 

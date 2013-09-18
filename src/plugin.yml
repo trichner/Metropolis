@@ -1,0 +1,21 @@
+name: Metropolis
+main: ch.k42.metropolis.plugin.MetropolisPlugin
+version: 2.93
+load: startup
+author: Athmos
+website:
+description: Testing stuff
+softdepend: [WorldEdit]
+loadbefore: [Multiverse-Core, dimension-door, multiworld]
+database: false
+prefix: Metropolis
+commands:
+  metropolis:
+    description: Does magic
+    usage: /metropolis
+    permission: metropolis.command
+permissions:
+  metropolis.*:
+    description: Gives access to all Metropolis commands
+    children:
+      metropolis.command: true

@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Metropolis">
+    <output-path>$PROJECT_DIR$/bin</output-path>
+    <root id="archive" name="Metropolis.jar">
+      <element id="module-output" name="Metropolis" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/plugin.yml" />
+    </root>
+  </artifact>
+</component>

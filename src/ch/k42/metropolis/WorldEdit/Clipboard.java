@@ -22,11 +22,10 @@ public abstract class Clipboard {
 	public double chestOdds = 0.25D;
 	public String spawnerType = "ZOMBIE";
 	public double spawnerOdds = 0.50D;
-	//public double oddsOfAppearance = DataContext.oddsSomewhatUnlikely;
 	public int groundLevelY = 1;
-    //public String entranceFacing = "south";
 	public boolean broadcastLocation = false;
-	public boolean decayable = true;
+
+    protected String entranceFacing = "none";
 
     protected List<ContextType> contextTypes;
     protected List<Direction> directions;

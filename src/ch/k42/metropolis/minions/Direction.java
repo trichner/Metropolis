@@ -8,10 +8,19 @@ package ch.k42.metropolis.minions;
  * To change this template use File | Settings | File Templates.
  */
 public enum Direction {
-    NORTH,
-    WEST,
-    EAST,
-    SOUTH,
-    ALL,
-    NONE
+    NORTH("north"),
+    WEST("west"),
+    EAST("east"),
+    SOUTH("south");
+    public String string;
+    Direction(String str){
+        this.string=str;
+    }
+    public static Direction getByString(String string){
+        for(Direction d : Direction.values()){
+            if(d.string.equals(string))
+                return d;
+        }
+        return null;
+    }
 }

@@ -39,8 +39,8 @@ public class UrbanGrid extends Grid{
     @Override
     public Parcel getParcel(int chunkX, int chunkZ){
         // make sure it's positive and between [0, GRID_SIZE)
-        int x = chunkX%GRID_SIZE;
-        int z = chunkZ%GRID_SIZE;
+        int x = getChunkOffset(chunkX);
+        int z = getChunkOffset(chunkZ);
 //        if(chunkX>=GRID_SIZE || chunkX<0 || chunkZ>=GRID_SIZE || chunkZ<0 ){
 //            throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
 //        }
@@ -50,8 +50,8 @@ public class UrbanGrid extends Grid{
     @Override
     public void setParcel(int chunkX, int chunkZ, Parcel parcel) {
         // make sure it's positive and between [0, GRID_SIZE)
-        int x = chunkX%GRID_SIZE;
-        int z = chunkZ%GRID_SIZE;
+        int x = getChunkOffset(chunkX);
+        int z = getChunkOffset(chunkZ);
         //if(x>=GRID_SIZE || x<0 || z>=GRID_SIZE || z<0 ) throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkX+"]["+chunkZ+"]");
 
         parcels[x][z] = parcel;
@@ -65,5 +65,17 @@ public class UrbanGrid extends Grid{
                 setParcel(chunkX+x,chunkZ+z,parcel);
             }
         }
+    }
+
+    /**
+     * Calculates the relative coordinates
+     * @param chunk
+     * @return
+     */
+    private static int getChunkOffset(int chunk){
+        int ret = chunk % GRID_SIZE;
+        if(ret<0)
+            ret+=GRID_SIZE;
+        return ret;
     }
 }

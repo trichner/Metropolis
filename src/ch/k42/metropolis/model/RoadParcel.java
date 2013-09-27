@@ -33,7 +33,10 @@ public class RoadParcel extends Parcel {
             List<Clipboard> list = generator.getClipboardProvider().getFit(chunkSizeX,chunkSizeZ,Direction.ALL,ContextType.ROAD);
             road = list.get(grid.getRandom().getRandomInt(list.size()));
             road.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+        }else{
+            generator.reportDebug("Wanted to place road where it should not belong...");
         }
+
     }
 
     @Override

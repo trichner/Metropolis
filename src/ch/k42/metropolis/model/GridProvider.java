@@ -21,16 +21,12 @@ public class GridProvider {
 
     public static final int GRID_SIZE = 64;
 
-    public void populate(MetropolisGenerator generator, ByteChunk byteChunk) {
-        //To change body of created methods use File | Settings | File Templates.
-    }
-
     public static class GridKey{
         protected int gridX;
         protected int gridZ;
         public GridKey(int chunkX, int chunkZ) {
-            gridX = chunkX - (chunkX%GRID_SIZE); // (chunkX/GRID_SIZE) *GRID_SIZE; // FIXME bitops would be faster....
-            gridZ = chunkZ - (chunkZ%GRID_SIZE); // (chunkZ/GRID_SIZE) *GRID_SIZE; // TODO FIXME EVERYTHING
+            gridX = getGridOrigin(chunkX); // (chunkX/GRID_SIZE) *GRID_SIZE; // FIXME bitops would be faster....
+            gridZ = getGridOrigin(chunkZ); // (chunkZ/GRID_SIZE) *GRID_SIZE; // TODO FIXME EVERYTHING
         }
 
         @Override
@@ -68,8 +64,8 @@ public class GridProvider {
      * @return parcel at the given coordinate
      */
     public Parcel getParcel(int chunkX, int chunkZ){
-        int x = chunkX%GRID_SIZE;
-        int z = chunkZ%GRID_SIZE;
+        int x = getChunkOffset(chunkX);
+        int z = getChunkOffset(chunkZ);
         return getGrid(chunkX,chunkZ).getParcel(x,z);
     }
 
@@ -97,8 +93,8 @@ public class GridProvider {
      * @param parcel at the given coordinate
      */
     public void setParcel(int chunkX, int chunkZ, Parcel parcel){
-        int x = chunkX%GRID_SIZE;
-        int z = chunkZ%GRID_SIZE;
+        int x = getChunkOffset(chunkX);
+        int z = getChunkOffset(chunkZ);
         getGrid(chunkX,chunkZ).setParcel(x,z,parcel);
     }
 
@@ -123,14 +119,30 @@ public class GridProvider {
 
     private Optional<Grid> getNewGrid(int chunkX,int chunkZ){
 
-        int originX = chunkX - (chunkX%GRID_SIZE); // (chunkX/GRID_SIZE) *GRID_SIZE; // FIXME bitops would be faster....
-        int originZ = chunkZ - (chunkZ%GRID_SIZE); // (chunkZ/GRID_SIZE) *GRID_SIZE; // TODO FIXME EVERYTHING
+        int originX = getGridOrigin(chunkX);
+        int originZ = getGridOrigin(chunkZ);
 
         long seed = world.getSeed();
         return Optional.of((Grid) new UrbanGrid(this,new GridRandom(seed,originX,originZ),originX,originZ)); // FIXME mooaaar grids
     }
 
+    private static int getGridOrigin(int chunk){
+        int ret=0;
+        if(chunk<0){
+            chunk += 1;
+            ret = (chunk) - ((chunk)%GRID_SIZE);
+            ret -= GRID_SIZE;
+        }else {
+            ret =  chunk-(chunk%GRID_SIZE);
+        }
+        return ret;
+    }
 
-
+    private static int getChunkOffset(int chunk){
+        int ret = chunk % GRID_SIZE;
+        if(ret<0)
+            ret+=GRID_SIZE;
+        return ret;
+    }
 
 }

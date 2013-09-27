@@ -153,7 +153,7 @@ public class MetropolisGenerator extends ChunkGenerator {
             byte[][] chunk = new byte[world.getMaxHeight() / 16][];
             for (int x=0; x<16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z=0; z<16; z++) {
-                    int maxHeight = 64; //how thick we want out flat terrain to be
+                    int maxHeight = 65; //how thick we want out flat terrain to be
                     for (int y=0;y<maxHeight;y++) {
                         setBlock(x,y,z,chunk,Material.STONE);
                     }
@@ -179,7 +179,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         return super.generateExtBlockSections(world, random, x, z, biomes);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    void setBlock(int x, int y, int z, byte[][] chunk, Material material) {
+    private void setBlock(int x, int y, int z, byte[][] chunk, Material material) {
         if (chunk[y >> 4] == null)
             chunk[y >> 4] = new byte[16 * 16 * 16];
         if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0))

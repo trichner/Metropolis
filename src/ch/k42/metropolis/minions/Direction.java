@@ -11,7 +11,9 @@ public enum Direction {
     NORTH("north"),
     WEST("west"),
     EAST("east"),
-    SOUTH("south");
+    SOUTH("south"),
+    ROAD("road"),
+    NONE("none");
     public String string;
     Direction(String str){
         this.string=str;

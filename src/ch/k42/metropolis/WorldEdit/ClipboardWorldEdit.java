@@ -1,6 +1,7 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Nimmersatt;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -199,7 +200,7 @@ public class ClipboardWorldEdit extends Clipboard {
         if(!loadConfig(path)){ // did we succeed?
             Bukkit.getServer().getLogger().warning("Unable to load config of schematic: "+path);
             if(!store(path)){ // no, so just store the default config
-                Bukkit.getLogger().severe("Unable to load of save config of schematic: "+path);
+                Bukkit.getLogger().severe("Unable to load of save config of schematic: " + path);
             }
         }
     }
@@ -207,7 +208,9 @@ public class ClipboardWorldEdit extends Clipboard {
     private boolean loadConfig(String path){
         Gson gson = new Gson();
         try {
-            settings = gson.fromJson(new String(Files.readAllBytes(Paths.get(path))),SchematicsConfig.class);
+            String json = new String(Files.readAllBytes(Paths.get(path)));
+            json = Nimmersatt.friss(json);
+            settings = gson.fromJson(json,SchematicsConfig.class);
             return true;
         } catch (IOException e) {
             settings = new SchematicsConfig(); // couldn't read config file? use default
@@ -223,7 +226,7 @@ public class ClipboardWorldEdit extends Clipboard {
             Files.write(Paths.get(path),file.getBytes(), StandardOpenOption.CREATE);
             return true;
         } catch (IOException e) {
-            Bukkit.getLogger().throwing(this.getClass().getName(),"store config",e);
+            Bukkit.getLogger().throwing(this.getClass().getName(), "store config", e);
             return false;
         }
     }

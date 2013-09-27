@@ -47,7 +47,17 @@ public class DistrictParcel extends Parcel {
                 parcel.populate(generator,chunk);
                 return;
             }else {
-                generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(chunkX,chunkZ));
+                generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(chunkX,chunkZ) + "going over to fallback");
+                //FALLBACK
+                schems = clips.getFit(chunkSizeX,chunkSizeZ, Direction.NORTH,context.getContext(chunkX,chunkZ)); //just use context in one corner
+                if(schems!=null&&schems.size()>0){
+                    generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
+                    parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
+                    parcel.populate(generator,chunk);
+                    return;
+                }else {
+                    generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(chunkX,chunkZ));
+                }
             }
         }
 
@@ -55,11 +65,23 @@ public class DistrictParcel extends Parcel {
         if((chunkSizeX<=2)&&(chunkSizeZ<=2)){ //no more iterations
             List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ, findRoad(),context.getContext(chunkX,chunkZ)); //just use context in one corner
             if(schems!=null&&schems.size()>0){
+                generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                 parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
                 parcel.populate(generator,chunk);
+                return;
             }else {
-                generator.reportDebug("Haven't placed anything. Size: " + chunkSizeX + "x" + chunkSizeZ);
-                parcel = new EmptyParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
+                generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(chunkX,chunkZ) + "going over to fallback");
+                //FALLBACK
+                schems = clips.getFit(chunkSizeX,chunkSizeZ, Direction.NORTH,context.getContext(chunkX,chunkZ)); //just use context in one corner
+                if(schems!=null&&schems.size()>0){
+                    generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
+                    parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(chunkX,chunkZ));
+                    parcel.populate(generator,chunk);
+                    return;
+                }else {
+                    parcel = new EmptyParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ);
+                    generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(chunkX,chunkZ));
+                }
             }
             return; // in every case! we can't partition more! 1x1 should be available
         }
@@ -68,18 +90,20 @@ public class DistrictParcel extends Parcel {
         // Failed? partition into 2 sub lots
         if(chunkSizeX>chunkSizeZ){//if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occure
             int cut = random.getRandomInt(1,chunkSizeX-1);
-            if(chunkSizeX<5){
-                partitionX(grid,cut);
-            }else {
-                partitionXwithRoads(grid,cut);
-            }
+            partitionX(grid,cut);
+//            if(chunkSizeX<5){
+//                partitionX(grid,cut);
+//            }else {
+//                partitionXwithRoads(grid,cut);
+//            }
         }else {
             int cut = random.getRandomInt(1,chunkSizeZ-1);
-            if(chunkSizeZ<5){
-                partitionZ(grid,cut);
-            }else {
-                partitionZwithRoads(grid,cut);
-            }
+            partitionZ(grid,cut);
+//            if(chunkSizeZ<5){
+//                partitionZ(grid,cut);
+//            }else {
+//                partitionZwithRoads(grid,cut);
+//            }
         }
         partition1.populate(generator,chunk);
         partition2.populate(generator,chunk);

@@ -30,9 +30,16 @@ public class RoadParcel extends Parcel {
     @Override
     void populate(MetropolisGenerator generator, Chunk chunk) {
         if(chunk.getX()==(chunkX)&&chunk.getZ()==(chunkZ)){
-            List<Clipboard> list = generator.getClipboardProvider().getFit(chunkSizeX,chunkSizeZ,Direction.ALL,ContextType.ROAD);
-            road = list.get(grid.getRandom().getRandomInt(list.size()));
-            road.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+            List<Clipboard> list = generator.getClipboardProvider().getFit(chunkSizeX,chunkSizeZ,Direction.ROAD,ContextType.ROAD);
+            if(list.size()==0){
+                list = generator.getClipboardProvider().getFit(chunkSizeX,chunkSizeZ,Direction.NORTH,ContextType.ROAD);
+            }
+            if(list.size()>0){
+                road = list.get(grid.getRandom().getRandomInt(list.size()));
+                road.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+            }else {
+                generator.reportMessage("No schematics for road found.");
+            }
         }else{
             generator.reportDebug("Wanted to place road where it should not belong...");
         }

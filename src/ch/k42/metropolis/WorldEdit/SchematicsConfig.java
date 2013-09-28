@@ -24,10 +24,11 @@ public class SchematicsConfig {
     private String SpawnerType= "ZOMBIE"; //unused
     private int SpawnerOddsInPercent=50;
     private int DecayIntensityInPercent=100;
+    private boolean NeedsRoad = false;
     /**
      * Possible values: north, south, west, east
      */
-    private String[] EntranceFacing={"north","south","west","east"};
+    private String EntranceFacing="north";
     /**
      * Possible values: road, highrise,midrise,neighbourhood,industrial,farm,park,undefined
      */
@@ -85,14 +86,8 @@ public class SchematicsConfig {
         return new DecayOption(intensity);
     }
 
-    public List<Direction> getDirections() {
-        List<Direction> list = new LinkedList<Direction>();
-        for(String s : EntranceFacing){
-            Direction d = Direction.getByString(s);
-            if(d!=null)
-                list.add(d);
-        }
-        return list;
+    public Direction getDirection() {
+        return Direction.getByString(EntranceFacing);
     }
 
     public List<ContextType> getContext() {
@@ -103,5 +98,9 @@ public class SchematicsConfig {
                 list.add(d);
         }
         return list;
+    }
+
+    public boolean getNeedsRoad() {
+        return NeedsRoad;
     }
 }

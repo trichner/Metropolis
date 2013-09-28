@@ -103,6 +103,10 @@ public class MetropolisGenerator extends ChunkGenerator {
         return contextProvider;
     }
 
+    public DecayProvider getDecayProvider() {
+        return decayProvider;
+    }
+
     public Plugin getPlugin() {
         return plugin;
     }

@@ -37,53 +37,10 @@ public class ClipboardWorldEdit extends Clipboard {
 
         String schemname = schemfile.getAbsolutePath();
 
-//        // prepare to read the meta data
-//		YamlConfiguration metaYaml = new YamlConfiguration();
-//		metaYaml.options().header("Metropolis/WorldEdit schematic configuration");
-//		metaYaml.options().copyDefaults(true);
-//
-//		// add the defaults
-//		metaYaml.addDefault(tagGroundLevelY, groundLevelY);
-//		metaYaml.addDefault(tagBroadcastLocation, broadcastLocation);
-//		metaYaml.addDefault(tagChestName, chestName);
-//		metaYaml.addDefault(tagChestOdds, chestOdds);
-//		metaYaml.addDefault(tagSpawnerType, spawnerType);
-//		metaYaml.addDefault(tagSpawnerOdds, spawnerOdds);
-//        metaYaml.addDefault(tagEntranceFacing, entranceFacing);
-//        metaYaml.addDefault(tagDecayIntensity, DecayOption.getDefaultDecayIntensity());
-//
-//		// start reading it
-//		File metaFile = new File(schemname + metaExtension);
-//		if (metaFile.exists()) {
-//			metaYaml.load(metaFile);
-//			groundLevelY = Math.max(0, metaYaml.getInt(tagGroundLevelY, groundLevelY))+ nullspots_constant; // HARDCODED
-//			broadcastLocation = metaYaml.getBoolean(tagBroadcastLocation, broadcastLocation);
-//			chestName = metaYaml.getString(tagChestName, chestName);
-//			chestOdds = Math.max(0.0, Math.min(1.0, metaYaml.getDouble(tagChestOdds, chestOdds)));
-//			spawnerType = metaYaml.getString(tagSpawnerType, spawnerType);
-//			spawnerOdds = Math.max(0.0, Math.min(1.0, metaYaml.getDouble(tagSpawnerOdds, spawnerOdds)));
-//            entranceFacing = metaYaml.getString(tagEntranceFacing,entranceFacing);
-//            double intensity = metaYaml.getDouble(tagDecayIntensity);
-//            decayOptions = new DecayOption(intensity);
-//		}
-//
-//        if(entranceFacing.equals("south")){
-//
-//        }
-//
-//
-//        // try and save the meta data if we can
-//        try {
-//            metaYaml.save(metaFile);
-//        } catch (IOException e) {
-//            // we can recover from this... so eat it!
-//            //generator.reportException("[WorldEdit] Could not resave " + metaFile.getAbsolutePath(), e);
-//        }
-
         loadConfigOrDefault(schemname+metaExtension);
 
         contextTypes = settings.getContext();
-        directions = settings.getDirections();
+        direction = settings.getDirection();
         groundLevelY = settings.getGroundLevelY();
         decayOptions = settings.getDecayOption();
         chestName = settings.getChestName();
@@ -102,7 +59,7 @@ public class ClipboardWorldEdit extends Clipboard {
         // grab the edge block
         BaseBlock edge = cuboid.getPoint(new Vector(0, groundLevelY, 0));
         edgeType = Material.getMaterial(edge.getType());
-        edgeData = (byte) edge.getData(); //TODO I think that data can be integers... one of these days
+        edgeData = (byte) edge.getData(); //TODO I think that data can be integers... one of these days , trichner: Not sure what this is for....
         //edgeData = (byte)((edge.getData() & 0x000000ff)); // this would make overflows not error out but let's not do that
  //       edgeRise = generator.oreProvider.surfaceId == edgeType.getId() ? 0 : 1;
 
@@ -126,41 +83,14 @@ public class ClipboardWorldEdit extends Clipboard {
 	}
 
 	@Override
-	public void paste(MetropolisGenerator generator, int blockX, int blockY, int blockZ) {
-		Vector at = new Vector(blockX, blockY, blockZ);
+	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel) {
+		Vector at = new Vector(blockX, getBottom(streetLevel), blockZ);
 		try {
 			EditSession editSession = getEditSession(generator);
 			//editSession.setFastMode(true);
 			place(editSession,at, true);
 		} catch (Exception e) {
 			//generator.reportException("[WorldEdit] Place schematic " + name + " at " + at + " failed", e);
-		}
-	}
-
-
-	//TODO remove the editSession need by directly setting the blocks in the chunk
-
-	public void paste(MetropolisGenerator generator, int blockX, int blockY, int blockZ,int x1, int x2, int y1, int y2, int z1, int z2) {
-		Vector at = new Vector(blockX, blockY, blockZ);
-//		Vector min = new Vector(x1, y1, z1);
-//		Vector max = new Vector(x2, y2, z2);
-//		generator.reportMessage("Partial paste: origin = " + at + " min = " + min + " max = " + max);
-
-		try {
-			EditSession editSession = getEditSession(generator);
-			//editSession.setFastMode(true);
-			place(editSession,at, true, x1, x2, y1, y2, z1, z2);
-		} catch (Exception e) {
-//			generator.reportException("[WorldEdit] Partial place schematic " + name + " at " + at + " failed", e);
-//			generator.reportMessage("Info: " +
-//									" facing = " + facing +
-//									" size = " + sizeX + ", " + sizeZ +
-//									" chunk = " + chunkX + ", " + chunkZ +
-////									" origin = "+ blockX + ", " + blockY + ", " + blockZ +
-//									" min = " + x1 + ", "+ y1 + ", "+ z1 +
-//									" max = " + x2 + ", "+ y2 + ", "+ z2);
-
-			e.printStackTrace();
 		}
 	}
 
@@ -175,24 +105,6 @@ public class ClipboardWorldEdit extends Clipboard {
 					}
 					editSession.setBlock(new Vector(x, y, z).add(pos),
 							blocks[x][y][z]);
-				}
-	}
-
-	//TODO if WorldEdit ever gets this functionality I need to remove the modified code
-	private void place(EditSession editSession,Vector pos, boolean noAir,	int x1, int x2, int y1, int y2, int z1, int z2) throws MaxChangedBlocksException {
-		x1 = Math.max(x1, 0);
-		x2 = Math.min(x2, sizeX);
-		y1 = Math.max(y1, 0);
-		y2 = Math.min(y2, sizeY);
-		z1 = Math.max(z1, 0);
-		z2 = Math.min(z2, sizeZ);
-		for (int x = x1; x < x2; x++)
-			for (int y = y1; y < y2; y++)
-				for (int z = z1; z < z2; z++) {
-					if ((noAir) && (blocks[x][y][z].isAir())) {
-						continue;
-					}
-					editSession.setBlock(new Vector(x, y, z).add(pos), blocks[x][y][z]);
 				}
 	}
 
@@ -230,4 +142,6 @@ public class ClipboardWorldEdit extends Clipboard {
             return false;
         }
     }
+
+
 }

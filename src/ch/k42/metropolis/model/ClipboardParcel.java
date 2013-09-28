@@ -27,7 +27,10 @@ public class ClipboardParcel extends Parcel {
 
     public void populate(MetropolisGenerator generator,Chunk chunk) {
         if(chunk.getX()==(chunkX)&&chunk.getZ()==(chunkZ)){
+            int streetLevel=Constants.BUILD_HEIGHT;
             clipboard.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+            // TODO use config, don't always destroy
+            generator.getDecayProvider().destroyChunks(chunkX,chunkZ,chunkSizeX,chunkSizeZ,clipboard.getBottom(streetLevel),clipboard.getSizeY(),clipboard.getDecayOptions());
         }
     }
 

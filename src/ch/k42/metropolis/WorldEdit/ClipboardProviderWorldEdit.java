@@ -6,7 +6,6 @@ import ch.k42.metropolis.model.ContextType;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
-import sun.plugin.dom.exception.PluginNotSupportedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -161,18 +160,17 @@ public class ClipboardProviderWorldEdit {
 
                     clip = new ClipboardWorldEdit(generator, schematicFile);
 
-                    for (Direction d : clip.getDirections()) {
-                        for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
-                            ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,d,c);
-                            List<Clipboard> list = clipboards.get(key);
-                            if(list==null){
-                                list= new ArrayList();
-                            }
-                            // add the clip to the result
-                            list.add(clip);
-                            clipboards.put(key,list);
+                    for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
+                        ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,clip.getDirection(),c);
+                        List<Clipboard> list = clipboards.get(key);
+                        if(list==null){
+                            list= new ArrayList();
                         }
+                        // add the clip to the result
+                        list.add(clip);
+                        clipboards.put(key,list);
                     }
+
 
                     generator.reportMessage("[ClipboardProvider] Schematic "+schematicFile.getName() + " successfully loaded.");
                 } catch (Exception e) {

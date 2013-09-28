@@ -8,8 +8,15 @@ import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.Direction;
 import ch.k42.metropolis.model.ContextType;
-import ch.k42.metropolis.model.GridProvider;
 import org.bukkit.Material;
+
+
+/*
+ * TODO
+ * - remove all those public variables, use getter&setter
+ * - remove unused variables
+ *
+ */
 
 
 public abstract class Clipboard {
@@ -24,11 +31,8 @@ public abstract class Clipboard {
 	public double spawnerOdds = 0.50D;
 	public int groundLevelY = 1;
 	public boolean broadcastLocation = false;
-
-    protected String entranceFacing = "none";
-
     protected List<ContextType> contextTypes;
-    protected List<Direction> directions;
+    protected Direction direction;
 
 
 
@@ -75,7 +79,7 @@ public abstract class Clipboard {
 	
 	protected abstract void load(MetropolisGenerator generator, File file) throws Exception;
 
-	public abstract void paste(MetropolisGenerator generator, int blockX, int blockY, int blockZ);
+	public abstract void paste(MetropolisGenerator generator, int blockX,int blockZ, int streetLevel);
 
     @Override
     public String toString() {
@@ -92,9 +96,32 @@ public abstract class Clipboard {
         return contextTypes;
     }
 
-    public List<Direction> getDirections() {
-        return directions;
+    public Direction getDirection() {
+        return direction;
     }
 
+    /**
+     * Returns the block height between 0 and the first block
+     * @param streetLevel the desired street level
+     * @return height in blocks
+     */
+    public int getBottom(int streetLevel){
+        return streetLevel-groundLevelY;
+    }
 
+    public DecayOption getDecayOptions() {
+        return decayOptions;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
+    }
+
+    public int getSizeZ() {
+        return sizeZ;
+    }
 }

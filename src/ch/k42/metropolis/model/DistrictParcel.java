@@ -138,7 +138,7 @@ public class DistrictParcel extends Parcel {
     private void partitionXwithRoads(Grid grid,int cut){
         partition1 = new DistrictParcel(grid,chunkX,chunkZ,cut,chunkSizeZ);
         for(int i=chunkZ;i<chunkZ+chunkSizeZ;i++){
-            grid.setParcel(chunkX,i,new RoadParcel(grid,chunkX,i));
+            grid.setParcel(chunkX+cut,i,new RoadParcel(grid,chunkX+cut,i));
         }
         partition2 = new DistrictParcel(grid,chunkX+cut+1,chunkZ,chunkSizeX-cut-1,chunkSizeZ);
     }
@@ -151,7 +151,7 @@ public class DistrictParcel extends Parcel {
     private void partitionZwithRoads(Grid grid,int cut){
         partition1 = new DistrictParcel(grid,chunkX,chunkZ,chunkSizeX,cut);
         for(int i=chunkX;i<chunkX+chunkSizeX;i++){
-            grid.setParcel(i,chunkZ+cut,new RoadParcel(grid,i,chunkZ));
+            grid.setParcel(i,chunkZ+cut,new RoadParcel(grid,i,chunkZ+cut));
         }
         partition2 = new DistrictParcel(grid,chunkX,chunkZ+cut+1,chunkSizeX,chunkSizeZ-cut-1);
     }

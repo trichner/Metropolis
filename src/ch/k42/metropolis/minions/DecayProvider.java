@@ -9,11 +9,10 @@ import org.bukkit.util.noise.SimplexOctaveGenerator;
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 18:14
- * To change this template use File | Settings | File Templates.
+ * Provides decay to area of blocks.
+ * Originally written by spaceribs for CityWorld.
+ *
+ * @author spaceribs, Thomas Richner
  */
 public class DecayProvider {
 

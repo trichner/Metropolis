@@ -8,11 +8,8 @@ import org.bukkit.generator.BlockPopulator;
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 28.09.13
- * Time: 21:34
- * To change this template use File | Settings | File Templates.
+ * Fills up the bottom layer with bedrock, so nobody reaches the void
+ * @author Thomas Richner
  */
 public class BedrockFloorPopulator extends BlockPopulator {
     @Override

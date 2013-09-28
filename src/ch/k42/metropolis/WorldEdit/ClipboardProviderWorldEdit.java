@@ -16,11 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 16:19
- * To change this template use File | Settings | File Templates.
+ * This class loads, manages and provides schematics.
+ *
+ * @author Thomas Richner
+ *
  */
 public class ClipboardProviderWorldEdit {
 

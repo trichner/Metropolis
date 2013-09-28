@@ -9,6 +9,12 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Freder is intrested in the deeper information about a Parcel.
+ * He prints some basic information for the sender.
+ *
+ * @author Thomas Richner
+ */
 public class CommandMetropolisFreder implements CommandExecutor {
     private final MetropolisPlugin plugin;
 

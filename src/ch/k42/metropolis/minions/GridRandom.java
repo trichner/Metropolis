@@ -1,15 +1,15 @@
 package ch.k42.metropolis.minions;
 
-import ch.k42.metropolis.model.GridProvider;
-
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 15:33
- * To change this template use File | Settings | File Templates.
+ * Provides a Pseudo Random generator with
+ * a deterministic seed. Depending on location and worldseed.
+ *
+ * Basically a wrapper around java.util.Random.
+ *
+ * @author Thomas Richner
+ *
  */
 public class GridRandom {
     private Random random;
@@ -23,9 +23,7 @@ public class GridRandom {
     }
 
     public static long generateLocalSeed(long seed,int chunkX,int chunkZ){
-        chunkX /= GridProvider.GRID_SIZE;
-        chunkX /= GridProvider.GRID_SIZE;
-        return seed + (chunkX*7937+chunkZ)*7919;
+        return seed + (chunkX*31+chunkZ)*17;
     }
 
     /**

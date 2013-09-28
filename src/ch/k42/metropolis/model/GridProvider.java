@@ -1,7 +1,6 @@
 package ch.k42.metropolis.model;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.ByteChunk;
 import ch.k42.metropolis.minions.GridRandom;
 import com.google.common.base.Optional;
 import org.bukkit.Chunk;
@@ -11,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 16.09.13
- * Time: 00:46
- * To change this template use File | Settings | File Templates.
+ * This Class provides storage for all parcels.
+ * It handles Grids and hides functionality if you are only intrested in a
+ * parcel at a particular spot.
+ *
+ * @author Thomas Richner
  */
 public class GridProvider {
 

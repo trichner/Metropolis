@@ -11,6 +11,12 @@ import ch.k42.metropolis.model.ContextType;
 import org.bukkit.Material;
 
 
+/**
+ * Represents a structure defined by a loaded file in a cuboid.
+ *
+ * @author Daddy Churchill, Thomas Richner
+ */
+
 /*
  * TODO
  * - remove all those public variables, use getter&setter

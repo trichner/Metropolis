@@ -1,7 +1,6 @@
 package ch.k42.metropolis.generator;
 
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
-import ch.k42.metropolis.minions.ByteChunk;
 import ch.k42.metropolis.minions.DecayProvider;
 import ch.k42.metropolis.model.ContextProvider;
 import ch.k42.metropolis.model.GridProvider;
@@ -10,10 +9,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.

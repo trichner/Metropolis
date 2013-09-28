@@ -4,13 +4,19 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
+
+/**
+ * This command starts the generation of Metropolis if not already exsistent
+ * or warps the player to Metropolis
+ * Credits to the creator of CityWorld, gave me some inspiration ;)
+ *
+ * @author Thomas Richner
+ */
 
 public class CommandMetropolisMaria implements CommandExecutor {
     private final MetropolisPlugin plugin;
@@ -35,20 +41,20 @@ public class CommandMetropolisMaria implements CommandExecutor {
 
             // test to see if it exists
             if (world == null) {
-                sender.sendMessage("Cannot find or create the default Metropolis");
+                sender.sendMessage("Sorry for the inconvenience, but we seem to be unable to travel to Metropolis");
                 return false;
             } else {
 
                 // are we actually going to the right place
                 if (!(world.getGenerator() instanceof MetropolisGenerator))
-                    sender.sendMessage("WARNING: The world called Metropolis does NOT use the Metropolis generator");
+                    sender.sendMessage("WARNING: The world called Metropolis was NOT shaped by Maria!");
 
                 // actually go there then
                 if (player.getLocation().getWorld() == world) {
-                    sender.sendMessage("You are already here");
+                    sender.sendMessage("You are in Metropolis. Welcome!");
                     return true;
                 } else {
-                    player.sendMessage("Traveling to Metropolis...");
+                    player.sendMessage("Traveling to Metropolis, please stay seated until arrival.");
                     player.teleport(world.getSpawnLocation());
                     return true;
                 }
@@ -60,10 +66,10 @@ public class CommandMetropolisMaria implements CommandExecutor {
     // prime world support (loosely based on ExpansiveTerrain)
 	public final static String DEFAULT_WORLD_NAME = "Metropolis";
     public World getDefaultMetropolis() {
-        Bukkit.getLogger().info("---- get default city world");
+        Bukkit.getLogger().info("---- looking for Metropolis");
         // built yet?
         World metropolis = Bukkit.getServer().getWorld(DEFAULT_WORLD_NAME);
-        Bukkit.getLogger().info("got world");
+        Bukkit.getLogger().info("---- Metropolis already built");
         if (metropolis == null) {
             // if neither then create/build it!
             WorldCreator worldcreator = new WorldCreator(DEFAULT_WORLD_NAME);

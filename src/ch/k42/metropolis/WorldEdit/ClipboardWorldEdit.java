@@ -20,6 +20,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
+/**
+ * Represents a structure defined by a loaded file in a cuboid.
+ *
+ * @author Daddy Churchill, Thomas Richner
+ */
 public class ClipboardWorldEdit extends Clipboard {
 
 	private BaseBlock[][][] blocks;

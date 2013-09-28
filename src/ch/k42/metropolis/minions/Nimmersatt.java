@@ -1,11 +1,12 @@
 package ch.k42.metropolis.minions;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 27.09.13
- * Time: 20:42
- * To change this template use File | Settings | File Templates.
+ * Die Raupe Nimmersatt frisst sehr gerne Kommentare. Falls
+ * sie auf ein JSON String trifft, frisst sie sofort alle Kommentare weg
+ * und hinterlaesst ein reiner JSON String.
+ *
+ * @author Thomas Richner
+ *
  */
 public class Nimmersatt {
     private static enum State{

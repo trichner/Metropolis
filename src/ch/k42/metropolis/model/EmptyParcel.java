@@ -4,11 +4,8 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import org.bukkit.Chunk;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 18.09.13
- * Time: 19:06
- * To change this template use File | Settings | File Templates.
+ * Represents a Parcel with no building.
+ * @author Thomas Richner
  */
 public class EmptyParcel extends Parcel {
 

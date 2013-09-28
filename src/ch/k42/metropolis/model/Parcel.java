@@ -8,11 +8,10 @@ import org.bukkit.World;
 import java.util.Random;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 14:56
- * To change this template use File | Settings | File Templates.
+ * A Parcel represents one structure of Metropolis.
+ *
+ * @author Thomas Richner
+ *
  */
 public abstract class Parcel {
 

@@ -13,11 +13,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 26.06.13
- * Time: 08:46
- * To change this template use File | Settings | File Templates.
+ * Main Class for the Metropolis plugin.
+ *
+ * @author Thomas Richner
+ *
  */
 public class MetropolisPlugin extends JavaPlugin{
 

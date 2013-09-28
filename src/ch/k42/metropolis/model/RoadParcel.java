@@ -9,11 +9,8 @@ import org.bukkit.Chunk;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 14:32
- * To change this template use File | Settings | File Templates.
+ * This Parcel represents a Road in Metropolis
+ * @author Thomas Richner
  */
 public class RoadParcel extends Parcel {
 

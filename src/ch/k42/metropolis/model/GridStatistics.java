@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 15:21
- * To change this template use File | Settings | File Templates.
+ * This should keep track of statistics of a Grid, not
+ * implemented yet.
+ *
+ * @author Thomas Richner
  */
 public class GridStatistics {
 

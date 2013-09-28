@@ -3,11 +3,8 @@ package ch.k42.metropolis.model;
 import ch.k42.metropolis.minions.GridRandom;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 16.09.13
- * Time: 00:45
- * To change this template use File | Settings | File Templates.
+ * Represents a grid occupied fully with buildings
+ * @author Thomas Richner
  */
 public class UrbanGrid extends Grid{
     private Parcel[][] parcels = new Parcel[GRID_SIZE][GRID_SIZE];

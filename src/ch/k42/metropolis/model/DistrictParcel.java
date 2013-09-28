@@ -147,7 +147,6 @@ public class DistrictParcel extends Parcel {
         partition2 = new DistrictParcel(grid,chunkX+cut,chunkZ,chunkSizeX-cut,chunkSizeZ);
     }
 
-
     private void partitionZwithRoads(Grid grid,int cut){
         partition1 = new DistrictParcel(grid,chunkX,chunkZ,chunkSizeX,cut);
         for(int i=chunkX;i<chunkX+chunkSizeX;i++){

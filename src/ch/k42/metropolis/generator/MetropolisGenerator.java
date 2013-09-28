@@ -10,6 +10,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -121,7 +122,10 @@ public class MetropolisGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         reportDebug("added block populator !!!");
-        return Arrays.asList((BlockPopulator) new MetropolisBlockPopulator());
+        List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
+        populators.add(new MetropolisBlockPopulator());
+        populators.add(new BedrockFloorPopulator());
+        return populators;
     }
 
     public void initializeWorldInfo(World aWorld) {
@@ -154,7 +158,7 @@ public class MetropolisGenerator extends ChunkGenerator {
             for (int x=0; x<16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z=0; z<16; z++) {
                     int maxHeight = 65; //how thick we want out flat terrain to be
-                    for (int y=0;y<maxHeight;y++) {
+                    for (int y=1;y<maxHeight;y++) {
                         setBlock(x,y,z,chunk,Material.STONE);
                     }
                 }

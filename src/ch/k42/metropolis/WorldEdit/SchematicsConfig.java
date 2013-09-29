@@ -1,11 +1,10 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.minions.DecayOption;
-import ch.k42.metropolis.minions.Direction;
-import ch.k42.metropolis.model.ContextType;
+import ch.k42.metropolis.model.enums.Direction;
+import ch.k42.metropolis.model.enums.ContextType;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -28,11 +27,11 @@ public class SchematicsConfig {
     /**
      * Possible values: north, south, west, east
      */
-    private String EntranceFacing="north";
+    private Direction EntranceFacing= Direction.NORTH;
     /**
      * Possible values: road, highrise,midrise,neighbourhood,industrial,farm,park,undefined
      */
-    private String[] Context={"road","highrise","midrise","undefined"};
+    private ContextType[] Context={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
 
 
     public int getGroundLevelY() {
@@ -86,18 +85,12 @@ public class SchematicsConfig {
         return new DecayOption(intensity);
     }
 
-    public Direction getDirection() {
-        return Direction.getByString(EntranceFacing);
+    public List<ContextType> getContext() {
+        return Arrays.asList(Context);
     }
 
-    public List<ContextType> getContext() {
-        List<ContextType> list = new LinkedList<ContextType>();
-        for(String s : Context){
-            ContextType d = ContextType.getByString(s);
-            if(d!=null)
-                list.add(d);
-        }
-        return list;
+    public Direction getDirection() {
+        return EntranceFacing;
     }
 
     public boolean getNeedsRoad() {

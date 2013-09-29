@@ -1,6 +1,10 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.grid;
 
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.model.parcel.DistrictParcel;
+import ch.k42.metropolis.model.parcel.Parcel;
+import ch.k42.metropolis.model.parcel.RoadParcel;
+import ch.k42.metropolis.model.provider.GridProvider;
 
 /**
  * Represents a grid occupied fully with buildings

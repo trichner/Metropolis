@@ -1,6 +1,7 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.provider;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.model.enums.ContextType;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,6 +1,8 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.grid;
 
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.model.parcel.Parcel;
+import ch.k42.metropolis.model.provider.GridProvider;
 
 /**
  * Created with IntelliJ IDEA.

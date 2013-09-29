@@ -1,4 +1,4 @@
-package ch.k42.metropolis.minions;
+package ch.k42.metropolis.model.enums;
 
 /**
  * Created with IntelliJ IDEA.

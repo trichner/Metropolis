@@ -1,6 +1,8 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
 
 /**
@@ -10,12 +12,12 @@ import org.bukkit.Chunk;
 public class EmptyParcel extends Parcel {
 
     public EmptyParcel(Grid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
-        super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ,ContextType.UNDEFINED);
+        super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, ContextType.UNDEFINED);
         grid.fillParcels(chunkX,chunkZ,this);
     }
 
     @Override
-    void populate(MetropolisGenerator generator, Chunk chunk) {
+    public void populate(MetropolisGenerator generator, Chunk chunk) {
         // do nothing, since it's empty :)
     }
 }

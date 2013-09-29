@@ -7,6 +7,8 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
+import com.sk89q.worldedit.blocks.ChestBlock;
+import com.sk89q.worldedit.blocks.MobSpawnerBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.bukkit.Bukkit;
@@ -18,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 
 /**
  * Represents a structure defined by a loaded file in a cuboid.
@@ -67,13 +68,16 @@ public class ClipboardWorldEdit extends Clipboard {
         // allocate room
         blocks = new BaseBlock[sizeX][sizeY][sizeZ];
 
+        // copy the cube
+        copyCuboid(cuboid);
+
         if(groundLevelY==1){ // steet level on default? bootstrap! FIXME hardcoded, should be option
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
+            if(!store(schemname+metaExtension)){
+                generator.reportDebug("Can't store config file.");
+            }
         }
-
-        // copy the cube
-        copyCuboid(cuboid);
 
 	}
 
@@ -113,18 +117,22 @@ public class ClipboardWorldEdit extends Clipboard {
 		}
 	}
 
-	//TODO Pilfered from WorldEdit's CuboidClipboard... I need to remove this once the other Place function is used
 	private void place(EditSession editSession,Vector pos, boolean noAir)
 			throws MaxChangedBlocksException {
-		for (int x = 0; x < sizeX; x++)
-			for (int y = 0; y < sizeY; y++)
+		for (int x = 0; x < sizeX; x++){
+			for (int y = 0; y < sizeY; y++){
 				for (int z = 0; z < sizeZ; z++) {
-					if ((noAir) && (blocks[x][y][z].isAir())) {
-						continue;
-					}
-					editSession.setBlock(new Vector(x, y, z).add(pos),
+//					if ((noAir) && (blocks[x][y][z].isAir())) {
+//						continue;
+//					}
+
+                    editSession.setBlock(new Vector(x, y, z).add(pos),
 							blocks[x][y][z]);
+
 				}
+            }
+        }
+
 	}
 
     private void loadConfigOrDefault(String path){
@@ -160,5 +168,13 @@ public class ClipboardWorldEdit extends Clipboard {
             Bukkit.getLogger().throwing(this.getClass().getName(), "store config", e);
             return false;
         }
+    }
+
+    private BaseBlock getTrick(){
+        return new MobSpawnerBlock();
+    }
+
+    private BaseBlock getTreat(){
+        return new ChestBlock();
     }
 }

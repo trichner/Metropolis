@@ -1,8 +1,8 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Direction;
-import ch.k42.metropolis.model.ContextType;
+import ch.k42.metropolis.model.enums.Direction;
+import ch.k42.metropolis.model.enums.ContextType;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;

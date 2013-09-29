@@ -6,9 +6,8 @@ import java.util.List;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
-import ch.k42.metropolis.minions.Direction;
-import ch.k42.metropolis.model.ContextType;
-import org.bukkit.Material;
+import ch.k42.metropolis.model.enums.Direction;
+import ch.k42.metropolis.model.enums.ContextType;
 
 
 /**

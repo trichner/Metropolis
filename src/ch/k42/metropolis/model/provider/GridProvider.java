@@ -1,7 +1,10 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.provider;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.model.grid.Grid;
+import ch.k42.metropolis.model.grid.UrbanGrid;
+import ch.k42.metropolis.model.parcel.Parcel;
 import com.google.common.base.Optional;
 import org.bukkit.Chunk;
 import org.bukkit.World;

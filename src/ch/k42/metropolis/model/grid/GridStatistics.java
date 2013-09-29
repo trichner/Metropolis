@@ -1,4 +1,4 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.grid;
 
 import java.util.HashMap;
 import java.util.Map;

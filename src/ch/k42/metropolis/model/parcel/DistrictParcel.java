@@ -1,9 +1,12 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Direction;
+import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.WorldEdit.*;
+import ch.k42.metropolis.model.provider.ContextProvider;
+import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
 
 
@@ -24,7 +27,7 @@ public class DistrictParcel extends Parcel {
     private Parcel parcel = null;    //it it doesn't get partitioned, only placed, use this
 
     public DistrictParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
-        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,ContextType.UNDEFINED);
+        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ, ContextType.UNDEFINED);
         grid.fillParcels(chunkX,chunkZ,this);
     }
 

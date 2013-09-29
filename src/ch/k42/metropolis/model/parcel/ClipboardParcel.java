@@ -1,7 +1,9 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
+import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
 
 import ch.k42.metropolis.WorldEdit.*;

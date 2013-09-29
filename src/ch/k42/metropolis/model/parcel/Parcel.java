@@ -1,11 +1,9 @@
-package ch.k42.metropolis.model;
+package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
-import org.bukkit.World;
-
-import java.util.Random;
 
 /**
  * A Parcel represents one structure of Metropolis.
@@ -25,7 +23,7 @@ public abstract class Parcel {
     protected Grid grid;
 
 
-    protected Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ,ContextType contextType) {
+    public Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ,ContextType contextType) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.chunkSizeX = chunkSizeX;
@@ -34,7 +32,7 @@ public abstract class Parcel {
         this.contextType = contextType;
     }
 
-    abstract void populate(MetropolisGenerator generator,Chunk chunk);
+    public abstract void populate(MetropolisGenerator generator,Chunk chunk);
 
 
     public ContextType getContextType() {

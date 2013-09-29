@@ -1,9 +1,9 @@
 package ch.k42.metropolis.generator;
 
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
-import ch.k42.metropolis.minions.DecayProvider;
-import ch.k42.metropolis.model.ContextProvider;
-import ch.k42.metropolis.model.GridProvider;
+import ch.k42.metropolis.model.provider.DecayProvider;
+import ch.k42.metropolis.model.provider.ContextProvider;
+import ch.k42.metropolis.model.provider.GridProvider;
 import org.bukkit.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;

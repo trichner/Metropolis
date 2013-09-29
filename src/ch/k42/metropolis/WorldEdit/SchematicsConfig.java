@@ -103,4 +103,8 @@ public class SchematicsConfig {
     public boolean getNeedsRoad() {
         return NeedsRoad;
     }
+
+    public void setGroundLevelY(int groundLevelY) {
+        GroundLevelY = groundLevelY;
+    }
 }

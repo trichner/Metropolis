@@ -61,20 +61,34 @@ public class ClipboardWorldEdit extends Clipboard {
         sizeZ = cuboid.getLength();
         sizeY = cuboid.getHeight();
 
-        // grab the edge block
-        BaseBlock edge = cuboid.getPoint(new Vector(0, groundLevelY, 0));
-        edgeType = Material.getMaterial(edge.getType());
-        edgeData = (byte) edge.getData(); //TODO I think that data can be integers... one of these days , trichner: Not sure what this is for....
         //edgeData = (byte)((edge.getData() & 0x000000ff)); // this would make overflows not error out but let's not do that
  //       edgeRise = generator.oreProvider.surfaceId == edgeType.getId() ? 0 : 1;
 
         // allocate room
         blocks = new BaseBlock[sizeX][sizeY][sizeZ];
 
+        if(groundLevelY==1){ // steet level on default? bootstrap! FIXME hardcoded, should be option
+            int streetLvlEstimate = estimateStreetLevel();
+            settings.setGroundLevelY(streetLvlEstimate);
+        }
+
         // copy the cube
         copyCuboid(cuboid);
 
 	}
+
+    /**
+     * estimates the street level of a schematic, useful for bootstrapping settings
+     * @return
+     */
+    private int estimateStreetLevel(){
+        for(int y=0;y<sizeY;y++){
+            int b = blocks[0][y][0].getType();
+            if(b==Material.AIR.getId()||b==Material.LONG_GRASS.getId())
+                return y;
+        }
+        return 0;
+    }
 	
 	private void copyCuboid(CuboidClipboard cuboid) {
 	    for (int x = 0; x < sizeX; x++)
@@ -129,7 +143,7 @@ public class ClipboardWorldEdit extends Clipboard {
             json = Nimmersatt.friss(json);
             settings = gson.fromJson(json,SchematicsConfig.class);
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
             settings = new SchematicsConfig(); // couldn't read config file? use default
             Bukkit.getLogger().throwing(this.getClass().getName(),"loadConfig",e);
             return false;
@@ -140,13 +154,11 @@ public class ClipboardWorldEdit extends Clipboard {
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String file = gson.toJson(settings);
-            Files.write(Paths.get(path),file.getBytes(), StandardOpenOption.CREATE);
+            Files.write(Paths.get(path),file.getBytes()); //overwrite exsisting stuff
             return true;
         } catch (IOException e) {
             Bukkit.getLogger().throwing(this.getClass().getName(), "store config", e);
             return false;
         }
     }
-
-
 }

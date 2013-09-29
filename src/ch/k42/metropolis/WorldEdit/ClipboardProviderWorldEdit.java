@@ -10,10 +10,7 @@ import org.bukkit.plugin.PluginManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * This class loads, manages and provides schematics.
@@ -182,8 +179,18 @@ public class ClipboardProviderWorldEdit {
         }
     }
 
-    public List<Clipboard> getFit(int chunkX,int chunkY,Direction direction,ContextType contextType){
-        return clipboards.get(new ClipboardKey(chunkX,chunkY,direction,contextType));
+    /**
+     * Returns a list containing all available clipboards that match the size, direction and context
+     * @param chunkX chunksize in X direction
+     * @param chunkZ chunksize in Z direction
+     * @param direction direction the structure should face
+     * @param contextType context of the structure
+     * @return list containing all matching clipboards, might be empty but never null
+     */
+    public List<Clipboard> getFit(int chunkX,int chunkZ,Direction direction,ContextType contextType){
+        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType));
+        if(list==null) list = new LinkedList<Clipboard>();
+        return list;
     }
 
 }

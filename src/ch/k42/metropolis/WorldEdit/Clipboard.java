@@ -56,11 +56,7 @@ public abstract class Clipboard {
 	public int insetSouth;
 	public int insetWest;
 	public int insetEast;
-	
-	public Material edgeType = Material.AIR;
-	public byte edgeData = 0;
-	public int edgeRise = 0;
-	
+
 	public Clipboard(MetropolisGenerator generator, File file) throws Exception {
 		super();
 		this.name = file.getName();

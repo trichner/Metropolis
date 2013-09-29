@@ -33,8 +33,9 @@ public class RoadParcel extends Parcel {
             }
             if(list.size()>0){
                 road = list.get(grid.getRandom().getRandomInt(list.size()));
-                road.paste(generator, (chunkX << 4), Constants.BUILD_HEIGHT,(chunkZ<<4));
+                road.paste(generator, (chunkX << 4),(chunkZ<<4), Constants.BUILD_HEIGHT);
             }else {
+
                 generator.reportMessage("No schematics for road found.");
             }
         }else{

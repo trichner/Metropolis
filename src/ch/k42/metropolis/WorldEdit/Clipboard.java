@@ -10,6 +10,8 @@ import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.LootType;
+import org.bukkit.Chunk;
 
 
 /**
@@ -34,32 +36,23 @@ public abstract class Clipboard {
     protected SchematicConfig settings;
     protected List<Cartesian> chests = new ArrayList<Cartesian>();
     protected List<Cartesian> spawners = new ArrayList<Cartesian>();
-	public String name;
-	public String chestName = "Chest";
-	public double chestOdds = 0.25D;
-	public String spawnerType = "ZOMBIE";
-	public double spawnerOdds = 0.50D;
-	public int groundLevelY = 1;
-	public boolean broadcastLocation = false;
+
+    protected String name;
+    protected int groundLevelY = 1;
     protected List<ContextType> contextTypes;
-    protected Direction direction;
 
+    protected int sizeX;
+    protected int sizeY;
+    protected int sizeZ;
+    protected int blockCount;
 
+    protected int chunkX; /** Size in chunks */
+    protected int chunkZ; /** Size in chunks */
 
-    public DecayOption decayOptions = DecayOption.getDefaultDecayOptions();
-
-	public int sizeX;
-	public int sizeY;
-	public int sizeZ;
-	public int blockCount;
-	
-	public int chunkX; /** Size in chunks */
-	public int chunkZ; /** Size in chunks */
-	
-	public int insetNorth;
-	public int insetSouth;
-	public int insetWest;
-	public int insetEast;
+    protected int insetNorth;
+    protected int insetSouth;
+    protected int insetWest;
+    protected int insetEast;
 
 	public Clipboard(MetropolisGenerator generator, File file) throws Exception {
 		super();
@@ -87,6 +80,8 @@ public abstract class Clipboard {
 
 	public abstract void paste(MetropolisGenerator generator, int blockX,int blockZ, int streetLevel);
 
+    //public abstract void setTrickOrTreat(MetropolisGenerator generator);
+
     @Override
     public String toString() {
         return "Clipboard{" +
@@ -103,7 +98,7 @@ public abstract class Clipboard {
     }
 
     public Direction getDirection() {
-        return direction;
+        return settings.getDirection();
     }
 
     /**
@@ -116,7 +111,7 @@ public abstract class Clipboard {
     }
 
     public DecayOption getDecayOptions() {
-        return decayOptions;
+        return settings.getDecayOption();
     }
 
     public int getSizeX() {

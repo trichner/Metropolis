@@ -17,4 +17,8 @@ public class Cartesian {
         Y = y;
         Z = z;
     }
+
+    public Cartesian add(Cartesian c){
+        return new Cartesian(X+c.X,Y+c.Y,Z+c.Z);
+    }
 }

@@ -3,6 +3,7 @@ package ch.k42.metropolis.model.enums;
 /**
  *
  * Enum for diffrent Contexts
+ * Possible values: road, highrise,midrise,neighbourhood,industrial,farm,park,undefined
  * @author Thomas Richner
  *
  */

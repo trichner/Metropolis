@@ -1,22 +1,21 @@
 package ch.k42.metropolis.model.enums;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 17.09.13
- * Time: 16:22
- * To change this template use File | Settings | File Templates.
+ * Possible values: north, south, west, east
+ * @author Thomas Richner
  */
 public enum Direction {
-    NORTH("north"),
-    WEST("west"),
-    EAST("east"),
-    SOUTH("south"),
-    ROAD("road"),
-    NONE("none");
-    public String string;
-    Direction(String str){
+    NORTH("north",(byte) 0x2),
+    WEST("west",(byte) 0x4),
+    EAST("east",(byte) 0x5),
+    SOUTH("south",(byte) 0x3),
+    ROAD("road", (byte) 0x0),
+    NONE("none",(byte) 0x0);
+    public final String string;
+    public final byte data;
+    Direction(String str,byte data){
         this.string=str;
+        this.data=data;
     }
     public static Direction getByString(String string){
         for(Direction d : Direction.values()){
@@ -24,5 +23,12 @@ public enum Direction {
                 return d;
         }
         return null;
+    }
+    public static Direction getByData(byte data){
+        for(Direction d : Direction.values()){
+            if(d.data==(data))
+                return d;
+        }
+        return NONE;
     }
 }

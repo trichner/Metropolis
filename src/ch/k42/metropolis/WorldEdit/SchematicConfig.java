@@ -3,6 +3,8 @@ package ch.k42.metropolis.WorldEdit;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.LootType;
+import ch.k42.metropolis.model.enums.SpawnerType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,25 +16,36 @@ import java.util.List;
  * Time: 21:31
  * To change this template use File | Settings | File Templates.
  */
-public class SchematicsConfig {
+public class SchematicConfig {
+
+    public class SchematicSpawner{
+        private SpawnerType Type = SpawnerType.ZOMBIE;
+        private int Weight = 10;
+
+        public SchematicSpawner(SpawnerType type, int weight) {
+            Type = type;
+            Weight = weight;
+        }
+    }
+
     private int GroundLevelY = 1;
     private int OddsOfAppearanceInPercent = 100;
-    //private final static String tagBroadcastLocation = "BroadcastLocation";
-    private String ChestName= "Chest";
+    private LootType StandardChestName = LootType.INDUSTRIAL;
     private int ChestOddsInPercent = 50;
-    private String SpawnerType= "ZOMBIE"; //unused
+    private int[] ChestLevelWeights = {20,20,20,20,20};
+    private SchematicSpawner[] Spawners;
     private int SpawnerOddsInPercent=50;
     private int DecayIntensityInPercent=100;
     private boolean NeedsRoad = false;
-    /**
-     * Possible values: north, south, west, east
-     */
     private Direction EntranceFacing= Direction.NORTH;
-    /**
-     * Possible values: road, highrise,midrise,neighbourhood,industrial,farm,park,undefined
-     */
     private ContextType[] Context={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
 
+    public SchematicConfig() {
+        Spawners = new SchematicSpawner[3];
+        Spawners[0] = new SchematicSpawner(SpawnerType.ZOMBIE,60);
+        Spawners[1] = new SchematicSpawner(SpawnerType.CREEPER,20);
+        Spawners[2] = new SchematicSpawner(SpawnerType.SKELETON,20);
+    }
 
     public int getGroundLevelY() {
         return GroundLevelY;
@@ -46,8 +59,8 @@ public class SchematicsConfig {
         return OddsOfAppearanceInPercent;
     }
 
-    public String getChestName() {
-        return ChestName;
+    public LootType getStandardChestName() {
+        return StandardChestName;
     }
 
     /**
@@ -58,8 +71,8 @@ public class SchematicsConfig {
         return ChestOddsInPercent;
     }
 
-    public String getSpawnerType() {
-        return SpawnerType;
+    public SchematicSpawner[] getSpawners() {
+        return Spawners;
     }
 
     /**

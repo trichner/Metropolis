@@ -1,9 +1,11 @@
 package ch.k42.metropolis.WorldEdit;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.model.enums.Direction;
@@ -29,6 +31,9 @@ public abstract class Clipboard {
 
     protected final static int nullspots_constant = 1; //HARDCODED
 
+    protected SchematicConfig settings;
+    protected List<Cartesian> chests = new ArrayList<Cartesian>();
+    protected List<Cartesian> spawners = new ArrayList<Cartesian>();
 	public String name;
 	public String chestName = "Chest";
 	public double chestOdds = 0.25D;
@@ -124,5 +129,17 @@ public abstract class Clipboard {
 
     public int getSizeZ() {
         return sizeZ;
+    }
+
+    public SchematicConfig getSettings() {
+        return settings;
+    }
+
+    public List<Cartesian> getChests() {
+        return chests;
+    }
+
+    public List<Cartesian> getSpawners() {
+        return spawners;
     }
 }

@@ -1,14 +1,13 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Nimmersatt;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.blocks.ChestBlock;
-import com.sk89q.worldedit.blocks.MobSpawnerBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.bukkit.Bukkit;
@@ -30,7 +29,6 @@ public class ClipboardWorldEdit extends Clipboard {
 
 	private BaseBlock[][][] blocks;
 	private final static String metaExtension = ".json";
-    private SchematicsConfig settings;
 
 	public ClipboardWorldEdit(MetropolisGenerator generator, File file) throws Exception {
 		super(generator, file);
@@ -93,12 +91,20 @@ public class ClipboardWorldEdit extends Clipboard {
         }
         return 0;
     }
-	
+
+    private final static int SPAWNER_SUBSTITUTE = Material.SPONGE.getId();
 	private void copyCuboid(CuboidClipboard cuboid) {
 	    for (int x = 0; x < sizeX; x++)
-	        for (int y = 0; y < sizeY; y++)
-	          for (int z = 0; z < sizeZ; z++)
-	        	  blocks[x][y][z] = cuboid.getPoint(new Vector(x, y, z));
+            for (int y = 0; y < sizeY; y++)
+                for (int z = 0; z < sizeZ; z++){
+                    BaseBlock block = cuboid.getPoint(new Vector(x, y, z));
+                    if(block.getId()==Material.CHEST.getId()){
+                        chests.add(new Cartesian(x,y,z));
+                    }else if(block.getId()==SPAWNER_SUBSTITUTE){
+                        spawners.add(new Cartesian(x,y,z));
+                    }
+                    blocks[x][y][z] = block;
+                }
 	}
 	
 	private EditSession getEditSession(MetropolisGenerator generator) {
@@ -149,10 +155,10 @@ public class ClipboardWorldEdit extends Clipboard {
         try {
             String json = new String(Files.readAllBytes(Paths.get(path)));
             json = Nimmersatt.friss(json);
-            settings = gson.fromJson(json,SchematicsConfig.class);
+            settings = gson.fromJson(json,SchematicConfig.class);
             return true;
         } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
-            settings = new SchematicsConfig(); // couldn't read config file? use default
+            settings = new SchematicConfig(); // couldn't read config file? use default
             Bukkit.getLogger().throwing(this.getClass().getName(),"loadConfig",e);
             return false;
         }
@@ -170,11 +176,5 @@ public class ClipboardWorldEdit extends Clipboard {
         }
     }
 
-    private BaseBlock getTrick(){
-        return new MobSpawnerBlock();
-    }
 
-    private BaseBlock getTreat(){
-        return new ChestBlock();
-    }
 }

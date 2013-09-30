@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\Users\Thomas\Dropbox\Coding\Java Projects\AthmosMC\src\ch\k42\metropolis\model\enums\SpawnerType.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/Metropolis.jar" afterPath="$PROJECT_DIR$/bin/Metropolis.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/DistrictParcel.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/DistrictParcel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/minions/GridRandom.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/minions/GridRandom.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AthmosMC.iws" />
@@ -31,7 +31,7 @@
     <file path="/ContextType.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380401953195" ignored="false" />
     <file path="/Structure.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379425985563" ignored="false" />
     <file path="/SchemStructure.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379423327566" ignored="false" />
-    <file path="/Dummy.txt" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380572717448" ignored="false" />
+    <file path="/Dummy.txt" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380572748314" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/PasteProvider.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/ClipboardPartitionLot.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/ClipboardList.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
@@ -50,7 +50,7 @@
     <file path="/BlockManipulator.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379435233156" ignored="false" />
     <file path="/a.dummy" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380488979437" ignored="false" />
     <file path="/ClipboardProviderWorldEdit.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380469397697" ignored="false" />
-    <file path="/ClipboardWorldEdit.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380564290814" ignored="false" />
+    <file path="/ClipboardWorldEdit.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380575106540" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Support/PlatMap.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/ClipboardExpandLot.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/CityWorld.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
@@ -141,10 +141,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ClipboardWorldEdit.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="ClipboardWorldEdit.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="186" column="0" selection-start="7289" selection-end="7289" vertical-scroll-proportion="0.0">
+            <state line="191" column="0" selection-start="7523" selection-end="7523" vertical-scroll-proportion="0.4690367">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -161,10 +161,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DecayProvider.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="DecayProvider.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/provider/DecayProvider.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="146" column="0" selection-start="6623" selection-end="6623" vertical-scroll-proportion="0.39104116">
+            <state line="149" column="0" selection-start="6775" selection-end="6775" vertical-scroll-proportion="-14.96">
               <folding />
             </state>
           </provider>
@@ -218,18 +218,7 @@
       <file leaf-file-name="SchematicConfig.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="234" column="36" selection-start="6369" selection-end="6369" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SpawnerType.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/SpawnerType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="26" column="1" selection-start="698" selection-end="698" vertical-scroll-proportion="0.0">
+            <state line="233" column="36" selection-start="6319" selection-end="6319" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -267,10 +256,10 @@
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/minions/Cartesian.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/Clipboard.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java" />
-        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/minions/GridRandom.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/provider/DecayProvider.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/DistrictParcel.java" />
+        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java" />
       </list>
     </option>
   </component>
@@ -421,10 +410,6 @@
               <option name="myItemId" value="model" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="provider" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -449,58 +434,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="parcel" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AthmosMC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AthmosMC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="metropolis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="grid" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AthmosMC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="AthmosMC" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="metropolis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="enums" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -825,7 +758,11 @@
       <created>1380572721354</created>
       <updated>1380572721354</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="tweaked size of blocks">
+      <created>1380572755234</created>
+      <updated>1380572755234</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -897,7 +834,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="tweaked decay, rePeteD is now happy ;)" />
+    <option name="LAST_COMMIT_MESSAGE" value="tweaked size of blocks" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -928,6 +865,7 @@
     <MESSAGE value="improvements to loot&amp;spawner settings" />
     <MESSAGE value="implemented Chests&amp;Spawners, not debugged yet" />
     <MESSAGE value="tweaked decay, rePeteD is now happy ;)" />
+    <MESSAGE value="tweaked size of blocks" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1007,27 +945,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/SpawnerType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="1" selection-start="698" selection-end="698" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="234" column="36" selection-start="6369" selection-end="6369" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="186" column="0" selection-start="7289" selection-end="7289" vertical-scroll-proportion="0.0">
+        <state line="233" column="36" selection-start="6319" selection-end="6319" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1050,8 +970,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/provider/DecayProvider.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="146" column="0" selection-start="6623" selection-end="6623" vertical-scroll-proportion="0.39104116">
+        <state line="149" column="0" selection-start="6775" selection-end="6775" vertical-scroll-proportion="-14.96">
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="191" column="0" selection-start="7523" selection-end="7523" vertical-scroll-proportion="0.4690367">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

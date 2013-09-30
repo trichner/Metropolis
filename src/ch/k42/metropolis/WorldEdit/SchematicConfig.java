@@ -4,7 +4,6 @@ import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.LootType;
-import ch.k42.metropolis.model.enums.SpawnerType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 

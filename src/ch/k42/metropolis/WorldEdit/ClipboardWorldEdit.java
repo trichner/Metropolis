@@ -11,6 +11,7 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
+import net.minecraft.server.v1_5_R3.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -18,8 +19,11 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.craftbukkit.v1_5_R3.block.CraftChest;
+import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import java.io.File;
 import java.io.IOException;
@@ -136,7 +140,7 @@ public class ClipboardWorldEdit extends Clipboard {
                         }else { //rename chest
                             Chest chest = (Chest) block.getState(); //block has to be a chest
                             String name = validateChestName(rand, chest.getInventory().getName());
-                            nameChest(chest,name);
+                            nameChest(chest, name);
                             generator.reportDebug("Placed a chest!");
                         }
                     }else {
@@ -183,8 +187,14 @@ public class ClipboardWorldEdit extends Clipboard {
     }
 
     private void nameChest(Chest chest, String name){ //FIXME there might be no better way...
-        Inventory inventory = Bukkit.createInventory(null,18,"Chest!");
+        ItemStack ichest = new ItemStack(Material.CHEST);
+        ichest.getItemMeta().setDisplayName(name);
 
+//        CraftItemStack cis = CraftItemStack.a
+//        NBTTagCompound tag = cis.getHandle().getTag();
+//        if (tag == null) {
+//            cis.getHandle().setTag(new NBTTagCompound());
+//        }
 //            Field inventoryField = chest.getClass().getDeclaredField("chest"); //This get's the CraftChest variable 'chest' which is the TileEntityChest that is stored within it
 //            inventoryField.setAccessible(true); //Allows you to access that field since it's declared as private
 //            TileEntityChest teChest = ((TileEntityChest) inventoryField.get(chest)); //obtains the field and casts it to a TileEntityChest

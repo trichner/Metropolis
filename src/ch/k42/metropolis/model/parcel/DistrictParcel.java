@@ -42,7 +42,7 @@ public class DistrictParcel extends Parcel {
 
         // TODO Randomly choose size!
 
-        if(random.getChance(60)){
+        if(random.getChance(60)){ //FIXME Hardcoded
             List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ, findRoad(),context.getContext(chunkX,chunkZ)); //just use context in one corner
             if(schems!=null&&schems.size()>0){
                 generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
@@ -89,24 +89,45 @@ public class DistrictParcel extends Parcel {
             return; // in every case! we can't partition more! 1x1 should be available
         }
 
+        final int blockSize=14;
 
         // Failed? partition into 2 sub lots
         if(chunkSizeX>chunkSizeZ){//if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occure
-            int cut = random.getRandomInt(1,chunkSizeX-1);
-            partitionX(grid,cut);
-//            if(chunkSizeX<5){
-//                partitionX(grid,cut);
-//            }else {
-//                partitionXwithRoads(grid,cut);
-//            }
+            double mean  = chunkSizeX/2.0;
+            double sigma = mean/4.0;
+            double dcut = mean+random.getRandomGaussian()*sigma;
+            int icut = (int) Math.round(dcut);
+
+            int cut = icut; //random.getRandomInt(1,chunkSizeX-1);
+            if(cut<1)
+                cut=1;
+            else if(cut>chunkSizeX-2)
+                cut=chunkSizeX-2;
+
+            //partitionX(grid,cut);
+            if(chunkSizeX<blockSize){ //FIXME Hardcoded
+                partitionX(grid,cut);
+            }else {
+                partitionXwithRoads(grid,cut);
+            }
         }else {
-            int cut = random.getRandomInt(1,chunkSizeZ-1);
-            partitionZ(grid,cut);
-//            if(chunkSizeZ<5){
-//                partitionZ(grid,cut);
-//            }else {
-//                partitionZwithRoads(grid,cut);
-//            }
+            double mean  = chunkSizeZ/2.0;
+            double sigma = mean/2.0;
+            double dcut = mean+random.getRandomGaussian()*sigma;
+            int icut = (int) Math.round(dcut);
+
+            int cut = icut;// random.getRandomInt(1,chunkSizeZ-1);
+            if(cut<1)
+                cut=1;
+            else if(cut>chunkSizeZ-2)
+                cut=chunkSizeZ-2;
+
+            //partitionZ(grid,cut);
+            if(chunkSizeZ<blockSize){ //FIXME Hardcoded
+                partitionZ(grid,cut);
+            }else {
+                partitionZwithRoads(grid,cut);
+            }
         }
         partition1.populate(generator,chunk);
         partition2.populate(generator,chunk);

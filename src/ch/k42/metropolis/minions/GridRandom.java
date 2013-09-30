@@ -53,4 +53,12 @@ public class GridRandom {
     public boolean getChance(int percent){
         return random.nextInt(100)<percent;
     }
+
+    /**
+     * Returns a gaussian with mean 0 and deviation 1.0
+     * @return mean 0 and deviation 1.0
+     */
+    public double getRandomGaussian(){
+        return random.nextGaussian();
+    }
 }

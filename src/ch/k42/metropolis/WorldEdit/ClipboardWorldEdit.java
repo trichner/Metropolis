@@ -11,23 +11,18 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
-import net.minecraft.server.v1_5_R3.TileEntityChest;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.craftbukkit.v1_5_R3.block.CraftChest;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.Inventory;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -77,8 +72,8 @@ public class ClipboardWorldEdit extends Clipboard {
         if(groundLevelY==1){ // steet level on default? bootstrap! FIXME hardcoded, should be option
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
-            if(!store(schemname+metaExtension)){
-                generator.reportDebug("Can't store config file.");
+            if(!storeConfig(schemname + metaExtension)){
+                generator.reportDebug("Can't storeConfig config file.");
             }
         }
 
@@ -135,13 +130,13 @@ public class ClipboardWorldEdit extends Clipboard {
                 for(Cartesian c : chests){
                     temp = base.add(c);
                     Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
-                    if(block.getState() instanceof CraftChest){
+                    if(block.getState() instanceof Chest){
                         if(!rand.getChance(settings.getChestOdds())){ //we were unlucky, chest doesn't get placed{
                             block.setType(Material.AIR);
                         }else { //rename chest
-                            CraftChest chest = (CraftChest) block.getState(); //block has to be a chest
+                            Chest chest = (Chest) block.getState(); //block has to be a chest
                             String name = validateChestName(rand, chest.getInventory().getName());
-                            renameChest(chest,name);
+                            nameChest(chest,name);
                             generator.reportDebug("Placed a chest!");
                         }
                     }else {
@@ -187,14 +182,16 @@ public class ClipboardWorldEdit extends Clipboard {
         return settings.getRandomSpawnerEntity(random.getRandomInt(settings.getSpawnerEntityWeightSum()));
     }
 
-    private void renameChest(CraftChest chest, String name) throws Exception{ //FIXME there might be no better way...
-            Field inventoryField = chest.getClass().getDeclaredField("chest"); //This get's the CraftChest variable 'chest' which is the TileEntityChest that is stored within it
-            inventoryField.setAccessible(true); //Allows you to access that field since it's declared as private
-            TileEntityChest teChest = ((TileEntityChest) inventoryField.get(chest)); //obtains the field and casts it to a TileEntityChest
-            teChest.a(name); //The a(String) method sets the title of the chest
+    private void nameChest(Chest chest, String name){ //FIXME there might be no better way...
+        Inventory inventory = Bukkit.createInventory(null,18,"Chest!");
+
+//            Field inventoryField = chest.getClass().getDeclaredField("chest"); //This get's the CraftChest variable 'chest' which is the TileEntityChest that is stored within it
+//            inventoryField.setAccessible(true); //Allows you to access that field since it's declared as private
+//            TileEntityChest teChest = ((TileEntityChest) inventoryField.get(chest)); //obtains the field and casts it to a TileEntityChest
+//            teChest.a(name); //The a(String) method sets the title of the chest
     }
 
-    private static final String color= "§a";
+    private static final char COLOR = ChatColor.GREEN.getChar();
 
     private String validateChestName(GridRandom rand,String name){
         //chest has level? -> Assumption: Chest fully named
@@ -213,7 +210,7 @@ public class ClipboardWorldEdit extends Clipboard {
                 name+=Integer.toString(randomChestLevel(rand)); //add a random chest level
             }else { // set name and level
                 StringBuffer buf = new StringBuffer();
-                buf.append(color)
+                buf.append(COLOR)
                         .append(settings.getStandardChestName())
                         .append('_')
                         .append(Integer.toString(randomChestLevel(rand)));
@@ -248,7 +245,7 @@ public class ClipboardWorldEdit extends Clipboard {
     private void loadConfigOrDefault(String path){
         if(!loadConfig(path)){ // did we succeed?
             Bukkit.getServer().getLogger().warning("Unable to load config of schematic: "+path);
-            if(!store(path)){ // no, so just store the default config
+            if(!storeConfig(path)){ // no, so just storeConfig the default config
                 Bukkit.getLogger().severe("Unable to load of save config of schematic: " + path);
             }
         }
@@ -268,14 +265,14 @@ public class ClipboardWorldEdit extends Clipboard {
         }
     }
 
-    private boolean store(String path){
+    private boolean storeConfig(String path){
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String file = gson.toJson(settings);
             Files.write(Paths.get(path),file.getBytes()); //overwrite exsisting stuff
             return true;
         } catch (IOException e) {
-            Bukkit.getLogger().throwing(this.getClass().getName(), "store config", e);
+            Bukkit.getLogger().throwing(this.getClass().getName(), "storeConfig config", e);
             return false;
         }
     }

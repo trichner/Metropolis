@@ -92,17 +92,20 @@ public class DecayProvider {
                     if (!block.isEmpty() && isValid(block) && ( holeNoise > fulldecay ) ) {
                         block.setType(Material.AIR);
                     } else if ( isValid(block) && holeNoise > partialdecay ) {
-                        switch(block.getType()) {
+                        switch(block.getType()) { //TODO too many hardcoded values
                             case STONE:
+                                if(random.nextInt(100)<40) break; // 20% happens nothing
                                 if(random.nextBoolean())
                                     block.setType(Material.COBBLESTONE);
                                 else
                                     block.setType(Material.MOSSY_COBBLESTONE);
                                 break;
                             case SANDSTONE:
+                                if(random.nextBoolean()) break; // not too much stairs
                                 block.setTypeIdAndData(Material.SANDSTONE_STAIRS.getId(), (byte) random.nextInt(4), true);
                                 break;
                             case BRICK:
+                                if(random.nextBoolean()) break; // not too much stairs
                                 block.setTypeIdAndData(Material.BRICK_STAIRS.getId(),(byte) random.nextInt(4), true);
                                 break;
                             case COBBLESTONE:
@@ -112,6 +115,7 @@ public class DecayProvider {
                                 block.setTypeIdAndData(Material.SMOOTH_BRICK.getId(),(byte) random.nextInt(4), true);
                                 break;
                             case WOOD:
+                                if(random.nextBoolean()) break; // not too much stairs
                                 switch(block.getData()){
                                     case 0:
                                         block.setTypeIdAndData(Material.WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);

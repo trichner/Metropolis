@@ -2,6 +2,7 @@ package ch.k42.metropolis.model.grid;
 
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.model.parcel.DistrictParcel;
+import ch.k42.metropolis.model.parcel.HighwayParcel;
 import ch.k42.metropolis.model.parcel.Parcel;
 import ch.k42.metropolis.model.parcel.RoadParcel;
 import ch.k42.metropolis.model.provider.GridProvider;
@@ -24,11 +25,11 @@ public class UrbanGrid extends Grid{
     }
 
     private void placeHighways(){ // places roads all around the grid
-        for(int i=0;i<GRID_SIZE;i++){
-            setParcel(0,i,new RoadParcel(this,chunkX,chunkZ+i)); //
-            setParcel(i,0,new RoadParcel(this,chunkX+i,chunkZ));
-            setParcel(i,GRID_SIZE-1,new RoadParcel(this,chunkX+i,chunkZ+GRID_SIZE-1));
-            setParcel(GRID_SIZE-1,i,new RoadParcel(this,chunkX+GRID_SIZE-1,chunkZ+i));
+        for(int i=0;i<GRID_SIZE;i+=2){
+            setParcel(0,i,new HighwayParcel(this,chunkX,chunkZ+i)); //
+            setParcel(i,0,new HighwayParcel(this,chunkX+i,chunkZ));
+            setParcel(i,GRID_SIZE-1,new HighwayParcel(this,chunkX+i,chunkZ+GRID_SIZE-1));
+            setParcel(GRID_SIZE-1,i,new HighwayParcel(this,chunkX+GRID_SIZE-1,chunkZ+i));
         }
     }
 

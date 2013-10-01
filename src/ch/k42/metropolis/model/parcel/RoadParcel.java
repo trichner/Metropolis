@@ -66,11 +66,11 @@ public class RoadParcel extends Parcel {
                         if(hasWest){ // X
                             clip = generator.getClipboardProvider().getByName("street_x-cross_v1.schematic");
                         }else { // N S E
-                            clip = generator.getClipboardProvider().getByName("street_t-cross-NS_v1.schematic"); // maybe  SN
+                            clip = generator.getClipboardProvider().getByName("street_t-cross_SN_v1.schematic"); // maybe  SN
                         }
                     }else {
                         if(hasWest){ // N S W
-                            clip = generator.getClipboardProvider().getByName("street_t-cross-SN_v1.schematic"); // maybe  NS
+                            clip = generator.getClipboardProvider().getByName("street_t-cross-NS_v1.schematic"); // maybe  NS
                         }else { // N S
                             clip = generator.getClipboardProvider().getByName("street_straight-NS_v1.schematic");
                         }

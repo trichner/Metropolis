@@ -137,4 +137,8 @@ public abstract class Clipboard {
     public List<Cartesian> getSpawners() {
         return spawners;
     }
+
+    public String getName() {
+        return name;
+    }
 }

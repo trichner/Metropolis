@@ -59,6 +59,7 @@ public class ClipboardProviderWorldEdit {
 
     private File schematicsFolder;
     private Map<ClipboardKey,List<Clipboard>> clipboards = new HashMap<ClipboardKey, List<Clipboard>>();
+    private Map<String,Clipboard> clipboardsByName = new HashMap<String, Clipboard>();
 
 
     public ClipboardProviderWorldEdit(MetropolisGenerator generator) throws Exception {
@@ -155,7 +156,7 @@ public class ClipboardProviderWorldEdit {
                     Clipboard clip=null;
 
                     clip = new ClipboardWorldEdit(generator, schematicFile);
-
+                    clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
                         ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,clip.getDirection(),c);
                         List<Clipboard> list = clipboards.get(key);
@@ -165,6 +166,7 @@ public class ClipboardProviderWorldEdit {
                         // add the clip to the result
                         list.add(clip);
                         clipboards.put(key,list);
+
                     }
 
 
@@ -191,6 +193,10 @@ public class ClipboardProviderWorldEdit {
         List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType));
         if(list==null) list = new LinkedList<Clipboard>();
         return list;
+    }
+
+    public Clipboard getByName(String name){
+        return clipboardsByName.get(name);
     }
 
 }

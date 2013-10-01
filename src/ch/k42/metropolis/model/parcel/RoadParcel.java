@@ -121,7 +121,7 @@ public class RoadParcel extends Parcel {
                         if(hasWest){ // W
                             clip = generator.getClipboardProvider().getByName("street_deadend_W_v1.schematic");
                         }else { // none, is an isolated road
-                            generator.reportDebug("found an isolated roadcell, nothing placed");
+                            generator.reportDebug("found an isolated roadcell, nothing placed"); // better solution?
                         }
                     }
                 }

@@ -44,11 +44,14 @@ public class RoadParcel extends Parcel {
 
             // determine street needed
 
-            boolean hasEast = grid.getParcel(chunkX+1,chunkZ).getContextType().equals(ContextType.ROAD);
-            boolean hasWest = grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.ROAD);
-
-            boolean hasNorth = grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.ROAD);
-            boolean hasSouth = grid.getParcel(chunkX,chunkZ+1).getContextType().equals(ContextType.ROAD);
+            ContextType context = grid.getParcel(chunkX+1,chunkZ).getContextType();
+            boolean hasEast = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            context = grid.getParcel(chunkX-1,chunkZ).getContextType();
+            boolean hasWest = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            context =grid.getParcel(chunkX,chunkZ-1).getContextType();
+            boolean hasNorth = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            context = grid.getParcel(chunkX,chunkZ+1).getContextType();
+            boolean hasSouth = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
 
 //            street_curve-EN_v1.schematic   street_straight-NS_v1.schematic
 //            street_curve_SE_v1.schematic   street_straight-WE_v1.schematic
@@ -66,7 +69,7 @@ public class RoadParcel extends Parcel {
                         if(hasWest){ // X
                             clip = generator.getClipboardProvider().getByName("street_x-cross_v1.schematic");
                         }else { // N S E
-                            clip = generator.getClipboardProvider().getByName("street_t-cross_SN_v1.schematic"); // maybe  SN
+                            clip = generator.getClipboardProvider().getByName("street_t-cross-SN_v1.schematic"); // maybe  SN
                         }
                     }else {
                         if(hasWest){ // N S W

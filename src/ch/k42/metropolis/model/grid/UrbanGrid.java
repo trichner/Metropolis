@@ -25,7 +25,7 @@ public class UrbanGrid extends Grid{
     }
 
     private void placeHighways(){ // places roads all around the grid
-        for(int i=0;i<GRID_SIZE;i+=2){
+        for(int i=0;i<GRID_SIZE;i+=1){
             setParcel(0,i,new HighwayParcel(this,chunkX,chunkZ+i)); //
             setParcel(i,0,new HighwayParcel(this,chunkX+i,chunkZ));
             setParcel(i,GRID_SIZE-1,new HighwayParcel(this,chunkX+i,chunkZ+GRID_SIZE-1));

@@ -15,6 +15,7 @@ public enum ContextType {
     INDUSTRIAL("industrial"),
     FARM("farm"),
     PARK("park"),
+    HIGHWAY("highway"),
     UNDEFINED("undefined");
     public String string;
     ContextType(String str){

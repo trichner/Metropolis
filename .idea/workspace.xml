@@ -5,10 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/HighwayParcel.java" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/bin/Metropolis.jar" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/Clipboard.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/Clipboard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardProviderWorldEdit.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardProviderWorldEdit.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/commands/CommandMetropolisMaria.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/commands/CommandMetropolisMaria.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/RoadParcel.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/RoadParcel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ch/k42/metropolis/model/grid/UrbanGrid.java" afterPath="$PROJECT_DIR$/src/ch/k42/metropolis/model/grid/UrbanGrid.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="AthmosMC.iws" />
@@ -22,16 +24,16 @@
     <file path="/PerlinNoise.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1373974706091" ignored="false" />
     <file path="/MetropolisGenerator.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380397755467" ignored="false" />
     <file path="/Grid.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379448343456" ignored="false" />
-    <file path="/UrbanGrid.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380402602088" ignored="false" />
+    <file path="/UrbanGrid.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380646493116" ignored="false" />
     <file path="/GridProvider.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380402473840" ignored="false" />
     <file path="/fragment.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380543277162" ignored="false" />
     <file path="/Parcel.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380489501192" ignored="false" />
-    <file path="/RoadParcel.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380611387972" ignored="false" />
+    <file path="/RoadParcel.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380647352491" ignored="false" />
     <file path="/BuildType.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379422119992" ignored="false" />
-    <file path="/ContextType.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380401953195" ignored="false" />
+    <file path="/ContextType.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380646189156" ignored="false" />
     <file path="/Structure.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379425985563" ignored="false" />
     <file path="/SchemStructure.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379423327566" ignored="false" />
-    <file path="/Dummy.txt" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380609722895" ignored="false" />
+    <file path="/Dummy.txt" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380646514346" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/PasteProvider.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/ClipboardPartitionLot.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
     <file path="$PROJECT_DIR$/../CityWorld/src/me/daddychurchill/CityWorld/Clipboard/ClipboardList.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379439352094" ignored="false" />
@@ -59,7 +61,7 @@
     <file path="/ContextProvider.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379524604064" ignored="false" />
     <file path="/DecayBlockManipulator.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379441417444" ignored="false" />
     <file path="/ClipboardParcel.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380401925117" ignored="false" />
-    <file path="/CommandMetropolisMaria.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380401217905" ignored="false" />
+    <file path="/CommandMetropolisMaria.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380646374795" ignored="false" />
     <file path="/ByteChunk.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1379452326530" ignored="false" />
     <file path="/README" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380402899742" ignored="false" />
     <file path="/EmptyParcel.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380489517944" ignored="false" />
@@ -81,6 +83,7 @@
     <file path="/Cartesian.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380543937638" ignored="false" />
     <file path="/SchematicLoot.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380541950115" ignored="false" />
     <file path="/SchematicConfig.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380552799473" ignored="false" />
+    <file path="/HighwayParcel.java" changelist="1c9b8dbc-2a72-419d-bf49-0f5caa79f9bc" time="1380646205303" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,37 +162,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SchematicConfig.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="233" column="36" selection-start="6319" selection-end="6319" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DecayProvider.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/provider/DecayProvider.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="149" column="0" selection-start="6775" selection-end="6775" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="DistrictParcel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/DistrictParcel.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="112" column="0" selection-start="5632" selection-end="5632" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GridRandom.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/minions/GridRandom.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="13" selection-start="271" selection-end="271" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -216,19 +192,48 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SchematicLoot.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicLoot.java">
+      <file leaf-file-name="RoadParcel.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/RoadParcel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="16" column="73" selection-start="456" selection-end="456" vertical-scroll-proportion="0.0">
+            <state line="53" column="103" selection-start="2330" selection-end="2330" vertical-scroll-proportion="0.49295774">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RoadParcel.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/RoadParcel.java">
+      <file leaf-file-name="UrbanGrid.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/grid/UrbanGrid.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="19" selection-start="2790" selection-end="2790" vertical-scroll-proportion="0.42957747">
+            <state line="28" column="36" selection-start="1138" selection-end="1138" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CommandMetropolisMaria.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/commands/CommandMetropolisMaria.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="54" column="10" selection-start="2073" selection-end="2073" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HighwayParcel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/HighwayParcel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="40" selection-start="516" selection-end="516" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ContextType.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="17" column="23" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -252,12 +257,8 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/LootType.java" />
-        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/Parcel.java" />
-        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/EmptyParcel.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/minions/Constants.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicLoot.java" />
-        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/Direction.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/minions/Cartesian.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/SchematicConfig.java" />
@@ -267,6 +268,10 @@
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardWorldEdit.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/Clipboard.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/WorldEdit/ClipboardProviderWorldEdit.java" />
+        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java" />
+        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/commands/CommandMetropolisMaria.java" />
+        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/grid/UrbanGrid.java" />
+        <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/HighwayParcel.java" />
         <option value="$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/RoadParcel.java" />
       </list>
     </option>
@@ -442,6 +447,58 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="parcel" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AthmosMC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AthmosMC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="metropolis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="grid" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AthmosMC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="AthmosMC" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="metropolis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="enums" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -774,7 +831,19 @@
       <created>1380576408546</created>
       <updated>1380576408546</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="added road schematics placing">
+      <created>1380611422220</created>
+      <updated>1380611422220</updated>
+    </task>
+    <task id="LOCAL-00021" summary="streets working, except SN or NS t-cross (don't know which)">
+      <created>1380645496674</created>
+      <updated>1380645496675</updated>
+    </task>
+    <task id="LOCAL-00022" summary="changed roads to highways">
+      <created>1380646517399</created>
+      <updated>1380646517399</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -790,12 +859,12 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32963374" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19265033" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19154558" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2497332" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28072533" sideWeight="0.9631094" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28072533" sideWeight="0.96301186" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="92" y="92" width="1736" height="856" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -847,7 +916,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="working on chest renaming" />
+    <option name="LAST_COMMIT_MESSAGE" value="changed roads to highways" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -880,6 +949,9 @@
     <MESSAGE value="tweaked decay, rePeteD is now happy ;)" />
     <MESSAGE value="tweaked size of blocks" />
     <MESSAGE value="working on chest renaming" />
+    <MESSAGE value="added road schematics placing" />
+    <MESSAGE value="streets working, except SN or NS t-cross (don't know which)" />
+    <MESSAGE value="changed roads to highways" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -889,32 +961,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/minions/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="52" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="2" selection-start="193" selection-end="193" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/Direction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="5" selection-start="473" selection-end="473" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/minions/Cartesian.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="0" selection-start="382" selection-end="382" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/generator/MetropolisGenerator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="229" column="16" selection-start="7114" selection-end="7114" vertical-scroll-proportion="0.0">
@@ -995,9 +1041,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/commands/CommandMetropolisMaria.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="10" selection-start="2073" selection-end="2073" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/enums/ContextType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="23" selection-start="417" selection-end="417" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/grid/UrbanGrid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="36" selection-start="1138" selection-end="1138" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/HighwayParcel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="40" selection-start="516" selection-end="516" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ch/k42/metropolis/model/parcel/RoadParcel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="65" column="19" selection-start="2790" selection-end="2790" vertical-scroll-proportion="0.42957747">
+        <state line="53" column="103" selection-start="2330" selection-end="2330" vertical-scroll-proportion="0.49295774">
           <folding />
         </state>
       </provider>

@@ -59,6 +59,8 @@ public class CommandMetropolisMaria implements CommandExecutor {
                     return true;
                 }
             }
+        }else {
+            World world = getDefaultMetropolis(); // from console, does this work?
         }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }

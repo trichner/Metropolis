@@ -119,7 +119,7 @@ public class RoadParcel extends Parcel {
                         }
                     }else {
                         if(hasWest){ // W
-                            clip = generator.getClipboardProvider().getByName("street_deadend-W_v1.schematic");
+                            clip = generator.getClipboardProvider().getByName("street_deadend_W_v1.schematic");
                         }else { // none, is an isolated road
                             generator.reportDebug("found an isolated roadcell, nothing placed");
                         }

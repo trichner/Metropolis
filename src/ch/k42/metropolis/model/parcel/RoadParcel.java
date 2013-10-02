@@ -3,7 +3,6 @@ package ch.k42.metropolis.model.parcel;
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
-import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
@@ -126,8 +125,8 @@ public class RoadParcel extends Parcel {
                     }
                 }
             }
-
-            clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
+            if(clip!=null)
+                clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
 
         }else{
             generator.reportDebug("Wanted to place road where it should not belong...");

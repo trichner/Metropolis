@@ -10,9 +10,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="craftbukkit-1.5.2-R1.0" level="project" />
     <orderEntry type="library" name="guava-15.0" level="project" />
     <orderEntry type="library" name="WorldEdit" level="project" />
+    <orderEntry type="library" name="craftbukkit-1.6.4-R0.1-20130923.182200-5" level="project" />
+    <orderEntry type="library" name="craftbukkit-1.6.4-R0.1-20130923.182200-5" level="project" />
   </component>
 </module>
 

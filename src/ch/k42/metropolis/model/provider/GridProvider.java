@@ -27,8 +27,8 @@ public class GridProvider {
         protected int gridX;
         protected int gridZ;
         public GridKey(int chunkX, int chunkZ) {
-            gridX = getGridOrigin(chunkX); // (chunkX/GRID_SIZE) *GRID_SIZE; // FIXME bitops would be faster....
-            gridZ = getGridOrigin(chunkZ); // (chunkZ/GRID_SIZE) *GRID_SIZE; // TODO FIXME EVERYTHING
+            gridX = getGridOrigin(chunkX);
+            gridZ = getGridOrigin(chunkZ);
         }
 
         @Override
@@ -129,7 +129,7 @@ public class GridProvider {
     }
 
     private static int getGridOrigin(int chunk){
-        int ret=0;
+        int ret;
         if(chunk<0){
             chunk += 1;
             ret = (chunk) - ((chunk)%GRID_SIZE);

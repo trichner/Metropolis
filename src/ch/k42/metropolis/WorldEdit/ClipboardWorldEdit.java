@@ -4,6 +4,7 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
+import ch.k42.metropolis.minions.UglyHacks;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -11,19 +12,14 @@ import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
-import net.minecraft.server.v1_5_R3.NBTTagCompound;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
-import org.bukkit.craftbukkit.v1_5_R3.block.CraftChest;
-import org.bukkit.craftbukkit.v1_5_R3.inventory.CraftItemStack;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import java.io.File;
 import java.io.IOException;
@@ -187,8 +183,8 @@ public class ClipboardWorldEdit extends Clipboard {
     }
 
     private void nameChest(Chest chest, String name){ //FIXME there might be no better way...
-        ItemStack ichest = new ItemStack(Material.CHEST);
-        ichest.getItemMeta().setDisplayName(name);
+        Bukkit.getLogger().warning("---- RENAMING CHEST ----");
+        UglyHacks.setChestName(chest,name);
 
 //        CraftItemStack cis = CraftItemStack.a
 //        NBTTagCompound tag = cis.getHandle().getTag();
@@ -220,10 +216,11 @@ public class ClipboardWorldEdit extends Clipboard {
                 name+=Integer.toString(randomChestLevel(rand)); //add a random chest level
             }else { // set name and level
                 StringBuffer buf = new StringBuffer();
-                buf.append(COLOR)
-                        .append(settings.getStandardChestName())
-                        .append('_')
-                        .append(Integer.toString(randomChestLevel(rand)));
+                buf.append('§')
+                    .append(COLOR)
+                    .append(settings.getStandardChestName().name)
+                    .append('_')
+                    .append(Integer.toString(randomChestLevel(rand)));
                 name = buf.toString();
             }
         }

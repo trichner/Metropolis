@@ -1,15 +1,18 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.plugin.PluginManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -55,12 +58,14 @@ public class ClipboardProviderWorldEdit {
 
     private static final String pluginName = "WorldEdit";
     private static final String foldername = "schematics";
+    private static final String settingsname = "global_settings.json";
 
 
     private File schematicsFolder;
     private Map<ClipboardKey,List<Clipboard>> clipboards = new HashMap<ClipboardKey, List<Clipboard>>();
     private Map<String,Clipboard> clipboardsByName = new HashMap<String, Clipboard>();
 
+    private GlobalSchematicConfig globalSettings;
 
     public ClipboardProviderWorldEdit(MetropolisGenerator generator) throws Exception {
         super();
@@ -146,16 +151,34 @@ public class ClipboardProviderWorldEdit {
         };
     }
 
+    private FileFilter isDirectory() {
+        return new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isDirectory();  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        };
+    }
+
     public void loadClips(MetropolisGenerator generator) throws Exception {
 
         if (schematicsFolder != null) {
-            // now load those schematic files
-            File[] schematicFiles = schematicsFolder.listFiles(matchSchematics());
+
+
+            loadConfigOrDefault(schematicsFolder.getPath()+globalSettings);  // load global config
+
+            //---- load all schematic files
+
+
+
+
+            List<File> schematicFiles = findAllSchematicsRecursively(schematicsFolder, new ArrayList<File>());
+
             for (File schematicFile: schematicFiles) {
                 try {
                     Clipboard clip=null;
 
-                    clip = new ClipboardWorldEdit(generator, schematicFile);
+                    clip = new ClipboardWorldEdit(generator, schematicFile,globalSettings);
                     clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
                         ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,clip.getDirection(),c);
@@ -181,6 +204,16 @@ public class ClipboardProviderWorldEdit {
         }
     }
 
+    private List<File> findAllSchematicsRecursively(File path, List<File> schematics){
+        File[] schematicFiles = path.listFiles(matchSchematics());
+        schematics.addAll(Arrays.asList(path.listFiles(matchSchematics())));
+        File[] subfolders = path.listFiles(isDirectory());
+        for(File folder : subfolders){              // recursively search in all subfolders
+            findAllSchematicsRecursively(folder, schematics); // this could lead to a endless loop, maybe a max_depth would be clever...
+        }
+        return schematics;
+    }
+
     /**
      * Returns a list containing all available clipboards that match the size, direction and context
      * @param chunkX chunksize in X direction
@@ -197,6 +230,42 @@ public class ClipboardProviderWorldEdit {
 
     public Clipboard getByName(String name){
         return clipboardsByName.get(name);
+    }
+
+
+    private void loadConfigOrDefault(String path){
+        if(!loadConfig(path)){ // did we succeed?
+            Bukkit.getServer().getLogger().warning("Unable to load config of schematic: "+path);
+            if(!storeConfig(path)){ // no, so just storeConfig the default config
+                Bukkit.getLogger().severe("Unable to load of save config of schematic: " + path);
+            }
+        }
+    }
+
+    private boolean loadConfig(String path){
+        Gson gson = new Gson();
+        try {
+            String json = new String(Files.readAllBytes(Paths.get(path)));
+            json = Nimmersatt.friss(json);
+            globalSettings = gson.fromJson(json,GlobalSchematicConfig.class);
+            return true;
+        } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
+            globalSettings = new GlobalSchematicConfig(); // couldn't read config file? use default
+            Bukkit.getLogger().throwing(this.getClass().getName(),"loadConfig",e);
+            return false;
+        }
+    }
+
+    private boolean storeConfig(String path){
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String file = gson.toJson(globalSettings);
+            Files.write(Paths.get(path),file.getBytes()); //overwrite exsisting stuff
+            return true;
+        } catch (IOException e) {
+            Bukkit.getLogger().throwing(this.getClass().getName(), "storeConfig config", e);
+            return false;
+        }
     }
 
 }

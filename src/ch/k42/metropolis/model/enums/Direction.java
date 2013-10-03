@@ -5,24 +5,14 @@ package ch.k42.metropolis.model.enums;
  * @author Thomas Richner
  */
 public enum Direction {
-    NORTH("north",(byte) 0x2),
-    WEST("west",(byte) 0x4),
-    EAST("east",(byte) 0x5),
-    SOUTH("south",(byte) 0x3),
-    ROAD("road", (byte) 0x0),
-    NONE("none",(byte) 0x0);
-    public final String string;
+    NORTH((byte) 0x2),
+    WEST((byte) 0x4),
+    EAST((byte) 0x5),
+    SOUTH((byte) 0x3),
+    NONE((byte) 0x0);
     public final byte data;
-    Direction(String str,byte data){
-        this.string=str;
+    Direction(byte data){
         this.data=data;
-    }
-    public static Direction getByString(String string){
-        for(Direction d : Direction.values()){
-            if(d.string.equals(string))
-                return d;
-        }
-        return null;
     }
     public static Direction getByData(byte data){
         for(Direction d : Direction.values()){

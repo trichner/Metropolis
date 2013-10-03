@@ -4,6 +4,7 @@
     <root id="archive" name="Metropolis.jar">
       <element id="module-output" name="Metropolis" />
       <element id="file-copy" path="$PROJECT_DIR$/src/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/config.yml" />
     </root>
   </artifact>
 </component>

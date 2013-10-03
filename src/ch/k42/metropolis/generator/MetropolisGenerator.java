@@ -4,6 +4,7 @@ import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
 import ch.k42.metropolis.model.provider.DecayProvider;
 import ch.k42.metropolis.model.provider.ContextProvider;
 import ch.k42.metropolis.model.provider.GridProvider;
+import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -49,7 +50,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         }
     }
 
-    private Plugin plugin;
+    private MetropolisPlugin plugin;
     private World world;
     private Long worldSeed;
 
@@ -82,7 +83,7 @@ public class MetropolisGenerator extends ChunkGenerator {
     public long connectedKeyForParks;
 
 
-    public MetropolisGenerator(Plugin plugin, String worldName) {
+    public MetropolisGenerator(MetropolisPlugin plugin, String worldName) {
         this.plugin = plugin;
         this.worldName = worldName;
     }
@@ -103,7 +104,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         return decayProvider;
     }
 
-    public Plugin getPlugin() {
+    public MetropolisPlugin getPlugin() {
         return plugin;
     }
 
@@ -220,7 +221,8 @@ public class MetropolisGenerator extends ChunkGenerator {
     }
 
     public void reportDebug(String message) {
-        plugin.getLogger().info("[====DEBUG====]" + message);
+        if(plugin.getMetropolisConfig().isDebugEnabled())
+            plugin.getLogger().info("[====DEBUG====]" + message);
     }
 
     public void reportMessage(String message1, String message2) {

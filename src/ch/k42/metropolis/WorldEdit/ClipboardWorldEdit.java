@@ -64,7 +64,7 @@ public class ClipboardWorldEdit extends Clipboard {
         // copy the cube
         copyCuboid(cuboid);
 
-        if(groundLevelY==1){ // steet level on default? bootstrap! FIXME hardcoded, should be option
+        if(globalSettings.isEstimationOn()){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
             if(!storeConfig(schemname + metaExtension)){
@@ -122,49 +122,54 @@ public class ClipboardWorldEdit extends Clipboard {
                 GridRandom rand = generator.getGridProvider().getRandom(blockX>>4,blockZ>>4);
                 Cartesian base = new Cartesian(blockX,blockY,blockZ);
                 Cartesian temp;
-                for(Cartesian c : chests){
-                    temp = base.add(c);
-                    Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
-                    if(block.getState() instanceof Chest){
-                        if(!rand.getChance(settings.getChestOdds())){ //we were unlucky, chest doesn't get placed{
-                            block.setType(Material.AIR);
-                        }else { //rename chest
-                            Chest chest = (Chest) block.getState(); //block has to be a chest
-                            //chest.getInventory()
-                            String name = DirtyHacks.getChestName(chest);
-                            generator.reportDebug("Was name: [" + name + "]");
-                            name = validateChestName(rand, name);
-                            generator.reportDebug("New name: " + name);
 
-                            nameChest(chest, name);
-                            //generator.reportDebug("Placed a chest!");
+                if(generator.getPlugin().getMetropolisConfig().isChestRenaming()){ //do we really want to name them all?
+                    for(Cartesian c : chests){
+                        temp = base.add(c);
+                        Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
+                        if(block.getState() instanceof Chest){
+                            if(!rand.getChance(settings.getChestOdds())){ //we were unlucky, chest doesn't get placed{
+                                block.setType(Material.AIR);
+                            }else { //rename chest
+                                Chest chest = (Chest) block.getState(); //block has to be a chest
+                                //chest.getInventory()
+                                String name = DirtyHacks.getChestName(chest);
+                                generator.reportDebug("Was name: [" + name + "]");
+                                name = validateChestName(rand, name);
+                                generator.reportDebug("New name: " + name);
+
+                                nameChest(chest, name);
+                                //generator.reportDebug("Placed a chest!");
+                            }
+                        }else {
+                            generator.reportDebug("Chest coordinates were wrong!");
                         }
-                    }else {
-                        generator.reportDebug("Chest coordinates were wrong!");
                     }
                 }
 
                 //set spawners
 
-                for(Cartesian c : spawners){
-                    temp = base.add(c);
-                    Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
+                if(generator.getPlugin().getMetropolisConfig().isSpawnerPlacing()){ // do we even place any?
+                    for(Cartesian c : spawners){
+                        temp = base.add(c);
+                        Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
 
-                    if(block.getType().equals(Material.SPONGE)){
-                        if(!rand.getChance(settings.getSpawnerOdds())){ //we were unlucky, chest doesn't get placed{
-                            block.setType(Material.AIR);
-                        }else { //set spawn type
-                            block.setType(Material.MOB_SPAWNER);
-                            if(block.getState() instanceof CreatureSpawner){
-                            CreatureSpawner spawner = (CreatureSpawner) block.getState(); //block has to be a chest
-                            spawner.setSpawnedType(getSpawnedEntity(rand));
-                            generator.reportDebug("Placed a spawner!");
-                            }else{
-                                generator.reportDebug("Unable to place Spawner.");
+                        if(block.getType().equals(Material.SPONGE)){
+                            if(!rand.getChance(settings.getSpawnerOdds())){ //we were unlucky, chest doesn't get placed{
+                                block.setType(Material.AIR);
+                            }else { //set spawn type
+                                block.setType(Material.MOB_SPAWNER);
+                                if(block.getState() instanceof CreatureSpawner){
+                                CreatureSpawner spawner = (CreatureSpawner) block.getState(); //block has to be a chest
+                                spawner.setSpawnedType(getSpawnedEntity(rand));
+                                generator.reportDebug("Placed a spawner!");
+                                }else{
+                                    generator.reportDebug("Unable to place Spawner.");
+                                }
                             }
+                        }else {
+                            generator.reportDebug("Chest coordinates were wrong!");
                         }
-                    }else {
-                        generator.reportDebug("Chest coordinates were wrong!");
                     }
                 }
             }catch (Exception e){
@@ -179,7 +184,7 @@ public class ClipboardWorldEdit extends Clipboard {
 	}
 
     private EntityType getSpawnedEntity(GridRandom random){
-        return settings.getRandomSpawnerEntity(random.getRandomInt(settings.getSpawnerEntityWeightSum()));
+        return settings.getRandomSpawnerEntity(random);
     }
 
     private void nameChest(Chest chest, String name){ //FIXME there might be no better way...
@@ -228,7 +233,7 @@ public class ClipboardWorldEdit extends Clipboard {
         StringBuffer buf = new StringBuffer();
         buf.append('§')
                 .append(COLOR)
-                .append(settings.getStandardChestName().name)
+                .append(settings.getRandomLootCollection(rand).name)
                 .append('_')
                 .append(Integer.toString(randomChestLevel(rand)));
         return buf.toString();

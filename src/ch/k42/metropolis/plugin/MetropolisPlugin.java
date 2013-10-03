@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +23,7 @@ public class MetropolisPlugin extends JavaPlugin{
 
 
     private MetropolisGenerator generator;
-
+    private PluginConfig config;
 
     @Override
     public void onDisable() {
@@ -33,6 +34,11 @@ public class MetropolisPlugin extends JavaPlugin{
     @Override
     public void onEnable() {
         super.onEnable();    //To change body of overridden methods use File | Settings | File Templates.
+
+        //---- load config
+
+        FileConfiguration configFile = getConfig();
+        config = new PluginConfig(configFile);
 
         //---- add our command
         PluginCommand cmd = getCommand("metropolis");
@@ -46,5 +52,9 @@ public class MetropolisPlugin extends JavaPlugin{
 
     public void setGenerator(MetropolisGenerator generator) {
         this.generator = generator;
+    }
+
+    public PluginConfig getMetropolisConfig() {
+        return config;
     }
 }

@@ -1,6 +1,7 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.minions.DecayOption;
+import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.LootType;
@@ -62,7 +63,7 @@ public class SchematicConfig {
 
     private int groundLevelY = 1;
     private int oddsOfAppearanceInPercent = 100;
-    private LootType standardChestName = LootType.INDUSTRIAL;
+    private LootType[] lootCollections={LootType.STORE,LootType.OFFICE,LootType.INDUSTRIAL,LootType.RESIDENTIAL};
     private int chestOddsInPercent = 50;
     private SchematicSpawner[] Spawners;
     private int spawnerOddsInPercent =50;
@@ -84,6 +85,7 @@ public class SchematicConfig {
         Spawners[2] = new SchematicSpawner(EntityType.SKELETON,20);
     }
 
+
     public int getGroundLevelY() {
         return groundLevelY;
     }
@@ -96,8 +98,12 @@ public class SchematicConfig {
         return oddsOfAppearanceInPercent;
     }
 
-    public LootType getStandardChestName() {
-        return standardChestName;
+    public LootType[] getLootCollections() {
+        return lootCollections;
+    }
+
+    public LootType getRandomLootCollection(GridRandom random){
+        return lootCollections[random.getRandomInt(lootCollections.length)];
     }
 
     /**
@@ -175,7 +181,7 @@ public class SchematicConfig {
         cachedSpawner=true;
     }
 
-    public int getSpawnerEntityWeightSum(){
+    private int getSpawnerEntityWeightSum(){
         if(!cachedSpawner)
             cacheSpawnerThresholds();
         return cachedSpawnerLevelSum;
@@ -183,13 +189,13 @@ public class SchematicConfig {
 
     /**
      * Selects a random EntityType
-     * @param random a number between [0,SUM]
+     * @param rand a number between [0,SUM]
      * @return
      */
-    public EntityType getRandomSpawnerEntity(int random){
+    public EntityType getRandomSpawnerEntity(GridRandom rand){
         if(!cachedSpawner)
             cacheSpawnerThresholds();
-
+        int random = rand.getRandomInt(getSpawnerEntityWeightSum());
         for(int i=0;i<Spawners.length;i++){
             if(random<Spawners[i].getThreshold())
                 return Spawners[i].getType();

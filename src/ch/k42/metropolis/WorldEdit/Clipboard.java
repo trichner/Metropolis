@@ -54,8 +54,8 @@ public abstract class Clipboard {
     protected int insetEast;
 
 	public Clipboard(MetropolisGenerator generator, File file, GlobalSchematicConfig globalSettings) throws Exception {
-		super();
 		this.name = file.getName();
+        this.globalSettings = globalSettings;
 		
 		// grab the data
 		load(generator, file);

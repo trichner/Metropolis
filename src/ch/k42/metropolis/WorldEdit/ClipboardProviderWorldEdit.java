@@ -58,7 +58,7 @@ public class ClipboardProviderWorldEdit {
 
     private static final String pluginName = "WorldEdit";
     private static final String foldername = "schematics";
-    private static final String settingsname = "global_settings.json";
+    private static final String settingsname = "/global_settings.json";
 
 
     private File schematicsFolder;
@@ -165,7 +165,7 @@ public class ClipboardProviderWorldEdit {
         if (schematicsFolder != null) {
 
 
-            loadConfigOrDefault(schematicsFolder.getPath()+globalSettings);  // load global config
+            loadConfigOrDefault(schematicsFolder.getPath()+settingsname);  // load global config
 
             //---- load all schematic files
 
@@ -235,10 +235,12 @@ public class ClipboardProviderWorldEdit {
 
     private void loadConfigOrDefault(String path){
         if(!loadConfig(path)){ // did we succeed?
-            Bukkit.getServer().getLogger().warning("Unable to load config of schematic: "+path);
+            Bukkit.getServer().getLogger().warning("Unable to load global schematics settings file");
             if(!storeConfig(path)){ // no, so just storeConfig the default config
-                Bukkit.getLogger().severe("Unable to load of save config of schematic: " + path);
+                Bukkit.getLogger().severe("Unable to load global schematics settings file");
             }
+        }else {
+            Bukkit.getServer().getLogger().info("Successfully loaded global schematic settings file: " + path);
         }
     }
 

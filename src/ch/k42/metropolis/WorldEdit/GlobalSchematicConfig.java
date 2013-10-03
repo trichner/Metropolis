@@ -2,6 +2,7 @@ package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.LootType;
+import ch.k42.metropolis.model.enums.RoadType;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -12,26 +13,28 @@ import org.bukkit.entity.EntityType;
  * To change this template use File | Settings | File Templates.
  */
 public class GlobalSchematicConfig {
-    private LootType[] SupportedLootTypes;
-    private ContextType[] SupportedContextTypes;
-    private EntityType[] SupportedSpawnerEntities;
-    private int[] ChestLevelWeights = {20,20,20,20,20};
-    private boolean EnableGroundLevelEstimation = true;
+    private LootType[] supportedLootTypes;
+    private ContextType[] supportedContextTypes;
+    private EntityType[] supportedSpawnerEntities;
+    private RoadType[] supportedRoadTypes;
+    private int[] chestLevelWeights = {20,20,20,20,20};
+    private boolean enableGroundLevelEstimation = true;
 
     public GlobalSchematicConfig() {
-        SupportedLootTypes = LootType.values();
-        SupportedContextTypes = ContextType.values();
-        SupportedSpawnerEntities = EntityType.values();
+        supportedLootTypes = LootType.values();
+        supportedContextTypes = ContextType.values();
+        supportedSpawnerEntities = EntityType.values();
+        supportedRoadTypes = RoadType.values();
     }
 
     public boolean isEstimationOn() {
-        return EnableGroundLevelEstimation;
+        return enableGroundLevelEstimation;
     }
 
     public int getChestLevelWeight(int i){
-        if(i<0||i>(ChestLevelWeights.length-1))
+        if(i<0||i>(chestLevelWeights.length-1))
             return 20;
-        return ChestLevelWeights[i];
+        return chestLevelWeights[i];
     }
 
     private transient int chestThreshold2 = -1;
@@ -41,10 +44,10 @@ public class GlobalSchematicConfig {
     private transient boolean cachedChest = false;
 
     private void cacheChestThresholds(){
-        chestThreshold2 = ChestLevelWeights[0]+ChestLevelWeights[1];
-        chestThreshold3 = chestThreshold2 + ChestLevelWeights[2];
-        chestThreshold4 = chestThreshold3 + ChestLevelWeights[3];
-        cachedChestLevelSum = chestThreshold4 +ChestLevelWeights[4];
+        chestThreshold2 = chestLevelWeights[0]+ chestLevelWeights[1];
+        chestThreshold3 = chestThreshold2 + chestLevelWeights[2];
+        chestThreshold4 = chestThreshold3 + chestLevelWeights[3];
+        cachedChestLevelSum = chestThreshold4 + chestLevelWeights[4];
         cachedChest = true;
     }
 
@@ -65,7 +68,7 @@ public class GlobalSchematicConfig {
      */
     public int getRandomChestLevel(int random){
         if(!cachedChest) cacheChestThresholds();
-        if(random<ChestLevelWeights[0])
+        if(random< chestLevelWeights[0])
             return 1;
 
         if(random< chestThreshold2)

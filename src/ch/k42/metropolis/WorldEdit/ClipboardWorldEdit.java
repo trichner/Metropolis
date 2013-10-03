@@ -2,9 +2,9 @@ package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
+import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
-import ch.k42.metropolis.minions.UglyHacks;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
@@ -19,7 +19,6 @@ import org.bukkit.block.CreatureSpawner;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.entity.EntityType;
-import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,14 +35,13 @@ public class ClipboardWorldEdit extends Clipboard {
 	private BaseBlock[][][] blocks;
 	private final static String metaExtension = ".json";
 
-	public ClipboardWorldEdit(MetropolisGenerator generator, File file) throws Exception {
-		super(generator, file);
+	public ClipboardWorldEdit(MetropolisGenerator generator, File file,GlobalSchematicConfig globalSettings) throws Exception {
+		super(generator, file, globalSettings);
 	}
 
 	
 	@Override
 	protected void load(MetropolisGenerator generator, File schemfile) throws Exception {
-		// TODO load context & facing
 
         String schemname = schemfile.getAbsolutePath();
 
@@ -59,9 +57,6 @@ public class ClipboardWorldEdit extends Clipboard {
         sizeX = cuboid.getWidth();
         sizeZ = cuboid.getLength();
         sizeY = cuboid.getHeight();
-
-        //edgeData = (byte)((edge.getData() & 0x000000ff)); // this would make overflows not error out but let's not do that
- //       edgeRise = generator.oreProvider.surfaceId == edgeType.getId() ? 0 : 1;
 
         // allocate room
         blocks = new BaseBlock[sizeX][sizeY][sizeZ];
@@ -135,9 +130,14 @@ public class ClipboardWorldEdit extends Clipboard {
                             block.setType(Material.AIR);
                         }else { //rename chest
                             Chest chest = (Chest) block.getState(); //block has to be a chest
-                            String name = validateChestName(rand, chest.getInventory().getName());
+                            //chest.getInventory()
+                            String name = DirtyHacks.getChestName(chest);
+                            generator.reportDebug("Was name: [" + name + "]");
+                            name = validateChestName(rand, name);
+                            generator.reportDebug("New name: " + name);
+
                             nameChest(chest, name);
-                            generator.reportDebug("Placed a chest!");
+                            //generator.reportDebug("Placed a chest!");
                         }
                     }else {
                         generator.reportDebug("Chest coordinates were wrong!");
@@ -183,8 +183,8 @@ public class ClipboardWorldEdit extends Clipboard {
     }
 
     private void nameChest(Chest chest, String name){ //FIXME there might be no better way...
-        Bukkit.getLogger().warning("---- RENAMING CHEST ----");
-        UglyHacks.setChestName(chest,name);
+        //Bukkit.getLogger().warning("---- RENAMING CHEST ----");
+        DirtyHacks.setChestName(chest, name);
 
 //        CraftItemStack cis = CraftItemStack.a
 //        NBTTagCompound tag = cis.getHandle().getTag();
@@ -200,14 +200,17 @@ public class ClipboardWorldEdit extends Clipboard {
     private static final char COLOR = ChatColor.GREEN.getChar();
 
     private String validateChestName(GridRandom rand,String name){
-        //chest has level? -> Assumption: Chest fully named
-        char lastchar = name.charAt(name.length()-1);
 
+        //chest has level? -> Assumption: Chest fully named
+
+        char lastchar = name.charAt(name.length()-1);
         boolean fail = false;
         try {
+
             int level = Integer.getInteger(String.valueOf(lastchar));
             fail = level>5 || level<1;
         }catch (Exception e){
+            //Bukkit.getLogger().warning("---- unnamed chest: ["+name+"], lchar:" + lchar +" ---" + e.getMessage());
             fail = true;
         }
 
@@ -215,20 +218,24 @@ public class ClipboardWorldEdit extends Clipboard {
             if(lastchar=='_'){ //append only level
                 name+=Integer.toString(randomChestLevel(rand)); //add a random chest level
             }else { // set name and level
-                StringBuffer buf = new StringBuffer();
-                buf.append('§')
-                    .append(COLOR)
-                    .append(settings.getStandardChestName().name)
-                    .append('_')
-                    .append(Integer.toString(randomChestLevel(rand)));
-                name = buf.toString();
+                name = getNameAndLevel(rand);
             }
         }
         return name;
     }
 
+    private String getNameAndLevel(GridRandom rand){
+        StringBuffer buf = new StringBuffer();
+        buf.append('§')
+                .append(COLOR)
+                .append(settings.getStandardChestName().name)
+                .append('_')
+                .append(Integer.toString(randomChestLevel(rand)));
+        return buf.toString();
+    }
+
     private int randomChestLevel(GridRandom random){
-        return settings.getRandomChestLevel(random.getRandomInt(settings.getChestLevelWeightSum()));
+        return globalSettings.getRandomChestLevel(random.getRandomInt(globalSettings.getChestLevelWeightSum()));
     }
 
     private void place(EditSession editSession,Vector pos, boolean noAir)

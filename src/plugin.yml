@@ -1,17 +1,17 @@
 name: Metropolis
 main: ch.k42.metropolis.plugin.MetropolisPlugin
-version: 2.93
+version: 3.0.0
 load: startup
-author: Athmos
-website:
-description: Testing stuff
+author: Athmos, Thomas Richner
+website: k42.ch
+description: Metropolis (1927)
 softdepend: [WorldEdit]
 loadbefore: [Multiverse-Core, dimension-door, multiworld]
 database: false
 prefix: Metropolis
 commands:
   metropolis:
-    description: Does magic
+    description: asks Maria kindly to travel to Metropolis
     usage: /metropolis
     permission: metropolis.command
   freder:

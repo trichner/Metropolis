@@ -10,8 +10,6 @@ import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
-import ch.k42.metropolis.model.enums.LootType;
-import org.bukkit.Chunk;
 
 
 /**
@@ -34,6 +32,7 @@ public abstract class Clipboard {
     protected final static int nullspots_constant = 1; //HARDCODED
 
     protected SchematicConfig settings;
+    protected GlobalSchematicConfig globalSettings;
     protected List<Cartesian> chests = new ArrayList<Cartesian>();
     protected List<Cartesian> spawners = new ArrayList<Cartesian>();
 
@@ -54,7 +53,7 @@ public abstract class Clipboard {
     protected int insetWest;
     protected int insetEast;
 
-	public Clipboard(MetropolisGenerator generator, File file) throws Exception {
+	public Clipboard(MetropolisGenerator generator, File file, GlobalSchematicConfig globalSettings) throws Exception {
 		super();
 		this.name = file.getName();
 		

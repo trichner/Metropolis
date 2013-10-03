@@ -33,9 +33,9 @@ import java.lang.reflect.Method;
 
 import org.bukkit.block.Chest;
 
-public class UglyHacks
+public class DirtyHacks
 {
-    private UglyHacks() {}
+    private DirtyHacks() {}
 
     public static void setChestName(Chest chest, String name)
     {
@@ -55,6 +55,31 @@ public class UglyHacks
         {
             e.printStackTrace();
         }
+    }
+
+    public static String getChestName(Chest chest)
+    {
+        String name = null;
+        try
+        {
+            Field inventoryField = chest.getClass().getDeclaredField("chest"); //This get's the CraftChest variable 'chest' which is the TileEntityChest that is stored within it
+            inventoryField.setAccessible(true); //Allows you to access that field since it's declared as private
+
+            Object teChest = inventoryField.get(chest);
+
+            Field nameField = getField(teChest.getClass(),"s");
+            nameField.setAccessible(true);
+            name = (String) nameField.get(teChest);
+        }
+        catch (Exception e) //This has to be here as the getDeclaredField(String) throws an exception if the input doesn't exist in the given class
+        {
+            e.printStackTrace();
+        }
+
+        if(name==null) //did we fail?
+            return "container.chest";
+
+        return name;
     }
 
     public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException

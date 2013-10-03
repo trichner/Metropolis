@@ -4,6 +4,7 @@ import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.LootType;
+import ch.k42.metropolis.model.enums.RoadType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 
@@ -19,7 +20,7 @@ import java.util.List;
  */
 public class SchematicConfig {
 
-    public class SchematicSpawner{
+    private class SchematicSpawner{
         private EntityType Type = EntityType.ZOMBIE;
         private int Weight = 10;
 
@@ -47,17 +48,30 @@ public class SchematicConfig {
         }
     }
 
-    private int GroundLevelY = 1;
-    private int OddsOfAppearanceInPercent = 100;
-    private LootType StandardChestName = LootType.INDUSTRIAL;
-    private int ChestOddsInPercent = 50;
-    private int[] ChestLevelWeights = {20,20,20,20,20};
+    private class SchematicLoot {
+        private LootType lootType = LootType.RESIDENTIAL;
+        private int minLevel = 0;
+        private int maxLevel = 5;
+
+        public SchematicLoot(LootType lootType, int minLevel, int maxLevel) {
+            this.lootType = lootType;
+            this.minLevel = minLevel;
+            this.maxLevel = maxLevel;
+        }
+    }
+
+    private int groundLevelY = 1;
+    private int oddsOfAppearanceInPercent = 100;
+    private LootType standardChestName = LootType.INDUSTRIAL;
+    private int chestOddsInPercent = 50;
     private SchematicSpawner[] Spawners;
-    private int SpawnerOddsInPercent=50;
-    private int DecayIntensityInPercent=100;
-    private boolean NeedsRoad = false;
-    private Direction EntranceFacing= Direction.NORTH;
-    private ContextType[] Context={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
+    private int spawnerOddsInPercent =50;
+    private int decayIntensityInPercent =100;
+    private boolean needsRoad = false;
+
+    private Direction entranceFacing = Direction.NORTH;
+    private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
+    private RoadType roadType = RoadType.ROAD_X;
 
     public SchematicConfig() {
         initDefaultSpawners();
@@ -71,7 +85,7 @@ public class SchematicConfig {
     }
 
     public int getGroundLevelY() {
-        return GroundLevelY;
+        return groundLevelY;
     }
 
     /**
@@ -79,11 +93,11 @@ public class SchematicConfig {
      * @return odds in percent, [0,100]
      */
     public int getOddsOfAppearance() {
-        return OddsOfAppearanceInPercent;
+        return oddsOfAppearanceInPercent;
     }
 
     public LootType getStandardChestName() {
-        return StandardChestName;
+        return standardChestName;
     }
 
     /**
@@ -91,7 +105,7 @@ public class SchematicConfig {
      * @return odds in percent, [0,100]
      */
     public int getChestOdds() {
-        return ChestOddsInPercent;
+        return chestOddsInPercent;
     }
 
     public SchematicSpawner[] getSpawners() {
@@ -103,7 +117,7 @@ public class SchematicConfig {
      * @return odds in percent, [0,100]
      */
     public int getSpawnerOdds() {
-        return SpawnerOddsInPercent;
+        return spawnerOddsInPercent;
     }
 
     /**
@@ -112,7 +126,7 @@ public class SchematicConfig {
      */
     public DecayOption getDecayOption() {
 
-        double intensity = DecayIntensityInPercent/100.0;
+        double intensity = decayIntensityInPercent /100.0;
 
         //sanitize
         if(intensity>2) intensity=1;
@@ -122,74 +136,23 @@ public class SchematicConfig {
     }
 
     public List<ContextType> getContext() {
-        return Arrays.asList(Context);
+        return Arrays.asList(context);
     }
 
     public Direction getDirection() {
-        return EntranceFacing;
+        return entranceFacing;
     }
 
     public boolean getNeedsRoad() {
-        return NeedsRoad;
+        return needsRoad;
     }
 
     public void setGroundLevelY(int groundLevelY) {
-        GroundLevelY = groundLevelY;
+        this.groundLevelY = groundLevelY;
     }
 
-    public int getChestLevelWeight(int i){
-        if(i<0||i>(ChestLevelWeights.length-1))
-            return 20;
-        return ChestLevelWeights[i];
-    }
-
-
-
-
-    private transient int chestThreshold2 = -1;
-    private transient int chestThreshold3 = -1;
-    private transient int chestThreshold4 = -1;
-    private transient int cachedChestLevelSum = -1;
-    private transient boolean cachedChest = false;
-
-    private void cacheChestThresholds(){
-        chestThreshold2 = ChestLevelWeights[0]+ChestLevelWeights[1];
-        chestThreshold3 = chestThreshold2 + ChestLevelWeights[2];
-        chestThreshold4 = chestThreshold3 + ChestLevelWeights[3];
-        cachedChestLevelSum = chestThreshold4 +ChestLevelWeights[4];
-        cachedChest = true;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public int getChestLevelWeightSum(){
-        if(!cachedChest) cacheChestThresholds();
-        return cachedChestLevelSum;
-    }
-
-
-    /**
-     * Gives back a weighted random level [1,5]
-     * @param random a random between 0 and ChestLevelWeightSum [0,SUM]
-     * @return the random level [1,5]
-     */
-    public int getRandomChestLevel(int random){
-        if(!cachedChest) cacheChestThresholds();
-        if(random<ChestLevelWeights[0])
-            return 1;
-
-        if(random< chestThreshold2)
-            return 2;
-
-        if(random< chestThreshold3)
-            return 3;
-
-        if(random< chestThreshold4)
-            return 4;
-
-        return 5;
+    public RoadType getRoadType() {
+        return roadType;
     }
 
     //================= Spawner random

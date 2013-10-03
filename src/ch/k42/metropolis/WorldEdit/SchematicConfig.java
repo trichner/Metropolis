@@ -64,6 +64,9 @@ public class SchematicConfig {
     private int groundLevelY = 1;
     private int oddsOfAppearanceInPercent = 100;
     private LootType[] lootCollections={LootType.STORE,LootType.OFFICE,LootType.INDUSTRIAL,LootType.RESIDENTIAL};
+    private int lootMinLevel=1;
+    private int lootMaxLevel=5;
+
     private int chestOddsInPercent = 50;
     private SchematicSpawner[] Spawners;
     private int spawnerOddsInPercent =50;
@@ -88,6 +91,14 @@ public class SchematicConfig {
 
     public int getGroundLevelY() {
         return groundLevelY;
+    }
+
+    public int getLootMaxLevel() {
+        return lootMaxLevel;
+    }
+
+    public int getLootMinLevel() {
+        return lootMinLevel;
     }
 
     /**

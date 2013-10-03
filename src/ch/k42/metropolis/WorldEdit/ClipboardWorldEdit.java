@@ -64,7 +64,7 @@ public class ClipboardWorldEdit extends Clipboard {
         // copy the cube
         copyCuboid(cuboid);
 
-        if(globalSettings.isEstimationOn()){ // estimate street level? good for bootstrapping config
+        if(globalSettings.isEstimationOn() && settings.getGroundLevelY()==1){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
             if(!storeConfig(schemname + metaExtension)){
@@ -79,12 +79,14 @@ public class ClipboardWorldEdit extends Clipboard {
      * @return
      */
     private int estimateStreetLevel(){
-        for(int y=0;y<sizeY;y++){
+        if(sizeY-2<0) return 1;
+
+        for(int y=sizeY-2;y>=0;y--){
             int b = blocks[0][y][0].getType();
-            if(b==Material.AIR.getId()||b==Material.LONG_GRASS.getId())
-                return y;
+            if(b!=Material.AIR.getId()&&b!=Material.LONG_GRASS.getId()&&b!=Material.LEAVES.getId())
+                return y+1;
         }
-        return 0;
+        return 1;
     }
 
     private final static int SPAWNER_SUBSTITUTE = Material.SPONGE.getId();
@@ -240,7 +242,9 @@ public class ClipboardWorldEdit extends Clipboard {
     }
 
     private int randomChestLevel(GridRandom random){
-        return globalSettings.getRandomChestLevel(random.getRandomInt(globalSettings.getChestLevelWeightSum()));
+        int min = settings.getLootMinLevel();
+        int max = settings.getLootMaxLevel();
+        return globalSettings.getRandomChestLevel(random,min,max);
     }
 
     private void place(EditSession editSession,Vector pos, boolean noAir)
@@ -278,6 +282,13 @@ public class ClipboardWorldEdit extends Clipboard {
             settings = gson.fromJson(json,SchematicConfig.class);
             return true;
         } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
+            if(Files.exists(Paths.get(path))){
+                try {
+                    Files.copy(Paths.get(path),Paths.get(path+".bak"));
+                } catch (IOException e1) {
+                    Bukkit.getLogger().throwing(this.getClass().getName(),"loadConfig",e);
+                }
+            }
             settings = new SchematicConfig(); // couldn't read config file? use default
             Bukkit.getLogger().throwing(this.getClass().getName(),"loadConfig",e);
             return false;

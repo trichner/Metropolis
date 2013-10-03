@@ -1,8 +1,0 @@
-# Default config
-
-consoleOutput:
-    debug: true
-
-generator:
-    enableChestRenaming:  true
-    enableSpawnerPlacing: true

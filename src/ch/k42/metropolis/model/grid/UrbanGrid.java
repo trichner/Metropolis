@@ -1,6 +1,7 @@
 package ch.k42.metropolis.model.grid;
 
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.model.enums.RoadType;
 import ch.k42.metropolis.model.parcel.DistrictParcel;
 import ch.k42.metropolis.model.parcel.HighwayParcel;
 import ch.k42.metropolis.model.parcel.Parcel;
@@ -25,11 +26,19 @@ public class UrbanGrid extends Grid{
     }
 
     private void placeHighways(){ // places roads all around the grid
-        for(int i=0;i<GRID_SIZE;i+=1){
-            setParcel(0,i,new HighwayParcel(this,chunkX,chunkZ+i)); //
-            setParcel(i,0,new HighwayParcel(this,chunkX+i,chunkZ));
-            setParcel(i,GRID_SIZE-1,new HighwayParcel(this,chunkX+i,chunkZ+GRID_SIZE-1));
-            setParcel(GRID_SIZE-1,i,new HighwayParcel(this,chunkX+GRID_SIZE-1,chunkZ+i));
+
+        int maxidx = GRID_SIZE-1;
+
+        setParcel(0,0,new HighwayParcel(this,chunkX,chunkZ, RoadType.HIGHWAY_CORNER_SE));
+        setParcel(0,maxidx,new HighwayParcel(this,chunkX,chunkZ+maxidx, RoadType.HIGHWAY_CORNER_NE));
+        setParcel(maxidx,0,new HighwayParcel(this,chunkX+maxidx,chunkZ, RoadType.HIGHWAY_CORNER_SW));
+        setParcel(maxidx,maxidx,new HighwayParcel(this,chunkX+maxidx,chunkZ+maxidx, RoadType.HIGHWAY_CORNER_NW));
+
+        for(int i=1;i<maxidx;i++){
+            setParcel(0,i,new HighwayParcel(this,chunkX,chunkZ+i,RoadType.HIGHWAY_SIDE_E)); //
+            setParcel(i,0,new HighwayParcel(this,chunkX+i,chunkZ,RoadType.HIGHWAY_SIDE_S));
+            setParcel(i,maxidx,new HighwayParcel(this,chunkX+i,chunkZ+maxidx,RoadType.HIGHWAY_SIDE_N));
+            setParcel(maxidx,i,new HighwayParcel(this,chunkX+maxidx,chunkZ+i,RoadType.HIGHWAY_SIDE_W));
         }
     }
 

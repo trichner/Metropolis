@@ -35,10 +35,13 @@ public class ClipboardWorldEdit extends Clipboard {
 	private BaseBlock[][][] blocks;
 	private final static String metaExtension = ".json";
 
+
 	public ClipboardWorldEdit(MetropolisGenerator generator, File file,GlobalSchematicConfig globalSettings) throws Exception {
 		super(generator, file, globalSettings);
 	}
 
+
+    private boolean hasBootstrappedConfig = false;
 	
 	@Override
 	protected void load(MetropolisGenerator generator, File schemfile) throws Exception {
@@ -64,14 +67,13 @@ public class ClipboardWorldEdit extends Clipboard {
         // copy the cube
         copyCuboid(cuboid);
 
-        if(globalSettings.isEstimationOn() && settings.getGroundLevelY()==1){ // estimate street level? good for bootstrapping config
+        if(globalSettings.isEstimationOn() && hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
             if(!storeConfig(schemname + metaExtension)){
                 generator.reportDebug("Can't storeConfig config file.");
             }
         }
-
 	}
 
     /**
@@ -267,6 +269,7 @@ public class ClipboardWorldEdit extends Clipboard {
 
     private void loadConfigOrDefault(String path){
         if(!loadConfig(path)){ // did we succeed?
+            hasBootstrappedConfig = true;
             Bukkit.getServer().getLogger().warning("Unable to load config of schematic: "+path);
             if(!storeConfig(path)){ // no, so just storeConfig the default config
                 Bukkit.getLogger().severe("Unable to load of save config of schematic: " + path);

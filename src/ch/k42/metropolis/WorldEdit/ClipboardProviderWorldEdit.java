@@ -4,6 +4,7 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.RoadType;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
@@ -28,12 +29,14 @@ public class ClipboardProviderWorldEdit {
         private int chunkSizeZ;
         private Direction direction;
         private ContextType context;
+        private RoadType roadType;
 
-        private ClipboardKey(int chunkSizeX, int chunkSizeZ, Direction direction, ContextType context) {
+        private ClipboardKey(int chunkSizeX, int chunkSizeZ, Direction direction, ContextType context,RoadType roadType) {
             this.chunkSizeX = chunkSizeX;
             this.chunkSizeZ = chunkSizeZ;
             this.direction = direction;
             this.context = context;
+            this.roadType = roadType;
         }
 
         @Override
@@ -51,6 +54,8 @@ public class ClipboardProviderWorldEdit {
             if(chunkSizeZ!=k.chunkSizeZ) return false;
             if(!direction.equals(k.direction)) return false;
             if(!context.equals(k.context)) return false;
+
+            if((context.equals(ContextType.ROAD)||context.equals(ContextType.HIGHWAY))&&!roadType.equals(k.roadType)) return false;
 
             return true;    //To change body of overridden methods use File | Settings | File Templates.
         }
@@ -181,7 +186,7 @@ public class ClipboardProviderWorldEdit {
                     clip = new ClipboardWorldEdit(generator, schematicFile,globalSettings);
                     clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
-                        ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,clip.getDirection(),c);
+                        ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,clip.getDirection(),c,clip.getSettings().getRoadType());
                         List<Clipboard> list = clipboards.get(key);
                         if(list==null){
                             list= new ArrayList();
@@ -220,10 +225,25 @@ public class ClipboardProviderWorldEdit {
      * @param chunkZ chunksize in Z direction
      * @param direction direction the structure should face
      * @param contextType context of the structure
+     * @param roadType defines the type of the road, only applies if context is ROAD
+     * @return list containing all matching clipboards, might be empty but never null
+     */
+    public List<Clipboard> getFit(int chunkX,int chunkZ,Direction direction,ContextType contextType,RoadType roadType){
+        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType,roadType));
+        if(list==null) list = new LinkedList<Clipboard>();
+        return list;
+    }
+
+    /**
+     * Returns a list containing all available clipboards that match the size, direction and context
+     * @param chunkX chunksize in X direction
+     * @param chunkZ chunksize in Z direction
+     * @param direction direction the structure should face
+     * @param contextType context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
     public List<Clipboard> getFit(int chunkX,int chunkZ,Direction direction,ContextType contextType){
-        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType));
+        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType,RoadType.ROAD_X));
         if(list==null) list = new LinkedList<Clipboard>();
         return list;
     }

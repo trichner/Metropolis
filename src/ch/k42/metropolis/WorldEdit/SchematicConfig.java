@@ -49,15 +49,12 @@ public class SchematicConfig {
         }
     }
 
-    private class SchematicLoot {
-        private LootType lootType = LootType.RESIDENTIAL;
-        private int minLevel = 0;
-        private int maxLevel = 5;
-
-        public SchematicLoot(LootType lootType, int minLevel, int maxLevel) {
-            this.lootType = lootType;
-            this.minLevel = minLevel;
-            this.maxLevel = maxLevel;
+    private class RoadCutout {
+        public final int lengthStart;
+        public final int lengthEnd;
+        private RoadCutout(int lengthStart, int lengthEnd) {
+            this.lengthStart = lengthStart;
+            this.lengthEnd = lengthEnd;
         }
     }
 
@@ -71,7 +68,8 @@ public class SchematicConfig {
     private SchematicSpawner[] Spawners;
     private int spawnerOddsInPercent =50;
     private int decayIntensityInPercent =100;
-    private boolean needsRoad = false;
+
+    private RoadCutout[] cutouts;
 
     private Direction entranceFacing = Direction.NORTH;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
@@ -79,6 +77,12 @@ public class SchematicConfig {
 
     public SchematicConfig() {
         initDefaultSpawners();
+        initDefaultCutouts();
+    }
+
+    private void initDefaultCutouts() {
+        cutouts = new RoadCutout[1];
+        cutouts[0] = new RoadCutout(3,8);
     }
 
     private void initDefaultSpawners(){
@@ -160,10 +164,6 @@ public class SchematicConfig {
         return entranceFacing;
     }
 
-    public boolean getNeedsRoad() {
-        return needsRoad;
-    }
-
     public void setGroundLevelY(int groundLevelY) {
         this.groundLevelY = groundLevelY;
     }
@@ -215,5 +215,7 @@ public class SchematicConfig {
         return Spawners[0].getType();
     }
 
-
+    public RoadCutout[] getCutouts() {
+        return cutouts;
+    }
 }

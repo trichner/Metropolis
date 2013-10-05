@@ -17,6 +17,17 @@ public class ContextProvider {
         this.generator = generator;
     }
 
+    /**
+     * TODO
+     * Returns a context that should be placed on this coordinate
+     *
+     * I'm not sure how to implement it atm, using the vanilla biomes would be an option.
+     * Or generate my own Voroni Noise ( https://forums.bukkit.org/threads/wgen-voronoi-noise.161319/ , http://shaneosullivan.wordpress.com/2007/04/05/fortunes-sweep-line-voronoi-algorithm-implemented-in-java/ )
+     *
+     * @param chunkX chunkX coordinate
+     * @param chunkZ chunkZ coordinate
+     * @return a Context to place there
+     */
     public ContextType getContext(int chunkX,int chunkZ){
         return ContextType.HIGHRISE;
     }

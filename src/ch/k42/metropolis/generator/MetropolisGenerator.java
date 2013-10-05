@@ -127,6 +127,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         populators.add(new MetropolisBlockPopulator());
         populators.add(new BedrockFloorPopulator());
         populators.add(new OrePopulator());
+        populators.add(new CavePopulator());
         return populators;
     }
 

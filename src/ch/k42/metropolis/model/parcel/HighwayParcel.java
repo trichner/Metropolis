@@ -21,7 +21,7 @@ import java.util.List;
  * Time: 6:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class HighwayParcel extends Parcel {
+public class HighwayParcel extends StreetParcel {
 
     private RoadType roadType = RoadType.NONE;
 
@@ -52,57 +52,16 @@ public class HighwayParcel extends Parcel {
         if(clip!=null){
             clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
             decayRoadChunk(generator,chunk,Constants.BUILD_HEIGHT-2);
+            decaySidewalk(generator,chunk,Constants.BUILD_HEIGHT-1);
         }else{
             generator.reportDebug("Haven't found any HIGHWAY schem for: " + roadType.toString());
         }
         // T crossing?
     }
 
-    private void decayRoadChunk(MetropolisGenerator generator, Chunk chunk, int y) {
-        int amount = 20; //FIXME HARDCODED
-        GridRandom rand = grid.getRandom();
-        while (amount > 0) {
-            amount--;
-            int x = rand.getRandomInt(16);
-            int z = rand.getRandomInt(16);
-
-            if(!chunk.getBlock(x,y+1,z).getType().equals(Material.AIR)||chunk.getBlock(x,y,z).getType().equals(Material.AIR)){
-//                generator.reportDebug("Road decay failed, wrong height?");
-//                generator.reportDebug("y: " + chunk.getBlock(x,y,z).getType());
-//                generator.reportDebug("y+1: " + chunk.getBlock(x,y+1,z).getType());
-//                generator.reportDebug("y-1: " + chunk.getBlock(x,y-1,z).getType());
-//                generator.reportDebug("y-2: " + chunk.getBlock(x,y-2,z).getType());
-                continue;
-            }
 
 
-            switch (rand.getRandomInt(10)){
-                case 0:
-                case 1:
-                case 2: //30%
-                    chunk.getBlock(x, y, z).setType(Material.MOSSY_COBBLESTONE);
-                    break;
-                case 3:
-                case 4:
-                case 5:
-                case 6://40%
-                    chunk.getBlock(x, y, z).setType(Material.COBBLESTONE);
-                    break;
-                case 7:
-                case 8: //20%
-                    chunk.getBlock(x, y, z).setType(Material.DIRT);
-                    chunk.getBlock(x, y+1, z).setTypeIdAndData(Material.LONG_GRASS.getId(),(byte)rand.getRandomInt(3),false);
-                    break;
-                case 9: //10% since halfslabs are quite annoying
-                    chunk.getBlock(x, y, z).setTypeIdAndData(Material.STEP.getId(),(byte)3,false);
-                    break;
-            }
-
-            amount--;
-        }
-    }
-
-    private List<Clipboard> getFits(ClipboardProviderWorldEdit cprovider,RoadType type){
+    private List<Clipboard> getFits(ClipboardProviderWorldEdit cprovider, RoadType type){
         return cprovider.getFit(1,1, Direction.NONE,ContextType.HIGHWAY,type);
     }
 }

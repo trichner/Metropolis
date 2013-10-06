@@ -143,6 +143,12 @@ public class DistrictParcel extends Parcel {
         partition2.populate(generator,chunk);
     }
 
+    @Override
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+        partition1.postPopulate(generator,chunk);
+        partition2.postPopulate(generator,chunk);
+    }
+
     private int getNormalCut(double mean, double sigma, GridRandom random){
         return  (int) Math.round(mean+random.getRandomGaussian()*sigma);
     }

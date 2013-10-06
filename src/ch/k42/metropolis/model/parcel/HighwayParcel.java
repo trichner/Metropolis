@@ -59,8 +59,6 @@ public class HighwayParcel extends StreetParcel {
         // T crossing?
     }
 
-
-
     private List<Clipboard> getFits(ClipboardProviderWorldEdit cprovider, RoadType type){
         return cprovider.getFit(1,1, Direction.NONE,ContextType.HIGHWAY,type);
     }

@@ -29,21 +29,8 @@ public class MetropolisGenerator extends ChunkGenerator {
         @Override
         public void populate(World aWorld, Random random, Chunk chunk) {
             try {
-                //reportDebug("populate");
                 MetropolisGenerator.this.initializeWorldInfo(aWorld);
-
                 gridProvider.populate(MetropolisGenerator.this,chunk);
-
-
-//                if (platmap != null) {
-//                    platmap.generateBlocks(realChunk);
-//
-//                    // Originally by Sablednah
-//                    // Moved and modified a bit by DaddyChurchill
-//                    CityWorldEvent event = new CityWorldEvent(chunk, platmap, platmap.getMapLot(chunkX, chunkZ));
-//                    Bukkit.getServer().getPluginManager().callEvent(event);
-//                }
-
             } catch (Exception e) {
                 reportException("BlockPopulator FAILED", e);
             }
@@ -61,27 +48,7 @@ public class MetropolisGenerator extends ChunkGenerator {
     private ClipboardProviderWorldEdit clipboardProvider;
     private GridProvider gridProvider;
     private ContextProvider contextProvider;
-
-
     public DecayProvider decayProvider;
-
-    public int streetLevel;
-
-    public int deepseaLevel;
-    public int seaLevel;
-    public int structureLevel;
-    public int treeLevel;
-    public int evergreenLevel;
-    public int deciduousRange;
-    public int evergreenRange;
-    public int height = 256;
-    public int snowLevel;
-    public int landRange;
-    public int seaRange;
-
-    public long connectedKeyForPavedRoads;
-    public long connectedKeyForParks;
-
 
     public MetropolisGenerator(MetropolisPlugin plugin, String worldName) {
         this.plugin = plugin;

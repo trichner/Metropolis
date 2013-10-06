@@ -27,4 +27,9 @@ public class EmptyParcel extends Parcel {
         else
             generator.reportDebug("No placeholder schem found, was looking for: "+"[gold16x16.schematic]");
     }
+
+    @Override
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

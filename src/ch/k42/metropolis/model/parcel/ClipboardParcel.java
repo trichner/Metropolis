@@ -34,6 +34,12 @@ public class ClipboardParcel extends Parcel {
     }
 
     @Override
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+        //To change body of implemented methods use File | Settings | File Templates.
+        //TODO DO CUTOUTS!
+    }
+
+    @Override
     public String toString() {
         return "ClipboardParcel: " + clipboard.toString();
     }

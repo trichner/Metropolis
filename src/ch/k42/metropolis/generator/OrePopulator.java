@@ -14,6 +14,42 @@ import java.util.Random;
  */
 public class OrePopulator extends BlockPopulator {
 
+    /**
+     * Vein Definition file.
+     * @author Spaceribs
+     */
+    private static class OreVein {
+
+        private Material material = Material.GRAVEL;
+        private int iterations = 1;
+        private int amount = 1;
+        private int maxHeight = 1;
+
+        public OreVein(Material mat, int iter, int a, int max) {
+            material = mat;
+            iterations = iter;
+            amount = a;
+            maxHeight = max;
+        }
+
+        public Material getMaterial () {
+            return material;
+        }
+
+        public int getIterations () {
+            return iterations;
+        }
+
+        public int getAmount () {
+            return amount;
+        }
+
+        public int getMaxHeight () {
+            return maxHeight;
+        }
+    }
+
+
     /* Material, Iterations, Amount, maxHeight */
     private static final OreVein[] veins = new OreVein[] {
         new OreVein(Material.GRAVEL,        10,     32,     128),

@@ -34,6 +34,8 @@ public abstract class Parcel {
 
     public abstract void populate(MetropolisGenerator generator,Chunk chunk);
 
+    public abstract void postPopulate(MetropolisGenerator generator,Chunk chunk);
+
 
     public ContextType getContextType() {
         return contextType;

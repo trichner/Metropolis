@@ -1,5 +1,6 @@
-package ch.k42.metropolis.generator;
+package ch.k42.metropolis.generator.populators;
 
+import ch.k42.metropolis.minions.Constants;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -17,6 +18,7 @@ import ch.k42.metropolis.minions.XYZ;
  * @author Spaceribs
  */
 public class CavePopulator extends BlockPopulator {
+    private static final int MAX_LEVEL =Constants.BUILD_HEIGHT-20;
     @Override
     public void populate(final World world, final Random random, Chunk source) {
 
@@ -38,12 +40,12 @@ public class CavePopulator extends BlockPopulator {
     }
 
     static Set<XYZ> selectBlocksForCave(World world, Random random, int blockX, int blockY, int blockZ) {
-        Set<XYZ> snakeBlocks = new HashSet<XYZ>();
+        Set<XYZ> snakeBlocks = new HashSet<>();
 
         int airHits = 0;
         XYZ block = new XYZ();
         while (true) {
-            if (airHits > 1200) {
+            if (airHits > 1200 || blockY<MAX_LEVEL) {
                 break;
             }
 

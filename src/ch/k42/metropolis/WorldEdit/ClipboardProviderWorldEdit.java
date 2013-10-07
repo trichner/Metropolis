@@ -1,6 +1,6 @@
 package ch.k42.metropolis.WorldEdit;
 
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;

@@ -2,7 +2,7 @@ package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
@@ -41,6 +41,12 @@ public class HighwayParcel extends StreetParcel {
             roadType = RoadType.HIGHWAY_SIDE_T_N;
         }
 
+        findAndPlaceClip(generator,chunk,roadType);
+
+        // T crossing?
+    }
+
+    private void findAndPlaceClip(MetropolisGenerator generator,Chunk chunk,RoadType roadType){
         List<Clipboard> clips = getFits(generator.getClipboardProvider(),roadType);
         Clipboard clip=null;
 
@@ -54,12 +60,23 @@ public class HighwayParcel extends StreetParcel {
         }else{
             generator.reportDebug("Haven't found any HIGHWAY schem for: " + roadType.toString());
         }
-        // T crossing?
     }
 
     @Override
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        populate(generator,chunk);// do it again, to not miss any T junctions
+        if(roadType.equals(RoadType.HIGHWAY_SIDE_E)&&grid.getParcel(chunkX+1,chunkZ).getContextType().equals(ContextType.ROAD)){
+            roadType = RoadType.HIGHWAY_SIDE_T_E;
+            findAndPlaceClip(generator,chunk,roadType);
+        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_W)&&grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.ROAD)){
+            roadType = RoadType.HIGHWAY_SIDE_T_W;
+            findAndPlaceClip(generator,chunk,roadType);
+        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_S)&&grid.getParcel(chunkX,chunkZ+1).getContextType().equals(ContextType.ROAD)){
+            roadType = RoadType.HIGHWAY_SIDE_T_S;
+            findAndPlaceClip(generator,chunk,roadType);
+        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_N)&&grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.ROAD)){
+            roadType = RoadType.HIGHWAY_SIDE_T_N;
+            findAndPlaceClip(generator,chunk,roadType);
+        }
     }
 
 

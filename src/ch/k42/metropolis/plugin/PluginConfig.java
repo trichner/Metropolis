@@ -23,6 +23,9 @@ public class PluginConfig {
     private static String pathCrossContextPlacing = "generator.enableCrossContextPlacing";
     private boolean crossContextPlacing = false;
 
+    private static String pathDirectionFallbackPlacing = "generator.enableDirectionFallbackPlacing";
+    private boolean directionFallbackPlacing = false;
+
     //private static String pathDebug = "consoleOutput.debug";
 
     public PluginConfig(FileConfiguration configFile) {
@@ -30,6 +33,7 @@ public class PluginConfig {
         this.chestRenaming = configFile.getBoolean(pathChestRenaming,chestRenaming);
         this.spawnerPlacing = configFile.getBoolean(pathSpawnerPlacing,spawnerPlacing);
         this.crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing,crossContextPlacing);
+        this.directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing,directionFallbackPlacing);
     }
 
     public boolean isDebugEnabled(){
@@ -48,5 +52,7 @@ public class PluginConfig {
         return crossContextPlacing;
     }
 
-
+    public boolean allowDirectionFallbackPlacing() {
+        return directionFallbackPlacing;
+    }
 }

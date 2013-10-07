@@ -2,7 +2,7 @@ package ch.k42.metropolis.plugin;
 
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

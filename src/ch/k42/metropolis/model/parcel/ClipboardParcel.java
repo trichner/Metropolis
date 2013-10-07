@@ -1,6 +1,6 @@
 package ch.k42.metropolis.model.parcel;
 
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.model.enums.ContextType;
@@ -36,7 +36,7 @@ public class ClipboardParcel extends Parcel {
         }
     }
 
-    private final int cutoutDepth = 4;
+    private final int cutoutDepth = 8;
     private final int cutoutHeight = 8;
 
     @Override
@@ -47,6 +47,8 @@ public class ClipboardParcel extends Parcel {
         SchematicConfig.RoadCutout[] cuts = clipboard.getSettings().getCutouts();
 
         Direction dir = clipboard.getSettings().getDirection();
+        if(dir.equals(Direction.NONE)) return; // no cutouts needed
+
         Cartesian base = new Cartesian(this.chunkX<<4,Constants.BUILD_HEIGHT-1,this.chunkZ<<4); //TODO Hardcoded Height
         for(SchematicConfig.RoadCutout cut : cuts){
             Cartesian offset=null,size=null;

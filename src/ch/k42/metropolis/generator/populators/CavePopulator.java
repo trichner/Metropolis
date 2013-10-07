@@ -45,7 +45,7 @@ public class CavePopulator extends BlockPopulator {
         int airHits = 0;
         XYZ block = new XYZ();
         while (true) {
-            if (airHits > 1200 || blockY<MAX_LEVEL) {
+            if (airHits > 1200 || blockY>MAX_LEVEL) {
                 break;
             }
 

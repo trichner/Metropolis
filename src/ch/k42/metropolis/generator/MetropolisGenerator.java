@@ -1,7 +1,9 @@
-package ch.k42.metropolis.generator.populators;
+package ch.k42.metropolis.generator;
 
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
-import ch.k42.metropolis.generator.CavePopulator;
+import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
+import ch.k42.metropolis.generator.populators.CavePopulator;
+import ch.k42.metropolis.generator.populators.OrePopulator;
 import ch.k42.metropolis.model.provider.DecayProvider;
 import ch.k42.metropolis.model.provider.ContextProvider;
 import ch.k42.metropolis.model.provider.GridProvider;

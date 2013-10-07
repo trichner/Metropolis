@@ -1,6 +1,6 @@
 package ch.k42.metropolis.commands;
 
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

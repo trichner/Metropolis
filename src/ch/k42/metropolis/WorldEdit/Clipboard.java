@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;

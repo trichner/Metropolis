@@ -2,7 +2,7 @@ package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.model.enums.ContextType;

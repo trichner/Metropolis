@@ -1,6 +1,6 @@
 package ch.k42.metropolis.model.provider;
 
-import ch.k42.metropolis.generator.populators.MetropolisGenerator;
+import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.model.grid.Grid;
 import ch.k42.metropolis.model.grid.UrbanGrid;

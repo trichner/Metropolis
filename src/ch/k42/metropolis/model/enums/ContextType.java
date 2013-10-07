@@ -11,7 +11,7 @@ public enum ContextType {
     ROAD("road"),
     HIGHRISE("highrise"),
     MIDRISE("midrise"),
-    NEIGHBOURHOOD("neighbourhood"),
+    RESIDENTIAL("residential"),
     INDUSTRIAL("industrial"),
     FARM("farm"),
     PARK("park"),

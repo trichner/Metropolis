@@ -31,6 +31,7 @@ public class MetropolisGenerator extends ChunkGenerator {
             try {
                 MetropolisGenerator.this.initializeWorldInfo(aWorld);
                 gridProvider.populate(MetropolisGenerator.this,chunk);
+                gridProvider.postPopulate(MetropolisGenerator.this,chunk);
             } catch (Exception e) {
                 reportException("BlockPopulator FAILED", e);
             }
@@ -91,10 +92,10 @@ public class MetropolisGenerator extends ChunkGenerator {
     public List<BlockPopulator> getDefaultPopulators(World world) {
         reportDebug("added block populator !!!");
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
+        populators.add(new OrePopulator()); // first place some ore
+        populators.add(new CavePopulator());
         populators.add(new MetropolisBlockPopulator());
         populators.add(new BedrockFloorPopulator());
-        populators.add(new OrePopulator());
-        populators.add(new CavePopulator());
         return populators;
     }
 

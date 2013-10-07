@@ -49,12 +49,12 @@ public class SchematicConfig {
         }
     }
 
-    private class RoadCutout {
-        public final int lengthStart;
-        public final int lengthEnd;
+    public class RoadCutout {
+        public final int startPoint;
+        public final int length;
         private RoadCutout(int lengthStart, int lengthEnd) {
-            this.lengthStart = lengthStart;
-            this.lengthEnd = lengthEnd;
+            this.startPoint = lengthStart;
+            this.length = lengthEnd;
         }
     }
 
@@ -65,32 +65,18 @@ public class SchematicConfig {
     private int lootMaxLevel=5;
 
     private int chestOddsInPercent = 50;
-    private SchematicSpawner[] Spawners;
+    private SchematicSpawner[] Spawners = {new SchematicSpawner(EntityType.ZOMBIE,60),new SchematicSpawner(EntityType.CREEPER,20),new SchematicSpawner(EntityType.SKELETON,20)};
     private int spawnerOddsInPercent =50;
     private int decayIntensityInPercent =100;
 
-    private RoadCutout[] cutouts;
+    private RoadCutout[] cutouts = {new RoadCutout(3,8)};
 
     private Direction entranceFacing = Direction.NORTH;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
     private RoadType roadType = RoadType.ROAD_X;
 
-    public SchematicConfig() {
-        initDefaultSpawners();
-        initDefaultCutouts();
-    }
+    public SchematicConfig() {}
 
-    private void initDefaultCutouts() {
-        cutouts = new RoadCutout[1];
-        cutouts[0] = new RoadCutout(3,8);
-    }
-
-    private void initDefaultSpawners(){
-        Spawners = new SchematicSpawner[3];
-        Spawners[0] = new SchematicSpawner(EntityType.ZOMBIE,60);
-        Spawners[1] = new SchematicSpawner(EntityType.CREEPER,20);
-        Spawners[2] = new SchematicSpawner(EntityType.SKELETON,20);
-    }
 
 
     public int getGroundLevelY() {
@@ -179,7 +165,7 @@ public class SchematicConfig {
 
     private void cacheSpawnerThresholds(){
         if(Spawners==null||Spawners.length==0){
-            initDefaultSpawners();
+            //initDefaultSpawners();
         }
         Spawners[0].setThreshold(Spawners[0].getWeight());
         SchematicSpawner current,previous=Spawners[0];

@@ -1,6 +1,6 @@
 package ch.k42.metropolis.model.parcel;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.generator.populators.MetropolisGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
@@ -80,8 +80,8 @@ public abstract class Parcel {
     @Override
     public String toString() {
         return "Parcel{" +
-                "chunkX=" + chunkX +
-                ", chunkZ=" + chunkZ +
+                "chunkSizeX=" + chunkX +
+                ", chunkSizeZ=" + chunkZ +
                 ", chunkSizeX=" + chunkSizeX +
                 ", chunkSizeZ=" + chunkSizeZ +
                 ", contextType=" + contextType +

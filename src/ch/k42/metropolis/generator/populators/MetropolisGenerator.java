@@ -1,6 +1,7 @@
-package ch.k42.metropolis.generator;
+package ch.k42.metropolis.generator.populators;
 
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
+import ch.k42.metropolis.generator.CavePopulator;
 import ch.k42.metropolis.model.provider.DecayProvider;
 import ch.k42.metropolis.model.provider.ContextProvider;
 import ch.k42.metropolis.model.provider.GridProvider;
@@ -8,7 +9,6 @@ import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.*;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 

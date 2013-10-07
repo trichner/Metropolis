@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.generator.populators.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
@@ -45,13 +45,9 @@ public abstract class Clipboard {
     protected int sizeZ;
     protected int blockCount;
 
-    protected int chunkX; /** Size in chunks */
-    protected int chunkZ; /** Size in chunks */
+    protected int chunkSizeX; /** Size in chunks */
+    protected int chunkSizeZ; /** Size in chunks */
 
-    protected int insetNorth;
-    protected int insetSouth;
-    protected int insetWest;
-    protected int insetEast;
 
 	public Clipboard(MetropolisGenerator generator, File file, GlobalSchematicConfig globalSettings) throws Exception {
 		this.name = file.getName();
@@ -63,16 +59,9 @@ public abstract class Clipboard {
 		// finish figuring things out
 		blockCount = sizeX * sizeY * sizeZ;
 		
-		chunkX = (sizeX + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
-		chunkZ = (sizeZ + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
-		
-		int leftoverX = chunkX * Constants.CHUNK_SIZE - sizeX;
-		int leftoverZ = chunkZ * Constants.CHUNK_SIZE - sizeZ;
-		
-		insetWest = leftoverX / 2;
-		insetEast = leftoverX - insetWest;
-		insetNorth = leftoverZ / 2;
-		insetSouth = leftoverZ - insetNorth;
+		chunkSizeX = (sizeX + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
+		chunkSizeZ = (sizeZ + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
+
 	}
 	
 	protected abstract void load(MetropolisGenerator generator, File file) throws Exception;
@@ -87,8 +76,8 @@ public abstract class Clipboard {
                 "sizeX=" + sizeX +
                 ", sizeZ=" + sizeZ +
                 ", name='" + name + '\'' +
-                ", chunkX=" + chunkX +
-                ", chunkZ=" + chunkZ +
+                ", chunkSizeX=" + chunkSizeX +
+                ", chunkSizeZ=" + chunkSizeZ +
                 '}';
     }
 
@@ -139,5 +128,21 @@ public abstract class Clipboard {
 
     public String getName() {
         return name;
+    }
+
+    public int getChunkSizeX() {
+        return chunkSizeX;
+    }
+
+    public int getChunkSizeZ() {
+        return chunkSizeZ;
+    }
+
+    public int getBlockSizeX() {
+        return chunkSizeX << 4;
+    }
+
+    public int getBlockSizeZ() {
+        return chunkSizeZ << 4;
     }
 }

@@ -2,15 +2,13 @@ package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
-import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.generator.populators.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
-import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.RoadType;
 import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
-import org.bukkit.Material;
 
 import java.util.List;
 
@@ -58,6 +56,13 @@ public class HighwayParcel extends StreetParcel {
         }
         // T crossing?
     }
+
+    @Override
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+        populate(generator,chunk);// do it again, to not miss any T junctions
+    }
+
+
 
     private List<Clipboard> getFits(ClipboardProviderWorldEdit cprovider, RoadType type){
         return cprovider.getFit(1,1, Direction.NONE,ContextType.HIGHWAY,type);

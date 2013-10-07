@@ -1,4 +1,4 @@
-package ch.k42.metropolis.generator;
+package ch.k42.metropolis.generator.populators;
 
 import org.bukkit.Chunk;
 import org.bukkit.Material;

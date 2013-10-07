@@ -1,6 +1,6 @@
 package ch.k42.metropolis.WorldEdit;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.generator.populators.MetropolisGenerator;
 import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
@@ -186,7 +186,7 @@ public class ClipboardProviderWorldEdit {
                     clip = new ClipboardWorldEdit(generator, schematicFile,globalSettings);
                     clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
-                        ClipboardKey key = new ClipboardKey(clip.chunkX,clip.chunkZ,clip.getDirection(),c,clip.getSettings().getRoadType());
+                        ClipboardKey key = new ClipboardKey(clip.chunkSizeX,clip.chunkSizeZ,clip.getDirection(),c,clip.getSettings().getRoadType());
                         List<Clipboard> list = clipboards.get(key);
                         if(list==null){
                             list= new ArrayList();

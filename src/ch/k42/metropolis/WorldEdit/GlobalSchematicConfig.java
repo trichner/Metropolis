@@ -15,18 +15,14 @@ import org.bukkit.entity.EntityType;
  * To change this template use File | Settings | File Templates.
  */
 public class GlobalSchematicConfig {
-    private LootType[] supportedLootTypes;
-    private ContextType[] supportedContextTypes;
-    private EntityType[] supportedSpawnerEntities;
-    private RoadType[] supportedRoadTypes;
+    private LootType[] supportedLootTypes = LootType.values();
+    private ContextType[] supportedContextTypes = ContextType.values();
+    private EntityType[] supportedSpawnerEntities = EntityType.values();
+    private RoadType[] supportedRoadTypes = RoadType.values();
     private int[] chestLevelWeights = {20,20,20,20,20};
     private boolean enableGroundLevelEstimation = true;
 
     public GlobalSchematicConfig() {
-        supportedLootTypes = LootType.values();
-        supportedContextTypes = ContextType.values();
-        supportedSpawnerEntities = EntityType.values();
-        supportedRoadTypes = RoadType.values();
     }
 
     public boolean isEstimationOn() {

@@ -69,7 +69,7 @@ public class SchematicConfig {
     private int spawnerOddsInPercent =50;
     private int decayIntensityInPercent =100;
 
-    private RoadCutout[] cutouts = {new RoadCutout(3,8)};
+    private RoadCutout[] cutouts = {};
 
     private Direction entranceFacing = Direction.NORTH;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};

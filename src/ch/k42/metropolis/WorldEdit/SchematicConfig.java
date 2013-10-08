@@ -62,7 +62,7 @@ public class SchematicConfig {
 
     private int groundLevelY = 1;
     private int oddsOfAppearanceInPercent = 100;
-    private LootType[] lootCollections={LootType.STORE,LootType.OFFICE,LootType.INDUSTRIAL,LootType.RESIDENTIAL};
+    private LootType[] lootCollections={LootType.RESIDENTIAL};
     private int lootMinLevel=1;
     private int lootMaxLevel=5;
 
@@ -73,7 +73,7 @@ public class SchematicConfig {
 
     private RoadCutout[] cutouts = {};
 
-    private Direction entranceFacing = Direction.NORTH;
+    private Direction entranceFacing = Direction.NONE;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
     private RoadType roadType = RoadType.ROAD_X;
     private Set<Material> decayExceptionMaterials = new HashSet<>();

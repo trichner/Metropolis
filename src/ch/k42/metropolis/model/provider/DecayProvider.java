@@ -88,6 +88,9 @@ public class DecayProvider {
                     double leavesNoise = noiseGen.noise(x * leavesScale, y * leavesScale, z * leavesScale, 0.3D, 0.6D, false);
 
                     Block block = world.getBlockAt(x, y, z);
+                    if(options.getExceptions().contains(block.getType())){ // do we ignore this type of block?
+                        continue;
+                    }
 
                     if (!block.isEmpty() && isValid(block) && ( holeNoise > fulldecay ) ) {
                         block.setType(Material.AIR);

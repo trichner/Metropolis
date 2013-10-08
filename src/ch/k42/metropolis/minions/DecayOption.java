@@ -1,6 +1,11 @@
 package ch.k42.metropolis.minions;
 
 
+import org.bukkit.Material;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Thomas
@@ -36,6 +41,8 @@ public class DecayOption {
     private double partialdecay;
     private double leavesdecay;
 
+    private Set<Material> exceptions = new HashSet<>();
+
     /**
      *
      * @param holeScale overall decay amplitude, default 1/20
@@ -57,6 +64,28 @@ public class DecayOption {
      * @param intensity how intense shall decay be?
      */
     public DecayOption(double intensity) { //TODO Less hardcoded
+        if(intensity==0){ //absolutely no decay
+            fulldecay=1;
+            partialdecay=1;
+        }else if(intensity>0&&intensity<=1){
+            holeScale       = defaultHoleScale;
+            leavesScale     = defaultLeavesScale;
+            fulldecay       = 1-defaultFulldecay * intensity;
+            if(fulldecay<-0.8) fulldecay = -0.8;
+            partialdecay    = fulldecay-0.2D;
+            leavesdecay     = defaultLeavesdecay;
+        }else {
+            //Throw an error! maybe...
+        }
+    }
+
+    /**
+     * calculates all the needed parameters out of 1 scale ranging from 0 (no decay) to around 2 (heavy decay), 1 for normal decay
+     * @param intensity how intense shall decay be?
+     * @param exceptions which Materials should be excluded?
+     */
+    public DecayOption(double intensity,Set<Material> exceptions) { //TODO Less hardcoded
+        this.exceptions = exceptions;
         if(intensity==0){ //absolutely no decay
             fulldecay=1;
             partialdecay=1;
@@ -120,5 +149,13 @@ public class DecayOption {
 
     public static double getDefaultDecayIntensity() {
         return defaultDecayIntensity;
+    }
+
+    public Set<Material> getExceptions() {
+        return exceptions;
+    }
+
+    public void setExceptions(Set<Material> exceptions) {
+        this.exceptions = exceptions;
     }
 }

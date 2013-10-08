@@ -54,19 +54,19 @@ public class ClipboardParcel extends Parcel {
             Cartesian offset=null,size=null;
             switch (dir){
                 case NORTH: //
-                    offset = new Cartesian(cut.startPoint,0,0);
+                    offset = new Cartesian(cut.startPoint,0,-1);
                     size = new Cartesian(cut.length,cutoutHeight,-cutoutDepth);
                     break;
                 case WEST: //
-                    offset = new Cartesian(0,0,cut.startPoint);
+                    offset = new Cartesian(-1,0,cut.startPoint);
                     size = new Cartesian(-cutoutDepth,cutoutHeight,cut.length);
                     break;
                 case SOUTH: //
-                    offset = new Cartesian(cut.startPoint,0,clipboard.getBlockSizeZ());
+                    offset = new Cartesian(cut.startPoint,0,clipboard.getBlockSizeZ()+1);
                     size = new Cartesian(cut.length,cutoutHeight,cutoutDepth);
                     break;
                 case EAST: //
-                    offset = new Cartesian(clipboard.getBlockSizeX(),0,cut.startPoint);
+                    offset = new Cartesian(clipboard.getBlockSizeX()+1,0,cut.startPoint);
                     size = new Cartesian(-cutoutDepth,cutoutHeight,cut.length);
                     break;
             }

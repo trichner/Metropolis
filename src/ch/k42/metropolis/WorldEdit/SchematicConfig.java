@@ -6,11 +6,13 @@ import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.LootType;
 import ch.k42.metropolis.model.enums.RoadType;
-import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,7 +76,7 @@ public class SchematicConfig {
     private Direction entranceFacing = Direction.NORTH;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
     private RoadType roadType = RoadType.ROAD_X;
-
+    private Set<Material> decayExceptionMaterials = new HashSet<>();
     public SchematicConfig() {}
 
 
@@ -139,7 +141,7 @@ public class SchematicConfig {
         if(intensity>2) intensity=1;
         else if(intensity<0) intensity =0;
 
-        return new DecayOption(intensity);
+        return new DecayOption(intensity,decayExceptionMaterials);
     }
 
     public List<ContextType> getContext() {
@@ -197,7 +199,7 @@ public class SchematicConfig {
             if(random<Spawners[i].getThreshold())
                 return Spawners[i].getType();
         }
-        Bukkit.getLogger().warning("No EntityType for Spawner could be randomly determinated, random argument too low?");
+        org.bukkit.Bukkit.getLogger().warning("No EntityType for Spawner could be randomly determinated, random argument too low?");
         return Spawners[0].getType();
     }
 

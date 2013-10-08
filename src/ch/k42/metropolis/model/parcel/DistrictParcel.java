@@ -60,7 +60,7 @@ public class DistrictParcel extends Parcel {
                 generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + localContext + "going over to fallback");
                 //FALLBACK
                 if(fallback){
-                    schems = clips.getFit(chunkSizeX,chunkSizeZ, Direction.NORTH,context.getContext(chunkX,chunkZ)); //just use context in one corner //TODO use Direction.NONE
+                    schems = clips.getFit(chunkSizeX,chunkSizeZ, Direction.NONE,context.getContext(chunkX,chunkZ)); //just use context in one corner //TODO use Direction.NONE
                     if(schems!=null&&schems.size()>0){
                         generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                         parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),localContext);

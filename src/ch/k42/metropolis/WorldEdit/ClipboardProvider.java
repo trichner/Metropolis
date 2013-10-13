@@ -5,8 +5,6 @@ import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.RoadType;
 
-import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -18,6 +16,12 @@ import java.util.List;
  */
 public interface ClipboardProvider {
 
+    /**
+     * Loads all available schematics, this method must be executed before any
+     * get is called in order to get actual schematics
+     * @param generator the generator
+     * @throws Exception
+     */
     public void loadClips(MetropolisGenerator generator) throws Exception;
 
 

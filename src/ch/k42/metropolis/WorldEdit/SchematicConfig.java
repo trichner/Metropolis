@@ -76,10 +76,8 @@ public class SchematicConfig {
     private Direction entranceFacing = Direction.NONE;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
     private RoadType roadType = RoadType.ROAD_X;
-    private Set<Material> decayExceptionMaterials = new HashSet<>();
+    private Set<Material> decayExceptionMaterials = new HashSet();
     public SchematicConfig() {}
-
-
 
     public int getGroundLevelY() {
         return groundLevelY;

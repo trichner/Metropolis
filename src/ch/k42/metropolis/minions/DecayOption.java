@@ -41,7 +41,7 @@ public class DecayOption {
     private double partialdecay;
     private double leavesdecay;
 
-    private Set<Material> exceptions = new HashSet<>();
+    private Set<Material> exceptions = new HashSet();
 
     /**
      *

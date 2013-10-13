@@ -40,7 +40,7 @@ public class CavePopulator extends BlockPopulator {
     }
 
     static Set<XYZ> selectBlocksForCave(World world, Random random, int blockX, int blockY, int blockZ) {
-        Set<XYZ> snakeBlocks = new HashSet<>();
+        Set<XYZ> snakeBlocks = new HashSet();
 
         int airHits = 0;
         XYZ block = new XYZ();

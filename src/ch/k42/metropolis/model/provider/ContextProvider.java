@@ -1,7 +1,11 @@
 package ch.k42.metropolis.model.provider;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.VoronoiGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.minions.GridRandom;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
+import org.bukkit.World;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +32,42 @@ public class ContextProvider {
      * @param chunkZ chunkSizeZ coordinate
      * @return a Context to place there
      */
-    public ContextType getContext(int chunkX,int chunkZ){
-        return ContextType.HIGHRISE;
+    public ContextType getContext(long seed, int chunkX, int chunkZ, GridRandom random){
+
+        SimplexOctaveGenerator gen1 = new SimplexOctaveGenerator(seed, 2);
+        SimplexOctaveGenerator gen2 = new SimplexOctaveGenerator(seed, 2);
+
+        double holeScale = 0.03;
+        double maxHeight = gen1.noise(chunkX * holeScale, chunkZ * holeScale, 0.3D, 0.6D, true);
+
+        double altscale = 0.1;
+        double alternate = gen2.noise(chunkX * altscale, chunkZ * altscale, 0.3D, 0.6D, true);
+
+//        VoronoiGenerator gen1 = new VoronoiGenerator(seed, (short) 2);
+//        double frequency = 0.1; // the reciprocal of the distance between points
+//        int size = 2;
+//        double maxHeight = gen1.noise((chunkX+1600)/size, (chunkZ+1600)/size, frequency);
+
+        generator.reportDebug("Value: "+maxHeight);
+
+        if (maxHeight < -0.4) {
+            return ContextType.FARM;
+        } else if (maxHeight < -0.1) {
+            if (alternate < -0.4) {
+                return ContextType.PARK;
+            } else {
+                return ContextType.RESIDENTIAL;
+            }
+        } else if (maxHeight < 0.2) {
+            if (alternate > 0.4) {
+                return ContextType.INDUSTRIAL;
+            } else {
+                return ContextType.LOWRISE;
+            }
+        } else if (maxHeight < 0.5) {
+            return ContextType.MIDRISE;
+        } else {
+            return ContextType.HIGHRISE;
+        }
     }
 }

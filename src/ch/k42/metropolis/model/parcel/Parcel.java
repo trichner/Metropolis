@@ -23,7 +23,7 @@ public abstract class Parcel {
     protected Grid grid;
 
 
-    public Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ,ContextType contextType) {
+    public Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, ContextType contextType) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.chunkSizeX = chunkSizeX;

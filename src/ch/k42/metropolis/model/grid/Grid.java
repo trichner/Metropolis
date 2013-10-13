@@ -15,8 +15,6 @@ abstract public class Grid {
 
     public static final int GRID_SIZE = GridProvider.GRID_SIZE;
 
-
-
     protected GridStatistics statistics;
     protected GridRandom random;
     protected GridProvider gridProvider;

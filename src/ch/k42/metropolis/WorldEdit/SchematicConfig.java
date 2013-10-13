@@ -133,7 +133,7 @@ public class SchematicConfig {
      */
     public DecayOption getDecayOption() {
 
-        double intensity = decayIntensityInPercent /100.0;
+        double intensity = decayIntensityInPercent / 100.0;
 
         //sanitize
         if(intensity>2) intensity=1;

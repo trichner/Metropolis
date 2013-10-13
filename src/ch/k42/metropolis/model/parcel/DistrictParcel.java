@@ -101,7 +101,7 @@ public class DistrictParcel extends Parcel {
         final int blockSize=14;
 
         // Failed? partition into 2 sub lots
-        if(chunkSizeX>chunkSizeZ){//if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occure
+        if(chunkSizeX>chunkSizeZ){//if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occur
             double mean  = chunkSizeX/2.0;
             double sigma = mean/4.0;
             int cut = getNormalCut(mean,sigma,random); //random.getRandomInt(1,chunkSizeX-1);

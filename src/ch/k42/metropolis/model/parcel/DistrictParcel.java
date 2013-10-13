@@ -39,7 +39,7 @@ public class DistrictParcel extends Parcel {
 
     public void populate(MetropolisGenerator generator,Chunk chunk) {
         fallback = generator.getPlugin().getMetropolisConfig().allowDirectionFallbackPlacing();
-        ClipboardProviderWorldEdit clips = generator.getClipboardProvider();
+        ClipboardProvider clips = generator.getClipboardProvider();
         grid = generator.getGridProvider().getGrid(chunkX,chunkZ);
         GridRandom random = grid.getRandom();
         ContextProvider context = generator.getContextProvider();

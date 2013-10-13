@@ -1,6 +1,7 @@
 package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
+import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
@@ -44,7 +45,7 @@ public class RoadParcel extends StreetParcel {
             context = grid.getParcel(chunkX,chunkZ+1).getContextType();
             boolean hasSouth = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
 
-            ClipboardProviderWorldEdit cprovider = generator.getClipboardProvider();
+            ClipboardProvider cprovider = generator.getClipboardProvider();
             Clipboard clip=null;
             GridRandom random = grid.getRandom();
             List<Clipboard> clips;
@@ -188,8 +189,8 @@ public class RoadParcel extends StreetParcel {
         }
     }
 
-    private List<Clipboard> getFits(ClipboardProviderWorldEdit cprovider,RoadType type){
-        return cprovider.getFit(1,1, Direction.NONE,ContextType.ROAD,type);
+    private List<Clipboard> getFits(ClipboardProvider cprovider,RoadType type){
+        return cprovider.getRoadFit(1, 1, Direction.NONE, ContextType.ROAD, type);
     }
 
     @Override

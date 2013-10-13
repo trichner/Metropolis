@@ -22,7 +22,7 @@ import java.util.*;
  * @author Thomas Richner
  *
  */
-public class ClipboardProviderWorldEdit {
+public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
     private class ClipboardKey{
         private int chunkSizeX;
@@ -228,7 +228,7 @@ public class ClipboardProviderWorldEdit {
      * @param roadType defines the type of the road, only applies if context is ROAD
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(int chunkX,int chunkZ,Direction direction,ContextType contextType,RoadType roadType){
+    public List<Clipboard> getRoadFit(int chunkX, int chunkZ, Direction direction, ContextType contextType, RoadType roadType){
         List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType,roadType));
         if(list==null) list = new LinkedList<Clipboard>();
         return list;

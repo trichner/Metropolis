@@ -76,6 +76,6 @@ public abstract class StreetParcel extends Parcel {
 
     @Override
     public void postPopulate(MetropolisGenerator generator,Chunk chunk){
-
+        // Do nothing.
     }
 }

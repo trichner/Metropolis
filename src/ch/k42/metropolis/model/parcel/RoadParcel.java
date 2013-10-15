@@ -2,7 +2,6 @@ package ch.k42.metropolis.model.parcel;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
-import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.GridRandom;
@@ -53,7 +52,7 @@ public class RoadParcel extends StreetParcel {
                 if(hasSouth){
                     if(hasEast){
                         if(hasWest){ // X
-                            clips = getFits(cprovider,RoadType.ROAD_X);
+                            clips = getFits(cprovider,RoadType.STREET_X);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_x-cross_v1.schematic");
@@ -61,7 +60,7 @@ public class RoadParcel extends StreetParcel {
                                 clip = clips.get(random.getRandomInt(clips.size()));
                             }
                         }else { // N S E
-                            clips = getFits(cprovider,RoadType.ROAD_T_NS_E);
+                            clips = getFits(cprovider,RoadType.STREET_T_E);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_t-cross-SN_v1.schematic"); // maybe  SN
@@ -71,7 +70,7 @@ public class RoadParcel extends StreetParcel {
                         }
                     }else {
                         if(hasWest){ // N S W
-                            clips = getFits(cprovider,RoadType.ROAD_T_NS_W);
+                            clips = getFits(cprovider,RoadType.STREET_T_W);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_t-cross-NS_v1.schematic"); // maybe  NS
@@ -79,7 +78,7 @@ public class RoadParcel extends StreetParcel {
                                 clip = clips.get(random.getRandomInt(clips.size()));
                             }
                         }else { // N S
-                            clips = getFits(cprovider,RoadType.ROAD_I_NS);
+                            clips = getFits(cprovider,RoadType.STREET_I_NS);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_straight-NS_v1.schematic");
@@ -92,7 +91,7 @@ public class RoadParcel extends StreetParcel {
                 }else {
                     if(hasEast){
                         if(hasWest){ // N E W
-                            clips = getFits(cprovider,RoadType.ROAD_T_EW_N);
+                            clips = getFits(cprovider,RoadType.STREET_T_N);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_t-cross-EW_v1.schematic"); // maybe  WE
@@ -100,7 +99,7 @@ public class RoadParcel extends StreetParcel {
                                 clip = clips.get(random.getRandomInt(clips.size()));
                             }
                         }else { // N E
-                            clips = getFits(cprovider,RoadType.ROAD_C_NE);
+                            clips = getFits(cprovider,RoadType.STREET_C_NE);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_curve-EN_v1.schematic");
@@ -110,7 +109,7 @@ public class RoadParcel extends StreetParcel {
                         }
                     }else {
                         if(hasWest){ // N W
-                            clips = getFits(cprovider,RoadType.ROAD_C_NW);
+                            clips = getFits(cprovider,RoadType.STREET_C_NW);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_curve-WN_v1.schematic");
@@ -126,7 +125,7 @@ public class RoadParcel extends StreetParcel {
                 if(hasSouth){
                     if(hasEast){
                         if(hasWest){ // E W S
-                            clips = getFits(cprovider,RoadType.ROAD_T_EW_S);
+                            clips = getFits(cprovider,RoadType.STREET_T_S);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_t-cross-WE_v1.schematic"); // maybe  EW
@@ -134,7 +133,7 @@ public class RoadParcel extends StreetParcel {
                                 clip = clips.get(random.getRandomInt(clips.size()));
                             }
                         }else { // S E
-                            clips = getFits(cprovider,RoadType.ROAD_C_SE);
+                            clips = getFits(cprovider,RoadType.STREET_C_SE);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_curve_SE_v1.schematic");
@@ -144,7 +143,7 @@ public class RoadParcel extends StreetParcel {
                         }
                     }else {
                         if(hasWest){ // S W
-                            clips = getFits(cprovider,RoadType.ROAD_C_SW);
+                            clips = getFits(cprovider,RoadType.STREET_C_SW);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_curve_SW_v1.schematic");
@@ -159,7 +158,7 @@ public class RoadParcel extends StreetParcel {
                 }else {
                     if(hasEast){
                         if(hasWest){ // E W
-                            clips = getFits(cprovider,RoadType.ROAD_I_EW);
+                            clips = getFits(cprovider,RoadType.STREET_I_EW);
                             if(clips==null||clips.size()==0){
                                 generator.reportDebug("Can't find road fit, using hardcoded fallback.");
                                 clip = generator.getClipboardProvider().getByName("street_straight-WE_v1.schematic");

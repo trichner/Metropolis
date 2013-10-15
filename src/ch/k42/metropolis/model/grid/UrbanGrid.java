@@ -5,7 +5,6 @@ import ch.k42.metropolis.model.enums.RoadType;
 import ch.k42.metropolis.model.parcel.DistrictParcel;
 import ch.k42.metropolis.model.parcel.HighwayParcel;
 import ch.k42.metropolis.model.parcel.Parcel;
-import ch.k42.metropolis.model.parcel.RoadParcel;
 import ch.k42.metropolis.model.provider.GridProvider;
 
 /**
@@ -29,10 +28,10 @@ public class UrbanGrid extends Grid{
 
         int maxidx = GRID_SIZE-1;
 
-        setParcel(0,0,new HighwayParcel(this,chunkX,chunkZ, RoadType.HIGHWAY_CORNER_SE));
-        setParcel(0,maxidx,new HighwayParcel(this,chunkX,chunkZ+maxidx, RoadType.HIGHWAY_CORNER_NE));
-        setParcel(maxidx,0,new HighwayParcel(this,chunkX+maxidx,chunkZ, RoadType.HIGHWAY_CORNER_SW));
-        setParcel(maxidx,maxidx,new HighwayParcel(this,chunkX+maxidx,chunkZ+maxidx, RoadType.HIGHWAY_CORNER_NW));
+        setParcel(0,0,new HighwayParcel(this,chunkX,chunkZ, RoadType.HIGHWAY_C_SE));
+        setParcel(0,maxidx,new HighwayParcel(this,chunkX,chunkZ+maxidx, RoadType.HIGHWAY_C_NE));
+        setParcel(maxidx,0,new HighwayParcel(this,chunkX+maxidx,chunkZ, RoadType.HIGHWAY_C_SW));
+        setParcel(maxidx,maxidx,new HighwayParcel(this,chunkX+maxidx,chunkZ+maxidx, RoadType.HIGHWAY_C_NW));
 
         for(int i=1;i<maxidx;i++){
             setParcel(0,i,new HighwayParcel(this,chunkX,chunkZ+i,RoadType.HIGHWAY_SIDE_E)); //

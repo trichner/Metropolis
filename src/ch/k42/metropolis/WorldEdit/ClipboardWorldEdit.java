@@ -85,7 +85,7 @@ public class ClipboardWorldEdit extends Clipboard {
 
         for(int y=sizeY-2;y>=0;y--){
             int b = blocks[0][y][0].getType();
-            if(b!=Material.AIR.getId()&&b!=Material.LONG_GRASS.getId()&&b!=Material.LEAVES.getId())
+            if(b!=Material.AIR.getId())
                 return y+1;
         }
         return 1;

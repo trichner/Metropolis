@@ -6,40 +6,32 @@ package ch.k42.metropolis.model.enums;
  * @author Thomas Richner
  */
 public enum RoadType {
-//            street_curve-EN_v1.schematic   street_straight-NS_v1.schematic
-//            street_curve_SE_v1.schematic   street_straight-WE_v1.schematic
-//            street_curve-SW_v1.schematic   street_t-cross-EW_v1.schematic
-//            street_curve-WN_v1.schematic   street_t-cross-NS_v1.schematic
-//            street_deadend-E_v1.schematic  street_t-cross_SN_v1.schematic
-//            street_deadend-N_v1.schematic  street_t-cross-WE_v1.schematic
-//            street_deadend-S_v1.schematic  street_x-cross_v1.schematic
-//            street_deadend_W_v1.schematic
-    ROAD_X,
-    ROAD_I_NS,
-    ROAD_I_EW,
-    ROAD_T_NS_W,
-    ROAD_T_NS_E,
-    ROAD_T_EW_N,
-    ROAD_T_EW_S,
-    ROAD_C_SE,
-    ROAD_C_SW,
-    ROAD_C_NW,
-    ROAD_C_NE,
-    ROAD_D_N,
-    ROAD_D_S,
-    ROAD_D_E,
-    ROAD_D_W,
-    HIGHWAY_CORNER_NE,
-    HIGHWAY_CORNER_NW,
-    HIGHWAY_CORNER_SE,
-    HIGHWAY_CORNER_SW,
+    STREET_X,
+    STREET_I_NS,
+    STREET_I_EW,
+    STREET_T_W,
+    STREET_T_E,
+    STREET_T_N,
+    STREET_T_S,
+    STREET_C_SE,
+    STREET_C_SW,
+    STREET_C_NW,
+    STREET_C_NE,
+    STREET_D_N,
+    STREET_D_S,
+    STREET_D_E,
+    STREET_D_W,
+    HIGHWAY_C_NE,
+    HIGHWAY_C_NW,
+    HIGHWAY_C_SE,
+    HIGHWAY_C_SW,
     HIGHWAY_SIDE_N,
     HIGHWAY_SIDE_E,
     HIGHWAY_SIDE_S,
     HIGHWAY_SIDE_W,
-    HIGHWAY_SIDE_T_N,
-    HIGHWAY_SIDE_T_E,
-    HIGHWAY_SIDE_T_S,
-    HIGHWAY_SIDE_T_W,
+    HIGHWAY_T_N,
+    HIGHWAY_T_E,
+    HIGHWAY_T_S,
+    HIGHWAY_T_W,
     NONE;
 }

@@ -75,7 +75,7 @@ public class SchematicConfig {
 
     private Direction entranceFacing = Direction.NONE;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
-    private RoadType roadType = RoadType.ROAD_X;
+    private RoadType roadType = RoadType.STREET_X;
     private Set<Material> decayExceptionMaterials = new HashSet();
     public SchematicConfig() {}
 

@@ -21,44 +21,9 @@ import java.util.Set;
  * Time: 21:31
  * To change this template use File | Settings | File Templates.
  */
-public class SchematicConfig {
+public class SchematicConfig extends AbstractSchematicConfig{
 
-    private class SchematicSpawner{
-        private EntityType Type = EntityType.ZOMBIE;
-        private int Weight = 10;
 
-        private transient int threshold=-1;
-
-        public SchematicSpawner(EntityType type, int weight) {
-            Type = type;
-            Weight = weight;
-        }
-
-        public EntityType getType() {
-            return Type;
-        }
-
-        public int getWeight() {
-            return Weight;
-        }
-
-        public int getThreshold() {
-            return threshold;
-        }
-
-        public void setThreshold(int threshold) {
-            this.threshold = threshold;
-        }
-    }
-
-    public class RoadCutout {
-        public final int startPoint;
-        public final int length;
-        private RoadCutout(int lengthStart, int lengthEnd) {
-            this.startPoint = lengthStart;
-            this.length = lengthEnd;
-        }
-    }
 
     private int groundLevelY = 1;
     private int oddsOfAppearanceInPercent = 100;
@@ -67,7 +32,6 @@ public class SchematicConfig {
     private int lootMaxLevel=5;
 
     private int chestOddsInPercent = 50;
-    private SchematicSpawner[] Spawners = {new SchematicSpawner(EntityType.ZOMBIE,60),new SchematicSpawner(EntityType.CREEPER,20),new SchematicSpawner(EntityType.SKELETON,20)};
     private int spawnerOddsInPercent =50;
     private int decayIntensityInPercent =100;
 
@@ -115,9 +79,6 @@ public class SchematicConfig {
         return chestOddsInPercent;
     }
 
-    public SchematicSpawner[] getSpawners() {
-        return Spawners;
-    }
 
     /**
      * The odds of a spawner actually appearing if it can
@@ -158,50 +119,11 @@ public class SchematicConfig {
         return roadType;
     }
 
-    //================= Spawner random
 
-    private transient int cachedSpawnerLevelSum = -1;
-    private transient boolean cachedSpawner = false;
-
-    private void cacheSpawnerThresholds(){
-        if(Spawners==null||Spawners.length==0){
-            //initDefaultSpawners();
-        }
-        Spawners[0].setThreshold(Spawners[0].getWeight());
-        SchematicSpawner current,previous=Spawners[0];
-        for(int i=1;i<Spawners.length;i++){
-            current=Spawners[i];
-            current.setThreshold(previous.getThreshold()+current.getWeight());
-            previous=current;
-        }
-        cachedSpawnerLevelSum=previous.getThreshold();
-        cachedSpawner=true;
-    }
-
-    private int getSpawnerEntityWeightSum(){
-        if(!cachedSpawner)
-            cacheSpawnerThresholds();
-        return cachedSpawnerLevelSum;
-    }
-
-    /**
-     * Selects a random EntityType
-     * @param rand a number between [0,SUM]
-     * @return
-     */
-    public EntityType getRandomSpawnerEntity(GridRandom rand){
-        if(!cachedSpawner)
-            cacheSpawnerThresholds();
-        int random = rand.getRandomInt(getSpawnerEntityWeightSum());
-        for(int i=0;i<Spawners.length;i++){
-            if(random<Spawners[i].getThreshold())
-                return Spawners[i].getType();
-        }
-        org.bukkit.Bukkit.getLogger().warning("No EntityType for Spawner could be randomly determinated, random argument too low?");
-        return Spawners[0].getType();
-    }
 
     public RoadCutout[] getCutouts() {
         return cutouts;
     }
+
+
 }

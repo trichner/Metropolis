@@ -67,7 +67,7 @@ public class ClipboardWorldEdit extends Clipboard {
         // copy the cube
         copyCuboid(cuboid);
 
-        if(globalSettings.isEstimationOn() && hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
+        if(hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
             if(!storeConfig(schemname + metaExtension)){
@@ -164,9 +164,9 @@ public class ClipboardWorldEdit extends Clipboard {
                             }else { //set spawn type
                                 block.setType(Material.MOB_SPAWNER);
                                 if(block.getState() instanceof CreatureSpawner){
-                                CreatureSpawner spawner = (CreatureSpawner) block.getState(); //block has to be a chest
-                                spawner.setSpawnedType(getSpawnedEntity(rand));
-                                generator.reportDebug("Placed a spawner!");
+                                    CreatureSpawner spawner = (CreatureSpawner) block.getState(); //block has to be a chest
+                                    spawner.setSpawnedType(getSpawnedEntity(rand));
+                                    generator.reportDebug("Placed a spawner!");
                                 }else{
                                     generator.reportDebug("Unable to place Spawner.");
                                 }
@@ -188,6 +188,13 @@ public class ClipboardWorldEdit extends Clipboard {
 	}
 
     private EntityType getSpawnedEntity(GridRandom random){
+        if(settings.getSpawners()==null){
+            if(globalSettings.getSpawners()==null){
+                return EntityType.ZOMBIE; // All settings failed
+            }else {
+                settings.setSpawners(globalSettings.getSpawners());
+            }
+        }
         return settings.getRandomSpawnerEntity(random);
     }
 

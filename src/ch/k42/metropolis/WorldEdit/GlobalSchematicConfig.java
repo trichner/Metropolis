@@ -14,19 +14,18 @@ import org.bukkit.entity.EntityType;
  * Time: 15:36
  * To change this template use File | Settings | File Templates.
  */
-public class GlobalSchematicConfig {
+public class GlobalSchematicConfig extends AbstractSchematicConfig {
     private LootType[] supportedLootTypes = LootType.values();
     private ContextType[] supportedContextTypes = ContextType.values();
     private EntityType[] supportedSpawnerEntities = EntityType.values();
     private RoadType[] supportedRoadTypes = RoadType.values();
+
     private int[] chestLevelWeights = {20,20,20,20,20};
-    private boolean enableGroundLevelEstimation = true;
+
+    private SchematicSpawner[] defaultSpawners = {new SchematicSpawner(EntityType.ZOMBIE,60),new SchematicSpawner(EntityType.CREEPER,20),new SchematicSpawner(EntityType.SKELETON,20)};
 
     public GlobalSchematicConfig() {
-    }
-
-    public boolean isEstimationOn() {
-        return enableGroundLevelEstimation;
+        Spawners = defaultSpawners;
     }
 
     public int getChestLevelWeight(int i){

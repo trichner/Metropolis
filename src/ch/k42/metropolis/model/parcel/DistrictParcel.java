@@ -163,21 +163,21 @@ public class DistrictParcel extends Parcel {
     private Direction findRoad(){
         for(int i=0;i<chunkSizeX;i++){
             Parcel p = grid.getParcel(chunkX+i,chunkZ-1); // any north?
-            if(p!=null && p.getContextType().equals(ContextType.ROAD)){
+            if(p!=null && p.getContextType().equals(ContextType.STREET)){
                 return Direction.NORTH;
             }
             p = grid.getParcel(chunkX+i,chunkZ+chunkSizeZ); // any south?
-            if(p!=null && p.getContextType().equals(ContextType.ROAD)){
+            if(p!=null && p.getContextType().equals(ContextType.STREET)){
                 return Direction.SOUTH;
             }
         }
         for(int i=0;i<chunkSizeZ;i++){
             Parcel p = grid.getParcel(chunkX-1,chunkZ+i); // west?
-            if(p!=null && p.getContextType().equals(ContextType.ROAD)){
+            if(p!=null && p.getContextType().equals(ContextType.STREET)){
                 return Direction.WEST;
             }
             p = grid.getParcel(chunkX+chunkSizeX,chunkZ); //east?
-            if(p!=null && p.getContextType().equals(ContextType.ROAD)){
+            if(p!=null && p.getContextType().equals(ContextType.STREET)){
                 return Direction.EAST;
             }
         }

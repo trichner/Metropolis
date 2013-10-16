@@ -8,7 +8,7 @@ package ch.k42.metropolis.model.enums;
  *
  */
 public enum ContextType {
-    ROAD("road"),
+    STREET("street"),
     HIGHRISE("highrise"),
     MIDRISE("midrise"),
     LOWRISE("lowrise"),

@@ -23,7 +23,7 @@ public class RoadParcel extends StreetParcel {
     private static final int chunkSizeZ = 1;
 
     public RoadParcel(Grid grid,int chunkX,int chunkZ) {
-        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ, ContextType.ROAD);
+        super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ, ContextType.STREET);
         grid.fillParcels(chunkX,chunkZ,this);
     }
 
@@ -36,13 +36,13 @@ public class RoadParcel extends StreetParcel {
             // determine street needed
 
             ContextType context = grid.getParcel(chunkX+1,chunkZ).getContextType();
-            boolean hasEast = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            boolean hasEast = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
             context = grid.getParcel(chunkX-1,chunkZ).getContextType();
-            boolean hasWest = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            boolean hasWest = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
             context =grid.getParcel(chunkX,chunkZ-1).getContextType();
-            boolean hasNorth = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            boolean hasNorth = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
             context = grid.getParcel(chunkX,chunkZ+1).getContextType();
-            boolean hasSouth = context.equals(ContextType.ROAD) || context.equals(ContextType.HIGHWAY);
+            boolean hasSouth = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
 
             ClipboardProvider cprovider = generator.getClipboardProvider();
             Clipboard clip=null;
@@ -189,7 +189,7 @@ public class RoadParcel extends StreetParcel {
     }
 
     private List<Clipboard> getFits(ClipboardProvider cprovider,RoadType type){
-        return cprovider.getRoadFit(1, 1, Direction.NONE, ContextType.ROAD, type);
+        return cprovider.getRoadFit(1, 1, Direction.NONE, ContextType.STREET, type);
     }
 
     @Override

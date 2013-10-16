@@ -31,7 +31,7 @@ public interface ClipboardProvider {
      * @param chunkZ chunksize in Z direction
      * @param direction direction the structure should face
      * @param contextType context of the structure
-     * @param roadType defines the type of the road, only applies if context is ROAD
+     * @param roadType defines the type of the road, only applies if context is STREET
      * @return list containing all matching clipboards, might be empty but never null
      */
     public List<Clipboard> getRoadFit(int chunkX, int chunkZ, Direction direction, ContextType contextType, RoadType roadType);

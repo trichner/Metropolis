@@ -1,5 +1,6 @@
 package ch.k42.metropolis.commands;
 
+import ch.k42.metropolis.model.parcel.Parcel;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -35,7 +36,10 @@ public class CommandMetropolisFreder implements CommandExecutor {
                     Location location = player.getLocation();
                     int chunkX = location.getBlockX()>>4;
                     int chunkZ = location.getBlockZ()>>4;
-                    player.sendMessage("Parcel: " + plugin.getGenerator().getGridProvider().getParcel(chunkX,chunkZ));
+                    Parcel parcel = plugin.getGenerator().getGridProvider().getParcel(chunkX, chunkZ);
+                    if(parcel==null)
+                        player.sendMessage("No Parcel found at this position (something went terribly wrong)");
+                    player.sendMessage("Parcel: " + parcel.toString());
 
                     return true;
                 }else {

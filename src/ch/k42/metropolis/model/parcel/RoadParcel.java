@@ -194,7 +194,12 @@ public class RoadParcel extends StreetParcel {
 
     @Override
     public String toString() {
-        return "RoadParcel +[" + chunkX +"]["+chunkZ+"]";
+        String info = "RoadParcel +[" + chunkX +"]["+chunkZ+"] ";
+        if(road!=null)
+            info += "Schemname: " + road.getName();
+        else
+            info += " No schem found. ";
+        return info;
     }
 }
 

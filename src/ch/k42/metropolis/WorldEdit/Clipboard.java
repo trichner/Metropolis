@@ -1,6 +1,6 @@
 package ch.k42.metropolis.WorldEdit;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +8,7 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
+import ch.k42.metropolis.minions.md5checksum;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 
@@ -37,6 +38,8 @@ public abstract class Clipboard {
     protected List<Cartesian> spawners = new ArrayList<Cartesian>();
 
     protected String name;
+    protected String hashstring;
+    protected File cache;
     protected int groundLevelY = 1;
     protected List<ContextType> contextTypes;
 
@@ -48,12 +51,16 @@ public abstract class Clipboard {
     protected int chunkSizeX; /** Size in chunks */
     protected int chunkSizeZ; /** Size in chunks */
 
+	public Clipboard(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings) throws Exception {
 
-	public Clipboard(MetropolisGenerator generator, File file, GlobalSchematicConfig globalSettings) throws Exception {
-		this.name = file.getName();
+        this.name = file.getName();
         this.globalSettings = globalSettings;
-		
-		// grab the data
+        this.hashstring = md5checksum.getMD5Checksum(file);
+        this.cache = cacheFolder;
+
+        generator.reportDebug(this.name+": "+hashstring);
+
+        // grab the data
 		load(generator, file);
 		
 		// finish figuring things out
@@ -66,7 +73,7 @@ public abstract class Clipboard {
 	
 	protected abstract void load(MetropolisGenerator generator, File file) throws Exception;
 
-	public abstract void paste(MetropolisGenerator generator, int blockX,int blockZ, int streetLevel);
+	public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel);
 
     //public abstract void setTrickOrTreat(MetropolisGenerator generator);
 
@@ -114,6 +121,10 @@ public abstract class Clipboard {
         return sizeZ;
     }
 
+    public File getCache() {
+        return cache;
+    }
+
     public SchematicConfig getSettings() {
         return settings;
     }
@@ -128,6 +139,10 @@ public abstract class Clipboard {
 
     public String getName() {
         return name;
+    }
+
+    public String getHash() {
+        return hashstring;
     }
 
     public int getChunkSizeX() {

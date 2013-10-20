@@ -35,14 +35,12 @@ public class ClipboardWorldEdit extends Clipboard {
 	private BaseBlock[][][] blocks;
 	private final static String metaExtension = ".json";
 
-
-	public ClipboardWorldEdit(MetropolisGenerator generator, File file,GlobalSchematicConfig globalSettings) throws Exception {
-		super(generator, file, globalSettings);
+	public ClipboardWorldEdit(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings) throws Exception {
+        super(generator, file, cacheFolder, globalSettings);
 	}
 
-
     private boolean hasBootstrappedConfig = false;
-	
+
 	@Override
 	protected void load(MetropolisGenerator generator, File schemfile) throws Exception {
 
@@ -53,8 +51,15 @@ public class ClipboardWorldEdit extends Clipboard {
         contextTypes = settings.getContext();
         groundLevelY = settings.getGroundLevelY();
 
+        SchematicFormat format = SchematicFormat.getFormat(schemfile);
+        File cacheFolder = new File(getCache(), this.getHash());
+        cacheFolder.mkdir();
+        File cacheFileNorth = new File(cacheFolder, "north.schematic");
+        
+        generator.reportDebug("cacheFile: "+cacheFileNorth.getAbsolutePath());
+
         // load the actual blocks
-        CuboidClipboard cuboid= SchematicFormat.getFormat(schemfile).load(schemfile);
+        CuboidClipboard cuboid = format.load(schemfile);
 
         // how big is it?
         sizeX = cuboid.getWidth();
@@ -66,6 +71,9 @@ public class ClipboardWorldEdit extends Clipboard {
 
         // copy the cube
         copyCuboid(cuboid);
+
+        //cache the cuboid
+        format.save(cuboid, cacheFileNorth);
 
         if(hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();

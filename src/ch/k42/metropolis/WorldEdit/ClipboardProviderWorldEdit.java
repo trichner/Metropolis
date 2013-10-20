@@ -63,10 +63,12 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
     private static final String pluginName = "WorldEdit";
     private static final String foldername = "schematics";
+    private static final String cachename = "cache";
     private static final String settingsname = "/global_settings.json";
 
 
     private File schematicsFolder;
+    private File cacheFolder;
     private Map<ClipboardKey,List<Clipboard>> clipboards = new HashMap<ClipboardKey, List<Clipboard>>();
     private Map<String,Clipboard> clipboardsByName = new HashMap<String, Clipboard>();
 
@@ -120,6 +122,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
             generator.reportDebug("found PluginFolder");
             // forget all those shape and ore type and just go for the world name
             schematicsFolder = findFolder(pluginFolder,foldername);
+            cacheFolder = findFolder(pluginFolder,cachename);
 
 //			// shape folder (normal, floating, etc.)
 //			File shapeFolder = findFolder(pluginFolder, generator.shapeProvider.getCollectionName());
@@ -131,8 +134,6 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
             generator.reportDebug("loaded clips");
         }
     }
-
-
 
     private File findFolder(File parent, String name) throws Exception {
         name = toCamelCase(name);
@@ -167,23 +168,18 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
     public void loadClips(MetropolisGenerator generator) throws Exception {
 
-        if (schematicsFolder != null) {
-
+        if (schematicsFolder != null && cacheFolder != null) {
 
             loadConfigOrDefault(schematicsFolder.getPath()+settingsname);  // load global config
 
             //---- load all schematic files
-
-
-
-
             List<File> schematicFiles = findAllSchematicsRecursively(schematicsFolder, new ArrayList<File>());
 
             for (File schematicFile: schematicFiles) {
                 try {
                     Clipboard clip=null;
 
-                    clip = new ClipboardWorldEdit(generator, schematicFile,globalSettings);
+                    clip = new ClipboardWorldEdit(generator, schematicFile, cacheFolder, globalSettings);
                     clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
                         ClipboardKey key = new ClipboardKey(clip.chunkSizeX,clip.chunkSizeZ,clip.getDirection(),c,clip.getSettings().getRoadType());
@@ -194,9 +190,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
                         // add the clip to the result
                         list.add(clip);
                         clipboards.put(key,list);
-
                     }
-
 
                     generator.reportMessage("[ClipboardProvider] Schematic "+schematicFile.getName() + " successfully loaded.");
                 } catch (Exception e) {

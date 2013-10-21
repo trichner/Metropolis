@@ -53,10 +53,13 @@ public class ClipboardWorldEdit extends Clipboard {
 
         SchematicFormat format = SchematicFormat.getFormat(schemfile);
         File cacheFolder = new File(getCache(), this.getHash());
-        cacheFolder.mkdir();
-        File cacheFileNorth = new File(cacheFolder, "north.schematic");
-        
-        generator.reportDebug("cacheFile: "+cacheFileNorth.getAbsolutePath());
+
+        if (!cacheFolder.isDirectory()) {
+            if (!cacheFolder.mkdir())
+                throw new UnsupportedOperationException("[WorldEdit] Could not create/find the folder: " + cacheFolder.getAbsolutePath() + File.separator + name);
+        }
+
+        File cacheFileNorth = new File(cacheFolder, "NORTH.schematic");
 
         // load the actual blocks
         CuboidClipboard cuboid = format.load(schemfile);
@@ -325,5 +328,8 @@ public class ClipboardWorldEdit extends Clipboard {
         }
     }
 
+    private void rotateClipboard(CuboidClipboard clip) {
+
+    }
 
 }

@@ -23,13 +23,13 @@ import java.util.Set;
  */
 public class SchematicConfig extends AbstractSchematicConfig{
 
-
-
     private int groundLevelY = 1;
     private int oddsOfAppearanceInPercent = 100;
     private LootType[] lootCollections={LootType.RESIDENTIAL};
     private int lootMinLevel=1;
     private int lootMaxLevel=5;
+    private boolean rotate = true;
+    private String rotateScript = "saferotate.js";
 
     private int chestOddsInPercent = 50;
     private int spawnerOddsInPercent =50;
@@ -119,7 +119,13 @@ public class SchematicConfig extends AbstractSchematicConfig{
         return roadType;
     }
 
+    public boolean getRotate() {
+        return rotate;
+    }
 
+    public String getRotateScript() {
+        return rotateScript;
+    }
 
     public RoadCutout[] getCutouts() {
         return cutouts;

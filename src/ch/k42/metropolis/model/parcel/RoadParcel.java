@@ -178,6 +178,7 @@ public class RoadParcel extends StreetParcel {
                 }
             }
             if(clip!=null){
+                road=clip;
                 clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
                 decayRoadChunk(generator,chunk,Constants.BUILD_HEIGHT-2);
                 decaySidewalk(generator,chunk,Constants.BUILD_HEIGHT-1);
@@ -195,10 +196,12 @@ public class RoadParcel extends StreetParcel {
     @Override
     public String toString() {
         String info = "RoadParcel +[" + chunkX +"]["+chunkZ+"] ";
+
         if(road!=null)
             info += "Schemname: " + road.getName();
         else
             info += " No schem found. ";
+
         return info;
     }
 }

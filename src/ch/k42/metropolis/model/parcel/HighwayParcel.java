@@ -45,7 +45,7 @@ public class HighwayParcel extends StreetParcel {
 
         // T crossing?
     }
-
+    private Clipboard road;
     private void findAndPlaceClip(MetropolisGenerator generator,Chunk chunk,RoadType roadType){
         List<Clipboard> clips = getFits(generator.getClipboardProvider(),roadType);
         Clipboard clip=null;
@@ -55,6 +55,7 @@ public class HighwayParcel extends StreetParcel {
 
         if(clip!=null){
             clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
+            this.road = clip;
             decayRoadChunk(generator,chunk,Constants.BUILD_HEIGHT-2);
             decaySidewalk(generator,chunk,Constants.BUILD_HEIGHT-1);
         }else{
@@ -83,5 +84,14 @@ public class HighwayParcel extends StreetParcel {
 
     private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type){
         return cprovider.getRoadFit(1, 1, Direction.NONE, ContextType.HIGHWAY, type);
+    }
+    @Override
+    public String toString() {
+        String info = "RoadParcel +[" + chunkX +"]["+chunkZ+"] ";
+        if(road!=null)
+            info += "Schemname: " + road.getName();
+        else
+            info += " No schem found. ";
+        return info;
     }
 }

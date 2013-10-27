@@ -5,6 +5,7 @@ import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.RoadType;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
@@ -106,6 +107,8 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
         // make sure it is enabled
         if (!pm.isPluginEnabled(worldEditPlugin))
             pm.enablePlugin(worldEditPlugin);
+
+        WorldEdit worldEdit = worldEditPlugin.getWorldEdit();
 
         // Yay! found it!
         generator.reportMessage("[ClipboardProvider] Found WorldEdit, enabling its schematics");

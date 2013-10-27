@@ -73,7 +73,7 @@ public abstract class Clipboard {
 	
 	protected abstract void load(MetropolisGenerator generator, File file) throws Exception;
 
-	public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel);
+	public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, int direction);
 
     //public abstract void setTrickOrTreat(MetropolisGenerator generator);
 

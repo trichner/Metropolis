@@ -23,7 +23,7 @@ public class EmptyParcel extends Parcel {
         // do nothing, since it's empty :)
         Clipboard clip = generator.getClipboardProvider().getByName("gold16x16.schematic");
         if(clip!=null)
-            clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
+            clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT, 0); // FIXME Hardcoded street level
         else
             generator.reportDebug("No placeholder schem found, was looking for: "+"[gold16x16.schematic]");
     }

@@ -5,9 +5,9 @@ import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
+import ch.k42.metropolis.minions.WorldEditHelper;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
@@ -32,8 +32,17 @@ import java.nio.file.Paths;
  */
 public class ClipboardWorldEdit extends Clipboard {
 
-	private BaseBlock[][][] blocks;
 	private final static String metaExtension = ".json";
+
+    private File cacheFolder;
+    private CuboidClipboard cuboid;
+
+    private File northFile;
+    private File eastFile;
+    private File southFile;
+    private File westFile;
+
+    private static SchematicFormat format;
 
 	public ClipboardWorldEdit(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings) throws Exception {
         super(generator, file, cacheFolder, globalSettings);
@@ -50,33 +59,39 @@ public class ClipboardWorldEdit extends Clipboard {
 
         contextTypes = settings.getContext();
         groundLevelY = settings.getGroundLevelY();
-
-        SchematicFormat format = SchematicFormat.getFormat(schemfile);
-        File cacheFolder = new File(getCache(), this.getHash());
+        format = SchematicFormat.getFormat(schemfile);
+        cacheFolder = new File(getCache(), this.getHash());
 
         if (!cacheFolder.isDirectory()) {
             if (!cacheFolder.mkdir())
                 throw new UnsupportedOperationException("[WorldEdit] Could not create/find the folder: " + cacheFolder.getAbsolutePath() + File.separator + name);
         }
 
-        File cacheFileNorth = new File(cacheFolder, "NORTH.schematic");
+        northFile = new File(cacheFolder, "NORTH.schematic");
+        eastFile = new File(cacheFolder, "EAST.schematic");
+        southFile = new File(cacheFolder, "SOUTH.schematic");
+        westFile = new File(cacheFolder, "WEST.schematic");
 
         // load the actual blocks
-        CuboidClipboard cuboid = format.load(schemfile);
+        cuboid = format.load(schemfile);
 
         // how big is it?
         sizeX = cuboid.getWidth();
         sizeZ = cuboid.getLength();
         sizeY = cuboid.getHeight();
 
-        // allocate room
-        blocks = new BaseBlock[sizeX][sizeY][sizeZ];
+        //cache the north face first
+        format.save(cuboid, northFile);
 
-        // copy the cube
-        copyCuboid(cuboid);
+        //get each cuboid direction
+        CuboidClipboard eastCuboid = rotateSchematic(90);
+        format.save(eastCuboid, eastFile);
 
-        //cache the cuboid
-        format.save(cuboid, cacheFileNorth);
+        CuboidClipboard southCuboid = rotateSchematic(90);
+        format.save(southCuboid, southFile);
+
+        CuboidClipboard westCuboid = rotateSchematic(90);
+        format.save(westCuboid, westFile);
 
         if(hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
@@ -95,41 +110,33 @@ public class ClipboardWorldEdit extends Clipboard {
         if(sizeY-2<0) return 1;
 
         for(int y=sizeY-2;y>=0;y--){
-            int b = blocks[0][y][0].getType();
+            int b = cuboid.getPoint(new Vector(0, y, 0)).getType();
             if(b!=Material.AIR.getId() && b!=Material.LONG_GRASS.getId() && b!=Material.YELLOW_FLOWER.getId())
                 return y+1;
         }
         return 1;
     }
 
+    private CuboidClipboard rotateSchematic(int angle){
+        WorldEditHelper weh = new WorldEditHelper();
+        return weh.safeRotate(cuboid, angle);
+    }
+
     private final static int SPAWNER_SUBSTITUTE = Material.SPONGE.getId();
-	private void copyCuboid(CuboidClipboard cuboid) {
-	    for (int x = 0; x < sizeX; x++)
-            for (int y = 0; y < sizeY; y++)
-                for (int z = 0; z < sizeZ; z++){
-                    BaseBlock block = cuboid.getPoint(new Vector(x, y, z));
-                    if(block.getId()==Material.CHEST.getId()){
-                        chests.add(new Cartesian(x,y,z));
-                    }else if(block.getId()==SPAWNER_SUBSTITUTE){
-                        spawners.add(new Cartesian(x,y,z));
-                    }
-                    blocks[x][y][z] = block;
-                }
-	}
 	
 	private EditSession getEditSession(MetropolisGenerator generator) {
 		return new EditSession(new BukkitWorld(generator.getWorld()), blockCount);
 	}
 
 	@Override
-	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel) {
+	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, int direction) {
 		int blockY = getBottom(streetLevel);
         Vector at = new Vector(blockX, blockY, blockZ);
 		try {
 			EditSession editSession = getEditSession(generator);
 			//editSession.setFastMode(true);
             //place Schematic
-			place(editSession,at, true);
+			place(editSession, at, true, 0);
 
             try {
                 //fill chests
@@ -267,22 +274,38 @@ public class ClipboardWorldEdit extends Clipboard {
         return globalSettings.getRandomChestLevel(random,min,max);
     }
 
-    private void place(EditSession editSession,Vector pos, boolean noAir)
-			throws MaxChangedBlocksException {
-		for (int x = 0; x < sizeX; x++){
-			for (int y = 0; y < sizeY; y++){
-				for (int z = 0; z < sizeZ; z++) {
-//					if ((noAir) && (blocks[x][y][z].isAir())) {
-//						continue;
-//					}
+    private void place(EditSession editSession, Vector pos, boolean noAir, int direction) throws Exception {
 
-                    editSession.setBlock(new Vector(x, y, z).add(pos),
-							blocks[x][y][z]);
+        CuboidClipboard cc;
+        cc = format.load(northFile);
 
-				}
-            }
-        }
+//        switch (direction) {
+//            case 1:
+//                cc = format.load(eastFile);
+//                break;
+//            case 2:
+//                cc = format.load(southFile);
+//                break;
+//            case 3:
+//                cc = format.load(westFile);
+//                break;
+//            default:
+//                cc = format.load(northFile);
+//                break;
+//        }
 
+        cc.paste(editSession, pos, noAir);
+
+//        for (int x = 0; x < cc.getWidth(); x++){
+//			for (int y = 0; y < cc.getHeight(); y++){
+//				for (int z = 0; z < cc.getLength(); z++) {
+////					if ((noAir) && (blocks[x][y][z].isAir())) {
+////						continue;
+////					}
+//                    editSession.setBlock(new Vector(x, y, z).add(pos), cc.getPoint(new Vector(x, y, z)));
+//				}
+//            }
+//        }
 	}
 
     private void loadConfigOrDefault(String path){
@@ -326,10 +349,6 @@ public class ClipboardWorldEdit extends Clipboard {
             Bukkit.getLogger().throwing(this.getClass().getName(), "storeConfig config", e);
             return false;
         }
-    }
-
-    private void rotateClipboard(CuboidClipboard clip) {
-
     }
 
 }

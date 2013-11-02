@@ -28,7 +28,7 @@ import java.nio.file.Paths;
 /**
  * Represents a structure defined by a loaded file in a cuboid.
  *
- * @author Daddy Churchill, Thomas Richner
+ * @author Daddy Churchill, Thomas Richner, Aaron Brewer
  */
 public class ClipboardWorldEdit extends Clipboard {
 
@@ -276,25 +276,17 @@ public class ClipboardWorldEdit extends Clipboard {
 
     private void place(EditSession editSession, Vector pos, boolean noAir, int direction) throws Exception {
 
-        CuboidClipboard cc;
-        cc = format.load(northFile);
+        CuboidClipboard cc_n = format.load(northFile);
+//        CuboidClipboard cc_e = format.load(eastFile);
+//        CuboidClipboard cc_s = format.load(southFile);
+//        CuboidClipboard cc_w = format.load(westFile);
 
-//        switch (direction) {
-//            case 1:
-//                cc = format.load(eastFile);
-//                break;
-//            case 2:
-//                cc = format.load(southFile);
-//                break;
-//            case 3:
-//                cc = format.load(westFile);
-//                break;
-//            default:
-//                cc = format.load(northFile);
-//                break;
-//        }
+        int offset = getSizeY();
 
-        cc.paste(editSession, pos, noAir);
+        cc_n.paste(editSession, pos, noAir);
+//        cc_e.paste(editSession, pos.add(0, offset, 0), noAir);
+//        cc_s.paste(editSession, pos.add(0, offset*2, 0), noAir);
+//        cc_w.paste(editSession, pos.add(0, offset*3, 0), noAir);
 
 //        for (int x = 0; x < cc.getWidth(); x++){
 //			for (int y = 0; y < cc.getHeight(); y++){

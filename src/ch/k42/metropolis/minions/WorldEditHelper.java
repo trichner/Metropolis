@@ -25,7 +25,7 @@ public class WorldEditHelper {
                 for (int l = 0; l < cuboid.getLength(); l++) {
 
                     Vector position = new Vector(c, w, l);
-                    BaseBlock b = cuboid.getPoint(position);
+                    BaseBlock b = cuboid.getBlock(position);
 
                     int data = b.getData();
 

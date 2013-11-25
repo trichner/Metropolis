@@ -54,7 +54,7 @@ public class HighwayParcel extends StreetParcel {
             clip = clips.get(grid.getRandom().getRandomInt(clips.size()));
 
         if(clip!=null){
-            clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT, 0); // FIXME Hardcoded street level
+            clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT, Direction.NONE); // FIXME Hardcoded street level
             this.road = clip;
             decayRoadChunk(generator,chunk,Constants.BUILD_HEIGHT-2);
             decaySidewalk(generator,chunk,Constants.BUILD_HEIGHT-1);

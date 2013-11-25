@@ -37,7 +37,7 @@ public class SchematicConfig extends AbstractSchematicConfig{
 
     private RoadCutout[] cutouts = {};
 
-    private Direction entranceFacing = Direction.NONE;
+    private Boolean randomFacing = true;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
     private RoadType roadType = RoadType.STREET_X;
     private Set<Material> decayExceptionMaterials = new HashSet();
@@ -108,7 +108,11 @@ public class SchematicConfig extends AbstractSchematicConfig{
     }
 
     public Direction getDirection() {
-        return entranceFacing;
+        if (randomFacing) {
+            return Direction.getRandomDirection();
+        } else {
+            return Direction.NONE;
+        }
     }
 
     public void setGroundLevelY(int groundLevelY) {

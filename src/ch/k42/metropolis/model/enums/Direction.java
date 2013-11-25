@@ -1,5 +1,7 @@
 package ch.k42.metropolis.model.enums;
 
+import java.util.Random;
+
 /**
  * Possible values: north, south, west, east
  * @author Thomas Richner
@@ -20,5 +22,9 @@ public enum Direction {
                 return d;
         }
         return NONE;
+    }
+    public static Direction getRandomDirection() {
+        Random random = new Random();
+        return values()[random.nextInt(values().length)];
     }
 }

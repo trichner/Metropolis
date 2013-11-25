@@ -5,11 +5,10 @@ import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
-import ch.k42.metropolis.minions.WorldEditHelper;
+import ch.k42.metropolis.model.enums.Direction;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.bukkit.*;
@@ -118,8 +117,8 @@ public class ClipboardWorldEdit extends Clipboard {
     }
 
     private CuboidClipboard rotateSchematic(int angle){
-        WorldEditHelper weh = new WorldEditHelper();
-        return weh.safeRotate(cuboid, angle);
+        cuboid.rotate2D(angle);
+        return cuboid;
     }
 
     private final static int SPAWNER_SUBSTITUTE = Material.SPONGE.getId();
@@ -129,14 +128,14 @@ public class ClipboardWorldEdit extends Clipboard {
 	}
 
 	@Override
-	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, int direction) {
+	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction) {
 		int blockY = getBottom(streetLevel);
         Vector at = new Vector(blockX, blockY, blockZ);
 		try {
 			EditSession editSession = getEditSession(generator);
-			//editSession.setFastMode(true);
+			editSession.setFastMode(true);
             //place Schematic
-			place(editSession, at, true, 0);
+			place(editSession, at, true, direction);
 
             try {
                 //fill chests
@@ -274,30 +273,33 @@ public class ClipboardWorldEdit extends Clipboard {
         return globalSettings.getRandomChestLevel(random,min,max);
     }
 
-    private void place(EditSession editSession, Vector pos, boolean noAir, int direction) throws Exception {
+    private void place(EditSession editSession, Vector pos, boolean noAir, Direction direction) throws Exception {
 
-        CuboidClipboard cc_n = format.load(northFile);
-//        CuboidClipboard cc_e = format.load(eastFile);
-//        CuboidClipboard cc_s = format.load(southFile);
-//        CuboidClipboard cc_w = format.load(westFile);
+        CuboidClipboard cc;
 
-        int offset = getSizeY();
+        switch (direction) {
+            case EAST:
+                cc = format.load(eastFile);
+                break;
+            case SOUTH:
+                cc = format.load(southFile);
+                break;
+            case WEST:
+                cc = format.load(westFile);
+                break;
+            default:
+                cc = format.load(northFile);
+                break;
+        }
 
-        cc_n.paste(editSession, pos, noAir);
-//        cc_e.paste(editSession, pos.add(0, offset, 0), noAir);
-//        cc_s.paste(editSession, pos.add(0, offset*2, 0), noAir);
-//        cc_w.paste(editSession, pos.add(0, offset*3, 0), noAir);
+        for (int x = 0; x < cc.getWidth(); x++){
+			for (int y = 0; y < cc.getHeight(); y++){
+				for (int z = 0; z < cc.getLength(); z++) {
+                    editSession.setBlock(new Vector(x, y, z).add(pos), cc.getBlock(new Vector(x, y, z)));
+				}
+            }
+        }
 
-//        for (int x = 0; x < cc.getWidth(); x++){
-//			for (int y = 0; y < cc.getHeight(); y++){
-//				for (int z = 0; z < cc.getLength(); z++) {
-////					if ((noAir) && (blocks[x][y][z].isAir())) {
-////						continue;
-////					}
-//                    editSession.setBlock(new Vector(x, y, z).add(pos), cc.getPoint(new Vector(x, y, z)));
-//				}
-//            }
-//        }
 	}
 
     private void loadConfigOrDefault(String path){

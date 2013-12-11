@@ -6,6 +6,7 @@ import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.grid.Grid;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 
 import ch.k42.metropolis.WorldEdit.*;
@@ -20,17 +21,19 @@ import org.bukkit.Material;
 public class ClipboardParcel extends Parcel {
 
     private Clipboard clipboard;
+    private Direction direction;
 
-    public ClipboardParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, Clipboard clipboard,ContextType contextType) {
+    public ClipboardParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, Clipboard clipboard, ContextType contextType, Direction direction) {
         super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,contextType);
         this.clipboard = clipboard;
+        this.direction = direction;
         grid.fillParcels(chunkX,chunkZ,this);
     }
 
     public void populate(MetropolisGenerator generator,Chunk chunk) {
         if(chunk.getX()==(chunkX)&&chunk.getZ()==(chunkZ)){
             int streetLevel=Constants.BUILD_HEIGHT;
-            clipboard.paste(generator, (chunkX << 4),(chunkZ<<4), Constants.BUILD_HEIGHT, clipboard.getDirection());
+            clipboard.paste(generator, (chunkX << 4),(chunkZ<<4), Constants.BUILD_HEIGHT, direction);
             // TODO use config, don't always destroy
             generator.getDecayProvider().destroyChunks(chunkX,chunkZ,chunkSizeX,chunkSizeZ,clipboard.getBottom(streetLevel),clipboard.getSizeY(),clipboard.getDecayOptions());
         }
@@ -46,13 +49,10 @@ public class ClipboardParcel extends Parcel {
         //---- make sidewalk cutouts
         SchematicConfig.RoadCutout[] cuts = clipboard.getSettings().getCutouts();
 
-        Direction dir = clipboard.getSettings().getDirection();
-        if(dir.equals(Direction.NONE)) return; // no cutouts needed
-
         Cartesian base = new Cartesian(this.chunkX<<4,Constants.BUILD_HEIGHT-1,this.chunkZ<<4); //TODO Hardcoded Height
         for(SchematicConfig.RoadCutout cut : cuts){
             Cartesian offset=null,size=null;
-            switch (dir){
+            switch (direction){
                 case NORTH: //
                     offset = new Cartesian(cut.startPoint,0,-1);
                     size = new Cartesian(cut.length,cutoutHeight,-cutoutDepth);
@@ -71,7 +71,7 @@ public class ClipboardParcel extends Parcel {
                     break;
             }
             cutoutBlocks(generator,base.add(offset),size,Material.STONE);
-            generator.reportDebug("Made cutouts");
+            //generator.reportDebug("Made cutouts");
         }
 
 

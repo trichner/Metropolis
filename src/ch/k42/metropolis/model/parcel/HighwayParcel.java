@@ -80,11 +80,10 @@ public class HighwayParcel extends StreetParcel {
         }
     }
 
-
-
     private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type){
-        return cprovider.getRoadFit(1, 1, Direction.NONE, ContextType.HIGHWAY, type);
+        return cprovider.getRoadFit(1, 1, ContextType.HIGHWAY, type);
     }
+
     @Override
     public String toString() {
         String info = "RoadParcel +[" + chunkX +"]["+chunkZ+"] ";

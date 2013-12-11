@@ -190,7 +190,7 @@ public class RoadParcel extends StreetParcel {
     }
 
     private List<Clipboard> getFits(ClipboardProvider cprovider,RoadType type){
-        return cprovider.getRoadFit(1, 1, Direction.NONE, ContextType.STREET, type);
+        return cprovider.getRoadFit(1, 1, ContextType.STREET, type);
     }
 
     @Override

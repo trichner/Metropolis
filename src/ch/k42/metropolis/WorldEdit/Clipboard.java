@@ -38,6 +38,7 @@ public abstract class Clipboard {
     protected List<Cartesian> spawners = new ArrayList<Cartesian>();
 
     protected String name;
+    protected boolean westEast;
     protected String hashstring;
     protected File cache;
     protected int groundLevelY = 1;
@@ -73,7 +74,7 @@ public abstract class Clipboard {
 	
 	protected abstract void load(MetropolisGenerator generator, File file) throws Exception;
 
-	public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction);
+    public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction);
 
     //public abstract void setTrickOrTreat(MetropolisGenerator generator);
 
@@ -90,10 +91,6 @@ public abstract class Clipboard {
 
     public List<ContextType> getContextTypes() {
         return contextTypes;
-    }
-
-    public Direction getDirection() {
-        return settings.getDirection();
     }
 
     /**

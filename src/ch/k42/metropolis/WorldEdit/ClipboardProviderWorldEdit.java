@@ -25,24 +25,26 @@ import java.util.*;
  */
 public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
-    private class ClipboardKey{
+    private boolean westEast = false;
+
+    private class ClipboardKey {
         private int chunkSizeX;
         private int chunkSizeZ;
-        private Direction direction;
         private ContextType context;
         private RoadType roadType;
+        private Direction roadDir;
 
-        private ClipboardKey(int chunkSizeX, int chunkSizeZ, Direction direction, ContextType context,RoadType roadType) {
+        private ClipboardKey(int chunkSizeX, int chunkSizeZ, ContextType context,RoadType roadType, Direction roadDir) {
             this.chunkSizeX = chunkSizeX;
             this.chunkSizeZ = chunkSizeZ;
-            this.direction = direction;
             this.context = context;
             this.roadType = roadType;
+            this.roadDir = roadDir;
         }
 
         @Override
         public int hashCode() {
-            return (((chunkSizeX << 16) ^ chunkSizeZ)*31+direction.hashCode())*541+context.hashCode();
+            return (((chunkSizeX << 16) ^ chunkSizeZ)*31)*541+context.hashCode();
         }
 
         @Override
@@ -51,9 +53,13 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
             if(!(obj instanceof ClipboardKey)) return false;
 
             ClipboardKey k = (ClipboardKey) obj;
-            if(chunkSizeX!=k.chunkSizeX) return false;
-            if(chunkSizeZ!=k.chunkSizeZ) return false;
-            if(!direction.equals(k.direction)) return false;
+
+            if (roadDir.equals(Direction.WEST) || roadDir.equals(Direction.EAST)) {
+                if (chunkSizeX!=k.chunkSizeZ && chunkSizeZ!=k.chunkSizeX) return false;
+            } else {
+                if (chunkSizeX!=k.chunkSizeX && chunkSizeZ!=k.chunkSizeZ) return false;
+            }
+
             if(!context.equals(k.context)) return false;
 
             if((context.equals(ContextType.STREET)||context.equals(ContextType.HIGHWAY))&&!roadType.equals(k.roadType)) return false;
@@ -66,7 +72,6 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
     private static final String foldername = "schematics";
     private static final String cachename = "cache";
     private static final String settingsname = "/global_settings.json";
-
 
     private File schematicsFolder;
     private File cacheFolder;
@@ -181,11 +186,10 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
             for (File schematicFile: schematicFiles) {
                 try {
                     Clipboard clip=null;
-
                     clip = new ClipboardWorldEdit(generator, schematicFile, cacheFolder, globalSettings);
                     clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
-                        ClipboardKey key = new ClipboardKey(clip.chunkSizeX,clip.chunkSizeZ,clip.getDirection(),c,clip.getSettings().getRoadType());
+                        ClipboardKey key = new ClipboardKey(clip.chunkSizeX,clip.chunkSizeZ,c,clip.getSettings().getRoadType(),Direction.NORTH);
                         List<Clipboard> list = clipboards.get(key);
                         if(list==null){
                             list= new ArrayList();
@@ -217,30 +221,28 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
     }
 
     /**
-     * Returns a list containing all available clipboards that match the size, direction and context
+     * Returns a list containing all available clipboards that match the size and context
      * @param chunkX chunksize in X direction
      * @param chunkZ chunksize in Z direction
-     * @param direction direction the structure should face
      * @param contextType context of the structure
      * @param roadType defines the type of the road, only applies if context is STREET
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getRoadFit(int chunkX, int chunkZ, Direction direction, ContextType contextType, RoadType roadType){
-        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType,roadType));
+    public List<Clipboard> getRoadFit(int chunkX, int chunkZ, ContextType contextType, RoadType roadType){
+        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,contextType,roadType,Direction.NORTH));
         if(list==null) list = new LinkedList<Clipboard>();
         return list;
     }
 
     /**
-     * Returns a list containing all available clipboards that match the size, direction and context
+     * Returns a list containing all available clipboards that match the size and context
      * @param chunkX chunksize in X direction
      * @param chunkZ chunksize in Z direction
-     * @param direction direction the structure should face
      * @param contextType context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(int chunkX,int chunkZ,Direction direction,ContextType contextType){
-        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,direction,contextType,RoadType.STREET_X));
+    public List<Clipboard> getFit(int chunkX, int chunkZ, ContextType contextType, Direction roadDir){
+        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,contextType,RoadType.STREET_X,roadDir));
         if(list==null) list = new LinkedList<Clipboard>();
         return list;
     }
@@ -279,7 +281,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String file = gson.toJson(globalSettings);
-            Files.write(Paths.get(path),file.getBytes()); //overwrite exsisting stuff
+            Files.write(Paths.get(path),file.getBytes()); //overwrite existing stuff
             return true;
         } catch (IOException e) {
             Bukkit.getLogger().throwing(this.getClass().getName(), "storeConfig config", e);

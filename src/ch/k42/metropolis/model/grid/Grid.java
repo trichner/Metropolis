@@ -38,7 +38,6 @@ abstract public class Grid {
         return random;
     }
 
-
     /**
      * Returns the parcel at the given relative coordinates in the interval [0,Grid.GRIDSIZE)
      * @param chunkX chunk coordinates x

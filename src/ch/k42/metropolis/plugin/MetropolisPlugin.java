@@ -103,5 +103,4 @@ public class MetropolisPlugin extends JavaPlugin{
             }} catch (NoSuchAlgorithmException e) {  }
         }
     }
-
 }

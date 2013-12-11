@@ -1,5 +1,7 @@
 package ch.k42.metropolis.model.enums;
 
+import org.bukkit.Bukkit;
+
 import java.util.Random;
 
 /**
@@ -25,6 +27,7 @@ public enum Direction {
     }
     public static Direction getRandomDirection() {
         Random random = new Random();
-        return values()[random.nextInt(values().length)];
+        Direction output = values()[random.nextInt(values().length)];
+        return output;
     }
 }

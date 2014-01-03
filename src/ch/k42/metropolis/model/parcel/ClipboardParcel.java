@@ -52,25 +52,46 @@ public class ClipboardParcel extends Parcel {
         Cartesian base = new Cartesian(this.chunkX<<4,Constants.BUILD_HEIGHT-1,this.chunkZ<<4); //TODO Hardcoded Height
         for(SchematicConfig.RoadCutout cut : cuts){
             Cartesian offset=null,size=null;
+            ContextType roadCheck;
+            Parcel parcel;
             switch (direction){
-                case NORTH: //
+                case NORTH:
                     offset = new Cartesian(cut.startPoint,0,-1);
                     size = new Cartesian(cut.length,cutoutHeight,-cutoutDepth);
+                    parcel = grid.getParcel( chunkX, chunkZ-1 );
+                    roadCheck = parcel.getContextType();
+                    if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                    }
                     break;
-                case WEST: //
-                    offset = new Cartesian(-1,0,cut.startPoint);
-                    size = new Cartesian(-cutoutDepth,cutoutHeight,cut.length);
+                case EAST:
+                    offset = new Cartesian(clipboard.getBlockSizeX(),0,cut.startPoint);
+                    size = new Cartesian(cutoutDepth,cutoutHeight,cut.length);
+                    parcel = grid.getParcel( chunkX+1, chunkZ );
+                    roadCheck = parcel.getContextType();
+                    if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                    }
                     break;
-                case SOUTH: //
-                    offset = new Cartesian(cut.startPoint,0,clipboard.getBlockSizeZ()+1);
-                    size = new Cartesian(cut.length,cutoutHeight,cutoutDepth);
+                case SOUTH:
+                    offset = new Cartesian(clipboard.getBlockSizeX()-cut.startPoint-1,0,clipboard.getBlockSizeZ());
+                    size = new Cartesian(-cut.length,cutoutHeight,cutoutDepth);
+                    roadCheck = grid.getParcel( chunkX, chunkZ+1 ).getContextType();
+                    if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                    }
                     break;
-                case EAST: //
-                    offset = new Cartesian(clipboard.getBlockSizeX()+1,0,cut.startPoint);
-                    size = new Cartesian(-cutoutDepth,cutoutHeight,cut.length);
+                case WEST:
+                    offset = new Cartesian(-1,0,clipboard.getBlockSizeZ()-cut.startPoint-1);
+                    size = new Cartesian(-cutoutDepth,cutoutHeight,-cut.length);
+                    parcel = grid.getParcel( chunkX-1, chunkZ );
+                    roadCheck = parcel.getContextType();
+                    if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                    }
                     break;
             }
-            cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+            //cutoutBlocks(generator,base.add(offset),size,Material.STONE);
             //generator.reportDebug("Made cutouts");
         }
 

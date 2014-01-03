@@ -25,8 +25,16 @@ public class GridProvider {
 
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         Parcel p = getParcel(chunk.getX(),chunk.getZ());
+        Parcel pN = getParcel(chunk.getX(),chunk.getZ()-1);
+        Parcel pS = getParcel(chunk.getX(),chunk.getZ()+1);
+        Parcel pE = getParcel(chunk.getX()+1,chunk.getZ());
+        Parcel pW = getParcel(chunk.getX()-1,chunk.getZ());
         if(p!=null){
             p.postPopulate(generator, chunk);
+            if (pN!=null) pN.postPopulate(generator, chunk);
+            if (pS!=null) pS.postPopulate(generator, chunk);
+            if (pE!=null) pE.postPopulate(generator, chunk);
+            if (pW!=null) pW.postPopulate(generator, chunk);
         }else {
             generator.reportDebug("found empty Parcel: ["+chunk.getX()+"]["+chunk.getZ()+"]");
         }

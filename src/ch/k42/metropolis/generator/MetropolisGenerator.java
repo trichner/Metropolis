@@ -187,7 +187,6 @@ public class MetropolisGenerator extends ChunkGenerator {
     }
 
 
-
     public void reportMessage(String message) {
         plugin.getLogger().info(message);
     }

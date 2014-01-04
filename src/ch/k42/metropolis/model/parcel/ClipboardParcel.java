@@ -51,7 +51,7 @@ public class ClipboardParcel extends Parcel {
 
         Cartesian base = new Cartesian(this.chunkX<<4,Constants.BUILD_HEIGHT-1,this.chunkZ<<4); //TODO Hardcoded Height
         for(SchematicConfig.RoadCutout cut : cuts){
-            Cartesian offset=null,size=null;
+            Cartesian offset, size;
             ContextType roadCheck;
             Parcel parcel;
             switch (direction){
@@ -91,8 +91,6 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
             }
-            //cutoutBlocks(generator,base.add(offset),size,Material.STONE);
-            //generator.reportDebug("Made cutouts");
         }
 
 

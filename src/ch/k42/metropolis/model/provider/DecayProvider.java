@@ -1,6 +1,7 @@
 package ch.k42.metropolis.model.provider;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -69,6 +70,14 @@ public class DecayProvider {
      * @param options decay options
      */
     public void destroyWithin(int x1, int x2, int y1, int y2, int z1, int z2, DecayOption options) {
+
+        if(y1<0) y1=0;
+        if(y2<0) y2=0;
+
+        int maxHeight = Constants.WORLD_HEIGHT;
+        if(y1>maxHeight) y1=maxHeight;
+        if(y2>maxHeight) y2=maxHeight;
+
         double holeScale = options.getHoleScale();
         double leavesScale = options.getLeavesScale();
         double fulldecay = options.getFulldecay();

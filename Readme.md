@@ -4,8 +4,6 @@ Authors: Thomas Richner, Aaron Brewer
 
 In the future, wealthy industrialists rule the vast city of Metropolis from high-rise tower complexes, while a lower class of underground-dwelling workers toil constantly to operate the machines that provide its power. The Master of Metropolis is the ruthless Joh Fredersen (Alfred Abel), whose son Freder (Gustav Fröhlich) idles away his time in a pleasure garden with the other children of the rich. Freder is interrupted by the arrival of a young woman named Maria (Brigitte Helm), who has brought a group of workers' children to see the privileged lifestyle led by the rich. Maria and the children are quickly ushered away, but Freder is fascinated by Maria and descends to the workers' city in an attempt to find her.
 
-----
-
 ## Schematic Configuration
 
 #### buildName
@@ -100,3 +98,9 @@ An array of the enumerated name of the context that this schematic will appear i
 Type: `filename|array`
 
 **TODO:** An array of schematics that this configuration will be applied to. Currently defaults to the name of the JSON file.
+
+#### rotate
+
+Type: `boolean`
+
+Do not use rotated version of this schematic.

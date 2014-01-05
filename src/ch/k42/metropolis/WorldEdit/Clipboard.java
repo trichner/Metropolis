@@ -106,12 +106,20 @@ public abstract class Clipboard {
         return settings.getDecayOption();
     }
 
-    public int getSizeX() {
-        return sizeX;
+    public int getSizeX(Direction direction) {
+        if (direction == Direction.EAST || direction == Direction.WEST) {
+            return sizeY;
+        } else {
+            return sizeX;
+        }
     }
 
-    public int getSizeY() {
-        return sizeY;
+    public int getSizeY(Direction direction) {
+        if (direction == Direction.EAST || direction == Direction.WEST) {
+            return sizeX;
+        } else {
+            return sizeY;
+        }
     }
 
     public int getSizeZ() {

@@ -21,7 +21,7 @@ import java.util.Set;
  * Time: 21:31
  * To change this template use File | Settings | File Templates.
  */
-public class SchematicConfig extends AbstractSchematicConfig{
+public class SchematicConfig extends AbstractSchematicConfig {
 
     private int groundLevelY = 1;
     private int oddsOfAppearanceInPercent = 100;
@@ -29,18 +29,18 @@ public class SchematicConfig extends AbstractSchematicConfig{
     private int lootMinLevel=1;
     private int lootMaxLevel=5;
     private boolean rotate = true;
-    private String rotateScript = "saferotate.js";
 
     private int chestOddsInPercent = 50;
-    private int spawnerOddsInPercent =50;
-    private int decayIntensityInPercent =100;
+    private int spawnerOddsInPercent = 50;
+    private int decayIntensityInPercent = 100;
 
     private RoadCutout[] cutouts = {};
-
-    private Boolean randomFacing = true;
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
+    private boolean roadFacing = false;
     private RoadType roadType = RoadType.STREET_X;
     private Set<Material> decayExceptionMaterials = new HashSet();
+    private String[] schematics = {};
+
     public SchematicConfig() {}
 
     public int getGroundLevelY() {
@@ -79,7 +79,6 @@ public class SchematicConfig extends AbstractSchematicConfig{
         return chestOddsInPercent;
     }
 
-
     /**
      * The odds of a spawner actually appearing if it can
      * @return odds in percent, [0,100]
@@ -108,7 +107,7 @@ public class SchematicConfig extends AbstractSchematicConfig{
     }
 
     public Direction getDirection() {
-        if (randomFacing) {
+        if (rotate) {
             return Direction.getRandomDirection();
         } else {
             return Direction.NONE;
@@ -123,12 +122,12 @@ public class SchematicConfig extends AbstractSchematicConfig{
         return roadType;
     }
 
-    public boolean getRotate() {
-        return rotate;
+    public String[] getSchematics() {
+        return schematics;
     }
 
-    public String getRotateScript() {
-        return rotateScript;
+    public boolean getRoadFacing() {
+        return roadFacing;
     }
 
     public RoadCutout[] getCutouts() {

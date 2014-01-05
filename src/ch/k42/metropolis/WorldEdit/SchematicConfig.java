@@ -29,6 +29,7 @@ public class SchematicConfig extends AbstractSchematicConfig {
     private int lootMinLevel=1;
     private int lootMaxLevel=5;
     private boolean rotate = true;
+    private boolean roadFacing = false;
 
     private int chestOddsInPercent = 50;
     private int spawnerOddsInPercent = 50;
@@ -36,7 +37,6 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     private RoadCutout[] cutouts = {};
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.INDUSTRIAL,ContextType.PARK};
-    private boolean roadFacing = false;
     private RoadType roadType = RoadType.STREET_X;
     private Set<Material> decayExceptionMaterials = new HashSet();
     private String[] schematics = {};
@@ -133,6 +133,5 @@ public class SchematicConfig extends AbstractSchematicConfig {
     public RoadCutout[] getCutouts() {
         return cutouts;
     }
-
 
 }

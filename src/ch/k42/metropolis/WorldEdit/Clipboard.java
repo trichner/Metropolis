@@ -38,7 +38,6 @@ public abstract class Clipboard {
     protected List<Cartesian> spawners = new ArrayList<Cartesian>();
 
     protected String name;
-    protected boolean westEast;
     protected String hashstring;
     protected File cache;
     protected int groundLevelY = 1;
@@ -108,22 +107,22 @@ public abstract class Clipboard {
 
     public int getSizeX(Direction direction) {
         if (direction == Direction.EAST || direction == Direction.WEST) {
-            return sizeY;
+            return sizeZ;
         } else {
             return sizeX;
         }
     }
 
-    public int getSizeY(Direction direction) {
+    public int getSizeY() {
+        return sizeY;
+    }
+
+    public int getSizeZ(Direction direction) {
         if (direction == Direction.EAST || direction == Direction.WEST) {
             return sizeX;
         } else {
-            return sizeY;
+            return sizeZ;
         }
-    }
-
-    public int getSizeZ() {
-        return sizeZ;
     }
 
     public File getCache() {

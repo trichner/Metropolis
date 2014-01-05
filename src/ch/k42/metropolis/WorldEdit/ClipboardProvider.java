@@ -42,6 +42,6 @@ public interface ClipboardProvider {
      * @param contextType context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(int chunkX, int chunkZ,ContextType contextType, Direction roadDir);
+    public List<Clipboard> getFit(int chunkX, int chunkZ,ContextType contextType, Direction roadDir, boolean roadFacing);
 
 }

@@ -35,7 +35,7 @@ public class ClipboardParcel extends Parcel {
             int streetLevel=Constants.BUILD_HEIGHT;
             clipboard.paste(generator, (chunkX << 4),(chunkZ<<4), Constants.BUILD_HEIGHT, direction);
             // TODO use config, don't always destroy
-            generator.getDecayProvider().destroyChunks(chunkX,chunkZ,chunkSizeX,chunkSizeZ,clipboard.getBottom(streetLevel),clipboard.getSizeY(direction),clipboard.getDecayOptions());
+            generator.getDecayProvider().destroyChunks(chunkX,chunkZ,chunkSizeX,chunkSizeZ,clipboard.getBottom(streetLevel),clipboard.getSizeY(),clipboard.getDecayOptions());
         }
     }
 
@@ -74,7 +74,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case SOUTH:
-                    offset = new Cartesian(clipboard.getSizeX(direction)-cut.startPoint-1,0,clipboard.getSizeZ());
+                    offset = new Cartesian(clipboard.getSizeX(direction)-cut.startPoint-1,0,clipboard.getSizeZ(direction));
                     size = new Cartesian(-cut.length,cutoutHeight,cutoutDepth);
                     roadCheck = grid.getParcel( chunkX, chunkZ+1 ).getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
@@ -82,7 +82,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case WEST:
-                    offset = new Cartesian(-1,0,clipboard.getSizeZ()-cut.startPoint-1);
+                    offset = new Cartesian(-1,0,clipboard.getSizeZ(direction)-cut.startPoint-1);
                     size = new Cartesian(-cutoutDepth,cutoutHeight,-cut.length);
                     parcel = grid.getParcel( chunkX-1, chunkZ );
                     roadCheck = parcel.getContextType();

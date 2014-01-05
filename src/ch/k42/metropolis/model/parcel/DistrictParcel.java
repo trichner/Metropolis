@@ -160,21 +160,19 @@ public class DistrictParcel extends Parcel {
         return  (int) Math.round(mean+random.getRandomGaussian()*sigma);
     }
 
-
-    //==== -1 should be fine, since there 'should' be roads all around
     private Direction findRoad(){
 
         boolean northP = grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.HIGHWAY);
 
-        boolean southP = grid.getParcel(chunkX,chunkZ+chunkSizeZ+1).getContextType().equals(ContextType.STREET) ||
-                grid.getParcel(chunkX,chunkZ+chunkSizeZ+1).getContextType().equals(ContextType.HIGHWAY);
+        boolean southP = grid.getParcel(chunkX,chunkZ+chunkSizeZ).getContextType().equals(ContextType.STREET) ||
+                grid.getParcel(chunkX,chunkZ+chunkSizeZ).getContextType().equals(ContextType.HIGHWAY);
 
         boolean westP = grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.HIGHWAY);
 
-        boolean eastP = grid.getParcel(chunkX+chunkSizeX+1,chunkZ).getContextType().equals(ContextType.STREET) ||
-                grid.getParcel(chunkX+chunkSizeX+1,chunkZ).getContextType().equals(ContextType.HIGHWAY);
+        boolean eastP = grid.getParcel(chunkX+chunkSizeX,chunkZ).getContextType().equals(ContextType.STREET) ||
+                grid.getParcel(chunkX+chunkSizeX,chunkZ).getContextType().equals(ContextType.HIGHWAY);
 
         if (northP) {
             return Direction.NORTH;
@@ -185,27 +183,6 @@ public class DistrictParcel extends Parcel {
         } else if (westP) {
             return Direction.WEST;
         }
-
-//        for(int i=0;i<chunkSizeX;i++){
-//            Parcel p = grid.getParcel(chunkX+i,chunkZ-1); // any north?
-//            if(p!=null && p.getContextType().equals(ContextType.STREET)){
-//                return Direction.NORTH;
-//            }
-//            p = grid.getParcel(chunkX+i,chunkZ+chunkSizeZ); // any south?
-//            if(p!=null && p.getContextType().equals(ContextType.STREET)){
-//                return Direction.SOUTH;
-//            }
-//        }
-//        for(int i=0;i<chunkSizeZ;i++){
-//            Parcel p = grid.getParcel(chunkX-1,chunkZ+i); // west?
-//            if(p!=null && p.getContextType().equals(ContextType.STREET)){
-//                return Direction.WEST;
-//            }
-//            p = grid.getParcel(chunkX+chunkSizeX,chunkZ); //east?
-//            if(p!=null && p.getContextType().equals(ContextType.STREET)){
-//                return Direction.EAST;
-//            }
-//        }
 
         return Direction.NONE; // haven't found any streets
     }

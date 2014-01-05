@@ -25,8 +25,6 @@ import java.util.*;
  */
 public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
-    private boolean westEast = false;
-
     private class ClipboardKey {
         private int chunkSizeX;
         private int chunkSizeZ;
@@ -61,6 +59,10 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
             } else {
                 if (chunkSizeX!=k.chunkSizeX && chunkSizeZ!=k.chunkSizeZ) return false;
             }
+
+            if(roadFacing && !k.roadFacing) return false;
+
+            if(!roadFacing && k.roadFacing) return false;
 
             if(!context.equals(k.context)) return false;
 

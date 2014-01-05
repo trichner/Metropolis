@@ -41,13 +41,18 @@ public class DistrictParcel extends Parcel {
         GridRandom random = grid.getRandom();
         ContextProvider context = generator.getContextProvider();
         Direction roadDir = findRoad();
+        boolean roadFacing = roadDir != Direction.NONE;
+
+        if (!roadFacing) {
+            roadDir = Direction.getRandomDirection();
+        }
 
         // TODO Randomly choose size!
 
         //---- Randomly decide to place a schem, fist find one with correct orientation, if none found, place any that fits context
         if(random.getChance(60)){ //FIXME Hardcoded
             ContextType localContext = context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random);
-            List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir); //just use context in one corner
+            List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
             if(schems!=null&&schems.size()>0){
                 generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                 parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())), localContext, roadDir);
@@ -57,7 +62,7 @@ public class DistrictParcel extends Parcel {
                 generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + localContext + "going over to fallback");
                 //FALLBACK
                 if(fallback){
-                    schems = clips.getFit(chunkSizeX,chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir); //just use context in one corner //TODO use Direction.NONE
+                    schems = clips.getFit(chunkSizeX,chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
                     if(schems!=null&&schems.size()>0){
                         generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                         parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())), localContext, roadDir);
@@ -72,7 +77,7 @@ public class DistrictParcel extends Parcel {
 
         //---
         if((chunkSizeX<2)&&(chunkSizeZ<2)){ //no more iterations
-            List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ,context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir); //just use context in one corner
+            List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ,context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner
             if(schems!=null&&schems.size()>0){
                 generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                 parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
@@ -81,7 +86,7 @@ public class DistrictParcel extends Parcel {
             }else {
                 generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random) + "going over to fallback");
                 //FALLBACK
-                schems = clips.getFit(chunkSizeX,chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir); //just use context in one corner
+                schems = clips.getFit(chunkSizeX,chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner
                 if(schems!=null&&schems.size()>0){
                     generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                     parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
@@ -162,14 +167,14 @@ public class DistrictParcel extends Parcel {
         boolean northP = grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.HIGHWAY);
 
-        boolean southP = grid.getParcel(chunkX,chunkZ+1).getContextType().equals(ContextType.STREET) ||
-                grid.getParcel(chunkX,chunkZ+1).getContextType().equals(ContextType.HIGHWAY);
+        boolean southP = grid.getParcel(chunkX,chunkZ+chunkSizeZ+1).getContextType().equals(ContextType.STREET) ||
+                grid.getParcel(chunkX,chunkZ+chunkSizeZ+1).getContextType().equals(ContextType.HIGHWAY);
 
         boolean westP = grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.HIGHWAY);
 
-        boolean eastP = grid.getParcel(chunkX+1,chunkZ).getContextType().equals(ContextType.STREET) ||
-                grid.getParcel(chunkX+1,chunkZ).getContextType().equals(ContextType.HIGHWAY);
+        boolean eastP = grid.getParcel(chunkX+chunkSizeX+1,chunkZ).getContextType().equals(ContextType.STREET) ||
+                grid.getParcel(chunkX+chunkSizeX+1,chunkZ).getContextType().equals(ContextType.HIGHWAY);
 
         if (northP) {
             return Direction.NORTH;
@@ -202,7 +207,7 @@ public class DistrictParcel extends Parcel {
 //            }
 //        }
 
-        return Direction.getRandomDirection(); // haven't found any streets
+        return Direction.NONE; // haven't found any streets
     }
 
     private void partitionXwithRoads(Grid grid,int cut){

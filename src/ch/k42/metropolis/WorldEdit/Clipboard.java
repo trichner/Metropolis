@@ -38,7 +38,6 @@ public abstract class Clipboard {
     protected List<Cartesian> spawners = new ArrayList<Cartesian>();
 
     protected String name;
-    protected boolean westEast;
     protected String hashstring;
     protected File cache;
     protected int groundLevelY = 1;

@@ -20,19 +20,19 @@ public class UrbanGrid extends Grid{
         super(provider,random,chunkX,chunkZ);
         placeHighways();
         district=new DistrictParcel(this,chunkX+1,chunkZ+1,GRID_SIZE-2,GRID_SIZE-2);
-        //placeParcels(chunkSizeX+1,chunkSizeZ+1,GRID_SIZE-2,GRID_SIZE-2,);
-        //fillParcels(chunkSizeX+1,chunkSizeZ+1,new EmptyParcel(this,chunkSizeX+1,chunkSizeZ+1,GRID_SIZE-2,GRID_SIZE-2));
     }
 
     private void placeHighways(){ // places roads all around the grid
 
         int maxidx = GRID_SIZE-1;
 
+        // fill in the corners with Highway
         setParcel(0,0,new HighwayParcel(this,chunkX,chunkZ, RoadType.HIGHWAY_C_SE));
         setParcel(0,maxidx,new HighwayParcel(this,chunkX,chunkZ+maxidx, RoadType.HIGHWAY_C_NE));
         setParcel(maxidx,0,new HighwayParcel(this,chunkX+maxidx,chunkZ, RoadType.HIGHWAY_C_SW));
         setParcel(maxidx,maxidx,new HighwayParcel(this,chunkX+maxidx,chunkZ+maxidx, RoadType.HIGHWAY_C_NW));
 
+        // fill in all highways
         for(int i=1;i<maxidx;i++){
             setParcel(0,i,new HighwayParcel(this,chunkX,chunkZ+i,RoadType.HIGHWAY_SIDE_E)); //
             setParcel(i,0,new HighwayParcel(this,chunkX+i,chunkZ,RoadType.HIGHWAY_SIDE_S));
@@ -41,19 +41,11 @@ public class UrbanGrid extends Grid{
         }
     }
 
-    private void placeParcels(int chunkX,int chunkZ,int chunkSizeX,int chunkSizeZ){
-
-    }
-
-
     @Override
     public Parcel getParcel(int chunkX, int chunkZ){
         // make sure it's positive and between [0, GRID_SIZE)
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
-//        if(chunkSizeX>=GRID_SIZE || chunkSizeX<0 || chunkSizeZ>=GRID_SIZE || chunkSizeZ<0 ){
-//            throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkSizeX+"]["+chunkSizeZ+"]");
-//        }
         return parcels[x][z];
     }
 

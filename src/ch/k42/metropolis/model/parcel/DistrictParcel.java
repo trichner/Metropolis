@@ -35,6 +35,7 @@ public class DistrictParcel extends Parcel {
     private boolean fallback;
 
     public void populate(MetropolisGenerator generator,Chunk chunk) {
+
         fallback = generator.getPlugin().getMetropolisConfig().allowDirectionFallbackPlacing();
         ClipboardProvider clips = generator.getClipboardProvider();
         grid = generator.getGridProvider().getGrid(chunkX,chunkZ);
@@ -49,7 +50,7 @@ public class DistrictParcel extends Parcel {
 
         // TODO Randomly choose size!
 
-        //---- Randomly decide to place a schem, fist find one with correct orientation, if none found, place any that fits context
+        //---- Randomly decide to place a schematic, first find one with correct orientation, if none found, place any that fits context
         if(random.getChance(60)){ //FIXME Hardcoded
             ContextType localContext = context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random);
             List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
@@ -62,7 +63,7 @@ public class DistrictParcel extends Parcel {
                 generator.reportDebug("No schems found for size "+chunkSizeX+"x"+chunkSizeZ + " , context=" + localContext + "going over to fallback");
                 //FALLBACK
                 if(fallback){
-                    schems = clips.getFit(chunkSizeX,chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
+                    schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
                     if(schems!=null&&schems.size()>0){
                         generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
                         parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())), localContext, roadDir);
@@ -103,7 +104,7 @@ public class DistrictParcel extends Parcel {
         final int blockSize=14;
 
         // Failed? partition into 2 sub lots
-        if(chunkSizeX>chunkSizeZ){//if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occur
+        if (chunkSizeX>chunkSizeZ) { //if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occur
             double mean  = chunkSizeX/2.0;
             double sigma = mean/4.0;
             int cut = getNormalCut(mean,sigma,random); //random.getRandomInt(1,chunkSizeX-1);
@@ -124,7 +125,7 @@ public class DistrictParcel extends Parcel {
 
                 partitionXwithRoads(grid,cut);
             }
-        }else {
+        } else {
             double mean  = chunkSizeZ/2.0;
             double sigma = mean/2.0;
             int cut = getNormalCut(mean,sigma,random);

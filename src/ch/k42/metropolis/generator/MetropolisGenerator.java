@@ -53,9 +53,10 @@ public class MetropolisGenerator extends ChunkGenerator {
     private ContextProvider contextProvider;
     public DecayProvider decayProvider;
 
-    public MetropolisGenerator(MetropolisPlugin plugin, String worldName) {
+    public MetropolisGenerator(MetropolisPlugin plugin, String worldName, World.Environment env) {
         this.plugin = plugin;
         this.worldName = worldName;
+        this.worldEnvironment = env;
     }
 
     public ClipboardProviderWorldEdit getClipboardProvider() {

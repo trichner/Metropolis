@@ -56,12 +56,12 @@ public class ClipboardParcel extends Parcel {
             Parcel parcel;
             switch (direction){
                 case NORTH:
-                    offset = new Cartesian(cut.startPoint,0,-1);
+                    offset = new Cartesian(cut.startPoint+(clipboard.getSizeX(direction)-16),0,-1);
                     size = new Cartesian(cut.length,cutoutHeight,-cutoutDepth);
                     parcel = grid.getParcel( chunkX, chunkZ-1 );
                     roadCheck = parcel.getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                        //cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
                 case EAST:
@@ -70,15 +70,15 @@ public class ClipboardParcel extends Parcel {
                     parcel = grid.getParcel( chunkX+1, chunkZ );
                     roadCheck = parcel.getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                        //cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
                 case SOUTH:
-                    offset = new Cartesian(clipboard.getSizeX(direction)-cut.startPoint-1,0,clipboard.getSizeZ(direction));
+                    offset = new Cartesian(-clipboard.getSizeX(direction)-cut.startPoint-1,0,clipboard.getSizeZ(direction));
                     size = new Cartesian(-cut.length,cutoutHeight,cutoutDepth);
                     roadCheck = grid.getParcel( chunkX, chunkZ+1 ).getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                        cutoutBlocks(generator,base.add(offset),size,Material.GOLD_BLOCK);
                     }
                     break;
                 case WEST:
@@ -87,7 +87,7 @@ public class ClipboardParcel extends Parcel {
                     parcel = grid.getParcel( chunkX-1, chunkZ );
                     roadCheck = parcel.getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
+                        //cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
             }

@@ -63,7 +63,7 @@ public class ClipboardParcel extends Parcel {
                     parcel = grid.getParcel( chunkX, chunkZ-1 );
                     roadCheck = parcel.getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.GOLD_BLOCK);
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
                 case EAST:
@@ -72,7 +72,7 @@ public class ClipboardParcel extends Parcel {
                     parcel = grid.getParcel( chunkX+1, chunkZ );
                     roadCheck = parcel.getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.GOLD_BLOCK);
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
                 case SOUTH:
@@ -80,7 +80,7 @@ public class ClipboardParcel extends Parcel {
                     size = new Cartesian(cut.length,cutoutHeight,cutoutDepth);
                     roadCheck = grid.getParcel( chunkX, chunkZ+(clipboard.getSizeZ(direction)/16) ).getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.GOLD_BLOCK);
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
                 case WEST:
@@ -89,7 +89,7 @@ public class ClipboardParcel extends Parcel {
                     parcel = grid.getParcel( chunkX-1, chunkZ );
                     roadCheck = parcel.getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
-                        cutoutBlocks(generator,base.add(offset),size,Material.GOLD_BLOCK);
+                        cutoutBlocks(generator,base.add(offset),size,Material.STONE);
                     }
                     break;
             }

@@ -131,7 +131,6 @@ public class ClipboardWorldEdit extends Clipboard {
 
 	@Override
 	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction) {
-        generator.reportDebug("streetLevel: "+streetLevel+" groundLevelY: "+groundLevelY);
 		int blockY = getBottom(streetLevel);
         Vector at = new Vector(blockX, blockY, blockZ);
 		try {

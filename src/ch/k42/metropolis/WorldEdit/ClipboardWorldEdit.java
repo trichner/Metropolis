@@ -95,6 +95,8 @@ public class ClipboardWorldEdit extends Clipboard {
         if(hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
+            groundLevelY = streetLvlEstimate;
+            generator.reportDebug("Ground Level: "+settings.getGroundLevelY());
             if(!storeConfig(schemname + metaExtension)){
                 generator.reportDebug("Can't storeConfig config file.");
             }
@@ -129,11 +131,13 @@ public class ClipboardWorldEdit extends Clipboard {
 
 	@Override
 	public void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction) {
+        generator.reportDebug("streetLevel: "+streetLevel+" groundLevelY: "+groundLevelY);
 		int blockY = getBottom(streetLevel);
         Vector at = new Vector(blockX, blockY, blockZ);
 		try {
 			EditSession editSession = getEditSession(generator);
 			editSession.setFastMode(true);
+
             //place Schematic
 			place(editSession, at, true, direction);
 

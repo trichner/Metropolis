@@ -11,6 +11,8 @@ import org.bukkit.Chunk;
 
 import ch.k42.metropolis.WorldEdit.*;
 import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
  * Represents a Parcel with a schematic/clipboard as building.
@@ -95,8 +97,17 @@ public class ClipboardParcel extends Parcel {
             }
         }
 
+        if (generator.worldEnvironment == World.Environment.NETHER) {
+            lavaRivers(generator, chunk);
+        }
 
+    }
 
+    /**
+     * generates lava rivers over the builds
+     */
+    private void lavaRivers(MetropolisGenerator generator, Chunk chunk){
+        SimplexOctaveGenerator lavaGen = new SimplexOctaveGenerator(generator.getWorldSeed(), 2);
     }
 
     /**

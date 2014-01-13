@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 
 public class CommandMetropolisMaria implements CommandExecutor {
     private final MetropolisPlugin plugin;
+    public final static String DEFAULT_WORLD_NAME = "Metropolis";
 
     public CommandMetropolisMaria(MetropolisPlugin plugin)
     {
@@ -36,7 +37,25 @@ public class CommandMetropolisMaria implements CommandExecutor {
             // if the world doesn't exist but the player has permission to create it
             if (world == null && player.hasPermission("metropolis.create")) {
                 sender.sendMessage("Maria is working hard... This will take a moment...");
-                world = getDefaultMetropolis(World.Environment.NORMAL);
+
+                String worldname;
+                worldname = DEFAULT_WORLD_NAME;
+
+                if(split.length > 0) {
+                    if (!split[0].isEmpty()) {
+                        worldname = split[0];
+                    }
+                }
+
+                if(split.length > 1) {
+                    if (!split[1].isEmpty() && ( split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END") ) ) {
+                        world = getDefaultMetropolis(worldname, World.Environment.valueOf(split[1]));
+                    } else {
+                        world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
+                    }
+                } else {
+                    world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
+                }
             } else if (!player.hasPermission("metropolis.create")) {
                 sender.sendMessage("Maria has detected that you do not have permissions for this command.");
             }
@@ -62,23 +81,41 @@ public class CommandMetropolisMaria implements CommandExecutor {
                 }
             }
         } else {
-            World world = getDefaultMetropolis(World.Environment.NORMAL); // from console, does this work?
+            // console made the command
+            World world;
+            String worldname;
+            worldname = DEFAULT_WORLD_NAME;
+
+            if(split.length > 0) {
+                if (!split[0].isEmpty()) {
+                    worldname = split[0];
+                }
+            }
+
+            if(split.length > 1) {
+                if (!split[1].isEmpty() && ( split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END") ) ) {
+                    world = getDefaultMetropolis(worldname, World.Environment.valueOf(split[1]));
+                } else {
+                    world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
+                }
+            } else {
+                world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
+            }
         }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     // prime world support (loosely based on ExpansiveTerrain)
-	public final static String DEFAULT_WORLD_NAME = "Metropolis";
-    public World getDefaultMetropolis(World.Environment env) {
+    public World getDefaultMetropolis(String worldname, World.Environment env) {
         Bukkit.getLogger().info("---- looking for Metropolis");
         // built yet?
-        World metropolis = Bukkit.getServer().getWorld(DEFAULT_WORLD_NAME);
+        World metropolis = Bukkit.getServer().getWorld(worldname);
         Bukkit.getLogger().info("---- Metropolis already built");
         if (metropolis == null) {
             // if neither then create/build it!
-            WorldCreator worldcreator = new WorldCreator(DEFAULT_WORLD_NAME);
+            WorldCreator worldcreator = new WorldCreator(worldname);
             worldcreator.environment(env);
-            MetropolisGenerator generator = new MetropolisGenerator(plugin, DEFAULT_WORLD_NAME, env);
+            MetropolisGenerator generator = new MetropolisGenerator(plugin, worldname, env);
             plugin.setGenerator(generator);
             worldcreator.generator(generator);
             metropolis = Bukkit.getServer().createWorld(worldcreator);

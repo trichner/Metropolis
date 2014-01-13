@@ -12,7 +12,7 @@ prefix: Metropolis
 commands:
   metropolis:
     description: asks Maria kindly to travel to Metropolis
-    usage: /metropolis
+    usage: /metropolis [worldname] [environment]
     permission: metropolis.command
   freder:
       description: retrieves info about the location

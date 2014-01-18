@@ -50,14 +50,8 @@ public class ContextProvider {
 
         generator.reportDebug("Value: "+maxHeight);
 
-        if (maxHeight < -0.4) {
-            return ContextType.FARM;
-        } else if (maxHeight < -0.1) {
-            if (alternate < -0.4) {
-                return ContextType.PARK;
-            } else {
-                return ContextType.RESIDENTIAL;
-            }
+        if (maxHeight < -0.3) {
+            return ContextType.RESIDENTIAL;
         } else if (maxHeight < 0.2) {
             if (alternate > 0.4) {
                 return ContextType.INDUSTRIAL;

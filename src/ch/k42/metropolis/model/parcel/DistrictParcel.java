@@ -24,7 +24,7 @@ public class DistrictParcel extends Parcel {
     private DistrictParcel partition1; // if it gets partitioned, used this two to save them
     private DistrictParcel partition2;
 
-    private Parcel parcel = null;    //it it doesn't get partitioned, only placed, use this
+    private Parcel parcel = null;    //if it doesn't get partitioned, only placed, use this
 
     public DistrictParcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
         super(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ, ContextType.UNDEFINED);

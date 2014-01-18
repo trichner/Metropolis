@@ -9,6 +9,7 @@ import ch.k42.metropolis.model.enums.Direction;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.bukkit.*;
@@ -122,8 +123,6 @@ public class ClipboardWorldEdit extends Clipboard {
         cuboid.rotate2D(angle);
         return cuboid;
     }
-
-    private final static int SPAWNER_SUBSTITUTE = Material.SPONGE.getId();
 	
 	private EditSession getEditSession(MetropolisGenerator generator) {
 		return new EditSession(new BukkitWorld(generator.getWorld()), blockCount);
@@ -143,15 +142,14 @@ public class ClipboardWorldEdit extends Clipboard {
             try {
                 //fill chests
                 World world = generator.getWorld();
-                GridRandom rand = generator.getGridProvider().getRandom(blockX>>4,blockZ>>4);
+                GridRandom rand = generator.getGridProvider().getRandom(blockX >> 4, blockZ >> 4);
                 Cartesian base = new Cartesian(blockX,blockY,blockZ);
-                Cartesian temp;
 
                 if(generator.getPlugin().getMetropolisConfig().isChestRenaming()){ //do we really want to name them all?
                     for(Cartesian c : chests){
-                        temp = base.add(c);
+                        Cartesian temp = base.add(c);
                         Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
-                        if(block.getState() instanceof Chest){
+                        if(block.getType() == Material.CHEST){
                             if(!rand.getChance(settings.getChestOdds())){ //we were unlucky, chest doesn't get placed{
                                 block.setType(Material.AIR);
                             }else { //rename chest
@@ -166,7 +164,7 @@ public class ClipboardWorldEdit extends Clipboard {
                                 //generator.reportDebug("Placed a chest!");
                             }
                         }else {
-                            generator.reportDebug("Chest coordinates were wrong!");
+                            generator.reportDebug("Chest coordinates were wrong! ("+block+")");
                         }
                     }
                 }
@@ -175,10 +173,10 @@ public class ClipboardWorldEdit extends Clipboard {
 
                 if(generator.getPlugin().getMetropolisConfig().isSpawnerPlacing()){ // do we even place any?
                     for(Cartesian c : spawners){
-                        temp = base.add(c);
+                        Cartesian temp = base.add(c);
                         Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
 
-                        if(block.getType().equals(Material.SPONGE)){
+                        if(block.getType() == Material.SPONGE){
                             if(!rand.getChance(settings.getSpawnerOdds())){ //we were unlucky, chest doesn't get placed{
                                 block.setType(Material.AIR);
                             }else { //set spawn type
@@ -192,7 +190,7 @@ public class ClipboardWorldEdit extends Clipboard {
                                 }
                             }
                         }else {
-                            generator.reportDebug("Chest coordinates were wrong!");
+                            generator.reportDebug("Spawner coordinates were wrong!");
                         }
                     }
                 }
@@ -279,6 +277,8 @@ public class ClipboardWorldEdit extends Clipboard {
     private void place(EditSession editSession, Vector pos, boolean noAir, Direction direction) throws Exception {
 
         CuboidClipboard cc;
+        chests.clear();
+        spawners.clear();
 
         switch (direction) {
             case EAST:
@@ -298,7 +298,15 @@ public class ClipboardWorldEdit extends Clipboard {
         for (int x = 0; x < cc.getWidth(); x++){
 			for (int y = 0; y < cc.getHeight(); y++){
 				for (int z = 0; z < cc.getLength(); z++) {
-                    editSession.setBlock(new Vector(x, y, z).add(pos), cc.getBlock(new Vector(x, y, z)));
+                    BaseBlock block = cc.getBlock(new Vector(x, y, z));
+
+                    if(block.getId() == Material.CHEST.getId()){
+                        chests.add(new Cartesian(x,y,z));
+                    } else if (block.getId() == Material.SPONGE.getId()){
+                        spawners.add(new Cartesian(x,y,z));
+                    }
+
+                    editSession.setBlock(new Vector(x, y, z).add(pos), block);
 				}
             }
         }

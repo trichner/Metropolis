@@ -107,7 +107,20 @@ public class ClipboardParcel extends Parcel {
      * generates lava rivers over the builds
      */
     private void lavaRivers(MetropolisGenerator generator, Chunk chunk){
+
+        double altscale = 16;
+
         SimplexOctaveGenerator lavaGen = new SimplexOctaveGenerator(generator.getWorldSeed(), 2);
+
+        for(int z=this.chunkZ<<4;z<this.chunkZ<<4;z++){
+            for(int x=this.chunkX<<4;x<this.chunkX<<4;x++){
+                double alternate = lavaGen.noise(x * altscale, z * altscale, 0.3D, 0.6D, true);
+
+                for(int y=0;y<generator.getWorld().getMaxHeight();y++) {
+                    generator.getWorld().getBlockAt(x,y,z).setType(Material.AIR);
+                }
+            }
+        }
     }
 
     /**

@@ -269,7 +269,9 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
      * @return list containing all matching clipboards, might be empty but never null
      */
     public List<Clipboard> getFit(int chunkX, int chunkZ, ContextType contextType, Direction roadDir, boolean roadFacing){
-        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,contextType,RoadType.NONE,roadDir,roadFacing));
+        ClipboardKey key = new ClipboardKey(chunkX,chunkZ,contextType,RoadType.NONE,roadDir,roadFacing);
+        Bukkit.getServer().getLogger().info(key.toString());
+        List<Clipboard> list = clipboards.get(key);
         if(list==null) list = new LinkedList<Clipboard>();
         return list;
     }

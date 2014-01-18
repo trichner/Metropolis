@@ -108,7 +108,7 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     public Direction getDirection() {
         if (rotate) {
-            return Direction.getRandomDirection();
+            return Direction.NORTH;
         } else {
             return Direction.NONE;
         }

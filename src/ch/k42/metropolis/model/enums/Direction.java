@@ -1,5 +1,6 @@
 package ch.k42.metropolis.model.enums;
 
+import ch.k42.metropolis.minions.GridRandom;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -26,9 +27,9 @@ public enum Direction {
         }
         return NONE;
     }
-    public static Direction getRandomDirection() {
-        Random random = new Random();
-        Direction output = values()[random.nextInt(values().length)];
+    public static Direction getRandomDirection(GridRandom random) {
+        Direction[] dirs = getDirections();
+        Direction output = dirs[random.getRandomInt(dirs.length)];
         return output;
     }
     public static Direction[] getDirections(){

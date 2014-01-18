@@ -179,7 +179,7 @@ public class RoadParcel extends StreetParcel {
             }
             if(clip!=null){
                 road=clip;
-                clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT, Direction.NONE); // FIXME Hardcoded street level
+                clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT, Direction.NORTH); // FIXME Hardcoded street level
                 decayRoadChunk(generator,chunk,Constants.BUILD_HEIGHT-2);
                 decaySidewalk(generator,chunk,Constants.BUILD_HEIGHT-1);
             }

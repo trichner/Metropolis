@@ -60,7 +60,7 @@ public class ClipboardParcel extends Parcel {
 
             switch (direction){
                 case NORTH:
-                    offset = new Cartesian(clipboard.getSizeX(direction)-cut.startPoint-1,0,-1);
+                    offset = new Cartesian(clipboard.getSizeX(direction)-cut.startPoint,0,-1);
                     size = new Cartesian(-cut.length,cutoutHeight,-cutoutDepth);
                     parcel = grid.getParcel( chunkX, chunkZ-1 );
                     roadCheck = parcel.getContextType();
@@ -69,7 +69,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case EAST:
-                    offset = new Cartesian(clipboard.getSizeX(direction),0,clipboard.getSizeZ(direction)-cut.startPoint-1);
+                    offset = new Cartesian(clipboard.getSizeX(direction),0,clipboard.getSizeZ(direction)-cut.startPoint);
                     size = new Cartesian(cutoutDepth,cutoutHeight,-cut.length);
                     parcel = grid.getParcel( chunkX+(clipboard.getSizeX(direction)>>4), chunkZ );
                     roadCheck = parcel.getContextType();
@@ -78,7 +78,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case SOUTH:
-                    offset = new Cartesian(cut.startPoint,0,clipboard.getSizeZ(direction));
+                    offset = new Cartesian(cut.startPoint+1,0,clipboard.getSizeZ(direction));
                     size = new Cartesian(cut.length,cutoutHeight,cutoutDepth);
                     roadCheck = grid.getParcel( chunkX, chunkZ+(clipboard.getSizeZ(direction)>>4) ).getContextType();
                     if ( roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY) ) {
@@ -86,7 +86,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case WEST:
-                    offset = new Cartesian(-1,0,cut.startPoint);
+                    offset = new Cartesian(-1,0,cut.startPoint+1);
                     size = new Cartesian(-cutoutDepth,cutoutHeight,cut.length);
                     parcel = grid.getParcel( chunkX-1, chunkZ );
                     roadCheck = parcel.getContextType();

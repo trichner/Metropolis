@@ -48,8 +48,6 @@ public class ContextProvider {
 //        int size = 2;
 //        double maxHeight = gen1.noise((chunkX+1600)/size, (chunkZ+1600)/size, frequency);
 
-        generator.reportDebug("Value: "+maxHeight);
-
         if (maxHeight < -0.3) {
             return ContextType.RESIDENTIAL;
         } else if (maxHeight < 0.2) {

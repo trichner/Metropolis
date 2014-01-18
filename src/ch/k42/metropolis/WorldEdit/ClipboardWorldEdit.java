@@ -93,7 +93,7 @@ public class ClipboardWorldEdit extends Clipboard {
         CuboidClipboard westCuboid = rotateSchematic(90);
         format.save(westCuboid, westFile);
 
-        if(hasBootstrappedConfig){ // estimate street level? good for bootstrapping config
+        if (hasBootstrappedConfig || groundLevelY == 0){ // estimate street level? good for bootstrapping config
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
             groundLevelY = streetLvlEstimate;
@@ -156,9 +156,9 @@ public class ClipboardWorldEdit extends Clipboard {
                                 Chest chest = (Chest) block.getState(); //block has to be a chest
                                 //chest.getInventory()
                                 String name = DirtyHacks.getChestName(chest);
-                                generator.reportDebug("Was name: [" + name + "]");
+                                //generator.reportDebug("Was name: [" + name + "]");
                                 name = validateChestName(rand, name);
-                                generator.reportDebug("New name: " + name);
+                                //generator.reportDebug("New name: " + name);
 
                                 nameChest(chest, name);
                                 //generator.reportDebug("Placed a chest!");
@@ -184,9 +184,9 @@ public class ClipboardWorldEdit extends Clipboard {
                                 if(block.getState() instanceof CreatureSpawner){
                                     CreatureSpawner spawner = (CreatureSpawner) block.getState(); //block has to be a chest
                                     spawner.setSpawnedType(getSpawnedEntity(rand));
-                                    generator.reportDebug("Placed a spawner!");
+                                    //generator.reportDebug("Placed a spawner!");
                                 }else{
-                                    generator.reportDebug("Unable to place Spawner.");
+                                    //generator.reportDebug("Unable to place Spawner.");
                                 }
                             }
                         }else {

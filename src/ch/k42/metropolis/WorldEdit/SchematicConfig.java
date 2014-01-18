@@ -23,7 +23,7 @@ import java.util.Set;
  */
 public class SchematicConfig extends AbstractSchematicConfig {
 
-    private int groundLevelY = 1;
+    private int groundLevelY = 0;
     private int oddsOfAppearanceInPercent = 100;
     private LootType[] lootCollections={LootType.RESIDENTIAL};
     private int lootMinLevel=1;
@@ -37,7 +37,7 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     private RoadCutout[] cutouts = {};
     private ContextType[] context ={ContextType.HIGHRISE,ContextType.MIDRISE,ContextType.LOWRISE,ContextType.RESIDENTIAL,ContextType.INDUSTRIAL,ContextType.FARM,ContextType.PARK};
-    private RoadType roadType = RoadType.STREET_X;
+    private RoadType roadType = RoadType.NONE;
     private Set<Material> decayExceptionMaterials = new HashSet();
     private String[] schematics = {};
 

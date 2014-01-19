@@ -56,7 +56,11 @@ public class DistrictParcel extends Parcel {
             List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
             if(schems!=null&&schems.size()>0){
                 generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
-                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())), localContext, roadDir);
+                Clipboard schem = schems.get(random.getRandomInt(schems.size()));
+                while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
+                    schem = schems.get(random.getRandomInt(schems.size()));
+                }
+                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schem, localContext, roadDir);
                 parcel.populate(generator,chunk);
                 return;
             }else { // find a schematic, but ignore road
@@ -66,7 +70,11 @@ public class DistrictParcel extends Parcel {
                     schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
                     if(schems!=null&&schems.size()>0){
                         generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
-                        parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())), localContext, roadDir);
+                        Clipboard schem = schems.get(random.getRandomInt(schems.size()));
+                        while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
+                            schem = schems.get(random.getRandomInt(schems.size()));
+                        }
+                        parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schem, localContext, roadDir);
                         parcel.populate(generator,chunk);
                         return;
                     }else {
@@ -81,7 +89,11 @@ public class DistrictParcel extends Parcel {
             List<Clipboard> schems = clips.getFit(chunkSizeX,chunkSizeZ,context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner
             if(schems!=null&&schems.size()>0){
                 generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
-                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
+                Clipboard schem = schems.get(random.getRandomInt(schems.size()));
+                while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
+                    schem = schems.get(random.getRandomInt(schems.size()));
+                }
+                parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schem,context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
                 parcel.populate(generator,chunk);
                 return;
             } else {
@@ -90,7 +102,11 @@ public class DistrictParcel extends Parcel {
                 schems = clips.getFit(chunkSizeX,chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner
                 if(schems!=null&&schems.size()>0){
                     generator.reportDebug("Found "+schems.size()+" schematics for this spot, placing one");
-                    parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schems.get(random.getRandomInt(schems.size())),context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
+                    Clipboard schem = schems.get(random.getRandomInt(schems.size()));
+                    while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
+                        schem = schems.get(random.getRandomInt(schems.size()));
+                    }
+                    parcel = new ClipboardParcel(grid,chunkX,chunkZ,chunkSizeX,chunkSizeZ,schem,context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
                     parcel.populate(generator,chunk);
                     return;
                 }

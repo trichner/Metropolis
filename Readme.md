@@ -102,13 +102,15 @@ This will match any schematic with the same name, no matter what folder it is in
 This will also override any "schematic.json" files that are automatically bootstrapped.
 
 ```json
-"schematics": [
-    "blue.schematic",
-    "cyan.schematic",
-    "gray.schematic",
-    "green.schematic",
-    "orange.schematic"
-]
+{
+    "schematics": [
+        "blue.schematic",
+        "cyan.schematic",
+        "gray.schematic",
+        "green.schematic",
+        "orange.schematic"
+    ]
+}
 ```
 
 #### rotate

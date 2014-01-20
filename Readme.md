@@ -101,6 +101,16 @@ An array of schematics that this configuration will be applied to. Currently def
 This will match any schematic with the same name, no matter what folder it is in, so make sure your names are somewhat unique.
 This will also override any "schematic.json" files that are automatically bootstrapped.
 
+```json
+"schematics": [
+    "blue.schematic",
+    "cyan.schematic",
+    "gray.schematic",
+    "green.schematic",
+    "orange.schematic"
+]
+```
+
 #### rotate
 
 Type: `boolean`

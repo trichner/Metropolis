@@ -51,7 +51,7 @@ public abstract class Clipboard {
     protected int chunkSizeX; /** Size in chunks */
     protected int chunkSizeZ; /** Size in chunks */
 
-	public Clipboard(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings) throws Exception {
+	public Clipboard(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
 
         this.name = file.getName();
         this.globalSettings = globalSettings;
@@ -61,7 +61,7 @@ public abstract class Clipboard {
         generator.reportDebug(this.name+": "+hashstring);
 
         // grab the data
-		load(generator, file);
+		load(generator, file, batchedConfigs);
 		
 		// finish figuring things out
 		blockCount = sizeX * sizeY * sizeZ;
@@ -71,7 +71,7 @@ public abstract class Clipboard {
 
 	}
 	
-	protected abstract void load(MetropolisGenerator generator, File file) throws Exception;
+	protected abstract void load(MetropolisGenerator generator, File file, List<SchematicConfig> batchedConfigs) throws Exception;
 
     public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction);
 

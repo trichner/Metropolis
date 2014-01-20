@@ -122,8 +122,8 @@ public class SchematicConfig extends AbstractSchematicConfig {
         return roadType;
     }
 
-    public String[] getSchematics() {
-        return schematics;
+    public List<String> getSchematics() {
+        return Arrays.asList(schematics);
     }
 
     public boolean getRoadFacing() {

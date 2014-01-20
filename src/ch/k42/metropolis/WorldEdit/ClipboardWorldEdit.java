@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * Represents a structure defined by a loaded file in a cuboid.
@@ -44,18 +45,18 @@ public class ClipboardWorldEdit extends Clipboard {
 
     private static SchematicFormat format;
 
-	public ClipboardWorldEdit(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings) throws Exception {
-        super(generator, file, cacheFolder, globalSettings);
+	public ClipboardWorldEdit(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
+        super(generator, file, cacheFolder, globalSettings, batchedConfigs);
 	}
 
     private boolean hasBootstrappedConfig = false;
 
 	@Override
-	protected void load(MetropolisGenerator generator, File schemfile) throws Exception {
+	protected void load(MetropolisGenerator generator, File schemfile, List<SchematicConfig> batchedConfigs) throws Exception {
 
         String schemname = schemfile.getAbsolutePath();
 
-        loadConfigOrDefault(schemname+metaExtension);
+        loadConfigOrDefault(schemname + metaExtension, schemfile.getName(), batchedConfigs);
 
         contextTypes = settings.getContext();
         groundLevelY = settings.getGroundLevelY();
@@ -313,7 +314,15 @@ public class ClipboardWorldEdit extends Clipboard {
 
 	}
 
-    private void loadConfigOrDefault(String path){
+    private void loadConfigOrDefault(String path, String name, List<SchematicConfig> batchedConfigs){
+
+        for (SchematicConfig configFile: batchedConfigs) {
+            if (configFile.getSchematics().contains(name)) {
+                settings = configFile;
+                return;
+            }
+        }
+          
         if(!loadConfig(path)){ // did we succeed?
             hasBootstrappedConfig = true;
             Bukkit.getServer().getLogger().warning("Unable to load config of schematic: "+path);

@@ -97,6 +97,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
     private File schematicsFolder;
     private File cacheFolder;
+    private List<SchematicConfig> batchedConfigs = new ArrayList<SchematicConfig>();
     private Map<ClipboardKey,List<Clipboard>> clipboards = new HashMap<ClipboardKey, List<Clipboard>>();
     private Map<String,Clipboard> clipboardsByName = new HashMap<String, Clipboard>();
 
@@ -187,6 +188,15 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
         };
     }
 
+    private FilenameFilter matchConfigs() {
+        return new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".json");
+            }
+        };
+    }
+
     private FileFilter isDirectory() {
         return new FileFilter() {
             @Override
@@ -202,18 +212,35 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
             loadConfigOrDefault(schematicsFolder.getPath()+settingsname);  // load global config
 
+            //---- load all config files
+            List<File> configFiles = findAllConfigsRecursively(schematicsFolder, new ArrayList<File>());
+            Gson gson = new Gson();
+
+            for (File configFile: configFiles) {
+                try {
+                    String json = new String(Files.readAllBytes(configFile.toPath()));
+                    json = Nimmersatt.friss(json);
+                    SchematicConfig config = gson.fromJson(json,SchematicConfig.class);
+                    if(config.getSchematics().size() > 0) {
+                        batchedConfigs.add(config);
+                        generator.reportMessage("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " added.");
+                    }
+                } catch (Exception e) {
+                    generator.reportException("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " could NOT be loaded",e);
+                }
+            }
+
             //---- load all schematic files
             List<File> schematicFiles = findAllSchematicsRecursively(schematicsFolder, new ArrayList<File>());
 
             for (File schematicFile: schematicFiles) {
                 try {
                     Clipboard clip=null;
-                    clip = new ClipboardWorldEdit(generator, schematicFile, cacheFolder, globalSettings);
+                    clip = new ClipboardWorldEdit(generator, schematicFile, cacheFolder, globalSettings, batchedConfigs);
                     clipboardsByName.put(clip.getName(),clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
                         for (Direction dir : Direction.getDirections()) {
                             ClipboardKey key = new ClipboardKey(clip.chunkSizeX,clip.chunkSizeZ,c,clip.getSettings().getRoadType(),dir,clip.getSettings().getRoadFacing());
-                            //generator.reportMessage("[ClipboardProvider][ClipboardKey]: "+key.toString());
                             List<Clipboard> list = clipboards.get(key);
                             if(list==null){
                                 list= new ArrayList();
@@ -237,12 +264,22 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
     private List<File> findAllSchematicsRecursively(File path, List<File> schematics){
         File[] schematicFiles = path.listFiles(matchSchematics());
-        schematics.addAll(Arrays.asList(path.listFiles(matchSchematics())));
+        schematics.addAll(Arrays.asList(schematicFiles));
         File[] subfolders = path.listFiles(isDirectory());
         for(File folder : subfolders){              // recursively search in all subfolders
             findAllSchematicsRecursively(folder, schematics); // this could lead to a endless loop, maybe a max_depth would be clever...
         }
         return schematics;
+    }
+
+    private List<File> findAllConfigsRecursively(File path, List<File> configs){
+        File[] configFiles = path.listFiles(matchConfigs());
+        configs.addAll(Arrays.asList(configFiles));
+        File[] subfolders = path.listFiles(isDirectory());
+        for(File folder : subfolders){              // recursively search in all subfolders
+            findAllConfigsRecursively(folder, configs); // this could lead to a endless loop, maybe a max_depth would be clever...
+        }
+        return configs;
     }
 
     /**

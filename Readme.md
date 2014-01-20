@@ -97,7 +97,9 @@ An array of the enumerated name of the context that this schematic will appear i
 
 Type: `filename|array`
 
-**TODO:** An array of schematics that this configuration will be applied to. Currently defaults to the name of the JSON file.
+An array of schematics that this configuration will be applied to. Currently defaults to the name of the JSON file.
+This will match any schematic with the same name, no matter what folder it is in, so make sure your names are somewhat unique.
+This will also override any "schematic.json" files that are automatically bootstrapped.
 
 #### rotate
 

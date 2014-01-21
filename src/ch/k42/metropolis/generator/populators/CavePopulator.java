@@ -18,7 +18,19 @@ import ch.k42.metropolis.minions.XYZ;
  * @author Spaceribs
  */
 public class CavePopulator extends BlockPopulator {
+
     private static final int MAX_LEVEL =Constants.BUILD_HEIGHT-20;
+    private enum CaveType {
+        AIR,
+        SAND,
+        DIRT,
+        LAVA,
+        WATER;
+        public static CaveType getRandom(Random random) {
+            return values()[random.nextInt(values().length)];
+        }
+    }
+
     @Override
     public void populate(final World world, final Random random, Chunk source) {
 
@@ -32,7 +44,8 @@ public class CavePopulator extends BlockPopulator {
 
             final int y = random.nextInt(maxY);
             Set<XYZ> snake = selectBlocksForCave(world, random, x, y, z);
-            buildCave(world, snake.toArray(new XYZ[0]));
+            CaveType caveType = CaveType.getRandom(random);
+            buildCave(world, snake.toArray(new XYZ[0]), caveType);
             for (XYZ block : snake) {
                 world.unloadChunkRequest(block.x / 16, block.z / 16);
             }
@@ -52,31 +65,31 @@ public class CavePopulator extends BlockPopulator {
             if (random.nextInt(20) == 0) {
                 blockY++;
             }
-            else if (world.getBlockTypeIdAt(blockX, blockY + 2, blockZ) == 0) {
+            else if (world.getBlockAt(blockX, blockY + 2, blockZ).getType() == Material.AIR) {
                 blockY += 2;
             }
-            else if (world.getBlockTypeIdAt(blockX + 2, blockY, blockZ) == 0) {
+            else if (world.getBlockAt(blockX + 2, blockY, blockZ).getType() == Material.AIR) {
                 blockX++;
             }
-            else if (world.getBlockTypeIdAt(blockX - 2, blockY, blockZ) == 0) {
+            else if (world.getBlockAt(blockX - 2, blockY, blockZ).getType() == Material.AIR) {
                 blockX--;
             }
-            else if (world.getBlockTypeIdAt(blockX, blockY, blockZ + 2) == 0) {
+            else if (world.getBlockAt(blockX, blockY, blockZ + 2).getType() == Material.AIR) {
                 blockZ++;
             }
-            else if (world.getBlockTypeIdAt(blockX, blockY, blockZ - 2) == 0) {
+            else if (world.getBlockAt(blockX, blockY, blockZ - 2).getType() == Material.AIR) {
                 blockZ--;
             }
-            else if (world.getBlockTypeIdAt(blockX + 1, blockY, blockZ) == 0) {
+            else if (world.getBlockAt(blockX + 1, blockY, blockZ).getType() == Material.AIR) {
                 blockX++;
             }
-            else if (world.getBlockTypeIdAt(blockX - 1, blockY, blockZ) == 0) {
+            else if (world.getBlockAt(blockX - 1, blockY, blockZ).getType() == Material.AIR) {
                 blockX--;
             }
-            else if (world.getBlockTypeIdAt(blockX, blockY, blockZ + 1) == 0) {
+            else if (world.getBlockAt(blockX, blockY, blockZ + 1).getType() == Material.AIR) {
                 blockZ++;
             }
-            else if (world.getBlockTypeIdAt(blockX, blockY, blockZ - 1) == 0) {
+            else if (world.getBlockAt(blockX, blockY, blockZ - 1).getType() == Material.AIR) {
                 blockZ--;
             }
             else if (random.nextBoolean()) {
@@ -94,13 +107,13 @@ public class CavePopulator extends BlockPopulator {
             }
 
             if (world.getBlockTypeIdAt(blockX, blockY, blockZ) != 0) {
-                int radius = 1 + random.nextInt(2);
+                int radius = 2 + random.nextInt(4);
                 int radius2 = radius * radius + 1;
                 for (int x = -radius; x <= radius; x++) {
                     for (int y = -radius; y <= radius; y++) {
                         for (int z = -radius; z <= radius; z++) {
-                            if (x * x + y * y + z * z <= radius2 && y >= 0&& y < 128) {
-                                if (world.getBlockTypeIdAt(blockX + x, blockY+ y, blockZ + z) == 0) {
+                            if (x * x + y * y + z * z <= radius2 && y >= 0 && y < 128) {
+                                if (world.getBlockAt(blockX + x, blockY+ y, blockZ + z).getType() == Material.AIR) {
                                     airHits++;
                                 } else {
                                     block.x = blockX + x;
@@ -122,11 +135,38 @@ public class CavePopulator extends BlockPopulator {
         return snakeBlocks;
     }
 
-    static void buildCave(World world, XYZ[] snakeBlocks) {
-        for (XYZ loc : snakeBlocks) {
-            Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-            if (!block.isEmpty() && !block.isLiquid()&& block.getType() != Material.BEDROCK) {
-                block.setType(Material.AIR);
+    static void buildCave(World world, XYZ[] snakeBlocks, CaveType caveType) {
+        if (snakeBlocks.length > 0) {
+            int midpoint = Math.abs(snakeBlocks[0].y + snakeBlocks[snakeBlocks.length-1].y) / 2;
+            for (XYZ loc : snakeBlocks) {
+                Block block = world.getBlockAt(loc.x, loc.y, loc.z);
+                if (!block.isEmpty() && !block.isLiquid()&& block.getType() != Material.BEDROCK) {
+                    switch (caveType) {
+                        case AIR:
+                            block.setType(Material.AIR);
+                            break;
+                        case SAND:
+                            block.setType(Material.SAND);
+                            break;
+                        case DIRT:
+                            block.setType(Material.DIRT);
+                            break;
+                        case LAVA:
+                            if (loc.y < midpoint) {
+                                block.setType(Material.STATIONARY_LAVA);
+                            } else {
+                                block.setType(Material.AIR);
+                            }
+                            break;
+                        case WATER:
+                            if (loc.y < midpoint) {
+                                block.setType(Material.STATIONARY_WATER);
+                            } else {
+                                block.setType(Material.AIR);
+                            }
+                            break;
+                    }
+                }
             }
         }
     }

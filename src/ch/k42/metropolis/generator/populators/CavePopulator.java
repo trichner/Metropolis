@@ -15,17 +15,20 @@ import ch.k42.metropolis.minions.XYZ;
 
 /**
  * Adds caves within the stone. Based on the Nordic world plugin.
+ *
  * @author Spaceribs
  */
 public class CavePopulator extends BlockPopulator {
 
-    private static final int MAX_LEVEL =Constants.BUILD_HEIGHT-20;
+    private static final int MAX_LEVEL = Constants.BUILD_HEIGHT - 20;
+
     private enum CaveType {
         AIR,
         SAND,
         DIRT,
         LAVA,
         WATER;
+
         public static CaveType getRandom(Random random) {
             return values()[random.nextInt(values().length)];
         }
@@ -58,41 +61,31 @@ public class CavePopulator extends BlockPopulator {
         int airHits = 0;
         XYZ block = new XYZ();
         while (true) {
-            if (airHits > 1200 || blockY>MAX_LEVEL) {
+            if (airHits > 1200 || blockY > MAX_LEVEL) {
                 break;
             }
 
             if (random.nextInt(20) == 0) {
                 blockY++;
-            }
-            else if (world.getBlockAt(blockX, blockY + 2, blockZ).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX, blockY + 2, blockZ).getType() == Material.AIR) {
                 blockY += 2;
-            }
-            else if (world.getBlockAt(blockX + 2, blockY, blockZ).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX + 2, blockY, blockZ).getType() == Material.AIR) {
                 blockX++;
-            }
-            else if (world.getBlockAt(blockX - 2, blockY, blockZ).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX - 2, blockY, blockZ).getType() == Material.AIR) {
                 blockX--;
-            }
-            else if (world.getBlockAt(blockX, blockY, blockZ + 2).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX, blockY, blockZ + 2).getType() == Material.AIR) {
                 blockZ++;
-            }
-            else if (world.getBlockAt(blockX, blockY, blockZ - 2).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX, blockY, blockZ - 2).getType() == Material.AIR) {
                 blockZ--;
-            }
-            else if (world.getBlockAt(blockX + 1, blockY, blockZ).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX + 1, blockY, blockZ).getType() == Material.AIR) {
                 blockX++;
-            }
-            else if (world.getBlockAt(blockX - 1, blockY, blockZ).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX - 1, blockY, blockZ).getType() == Material.AIR) {
                 blockX--;
-            }
-            else if (world.getBlockAt(blockX, blockY, blockZ + 1).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX, blockY, blockZ + 1).getType() == Material.AIR) {
                 blockZ++;
-            }
-            else if (world.getBlockAt(blockX, blockY, blockZ - 1).getType() == Material.AIR) {
+            } else if (world.getBlockAt(blockX, blockY, blockZ - 1).getType() == Material.AIR) {
                 blockZ--;
-            }
-            else if (random.nextBoolean()) {
+            } else if (random.nextBoolean()) {
                 if (random.nextBoolean()) {
                     blockX++;
                 } else {
@@ -113,7 +106,7 @@ public class CavePopulator extends BlockPopulator {
                     for (int y = -radius; y <= radius; y++) {
                         for (int z = -radius; z <= radius; z++) {
                             if (x * x + y * y + z * z <= radius2 && y >= 0 && y < 128) {
-                                if (world.getBlockAt(blockX + x, blockY+ y, blockZ + z).getType() == Material.AIR) {
+                                if (world.getBlockAt(blockX + x, blockY + y, blockZ + z).getType() == Material.AIR) {
                                     airHits++;
                                 } else {
                                     block.x = blockX + x;
@@ -137,10 +130,10 @@ public class CavePopulator extends BlockPopulator {
 
     static void buildCave(World world, XYZ[] snakeBlocks, CaveType caveType) {
         if (snakeBlocks.length > 0) {
-            int midpoint = Math.abs(snakeBlocks[0].y + snakeBlocks[snakeBlocks.length-1].y) / 2;
+            int midpoint = Math.abs(snakeBlocks[0].y + snakeBlocks[snakeBlocks.length - 1].y) / 2;
             for (XYZ loc : snakeBlocks) {
                 Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                if (!block.isEmpty() && !block.isLiquid()&& block.getType() != Material.BEDROCK) {
+                if (!block.isEmpty() && !block.isLiquid() && block.getType() != Material.BEDROCK) {
                     switch (caveType) {
                         case AIR:
                             block.setType(Material.AIR);

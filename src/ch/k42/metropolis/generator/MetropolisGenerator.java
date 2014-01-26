@@ -28,8 +28,8 @@ public class MetropolisGenerator extends ChunkGenerator {
         public void populate(World aWorld, Random random, Chunk chunk) {
             try {
                 MetropolisGenerator.this.initializeWorldInfo(aWorld);
-                gridProvider.populate(MetropolisGenerator.this,chunk);
-                gridProvider.postPopulate(MetropolisGenerator.this,chunk);
+                gridProvider.populate(MetropolisGenerator.this, chunk);
+                gridProvider.postPopulate(MetropolisGenerator.this, chunk);
             } catch (Exception e) {
                 reportException("BlockPopulator FAILED", e);
             }
@@ -133,18 +133,16 @@ public class MetropolisGenerator extends ChunkGenerator {
 
             initializeWorldInfo(aWorld);
 
-            biomes.setBiome(chunkX, chunkZ, Biome.FOREST);
-
             byte[][] chunk = new byte[world.getMaxHeight() / 16][];
-            for (int x=0; x<16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
-                for (int z=0; z<16; z++) {
+            for (int x = 0; x < 16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
+                for (int z = 0; z < 16; z++) {
                     int maxHeight = 65; //how thick we want out flat terrain to be
-                    for (int y=1;y<maxHeight;y++) {
-                        Material decay = natureDecay.checkBlock(world, (chunkX*16)+x, y, (chunkZ*16)+z);
+                    for (int y = 1; y < maxHeight; y++) {
+                        Material decay = natureDecay.checkBlock(world, (chunkX * 16) + x, y, (chunkZ * 16) + z);
                         if (decay != null) {
-                            setBlock(x,y,z,chunk,decay);
+                            setBlock(x, y, z, chunk, decay);
                         } else {
-                            setBlock(x,y,z,chunk,Material.STONE);
+                            setBlock(x, y, z, chunk, Material.STONE);
                         }
                     }
                 }
@@ -205,12 +203,12 @@ public class MetropolisGenerator extends ChunkGenerator {
     }
 
     public void reportDebug(String message) {
-        if(plugin.getMetropolisConfig().isDebugEnabled())
+        if (plugin.getMetropolisConfig().isDebugEnabled())
             plugin.getLogger().info("[====DEBUG====]" + message);
     }
 
     public void reportMessage(String message1, String message2) {
-        plugin.getLogger().info(message1 + "     " +message2);
+        plugin.getLogger().info(message1 + "     " + message2);
     }
 
     public void reportException(String message, Exception e) {

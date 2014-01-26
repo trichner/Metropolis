@@ -25,9 +25,9 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     private int groundLevelY = 0;
     private int oddsOfAppearanceInPercent = 100;
-    private LootType[] lootCollections={LootType.RESIDENTIAL};
-    private int lootMinLevel=1;
-    private int lootMaxLevel=5;
+    private LootType[] lootCollections = {LootType.RESIDENTIAL};
+    private int lootMinLevel = 1;
+    private int lootMaxLevel = 5;
     private boolean rotate = true;
     private boolean roadFacing = true;
 
@@ -36,12 +36,13 @@ public class SchematicConfig extends AbstractSchematicConfig {
     private int decayIntensityInPercent = 100;
 
     private RoadCutout[] cutouts = {};
-    private ContextType[] context ={ContextType.HIGHRISE,ContextType.MIDRISE,ContextType.LOWRISE,ContextType.RESIDENTIAL,ContextType.INDUSTRIAL,ContextType.FARM,ContextType.PARK};
+    private ContextType[] context = {ContextType.HIGHRISE, ContextType.MIDRISE, ContextType.LOWRISE, ContextType.RESIDENTIAL, ContextType.INDUSTRIAL, ContextType.FARM, ContextType.PARK};
     private RoadType roadType = RoadType.NONE;
     private Set<Material> decayExceptionMaterials = new HashSet();
     private String[] schematics = {};
 
-    public SchematicConfig() {}
+    public SchematicConfig() {
+    }
 
     public int getGroundLevelY() {
         return groundLevelY;
@@ -57,6 +58,7 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     /**
      * The odds of a schematic actually appearing if it can
+     *
      * @return odds in percent, [0,100]
      */
     public int getOddsOfAppearance() {
@@ -67,12 +69,13 @@ public class SchematicConfig extends AbstractSchematicConfig {
         return lootCollections;
     }
 
-    public LootType getRandomLootCollection(GridRandom random){
+    public LootType getRandomLootCollection(GridRandom random) {
         return lootCollections[random.getRandomInt(lootCollections.length)];
     }
 
     /**
      * The odds of a chest actually appearing if it can
+     *
      * @return odds in percent, [0,100]
      */
     public int getChestOdds() {
@@ -81,6 +84,7 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     /**
      * The odds of a spawner actually appearing if it can
+     *
      * @return odds in percent, [0,100]
      */
     public int getSpawnerOdds() {
@@ -89,6 +93,7 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     /**
      * The custom decay options for this schematic
+     *
      * @return DecayOption according to this schematic
      */
     public DecayOption getDecayOption() {
@@ -96,10 +101,10 @@ public class SchematicConfig extends AbstractSchematicConfig {
         double intensity = decayIntensityInPercent / 100.0;
 
         //sanitize
-        if(intensity>2) intensity=1;
-        else if(intensity<0) intensity =0;
+        if (intensity > 2) intensity = 1;
+        else if (intensity < 0) intensity = 0;
 
-        return new DecayOption(intensity,decayExceptionMaterials);
+        return new DecayOption(intensity, decayExceptionMaterials);
     }
 
     public List<ContextType> getContext() {

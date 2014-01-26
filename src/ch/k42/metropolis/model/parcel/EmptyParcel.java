@@ -9,13 +9,14 @@ import org.bukkit.Chunk;
 
 /**
  * Represents a Parcel with no building.
+ *
  * @author Thomas Richner
  */
 public class EmptyParcel extends Parcel {
 
     public EmptyParcel(Grid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
         super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, ContextType.UNDEFINED);
-        grid.fillParcels(chunkX,chunkZ,this);
+        grid.fillParcels(chunkX, chunkZ, this);
     }
 
     @Override

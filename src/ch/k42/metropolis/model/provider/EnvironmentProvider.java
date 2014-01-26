@@ -17,13 +17,14 @@ import java.util.Set;
 
 /**
  * Natural decay checker
+ *
  * @author Spaceribs
  */
 public abstract class EnvironmentProvider {
 
     private Long seed;
 
-    public EnvironmentProvider(Long newSeed){
+    public EnvironmentProvider(Long newSeed) {
         this.seed = newSeed;
     }
 

@@ -22,7 +22,7 @@ abstract public class Grid {
     protected int chunkX;
     protected int chunkZ;
 
-    public Grid(GridProvider gridProvider,GridRandom random,int chunkX,int chunkZ) {
+    public Grid(GridProvider gridProvider, GridRandom random, int chunkX, int chunkZ) {
         this.random = random;
         this.gridProvider = gridProvider;
         this.statistics = new GridStatistics();
@@ -40,13 +40,16 @@ abstract public class Grid {
 
     /**
      * Returns the parcel at the given relative coordinates in the interval [0,Grid.GRIDSIZE)
+     *
      * @param chunkX chunk coordinates x
      * @param chunkZ chunk coordinates z
      * @return the Parcel at the given coordinate or null if there is none
      */
     public abstract Parcel getParcel(int chunkX, int chunkZ);
+
     /**
      * Places the parcel at the given relative coordinates in the interval [0,Grid.GRIDSIZE)
+     *
      * @param chunkX chunk coordinates x
      * @param chunkZ chunk coordinates z
      * @param parcel a parcel to place
@@ -54,5 +57,5 @@ abstract public class Grid {
      */
     public abstract void setParcel(int chunkX, int chunkZ, Parcel parcel);
 
-    public abstract void fillParcels(int chunkX,int chunkZ, Parcel parcel);
+    public abstract void fillParcels(int chunkX, int chunkZ, Parcel parcel);
 }

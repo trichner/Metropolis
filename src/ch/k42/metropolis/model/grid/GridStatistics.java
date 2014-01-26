@@ -11,42 +11,46 @@ import java.util.Map;
  */
 public class GridStatistics {
 
-    private class Incrementor{
+    private class Incrementor {
         private int value = 0;
-        public int increment(){
+
+        public int increment() {
             value++;
             return value;
         }
-        public int decrement(){
+
+        public int decrement() {
             value--;
             return value;
         }
-        public int getValue(){
+
+        public int getValue() {
             return value;
         }
-        public double getDouble(){
+
+        public double getDouble() {
             return (double) value;
         }
     }
 
-    private int numberOfEntries=0;
+    private int numberOfEntries = 0;
 
-    private Map<Integer,Incrementor> sizes = new HashMap<Integer, Incrementor>();
+    private Map<Integer, Incrementor> sizes = new HashMap<Integer, Incrementor>();
 
-    public void incrementSize(int sizeX,int sizeZ){
-        int area = sizeX*sizeZ;
+    public void incrementSize(int sizeX, int sizeZ) {
+        int area = sizeX * sizeZ;
         Incrementor incrementor = sizes.get(area);
-        if(incrementor==null){
+        if (incrementor == null) {
             incrementor = new Incrementor();
         }
         incrementor.increment();
-        sizes.put(area,incrementor);
+        sizes.put(area, incrementor);
         numberOfEntries++;
     }
 
-    public double getDistribution(int sizeX,int sizeZ){
-        if(numberOfEntries==0) return 0;
-        return sizes.get(sizeX*sizeZ).getDouble()/numberOfEntries;
+    public double getDistribution(int sizeX, int sizeZ) {
+        if (numberOfEntries == 0) return 0;
+        return sizes.get(sizeX * sizeZ).getDouble() / numberOfEntries;
     }
 
 }

@@ -19,40 +19,38 @@ import org.bukkit.entity.Player;
 public class CommandMetropolisFreder implements CommandExecutor {
     private final MetropolisPlugin plugin;
 
-    public CommandMetropolisFreder(MetropolisPlugin plugin)
-    {
+    public CommandMetropolisFreder(MetropolisPlugin plugin) {
         this.plugin = plugin;
     }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] split)
-    {
-		if (sender instanceof Player) {
-			Player player = (Player) sender;
-			if (player.hasPermission("metropolis.command")) {
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
+            if (player.hasPermission("metropolis.command")) {
 
                 World metropolis = Bukkit.getServer().getWorld(CommandMetropolisMaria.DEFAULT_WORLD_NAME);
-                if(player.getWorld() == metropolis){ // ok, in same world
+                if (player.getWorld() == metropolis) { // ok, in same world
                     Location location = player.getLocation();
-                    int chunkX = location.getBlockX()>>4;
-                    int chunkZ = location.getBlockZ()>>4;
+                    int chunkX = location.getBlockX() >> 4;
+                    int chunkZ = location.getBlockZ() >> 4;
                     Parcel parcel = plugin.getGenerator().getGridProvider().getParcel(chunkX, chunkZ);
-                    if(parcel==null)
+                    if (parcel == null)
                         player.sendMessage("No Parcel found at this position (something went terribly wrong)");
                     player.sendMessage("Parcel: " + parcel.toString());
 
                     return true;
-                }else {
+                } else {
                     return false;
                 }
 
-			} else {
-				sender.sendMessage("You do not have permission to use this command");
-				return false;
-			}
-		} else {
-			sender.sendMessage("This command is only usable by a player.");
-			return false;
-		}
+            } else {
+                sender.sendMessage("You do not have permission to use this command");
+                return false;
+            }
+        } else {
+            sender.sendMessage("This command is only usable by a player.");
+            return false;
+        }
     }
 }

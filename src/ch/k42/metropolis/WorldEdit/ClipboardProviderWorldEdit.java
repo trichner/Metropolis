@@ -21,9 +21,8 @@ import java.util.*;
  * This class loads, manages and provides schematics.
  *
  * @author Thomas Richner
- *
  */
-public class ClipboardProviderWorldEdit implements ClipboardProvider{
+public class ClipboardProviderWorldEdit implements ClipboardProvider {
 
     private class ClipboardKey {
         private int chunkSizeX;
@@ -44,24 +43,25 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
         @Override
         public boolean equals(Object obj) {
-            if(obj==null) return false;
-            if(!(obj instanceof ClipboardKey)) return false;
+            if (obj == null) return false;
+            if (!(obj instanceof ClipboardKey)) return false;
 
             ClipboardKey k = (ClipboardKey) obj;
 
             if (roadDir.equals(Direction.WEST) || roadDir.equals(Direction.EAST)) {
-                if (chunkSizeX!=k.chunkSizeZ && chunkSizeZ!=k.chunkSizeX) return false;
+                if (chunkSizeX != k.chunkSizeZ && chunkSizeZ != k.chunkSizeX) return false;
             } else {
-                if (chunkSizeX!=k.chunkSizeX && chunkSizeZ!=k.chunkSizeZ) return false;
+                if (chunkSizeX != k.chunkSizeX && chunkSizeZ != k.chunkSizeZ) return false;
             }
 
-            if(roadFacing && !k.roadFacing) return false;
+            if (roadFacing && !k.roadFacing) return false;
 
-            if(!roadFacing && k.roadFacing) return false;
+            if (!roadFacing && k.roadFacing) return false;
 
-            if(!context.equals(k.context)) return false;
+            if (!context.equals(k.context)) return false;
 
-            if((context.equals(ContextType.STREET)||context.equals(ContextType.HIGHWAY))&&!roadType.equals(k.roadType)) return false;
+            if ((context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY)) && !roadType.equals(k.roadType))
+                return false;
 
             return true;    //To change body of overridden methods use File | Settings | File Templates.
         }
@@ -78,14 +78,14 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
         }
 
         @Override
-        public String toString(){
-            String info = "ClipboardKey"+
-                    " chunkSizeX:"+chunkSizeX+
-                    " chunkSizeZ:"+chunkSizeZ+
-                    " roadFacing:"+roadFacing+
-                    " context:"+context+
-                    " roadDir:"+roadDir+
-                    " roadType:"+roadType;
+        public String toString() {
+            String info = "ClipboardKey" +
+                    " chunkSizeX:" + chunkSizeX +
+                    " chunkSizeZ:" + chunkSizeZ +
+                    " roadFacing:" + roadFacing +
+                    " context:" + context +
+                    " roadDir:" + roadDir +
+                    " roadType:" + roadType;
             return info;
         }
     }
@@ -98,8 +98,8 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
     private File schematicsFolder;
     private File cacheFolder;
     private List<SchematicConfig> batchedConfigs = new ArrayList<SchematicConfig>();
-    private Map<ClipboardKey,List<Clipboard>> clipboards = new HashMap<ClipboardKey, List<Clipboard>>();
-    private Map<String,Clipboard> clipboardsByName = new HashMap<String, Clipboard>();
+    private Map<ClipboardKey, List<Clipboard>> clipboards = new HashMap<ClipboardKey, List<Clipboard>>();
+    private Map<String, Clipboard> clipboardsByName = new HashMap<String, Clipboard>();
 
     private GlobalSchematicConfig globalSettings;
 
@@ -112,7 +112,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
         worldEditPlugin = (WorldEditPlugin) pm.getPlugin(pluginName);
 
         // not there? darn
-        if (worldEditPlugin == null){
+        if (worldEditPlugin == null) {
             Bukkit.getLogger().warning("No WorldEdit found!");
             throw new Exception("Couldn't find WorldEdit plugin.");
         }
@@ -145,15 +145,15 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
         File pluginFolder = generator.getPlugin().getDataFolder();
         generator.reportDebug("looking for PluginFolder");
 
-        if(!pluginFolder.isDirectory()){
+        if (!pluginFolder.isDirectory()) {
             pluginFolder.mkdir();
         }
 
         if (pluginFolder.isDirectory()) {
             generator.reportDebug("found PluginFolder");
             // forget all those shape and ore type and just go for the world name
-            schematicsFolder = findFolder(pluginFolder,foldername);
-            cacheFolder = findFolder(pluginFolder,cachename);
+            schematicsFolder = findFolder(pluginFolder, foldername);
+            cacheFolder = findFolder(pluginFolder, cachename);
 
 //			// shape folder (normal, floating, etc.)
 //			File shapeFolder = findFolder(pluginFolder, generator.shapeProvider.getCollectionName());
@@ -210,73 +210,73 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
         if (schematicsFolder != null && cacheFolder != null) {
 
-            loadConfigOrDefault(schematicsFolder.getPath()+settingsname);  // load global config
+            loadConfigOrDefault(schematicsFolder.getPath() + settingsname);  // load global config
 
             //---- load all config files
             List<File> configFiles = findAllConfigsRecursively(schematicsFolder, new ArrayList<File>());
             Gson gson = new Gson();
 
-            for (File configFile: configFiles) {
+            for (File configFile : configFiles) {
                 try {
                     String json = new String(Files.readAllBytes(configFile.toPath()));
                     json = Nimmersatt.friss(json);
-                    SchematicConfig config = gson.fromJson(json,SchematicConfig.class);
-                    if(config.getSchematics().size() > 0) {
+                    SchematicConfig config = gson.fromJson(json, SchematicConfig.class);
+                    if (config.getSchematics().size() > 0) {
                         batchedConfigs.add(config);
                         generator.reportMessage("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " added.");
                     }
                 } catch (Exception e) {
-                    generator.reportException("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " could NOT be loaded",e);
+                    generator.reportException("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " could NOT be loaded", e);
                 }
             }
 
             //---- load all schematic files
             List<File> schematicFiles = findAllSchematicsRecursively(schematicsFolder, new ArrayList<File>());
 
-            for (File schematicFile: schematicFiles) {
+            for (File schematicFile : schematicFiles) {
                 try {
-                    Clipboard clip=null;
+                    Clipboard clip = null;
                     clip = new ClipboardWorldEdit(generator, schematicFile, cacheFolder, globalSettings, batchedConfigs);
-                    clipboardsByName.put(clip.getName(),clip);
+                    clipboardsByName.put(clip.getName(), clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
                         for (Direction dir : Direction.getDirections()) {
-                            ClipboardKey key = new ClipboardKey(clip.chunkSizeX,clip.chunkSizeZ,c,clip.getSettings().getRoadType(),dir,clip.getSettings().getRoadFacing());
+                            ClipboardKey key = new ClipboardKey(clip.chunkSizeX, clip.chunkSizeZ, c, clip.getSettings().getRoadType(), dir, clip.getSettings().getRoadFacing());
                             List<Clipboard> list = clipboards.get(key);
-                            if(list==null){
-                                list= new ArrayList();
+                            if (list == null) {
+                                list = new ArrayList();
                             }
                             // add the clip to the result
                             list.add(clip);
-                            clipboards.put(key,list);
+                            clipboards.put(key, list);
                         }
                     }
 
-                    generator.reportMessage("[ClipboardProvider] Schematic "+schematicFile.getName() + " successfully loaded.");
+                    generator.reportMessage("[ClipboardProvider] Schematic " + schematicFile.getName() + " successfully loaded.");
                 } catch (Exception e) {
-                    generator.reportException("[ClipboardProvider] Schematic " + schematicFile.getName() + " could NOT be loaded",e);
+                    generator.reportException("[ClipboardProvider] Schematic " + schematicFile.getName() + " could NOT be loaded", e);
                 }
             }
 
-        }else {
+        } else {
             throw new FileNotFoundException("Couldn't find schematics folder!");
         }
     }
 
-    private List<File> findAllSchematicsRecursively(File path, List<File> schematics){
+    private List<File> findAllSchematicsRecursively(File path, List<File> schematics) {
         File[] schematicFiles = path.listFiles(matchSchematics());
         schematics.addAll(Arrays.asList(schematicFiles));
         File[] subfolders = path.listFiles(isDirectory());
-        for(File folder : subfolders){              // recursively search in all subfolders
+        for (File folder : subfolders) {              // recursively search in all subfolders
             findAllSchematicsRecursively(folder, schematics); // this could lead to a endless loop, maybe a max_depth would be clever...
         }
         return schematics;
     }
 
-    private List<File> findAllConfigsRecursively(File path, List<File> configs){
+    private List<File> findAllConfigsRecursively(File path, List<File> configs) {
         File[] configFiles = path.listFiles(matchConfigs());
         configs.addAll(Arrays.asList(configFiles));
         File[] subfolders = path.listFiles(isDirectory());
-        for(File folder : subfolders){              // recursively search in all subfolders
+        for (File folder : subfolders) {              // recursively search in all subfolders
             findAllConfigsRecursively(folder, configs); // this could lead to a endless loop, maybe a max_depth would be clever...
         }
         return configs;
@@ -284,70 +284,72 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider{
 
     /**
      * Returns a list containing all available clipboards that match the size and context
-     * @param chunkX chunksize in X direction
-     * @param chunkZ chunksize in Z direction
+     *
+     * @param chunkX      chunksize in X direction
+     * @param chunkZ      chunksize in Z direction
      * @param contextType context of the structure
-     * @param roadType defines the type of the road, only applies if context is STREET
+     * @param roadType    defines the type of the road, only applies if context is STREET
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getRoadFit(int chunkX, int chunkZ, ContextType contextType, RoadType roadType){
-        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX,chunkZ,contextType,roadType,Direction.NORTH,false));
-        if(list==null) list = new LinkedList<Clipboard>();
+    public List<Clipboard> getRoadFit(int chunkX, int chunkZ, ContextType contextType, RoadType roadType) {
+        List<Clipboard> list = clipboards.get(new ClipboardKey(chunkX, chunkZ, contextType, roadType, Direction.NORTH, false));
+        if (list == null) list = new LinkedList<Clipboard>();
         return list;
     }
 
     /**
      * Returns a list containing all available clipboards that match the size and context
-     * @param chunkX chunksize in X direction
-     * @param chunkZ chunksize in Z direction
+     *
+     * @param chunkX      chunksize in X direction
+     * @param chunkZ      chunksize in Z direction
      * @param contextType context of the structure
-     * @param roadDir direction of the road
-     * @param roadFacing road facing clipboards
+     * @param roadDir     direction of the road
+     * @param roadFacing  road facing clipboards
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(int chunkX, int chunkZ, ContextType contextType, Direction roadDir, boolean roadFacing){
-        ClipboardKey key = new ClipboardKey(chunkX,chunkZ,contextType,RoadType.NONE,roadDir,roadFacing);
+    public List<Clipboard> getFit(int chunkX, int chunkZ, ContextType contextType, Direction roadDir, boolean roadFacing) {
+        ClipboardKey key = new ClipboardKey(chunkX, chunkZ, contextType, RoadType.NONE, roadDir, roadFacing);
         List<Clipboard> list = clipboards.get(key);
-        if(list==null) list = new LinkedList<Clipboard>();
+        if (list == null) list = new LinkedList<Clipboard>();
         Bukkit.getServer().getLogger().info(list.toString());
         return list;
     }
 
-    public Clipboard getByName(String name){
+    public Clipboard getByName(String name) {
         return clipboardsByName.get(name);
     }
 
 
-    private void loadConfigOrDefault(String path){
-        if(!loadConfig(path)){ // did we succeed?
+    private void loadConfigOrDefault(String path) {
+        if (!loadConfig(path)) { // did we succeed?
             Bukkit.getServer().getLogger().warning("Unable to load global schematics settings file");
-            if(!storeConfig(path)){ // no, so just storeConfig the default config
+            if (!storeConfig(path)) { // no, so just storeConfig the default config
                 Bukkit.getLogger().severe("Unable to load global schematics settings file");
             }
-        }else {
+        } else {
             Bukkit.getServer().getLogger().info("Successfully loaded global schematic settings file: " + path);
         }
     }
 
-    private boolean loadConfig(String path){
+    private boolean loadConfig(String path) {
         Gson gson = new Gson();
         try {
             String json = new String(Files.readAllBytes(Paths.get(path)));
             json = Nimmersatt.friss(json);
-            globalSettings = gson.fromJson(json,GlobalSchematicConfig.class);
+            globalSettings = gson.fromJson(json, GlobalSchematicConfig.class);
             return true;
         } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
             globalSettings = new GlobalSchematicConfig(); // couldn't read config file? use default
-            Bukkit.getLogger().throwing(this.getClass().getName(),"loadConfig",e);
+            Bukkit.getLogger().throwing(this.getClass().getName(), "loadConfig", e);
             return false;
         }
     }
 
-    private boolean storeConfig(String path){
+    private boolean storeConfig(String path) {
         try {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             String file = gson.toJson(globalSettings);
-            Files.write(Paths.get(path),file.getBytes()); //overwrite existing stuff
+            Files.write(Paths.get(path), file.getBytes()); //overwrite existing stuff
             return true;
         } catch (IOException e) {
             Bukkit.getLogger().throwing(this.getClass().getName(), "storeConfig config", e);

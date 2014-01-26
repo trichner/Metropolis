@@ -17,16 +17,18 @@ public abstract class AbstractSchematicConfig {
     public class RoadCutout {
         public final int startPoint;
         public final int length;
+
         private RoadCutout(int lengthStart, int lengthEnd) {
             this.startPoint = lengthStart;
             this.length = lengthEnd;
         }
     }
-    protected class SchematicSpawner{
+
+    protected class SchematicSpawner {
         private EntityType Type = EntityType.ZOMBIE;
         private int Weight = 10;
 
-        private transient int threshold=-1;
+        private transient int threshold = -1;
 
         public SchematicSpawner(EntityType type, int weight) {
             Type = type;
@@ -55,40 +57,40 @@ public abstract class AbstractSchematicConfig {
     protected transient int cachedSpawnerLevelSum = -1;
     protected transient boolean cachedSpawner = false;
 
-    protected void cacheSpawnerThresholds(){
-        if(Spawners==null||Spawners.length==0){
+    protected void cacheSpawnerThresholds() {
+        if (Spawners == null || Spawners.length == 0) {
             //initDefaultSpawners();
         }
         Spawners[0].setThreshold(Spawners[0].getWeight());
-        SchematicSpawner current,previous=Spawners[0];
-        for(int i=1;i<Spawners.length;i++){
-            current=Spawners[i];
-            current.setThreshold(previous.getThreshold()+current.getWeight());
-            previous=current;
+        SchematicSpawner current, previous = Spawners[0];
+        for (int i = 1; i < Spawners.length; i++) {
+            current = Spawners[i];
+            current.setThreshold(previous.getThreshold() + current.getWeight());
+            previous = current;
         }
-        cachedSpawnerLevelSum=previous.getThreshold();
-        cachedSpawner=true;
+        cachedSpawnerLevelSum = previous.getThreshold();
+        cachedSpawner = true;
     }
 
-    protected int getSpawnerEntityWeightSum(){
-        if(!cachedSpawner)
+    protected int getSpawnerEntityWeightSum() {
+        if (!cachedSpawner)
             cacheSpawnerThresholds();
         return cachedSpawnerLevelSum;
     }
 
 
-
     /**
      * Selects a random EntityType
+     *
      * @param rand a number between [0,SUM]
      * @return
      */
-    public EntityType getRandomSpawnerEntity(GridRandom rand){
-        if(!cachedSpawner)
+    public EntityType getRandomSpawnerEntity(GridRandom rand) {
+        if (!cachedSpawner)
             cacheSpawnerThresholds();
         int random = rand.getRandomInt(getSpawnerEntityWeightSum());
-        for(int i=0;i<Spawners.length;i++){
-            if(random<Spawners[i].getThreshold())
+        for (int i = 0; i < Spawners.length; i++) {
+            if (random < Spawners[i].getThreshold())
                 return Spawners[i].getType();
         }
         org.bukkit.Bukkit.getLogger().warning("No EntityType for Spawner could be randomly determinated, random argument too low?");

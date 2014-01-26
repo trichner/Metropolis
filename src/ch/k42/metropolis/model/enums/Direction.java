@@ -8,6 +8,7 @@ import java.util.Random;
 
 /**
  * Possible values: north, south, west, east
+ *
  * @author Thomas Richner
  */
 public enum Direction {
@@ -17,23 +18,27 @@ public enum Direction {
     SOUTH((byte) 0x3),
     NONE((byte) 0x0);
     public final byte data;
-    Direction(byte data){
-        this.data=data;
+
+    Direction(byte data) {
+        this.data = data;
     }
-    public static Direction getByData(byte data){
-        for(Direction d : Direction.values()){
-            if(d.data==(data))
+
+    public static Direction getByData(byte data) {
+        for (Direction d : Direction.values()) {
+            if (d.data == (data))
                 return d;
         }
         return NONE;
     }
+
     public static Direction getRandomDirection(GridRandom random) {
         Direction[] dirs = getDirections();
         Direction output = dirs[random.getRandomInt(dirs.length)];
         return output;
     }
-    public static Direction[] getDirections(){
-        Direction[] dirs = { Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST };
+
+    public static Direction[] getDirections() {
+        Direction[] dirs = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
         return dirs;
     }
 }

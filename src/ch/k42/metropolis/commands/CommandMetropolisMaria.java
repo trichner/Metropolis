@@ -22,15 +22,13 @@ public class CommandMetropolisMaria implements CommandExecutor {
     private final MetropolisPlugin plugin;
     public final static String DEFAULT_WORLD_NAME = "Metropolis";
 
-    public CommandMetropolisMaria(MetropolisPlugin plugin)
-    {
+    public CommandMetropolisMaria(MetropolisPlugin plugin) {
         this.plugin = plugin;
     }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] split)
-    {
-        if(sender instanceof Player){
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
+        if (sender instanceof Player) {
             Player player = (Player) sender;
             World world = Bukkit.getServer().getWorld(DEFAULT_WORLD_NAME);
 
@@ -41,14 +39,14 @@ public class CommandMetropolisMaria implements CommandExecutor {
                 String worldname;
                 worldname = DEFAULT_WORLD_NAME;
 
-                if(split.length > 0) {
+                if (split.length > 0) {
                     if (!split[0].isEmpty()) {
                         worldname = split[0];
                     }
                 }
 
-                if(split.length > 1) {
-                    if (!split[1].isEmpty() && ( split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END") ) ) {
+                if (split.length > 1) {
+                    if (!split[1].isEmpty() && (split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END"))) {
                         world = getDefaultMetropolis(worldname, World.Environment.valueOf(split[1]));
                     } else {
                         world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
@@ -86,14 +84,14 @@ public class CommandMetropolisMaria implements CommandExecutor {
             String worldname;
             worldname = DEFAULT_WORLD_NAME;
 
-            if(split.length > 0) {
+            if (split.length > 0) {
                 if (!split[0].isEmpty()) {
                     worldname = split[0];
                 }
             }
 
-            if(split.length > 1) {
-                if (!split[1].isEmpty() && ( split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END") ) ) {
+            if (split.length > 1) {
+                if (!split[1].isEmpty() && (split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END"))) {
                     world = getDefaultMetropolis(worldname, World.Environment.valueOf(split[1]));
                 } else {
                     world = getDefaultMetropolis(worldname, World.Environment.NORMAL);

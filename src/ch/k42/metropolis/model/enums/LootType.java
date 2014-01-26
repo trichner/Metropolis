@@ -17,6 +17,7 @@ public enum LootType {
     GRAVE("grave"),
     HIDDEN("hidden");
     public final String name;
+
     private LootType(String name) {
         this.name = name;
     }

@@ -12,7 +12,6 @@ import org.bukkit.Material;
  * myself copying stuff from RoadParcel to HighwayParcel
  *
  * @author Thomas Richner
- *
  */
 public abstract class StreetParcel extends Parcel {
 
@@ -30,10 +29,10 @@ public abstract class StreetParcel extends Parcel {
             amount--;
             int x = rand.getRandomInt(16);
             int z = rand.getRandomInt(16);
-            if(!chunk.getBlock(x,y+1,z).getType().equals(Material.AIR)||chunk.getBlock(x,y,z).getType().equals(Material.AIR)){
+            if (!chunk.getBlock(x, y + 1, z).getType().equals(Material.AIR) || chunk.getBlock(x, y, z).getType().equals(Material.AIR)) {
                 continue;
             }
-            switch (rand.getRandomInt(10)){
+            switch (rand.getRandomInt(10)) {
                 case 0:
                 case 1:
                 case 2: //30%
@@ -48,10 +47,10 @@ public abstract class StreetParcel extends Parcel {
                 case 7:
                 case 8: //20%
                     chunk.getBlock(x, y, z).setType(Material.DIRT);
-                    chunk.getBlock(x, y+1, z).setTypeIdAndData(Material.LONG_GRASS.getId(),(byte)rand.getRandomInt(3),false);
+                    chunk.getBlock(x, y + 1, z).setTypeIdAndData(Material.LONG_GRASS.getId(), (byte) rand.getRandomInt(3), false);
                     break;
                 case 9: //10% since halfslabs are quite annoying
-                    chunk.getBlock(x, y, z).setTypeIdAndData(Material.STEP.getId(),(byte)3,false);
+                    chunk.getBlock(x, y, z).setTypeIdAndData(Material.STEP.getId(), (byte) 3, false);
                     break;
             }
         }
@@ -65,17 +64,17 @@ public abstract class StreetParcel extends Parcel {
             int x = rand.getRandomInt(16);
             int z = rand.getRandomInt(16);
 
-            if(!chunk.getBlock(x,y+1,z).getType().equals(Material.AIR)||chunk.getBlock(x,y,z).getType().equals(Material.AIR)){
+            if (!chunk.getBlock(x, y + 1, z).getType().equals(Material.AIR) || chunk.getBlock(x, y, z).getType().equals(Material.AIR)) {
                 continue;
             }
-            if(rand.getChance(50)){
-                chunk.getBlock(x,y,z).setTypeIdAndData(Material.STEP.getId(),(byte) 0x3,false); //cobble stone slab
+            if (rand.getChance(50)) {
+                chunk.getBlock(x, y, z).setTypeIdAndData(Material.STEP.getId(), (byte) 0x3, false); //cobble stone slab
             }
         }
     }
 
     @Override
-    public void postPopulate(MetropolisGenerator generator,Chunk chunk){
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         // Do nothing.
     }
 }

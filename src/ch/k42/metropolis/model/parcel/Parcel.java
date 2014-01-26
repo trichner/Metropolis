@@ -9,7 +9,6 @@ import org.bukkit.Chunk;
  * A Parcel represents one structure of Metropolis.
  *
  * @author Thomas Richner
- *
  */
 public abstract class Parcel {
 
@@ -23,7 +22,7 @@ public abstract class Parcel {
     protected Grid grid;
 
 
-    public Parcel(Grid grid,int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, ContextType contextType) {
+    public Parcel(Grid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, ContextType contextType) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.chunkSizeX = chunkSizeX;
@@ -32,9 +31,9 @@ public abstract class Parcel {
         this.contextType = contextType;
     }
 
-    public abstract void populate(MetropolisGenerator generator,Chunk chunk);
+    public abstract void populate(MetropolisGenerator generator, Chunk chunk);
 
-    public abstract void postPopulate(MetropolisGenerator generator,Chunk chunk);
+    public abstract void postPopulate(MetropolisGenerator generator, Chunk chunk);
 
 
     public ContextType getContextType() {

@@ -29,26 +29,26 @@ public class PluginConfig {
     //private static String pathDebug = "consoleOutput.debug";
 
     public PluginConfig(FileConfiguration configFile) {
-        this.debugOutput = configFile.getBoolean(pathDebug,debugOutput);
-        this.chestRenaming = configFile.getBoolean(pathChestRenaming,chestRenaming);
-        this.spawnerPlacing = configFile.getBoolean(pathSpawnerPlacing,spawnerPlacing);
-        this.crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing,crossContextPlacing);
-        this.directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing,directionFallbackPlacing);
+        this.debugOutput = configFile.getBoolean(pathDebug, debugOutput);
+        this.chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
+        this.spawnerPlacing = configFile.getBoolean(pathSpawnerPlacing, spawnerPlacing);
+        this.crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing, crossContextPlacing);
+        this.directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing, directionFallbackPlacing);
     }
 
-    public boolean isDebugEnabled(){
+    public boolean isDebugEnabled() {
         return debugOutput;
     }
 
-    public boolean isChestRenaming(){
+    public boolean isChestRenaming() {
         return chestRenaming;
     }
 
-    public boolean isSpawnerPlacing(){
+    public boolean isSpawnerPlacing() {
         return spawnerPlacing;
     }
 
-    public boolean allowCrossContextPlacing(){
+    public boolean allowCrossContextPlacing() {
         return crossContextPlacing;
     }
 

@@ -6,10 +6,9 @@ package ch.k42.metropolis.minions;
  * und hinterlaesst ein reiner JSON String.
  *
  * @author Thomas Richner
- *
  */
 public class Nimmersatt {
-    private static enum State{
+    private static enum State {
         TEXT,
         START,
         COMMENT,
@@ -27,62 +26,63 @@ public class Nimmersatt {
      * Removes all comments in the form: < slash >< star > ... < star >< slash >
      * This method was written to strap JSON documents of comments, nothing
      * is guaranteed.
+     *
      * @param text a (commented) JSON string
      * @return the same string without any comments
      */
-    public static String friss(String text){
-        StringBuffer buf = new StringBuffer(text.length()>>1);
+    public static String friss(String text) {
+        StringBuffer buf = new StringBuffer(text.length() >> 1);
         char c;
         State state = State.TEXT;
-        for(int i=0;i<text.length();i++){
+        for (int i = 0; i < text.length(); i++) {
             c = text.charAt(i);
-            switch (state){ //FSM (Finite State Machine)
+            switch (state) { //FSM (Finite State Machine)
                 case TEXT:
-                    if(c==SLASH){
-                        state= State.START;
+                    if (c == SLASH) {
+                        state = State.START;
                         break;
-                    }else if(c==QUOTE){
-                        state= State.STRING;
+                    } else if (c == QUOTE) {
+                        state = State.STRING;
                     }
                     buf.append(c);
                     break;
                 case STRING:
-                    if(c==BSLASH){
-                        state= State.ESC;
-                    }else if(c==QUOTE){
-                        state= State.TEXT;
+                    if (c == BSLASH) {
+                        state = State.ESC;
+                    } else if (c == QUOTE) {
+                        state = State.TEXT;
                     }
                     buf.append(c);
                     break;
                 case START:
-                    if(c==SLASH){
+                    if (c == SLASH) {
                         //nothing
-                    }else if(c==STAR){
-                        state= State.COMMENT;
-                    }else {
-                        state= State.TEXT;
+                    } else if (c == STAR) {
+                        state = State.COMMENT;
+                    } else {
+                        state = State.TEXT;
                         buf.append('/');
                         buf.append(c);
                     }
                     break;
 
                 case COMMENT:
-                    if(c==STAR){
-                        state= State.END;
+                    if (c == STAR) {
+                        state = State.END;
                     }
                     break;
 
                 case END:
-                    if(c==SLASH){
-                        state= State.TEXT;
-                    }else if(c==STAR){
+                    if (c == SLASH) {
+                        state = State.TEXT;
+                    } else if (c == STAR) {
                         //nothing
-                    }else {
-                        state= State.COMMENT;
+                    } else {
+                        state = State.COMMENT;
                     }
                     break;
                 case ESC:
-                    state= State.STRING;
+                    state = State.STRING;
                     buf.append(c);
                     break;
             }

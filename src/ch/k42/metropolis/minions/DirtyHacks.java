@@ -33,14 +33,12 @@ import java.lang.reflect.Method;
 
 import org.bukkit.block.Chest;
 
-public class DirtyHacks
-{
-    private DirtyHacks() {}
+public class DirtyHacks {
+    private DirtyHacks() {
+    }
 
-    public static void setChestName(Chest chest, String name)
-    {
-        try
-        {
+    public static void setChestName(Chest chest, String name) {
+        try {
             Field inventoryField = chest.getClass().getDeclaredField("chest"); //This get's the CraftChest variable 'chest' which is the TileEntityChest that is stored within it
             inventoryField.setAccessible(true); //Allows you to access that field since it's declared as private
 
@@ -50,73 +48,55 @@ public class DirtyHacks
             Method a = getMethod(teChest.getClass(), "a", String.class);
             //The a(String) method sets the title of the chest
             a.invoke(teChest, name);
-        }
-        catch (Exception e) //This has to be here as the getDeclaredField(String) throws an exception if the input doesn't exist in the given class
+        } catch (Exception e) //This has to be here as the getDeclaredField(String) throws an exception if the input doesn't exist in the given class
         {
             e.printStackTrace();
         }
     }
 
-    public static String getChestName(Chest chest)
-    {
+    public static String getChestName(Chest chest) {
         String name = null;
-        try
-        {
+        try {
             Field inventoryField = chest.getClass().getDeclaredField("chest"); //This get's the CraftChest variable 'chest' which is the TileEntityChest that is stored within it
             inventoryField.setAccessible(true); //Allows you to access that field since it's declared as private
 
             Object teChest = inventoryField.get(chest);
 
-            Field nameField = getField(teChest.getClass(),"s");
+            Field nameField = getField(teChest.getClass(), "s");
             nameField.setAccessible(true);
             name = (String) nameField.get(teChest);
-        }
-        catch (Exception e) //This has to be here as the getDeclaredField(String) throws an exception if the input doesn't exist in the given class
+        } catch (Exception e) //This has to be here as the getDeclaredField(String) throws an exception if the input doesn't exist in the given class
         {
             e.printStackTrace();
         }
 
-        if(name==null) //did we fail?
+        if (name == null) //did we fail?
             return "container.chest";
 
         return name;
     }
 
-    public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException
-    {
-        try
-        {
+    public static Field getField(Class<?> clazz, String fieldName) throws NoSuchFieldException {
+        try {
             return clazz.getDeclaredField(fieldName);
-        }
-        catch (NoSuchFieldException e)
-        {
+        } catch (NoSuchFieldException e) {
             Class<?> superClass = clazz.getSuperclass();
-            if (superClass == null)
-            {
+            if (superClass == null) {
                 throw e;
-            }
-            else
-            {
+            } else {
                 return getField(superClass, fieldName);
             }
         }
     }
 
-    public static Method getMethod(Class<?> clazz, String methodName, Class<?> ...params) throws NoSuchMethodException
-    {
-        try
-        {
+    public static Method getMethod(Class<?> clazz, String methodName, Class<?>... params) throws NoSuchMethodException {
+        try {
             return clazz.getDeclaredMethod(methodName, params);
-        }
-        catch (NoSuchMethodException e)
-        {
+        } catch (NoSuchMethodException e) {
             Class<?> superClass = clazz.getSuperclass();
-            if (superClass == null)
-            {
+            if (superClass == null) {
                 throw e;
-            }
-            else
-            {
+            } else {
                 return getMethod(superClass, methodName, params);
             }
         }

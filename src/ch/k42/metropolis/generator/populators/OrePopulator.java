@@ -10,12 +10,14 @@ import java.util.Random;
 
 /**
  * Replaces any stone with random veins. Based on the "Nordic" ore populator code.
+ *
  * @author Spaceribs
  */
 public class OrePopulator extends BlockPopulator {
 
     /**
      * Vein Definition file.
+     *
      * @author Spaceribs
      */
     private static class OreVein {
@@ -32,33 +34,33 @@ public class OrePopulator extends BlockPopulator {
             maxHeight = max;
         }
 
-        public Material getMaterial () {
+        public Material getMaterial() {
             return material;
         }
 
-        public int getIterations () {
+        public int getIterations() {
             return iterations;
         }
 
-        public int getAmount () {
+        public int getAmount() {
             return amount;
         }
 
-        public int getMaxHeight () {
+        public int getMaxHeight() {
             return maxHeight;
         }
     }
 
 
     /* Material, Iterations, Amount, maxHeight */
-    private static final OreVein[] veins = new OreVein[] {
-        new OreVein(Material.GRAVEL,        10,     32,     64),
-        new OreVein(Material.COAL_ORE,      10,     32,     64),
-        new OreVein(Material.IRON_ORE,      10,     16,     64),
-        new OreVein(Material.GOLD_ORE,      2,      8,      32),
-        new OreVein(Material.REDSTONE_ORE,  8,      7,      32),
-        new OreVein(Material.DIAMOND_ORE,   1,      7,      16),
-        new OreVein(Material.LAPIS_ORE,     1,      6,      32)
+    private static final OreVein[] veins = new OreVein[]{
+            new OreVein(Material.GRAVEL, 10, 32, 64),
+            new OreVein(Material.COAL_ORE, 10, 32, 64),
+            new OreVein(Material.IRON_ORE, 10, 16, 64),
+            new OreVein(Material.GOLD_ORE, 2, 8, 32),
+            new OreVein(Material.REDSTONE_ORE, 8, 7, 32),
+            new OreVein(Material.DIAMOND_ORE, 1, 7, 16),
+            new OreVein(Material.LAPIS_ORE, 1, 6, 32)
     };
 
     /**
@@ -68,7 +70,7 @@ public class OrePopulator extends BlockPopulator {
     public void populate(World world, Random random, Chunk source) {
         for (OreVein vein : veins) {
             for (int j = 0; j < vein.getIterations(); j++) {
-                internal(source, random, random.nextInt(16),random.nextInt(vein.getMaxHeight()), random.nextInt(16), vein);
+                internal(source, random, random.nextInt(16), random.nextInt(vein.getMaxHeight()), random.nextInt(16), vein);
             }
         }
     }

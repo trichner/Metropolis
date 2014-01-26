@@ -48,30 +48,37 @@ public abstract class Clipboard {
     protected int sizeZ;
     protected int blockCount;
 
-    protected int chunkSizeX; /** Size in chunks */
-    protected int chunkSizeZ; /** Size in chunks */
+    protected int chunkSizeX;
+    /**
+     * Size in chunks
+     */
+    protected int chunkSizeZ;
 
-	public Clipboard(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
+    /**
+     * Size in chunks
+     */
+
+    public Clipboard(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
 
         this.name = file.getName();
         this.globalSettings = globalSettings;
         this.hashstring = md5checksum.getMD5Checksum(file);
         this.cache = cacheFolder;
 
-        generator.reportDebug(this.name+": "+hashstring);
+        generator.reportDebug(this.name + ": " + hashstring);
 
         // grab the data
-		load(generator, file, batchedConfigs);
-		
-		// finish figuring things out
-		blockCount = sizeX * sizeY * sizeZ;
-		
-		chunkSizeX = (sizeX + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
-		chunkSizeZ = (sizeZ + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
+        load(generator, file, batchedConfigs);
 
-	}
-	
-	protected abstract void load(MetropolisGenerator generator, File file, List<SchematicConfig> batchedConfigs) throws Exception;
+        // finish figuring things out
+        blockCount = sizeX * sizeY * sizeZ;
+
+        chunkSizeX = (sizeX + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
+        chunkSizeZ = (sizeZ + Constants.CHUNK_SIZE - 1) / Constants.CHUNK_SIZE;
+
+    }
+
+    protected abstract void load(MetropolisGenerator generator, File file, List<SchematicConfig> batchedConfigs) throws Exception;
 
     public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction);
 
@@ -94,11 +101,12 @@ public abstract class Clipboard {
 
     /**
      * Returns the block height between 0 and the first block
+     *
      * @param streetLevel the desired street level
      * @return height in blocks
      */
-    public int getBottom(int streetLevel){
-        return streetLevel-groundLevelY;
+    public int getBottom(int streetLevel) {
+        return streetLevel - groundLevelY;
     }
 
     public DecayOption getDecayOptions() {

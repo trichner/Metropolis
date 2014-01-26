@@ -6,13 +6,14 @@ import org.bukkit.World;
 
 /**
  * Natural decay checker
+ *
  * @author Spaceribs
  */
 public class NetherEnvironmentProvider extends EnvironmentProvider {
 
     VoronoiGenerator lava;
 
-    public NetherEnvironmentProvider(Long seed){
+    public NetherEnvironmentProvider(Long seed) {
         super(seed);
         this.lava = new VoronoiGenerator(seed, (short) 2);
     }
@@ -24,16 +25,16 @@ public class NetherEnvironmentProvider extends EnvironmentProvider {
         int size = 2;
 
 //        Block block = world.getBlockAt(posX, posY, posZ);
-        double maxHeight = lava.noise((posX+10)/size, (posZ+10)/size, frequency);
-        double innerHeight = lava.noise((posX+10)/size, (posZ+10)/size, frequency2);
+        double maxHeight = lava.noise((posX + 10) / size, (posZ + 10) / size, frequency);
+        double innerHeight = lava.noise((posX + 10) / size, (posZ + 10) / size, frequency2);
 
-        double overlay = maxHeight+(innerHeight/10);
+        double overlay = maxHeight + (innerHeight / 10);
         if (overlay < 0.06) {
             if (posY > 64) {
                 return Material.AIR;
             } else {
-                int cut = (int)(((0.06 - overlay)/0.06)*46);
-                if (posY > 64-cut) {
+                int cut = (int) (((0.06 - overlay) / 0.06) * 46);
+                if (posY > 64 - cut) {
                     if (posY > 56) {
                         return Material.AIR;
                     } else {

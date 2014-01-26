@@ -24,25 +24,26 @@ public class GridProvider {
     public static final int GRID_SIZE = 64;
 
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        Parcel p = getParcel(chunk.getX(),chunk.getZ());
-        Parcel pN = getParcel(chunk.getX(),chunk.getZ()-1);
-        Parcel pS = getParcel(chunk.getX(),chunk.getZ()+1);
-        Parcel pE = getParcel(chunk.getX()+1,chunk.getZ());
-        Parcel pW = getParcel(chunk.getX()-1,chunk.getZ());
-        if(p!=null){
+        Parcel p = getParcel(chunk.getX(), chunk.getZ());
+        Parcel pN = getParcel(chunk.getX(), chunk.getZ() - 1);
+        Parcel pS = getParcel(chunk.getX(), chunk.getZ() + 1);
+        Parcel pE = getParcel(chunk.getX() + 1, chunk.getZ());
+        Parcel pW = getParcel(chunk.getX() - 1, chunk.getZ());
+        if (p != null) {
             p.postPopulate(generator, chunk);
-            if (pN!=null) pN.postPopulate(generator, chunk);
-            if (pS!=null) pS.postPopulate(generator, chunk);
-            if (pE!=null) pE.postPopulate(generator, chunk);
-            if (pW!=null) pW.postPopulate(generator, chunk);
-        }else {
-            generator.reportDebug("found empty Parcel: ["+chunk.getX()+"]["+chunk.getZ()+"]");
+            if (pN != null) pN.postPopulate(generator, chunk);
+            if (pS != null) pS.postPopulate(generator, chunk);
+            if (pE != null) pE.postPopulate(generator, chunk);
+            if (pW != null) pW.postPopulate(generator, chunk);
+        } else {
+            generator.reportDebug("found empty Parcel: [" + chunk.getX() + "][" + chunk.getZ() + "]");
         }
     }
 
-    public static class GridKey{
+    public static class GridKey {
         protected int gridX;
         protected int gridZ;
+
         public GridKey(int chunkX, int chunkZ) {
             gridX = getGridOrigin(chunkX);
             gridZ = getGridOrigin(chunkZ);
@@ -69,7 +70,7 @@ public class GridProvider {
         }
     }
 
-    private Map<GridKey,Optional<Grid>> grids = new HashMap();
+    private Map<GridKey, Optional<Grid>> grids = new HashMap();
     private World world;
 
     public GridProvider(MetropolisGenerator generator) {
@@ -78,89 +79,94 @@ public class GridProvider {
 
     /**
      * Evaluates the Parcel at the given absolute chunk coordinates
+     *
      * @param chunkX x coordinate
      * @param chunkZ z coordinate
      * @return parcel at the given coordinate
      */
-    public Parcel getParcel(int chunkX, int chunkZ){
+    public Parcel getParcel(int chunkX, int chunkZ) {
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
-        return getGrid(chunkX,chunkZ).getParcel(x,z);
+        return getGrid(chunkX, chunkZ).getParcel(x, z);
     }
 
     /**
      * Returns the grid at the given relative coordinates in the interval [0,Grid.GRIDSIZE)
+     *
      * @param chunkX chunk coordinates x
      * @param chunkZ chunk coordinates z
      * @return the grid at the given coordinate or null if there is none
      */
-    public Grid getGrid(int chunkX, int chunkZ){
-        GridKey key = new GridKey(chunkX,chunkZ);
+    public Grid getGrid(int chunkX, int chunkZ) {
+        GridKey key = new GridKey(chunkX, chunkZ);
         Optional<Grid> ogrid = grids.get(key);
 
-        if(ogrid==null){ // does it exsist? or do we need to create one?
-            ogrid = getNewGrid(chunkX,chunkZ); //TODO not always same grid
-            grids.put(key,ogrid);
+        if (ogrid == null) { // does it exsist? or do we need to create one?
+            ogrid = getNewGrid(chunkX, chunkZ); //TODO not always same grid
+            grids.put(key, ogrid);
         }
 
         return ogrid.get();
     }
+
     /**
      * Places the Parcel at the given absolute chunk coordinates
+     *
      * @param chunkX x coordinate
      * @param chunkZ z coordinate
      * @param parcel at the given coordinate
      */
-    public void setParcel(int chunkX, int chunkZ, Parcel parcel){
+    public void setParcel(int chunkX, int chunkZ, Parcel parcel) {
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
-        getGrid(chunkX,chunkZ).setParcel(x,z,parcel);
+        getGrid(chunkX, chunkZ).setParcel(x, z, parcel);
     }
 
     /**
      * Evaluates the Parcel at the given absolute chunk coordinates
+     *
      * @param chunkX x coordinate
      * @param chunkZ z coordinate
      * @return parcel at the given coordinate
      */
-    public GridRandom getRandom(int chunkX, int chunkZ){
-        return getGrid(chunkX,chunkZ).getRandom();
+    public GridRandom getRandom(int chunkX, int chunkZ) {
+        return getGrid(chunkX, chunkZ).getRandom();
     }
 
-    public void populate(MetropolisGenerator generator, Chunk chunk){
-        Parcel p = getParcel(chunk.getX(),chunk.getZ());
-        if(p!=null){
-            p.populate(generator,chunk);
+    public void populate(MetropolisGenerator generator, Chunk chunk) {
+        Parcel p = getParcel(chunk.getX(), chunk.getZ());
+        if (p != null) {
+            p.populate(generator, chunk);
         } else {
-            generator.reportDebug("found empty Parcel: ["+chunk.getX()+"]["+chunk.getZ()+"]");
+            generator.reportDebug("found empty Parcel: [" + chunk.getX() + "][" + chunk.getZ() + "]");
         }
     }
 
-    private Optional<Grid> getNewGrid(int chunkX,int chunkZ){
+    private Optional<Grid> getNewGrid(int chunkX, int chunkZ) {
 
         int originX = getGridOrigin(chunkX);
         int originZ = getGridOrigin(chunkZ);
 
         long seed = world.getSeed();
-        return Optional.of((Grid) new UrbanGrid(this,new GridRandom(seed,originX,originZ),originX,originZ)); // FIXME mooaaar grids
+        return Optional.of((Grid) new UrbanGrid(this, new GridRandom(seed, originX, originZ), originX, originZ)); // FIXME mooaaar grids
     }
 
-    private static int getGridOrigin(int chunk){
+    private static int getGridOrigin(int chunk) {
         int ret;
-        if(chunk<0){
+        if (chunk < 0) {
             chunk += 1;
-            ret = (chunk) - ((chunk)%GRID_SIZE);
+            ret = (chunk) - ((chunk) % GRID_SIZE);
             ret -= GRID_SIZE;
-        }else {
-            ret =  chunk-(chunk%GRID_SIZE);
+        } else {
+            ret = chunk - (chunk % GRID_SIZE);
         }
         return ret;
     }
 
-    private static int getChunkOffset(int chunk){
+    private static int getChunkOffset(int chunk) {
         int ret = chunk % GRID_SIZE;
-        if(ret<0)
-            ret+=GRID_SIZE;
+        if (ret < 0)
+            ret += GRID_SIZE;
         return ret;
     }
 

@@ -23,7 +23,7 @@ public class HighwayParcel extends StreetParcel {
 
     private RoadType roadType = RoadType.NONE;
 
-    public HighwayParcel(Grid grid, int chunkX, int chunkZ,RoadType roadType) {
+    public HighwayParcel(Grid grid, int chunkX, int chunkZ, RoadType roadType) {
         super(grid, chunkX, chunkZ, 1, 1, ContextType.HIGHWAY);
         this.roadType = roadType;
     }
@@ -31,63 +31,65 @@ public class HighwayParcel extends StreetParcel {
     @Override
     public void populate(MetropolisGenerator generator, Chunk chunk) {
 
-        if(roadType.equals(RoadType.HIGHWAY_SIDE_E)&&grid.getParcel(chunkX+1,chunkZ).getContextType().equals(ContextType.STREET)){
+        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && grid.getParcel(chunkX + 1, chunkZ).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_E;
-        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_W)&&grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.STREET)){
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && grid.getParcel(chunkX - 1, chunkZ).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_W;
-        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_S)&&grid.getParcel(chunkX,chunkZ+1).getContextType().equals(ContextType.STREET)){
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && grid.getParcel(chunkX, chunkZ + 1).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_S;
-        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_N)&&grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.STREET)){
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && grid.getParcel(chunkX, chunkZ - 1).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_N;
         }
 
-        findAndPlaceClip(generator,chunk,roadType);
+        findAndPlaceClip(generator, chunk, roadType);
 
         // T crossing?
     }
-    private Clipboard road;
-    private void findAndPlaceClip(MetropolisGenerator generator,Chunk chunk,RoadType roadType){
-        List<Clipboard> clips = getFits(generator.getClipboardProvider(),roadType);
-        Clipboard clip=null;
 
-        if(clips!=null&&clips.size()>0)
+    private Clipboard road;
+
+    private void findAndPlaceClip(MetropolisGenerator generator, Chunk chunk, RoadType roadType) {
+        List<Clipboard> clips = getFits(generator.getClipboardProvider(), roadType);
+        Clipboard clip = null;
+
+        if (clips != null && clips.size() > 0)
             clip = clips.get(grid.getRandom().getRandomInt(clips.size()));
 
-        if(clip!=null){
-            clip.paste(generator,chunkX<<4,chunkZ<<4, Constants.BUILD_HEIGHT, Direction.NORTH); // FIXME Hardcoded street level
+        if (clip != null) {
+            clip.paste(generator, chunkX << 4, chunkZ << 4, Constants.BUILD_HEIGHT, Direction.NORTH); // FIXME Hardcoded street level
             this.road = clip;
-            decayRoadChunk(generator,chunk,Constants.BUILD_HEIGHT-2);
-            decaySidewalk(generator,chunk,Constants.BUILD_HEIGHT-1);
-        }else{
+            decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
+            decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
+        } else {
             generator.reportDebug("Haven't found any HIGHWAY schem for: " + roadType.toString());
         }
     }
 
     @Override
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        if(roadType.equals(RoadType.HIGHWAY_SIDE_E)&&grid.getParcel(chunkX+1,chunkZ).getContextType().equals(ContextType.STREET)){
+        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && grid.getParcel(chunkX + 1, chunkZ).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_E;
-            findAndPlaceClip(generator,chunk,roadType);
-        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_W)&&grid.getParcel(chunkX-1,chunkZ).getContextType().equals(ContextType.STREET)){
+            findAndPlaceClip(generator, chunk, roadType);
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && grid.getParcel(chunkX - 1, chunkZ).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_W;
-            findAndPlaceClip(generator,chunk,roadType);
-        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_S)&&grid.getParcel(chunkX,chunkZ+1).getContextType().equals(ContextType.STREET)){
+            findAndPlaceClip(generator, chunk, roadType);
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && grid.getParcel(chunkX, chunkZ + 1).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_S;
-            findAndPlaceClip(generator,chunk,roadType);
-        }else if(roadType.equals(RoadType.HIGHWAY_SIDE_N)&&grid.getParcel(chunkX,chunkZ-1).getContextType().equals(ContextType.STREET)){
+            findAndPlaceClip(generator, chunk, roadType);
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && grid.getParcel(chunkX, chunkZ - 1).getContextType().equals(ContextType.STREET)) {
             roadType = RoadType.HIGHWAY_T_N;
-            findAndPlaceClip(generator,chunk,roadType);
+            findAndPlaceClip(generator, chunk, roadType);
         }
     }
 
-    private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type){
+    private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type) {
         return cprovider.getRoadFit(1, 1, ContextType.HIGHWAY, type);
     }
 
     @Override
     public String toString() {
-        String info = "RoadParcel +[" + chunkX +"]["+chunkZ+"] ";
-        if(road!=null)
+        String info = "RoadParcel +[" + chunkX + "][" + chunkZ + "] ";
+        if (road != null)
             info += "Schemname: " + road.getName();
         else
             info += " No schem found. ";

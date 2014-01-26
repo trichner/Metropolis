@@ -6,7 +6,7 @@ import java.security.MessageDigest;
 public class md5checksum {
 
     public static byte[] createChecksum(File file) throws Exception {
-        InputStream fis =  new FileInputStream(file);
+        InputStream fis = new FileInputStream(file);
 
         byte[] buffer = new byte[1024];
         MessageDigest complete = MessageDigest.getInstance("MD5");
@@ -24,9 +24,9 @@ public class md5checksum {
     public static String getMD5Checksum(File file) throws Exception {
         byte[] b = createChecksum(file);
         String result = "";
-        for (int i=0; i < b.length; i++) {
+        for (int i = 0; i < b.length; i++) {
             result +=
-                    Integer.toString( ( b[i] & 0xff ) + 0x100, 16).substring( 1 );
+                    Integer.toString((b[i] & 0xff) + 0x100, 16).substring(1);
         }
         return result;
     }

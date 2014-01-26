@@ -24,13 +24,14 @@ public class DecayOption {
     private static final double defaultDecayIntensity = 1;
 
 
-    private static final DecayOption defaultOptions = new DecayOption(defaultHoleScale,defaultLeavesScale,defaultFulldecay,defaultPartialdecay,defaultLeavesdecay);
+    private static final DecayOption defaultOptions = new DecayOption(defaultHoleScale, defaultLeavesScale, defaultFulldecay, defaultPartialdecay, defaultLeavesdecay);
 
     /**
      * An instance of DecayOption with hardcoded default options
+     *
      * @return default decay options
      */
-    public static DecayOption getDefaultDecayOptions(){
+    public static DecayOption getDefaultDecayOptions() {
         return defaultOptions;
     }
 
@@ -44,12 +45,11 @@ public class DecayOption {
     private Set<Material> exceptions = new HashSet();
 
     /**
-     *
-     * @param holeScale overall decay amplitude, default 1/20
-     * @param leavesScale scale for leaves, default 1/10
-     * @param fulldecay threshold for full decay, default 0.5
+     * @param holeScale    overall decay amplitude, default 1/20
+     * @param leavesScale  scale for leaves, default 1/10
+     * @param fulldecay    threshold for full decay, default 0.5
      * @param partialdecay threshold for partial decay, default 0.3
-     * @param leavesdecay threshold for the addition of leaves around the decayed blocks, default 0.1D
+     * @param leavesdecay  threshold for the addition of leaves around the decayed blocks, default 0.1D
      */
     public DecayOption(double holeScale, double leavesScale, double fulldecay, double partialdecay, double leavesdecay) {
         this.holeScale = holeScale;
@@ -61,42 +61,44 @@ public class DecayOption {
 
     /**
      * calculates all the needed parameters out of 1 scale ranging from 0 (no decay) to around 2 (heavy decay), 1 for normal decay
+     *
      * @param intensity how intense shall decay be?
      */
     public DecayOption(double intensity) { //TODO Less hardcoded
-        if(intensity==0){ //absolutely no decay
-            fulldecay=1;
-            partialdecay=1;
-        }else if(intensity>0&&intensity<=1){
-            holeScale       = defaultHoleScale;
-            leavesScale     = defaultLeavesScale;
-            fulldecay       = 1-defaultFulldecay * intensity;
-            if(fulldecay<-0.8) fulldecay = -0.8;
-            partialdecay    = fulldecay-0.2D;
-            leavesdecay     = defaultLeavesdecay;
-        }else {
+        if (intensity == 0) { //absolutely no decay
+            fulldecay = 1;
+            partialdecay = 1;
+        } else if (intensity > 0 && intensity <= 1) {
+            holeScale = defaultHoleScale;
+            leavesScale = defaultLeavesScale;
+            fulldecay = 1 - defaultFulldecay * intensity;
+            if (fulldecay < -0.8) fulldecay = -0.8;
+            partialdecay = fulldecay - 0.2D;
+            leavesdecay = defaultLeavesdecay;
+        } else {
             //Throw an error! maybe...
         }
     }
 
     /**
      * calculates all the needed parameters out of 1 scale ranging from 0 (no decay) to around 2 (heavy decay), 1 for normal decay
-     * @param intensity how intense shall decay be?
+     *
+     * @param intensity  how intense shall decay be?
      * @param exceptions which Materials should be excluded?
      */
-    public DecayOption(double intensity,Set<Material> exceptions) { //TODO Less hardcoded
+    public DecayOption(double intensity, Set<Material> exceptions) { //TODO Less hardcoded
         this.exceptions = exceptions;
-        if(intensity==0){ //absolutely no decay
-            fulldecay=1;
-            partialdecay=1;
-        }else if(intensity>0&&intensity<=1){
-            holeScale       = defaultHoleScale;
-            leavesScale     = defaultLeavesScale;
-            fulldecay       = 1-defaultFulldecay * intensity;
-            if(fulldecay<-0.8) fulldecay = -0.8;
-            partialdecay    = fulldecay-0.2D;
-            leavesdecay     = defaultLeavesdecay;
-        }else {
+        if (intensity == 0) { //absolutely no decay
+            fulldecay = 1;
+            partialdecay = 1;
+        } else if (intensity > 0 && intensity <= 1) {
+            holeScale = defaultHoleScale;
+            leavesScale = defaultLeavesScale;
+            fulldecay = 1 - defaultFulldecay * intensity;
+            if (fulldecay < -0.8) fulldecay = -0.8;
+            partialdecay = fulldecay - 0.2D;
+            leavesdecay = defaultLeavesdecay;
+        } else {
             //Throw an error! maybe...
         }
     }

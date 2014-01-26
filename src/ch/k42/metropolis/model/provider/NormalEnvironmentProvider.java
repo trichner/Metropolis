@@ -5,11 +5,12 @@ import org.bukkit.World;
 
 /**
  * Natural decay checker
+ *
  * @author Spaceribs
  */
 public class NormalEnvironmentProvider extends EnvironmentProvider {
 
-    public NormalEnvironmentProvider(Long newSeed){
+    public NormalEnvironmentProvider(Long newSeed) {
         super(newSeed);
     }
 

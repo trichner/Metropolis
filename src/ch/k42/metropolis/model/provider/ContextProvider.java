@@ -17,6 +17,7 @@ import org.bukkit.World;
 public class ContextProvider {
 
     private MetropolisGenerator generator;
+
     public ContextProvider(MetropolisGenerator generator) {
         this.generator = generator;
     }
@@ -24,7 +25,7 @@ public class ContextProvider {
     /**
      * TODO
      * Returns a context that should be placed on this coordinate
-     *
+     * <p/>
      * I'm not sure how to implement it atm, using the vanilla biomes would be an option.
      * Or generate my own Voroni Noise ( https://forums.bukkit.org/threads/wgen-voronoi-noise.161319/ , http://shaneosullivan.wordpress.com/2007/04/05/fortunes-sweep-line-voronoi-algorithm-implemented-in-java/ )
      *
@@ -32,7 +33,7 @@ public class ContextProvider {
      * @param chunkZ chunkSizeZ coordinate
      * @return a Context to place there
      */
-    public ContextType getContext(long seed, int chunkX, int chunkZ, GridRandom random){
+    public ContextType getContext(long seed, int chunkX, int chunkZ, GridRandom random) {
 
         SimplexOctaveGenerator gen1 = new SimplexOctaveGenerator(seed, 2);
         SimplexOctaveGenerator gen2 = new SimplexOctaveGenerator(seed, 2);

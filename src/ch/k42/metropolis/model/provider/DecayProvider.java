@@ -28,6 +28,7 @@ public abstract class DecayProvider {
 
     /**
      * Destroys an area with default decay options
+     *
      * @param x1 start x coordinate
      * @param x2 end x coordinate
      * @param y1 start y coordinate
@@ -36,40 +37,43 @@ public abstract class DecayProvider {
      * @param z2 end z coordinate
      */
     public void destroyWithin(int x1, int x2, int y1, int y2, int z1, int z2) {
-        destroyWithin(x1,x2,y1,y2,z1,z2, DecayOption.getDefaultDecayOptions());
+        destroyWithin(x1, x2, y1, y2, z1, z2, DecayOption.getDefaultDecayOptions());
     }
 
     /**
      * Destroys some chunks with custom decay options
-     * @param chunkX position X in chunks
-     * @param chunkZ position Z in chunks
+     *
+     * @param chunkX     position X in chunks
+     * @param chunkZ     position Z in chunks
      * @param chunkSizeX size in direction X in chunks
      * @param chunkSizeZ size in direction Z in chunks
-     * @param bottom bottom floor in blocks
-     * @param height height in blocks
-     * @param options decay options
+     * @param bottom     bottom floor in blocks
+     * @param height     height in blocks
+     * @param options    decay options
      */
     public void destroyChunks(int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, int bottom, int height, DecayOption options) {
         int x1 = chunkX << 4;
-        int x2 = x1 + (chunkSizeX<<4);
+        int x2 = x1 + (chunkSizeX << 4);
         int z1 = chunkZ << 4;
-        int z2 = z1 + (chunkSizeZ<<4);
+        int z2 = z1 + (chunkSizeZ << 4);
         int y1 = bottom;
-        int y2 = bottom+height;
-        destroyWithin(x1,x2,y1,y2,z1,z2,options);
+        int y2 = bottom + height;
+        destroyWithin(x1, x2, y1, y2, z1, z2, options);
     }
 
     /**
      * Destroys an area with custom decay scale
-     * @param x1 start x coordinate
-     * @param x2 end x coordinate
-     * @param y1 start y coordinate
-     * @param y2 end y coordinate
-     * @param z1 start z coordinate
-     * @param z2 end z coordinate
+     *
+     * @param x1      start x coordinate
+     * @param x2      end x coordinate
+     * @param y1      start y coordinate
+     * @param y2      end y coordinate
+     * @param z1      start z coordinate
+     * @param z2      end z coordinate
      * @param options decay options
      */
-    public void destroyWithin(int x1, int x2, int y1, int y2, int z1, int z2, DecayOption options) {}
+    public void destroyWithin(int x1, int x2, int y1, int y2, int z1, int z2, DecayOption options) {
+    }
 
     protected boolean isValid(Block block) {
         return (

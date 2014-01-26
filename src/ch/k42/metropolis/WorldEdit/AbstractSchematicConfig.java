@@ -10,7 +10,7 @@ import org.bukkit.entity.EntityType;
  * Time: 21:37
  * To change this template use File | Settings | File Templates.
  */
-public abstract class AbstractSchematicConfig{
+public abstract class AbstractSchematicConfig {
 
     protected SchematicSpawner[] Spawners = null;
 

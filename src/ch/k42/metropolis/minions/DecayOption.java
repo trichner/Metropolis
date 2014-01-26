@@ -119,7 +119,7 @@ public class DecayOption {
         return this;
     }
 
-    public double getFulldecay() {
+    public double getFullDecay() {
         return fulldecay;
     }
 
@@ -128,7 +128,7 @@ public class DecayOption {
         return this;
     }
 
-    public double getPartialdecay() {
+    public double getPartialDecay() {
         return partialdecay;
     }
 

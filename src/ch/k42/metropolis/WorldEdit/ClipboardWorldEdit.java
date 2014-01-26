@@ -6,6 +6,7 @@ import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
+import ch.k42.metropolis.model.provider.EnvironmentProvider;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
@@ -36,6 +37,8 @@ public class ClipboardWorldEdit extends Clipboard {
 	private final static String metaExtension = ".json";
 
     private File cacheFolder;
+    private World world;
+    private EnvironmentProvider natureDecay;
     private CuboidClipboard cuboid;
 
     private File northFile;
@@ -47,6 +50,8 @@ public class ClipboardWorldEdit extends Clipboard {
 
 	public ClipboardWorldEdit(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
         super(generator, file, cacheFolder, globalSettings, batchedConfigs);
+        world = generator.getWorld();
+        natureDecay = generator.getNatureDecayProvider();
 	}
 
     private boolean hasBootstrappedConfig = false;
@@ -261,12 +266,16 @@ public class ClipboardWorldEdit extends Clipboard {
 
     private String getNameAndLevel(GridRandom rand){
         StringBuffer buf = new StringBuffer();
-        buf.append('§')
-                .append(COLOR)
-                .append(settings.getRandomLootCollection(rand).name)
-                .append('_')
-                .append(Integer.toString(randomChestLevel(rand)));
-        return buf.toString();
+        if (settings.getLootCollections().length > 0) {
+            buf.append('§')
+                    .append(COLOR)
+                    .append(settings.getRandomLootCollection(rand).name)
+                    .append('_')
+                    .append(Integer.toString(randomChestLevel(rand)));
+            return buf.toString();
+        } else {
+            return "";
+        }
     }
 
     private int randomChestLevel(GridRandom random){
@@ -299,7 +308,15 @@ public class ClipboardWorldEdit extends Clipboard {
         for (int x = 0; x < cc.getWidth(); x++){
 			for (int y = 0; y < cc.getHeight(); y++){
 				for (int z = 0; z < cc.getLength(); z++) {
+
                     BaseBlock block = cc.getBlock(new Vector(x, y, z));
+                    Vector vec = new Vector(x, y, z).add(pos);
+                    Material decay = natureDecay.checkBlock(world, (int) vec.getX(), (int) vec.getY(), (int) vec.getZ());
+
+                    if (decay != null) {
+                        block.setType(decay.getId());
+                        continue;
+                    }
 
                     if(block.getId() == Material.CHEST.getId()){
                         chests.add(new Cartesian(x,y,z));
@@ -307,7 +324,7 @@ public class ClipboardWorldEdit extends Clipboard {
                         spawners.add(new Cartesian(x,y,z));
                     }
 
-                    editSession.setBlock(new Vector(x, y, z).add(pos), block);
+                    editSession.setBlock(vec, block);
 				}
             }
         }

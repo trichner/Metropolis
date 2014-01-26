@@ -4,11 +4,10 @@ import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
-import ch.k42.metropolis.model.provider.DecayProvider;
-import ch.k42.metropolis.model.provider.ContextProvider;
-import ch.k42.metropolis.model.provider.GridProvider;
+import ch.k42.metropolis.model.provider.*;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -24,9 +23,6 @@ import java.util.*;
 public class MetropolisGenerator extends ChunkGenerator {
 
     private class MetropolisBlockPopulator extends BlockPopulator {
-
-
-        public MetropolisBlockPopulator() {}
 
         @Override
         public void populate(World aWorld, Random random, Chunk chunk) {
@@ -47,11 +43,11 @@ public class MetropolisGenerator extends ChunkGenerator {
     public String worldName;
     public World.Environment worldEnvironment;
 
-
     private ClipboardProviderWorldEdit clipboardProvider;
     private GridProvider gridProvider;
     private ContextProvider contextProvider;
     public DecayProvider decayProvider;
+    public EnvironmentProvider natureDecay;
 
     public MetropolisGenerator(MetropolisPlugin plugin, String worldName, World.Environment env) {
         this.plugin = plugin;
@@ -75,6 +71,10 @@ public class MetropolisGenerator extends ChunkGenerator {
         return decayProvider;
     }
 
+    public EnvironmentProvider getNatureDecayProvider() {
+        return natureDecay;
+    }
+
     public MetropolisPlugin getPlugin() {
         return plugin;
     }
@@ -93,11 +93,10 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        reportDebug("added block populator !!!");
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
-        populators.add(new OrePopulator()); // first place some ore
-        populators.add(new CavePopulator());
         populators.add(new MetropolisBlockPopulator());
+        populators.add(new CavePopulator());
+        populators.add(new OrePopulator()); // last place some ore
         populators.add(new BedrockFloorPopulator());
         return populators;
     }
@@ -108,10 +107,16 @@ public class MetropolisGenerator extends ChunkGenerator {
         if (world == null) {
             world = aWorld;
 
-            //CityWorldSettings settings = new CityWorldSettings(this);
-
             worldSeed = world.getSeed();
-            decayProvider = new DecayProvider(this, new Random(worldSeed + 6));
+
+            if (worldEnvironment == World.Environment.NETHER) {
+                decayProvider = new DecayProviderNether(this, new Random(worldSeed + 6));
+                natureDecay = new NetherEnvironmentProvider(worldSeed);
+            } else {
+                decayProvider = new DecayProviderNormal(this, new Random(worldSeed + 6));
+                natureDecay = new NormalEnvironmentProvider(worldSeed);
+            }
+
             gridProvider = new GridProvider(this);
             contextProvider = new ContextProvider(this);
             try {
@@ -127,13 +132,20 @@ public class MetropolisGenerator extends ChunkGenerator {
         try {
 
             initializeWorldInfo(aWorld);
-            //reportDebug("generateBlockSections");
+
+            biomes.setBiome(chunkX, chunkZ, Biome.FOREST);
+
             byte[][] chunk = new byte[world.getMaxHeight() / 16][];
             for (int x=0; x<16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z=0; z<16; z++) {
                     int maxHeight = 65; //how thick we want out flat terrain to be
                     for (int y=1;y<maxHeight;y++) {
-                        setBlock(x,y,z,chunk,Material.STONE);
+                        Material decay = natureDecay.checkBlock(world, (chunkX*16)+x, y, (chunkZ*16)+z);
+                        if (decay != null) {
+                            setBlock(x,y,z,chunk,decay);
+                        } else {
+                            setBlock(x,y,z,chunk,Material.STONE);
+                        }
                     }
                 }
             }

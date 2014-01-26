@@ -129,17 +129,30 @@ public class DistrictParcel extends Parcel {
 
             //partitionX(grid,cut);
             if (chunkSizeX<blockSize) { //FIXME Hardcoded
+
                 if(chunkSizeX>7) {
                     if (random.getChance(50)) {
                         partitionX(grid,6);
                     } else {
                         partitionX(grid,chunkSizeX-6);
                     }
+                } else if (chunkSizeX>6) {
+                    if (random.getChance(50)) {
+                        partitionX(grid,5);
+                    } else {
+                        partitionX(grid,chunkSizeX-2);
+                    }
                 } else if (chunkSizeX>5) {
                     if (random.getChance(50)) {
                         partitionX(grid,4);
                     } else {
                         partitionX(grid,chunkSizeX-4);
+                    }
+                } else if (chunkSizeX>4) {
+                    if (random.getChance(50)) {
+                        partitionX(grid,3);
+                    } else {
+                        partitionX(grid,chunkSizeX-2);
                     }
                 } else if (chunkSizeX>3) {
                     if (random.getChance(50)) {
@@ -150,12 +163,7 @@ public class DistrictParcel extends Parcel {
                 } else {
                     partitionX(grid,1);
                 }
-//                if(cut<1)
-//                    cut=1;
-//                else if(cut>chunkSizeX-1)
-//                    cut=chunkSizeX-1;
-//
-//                partitionX(grid,cut);
+
             } else {
                 if(cut<1)
                     cut=1;
@@ -172,18 +180,29 @@ public class DistrictParcel extends Parcel {
             //partitionZ(grid,cut);
             if(chunkSizeZ<blockSize){ // No place for streets
 
-
                 if(chunkSizeZ>7) {
                     if (random.getChance(50)) {
-                        partitionZ(grid, 6);
+                        partitionX(grid,6);
                     } else {
-                        partitionZ(grid, chunkSizeZ - 6);
+                        partitionX(grid,chunkSizeZ-6);
+                    }
+                } else if (chunkSizeZ>6) {
+                    if (random.getChance(50)) {
+                        partitionX(grid,5);
+                    } else {
+                        partitionX(grid,chunkSizeZ-2);
                     }
                 } else if (chunkSizeZ>5) {
                     if (random.getChance(50)) {
-                        partitionZ(grid, 4);
+                        partitionX(grid,4);
                     } else {
-                        partitionZ(grid, chunkSizeZ - 4);
+                        partitionX(grid,chunkSizeZ-4);
+                    }
+                } else if (chunkSizeZ>4) {
+                    if (random.getChance(50)) {
+                        partitionX(grid,3);
+                    } else {
+                        partitionX(grid,chunkSizeZ-2);
                     }
                 } else if (chunkSizeZ>3) {
                     if (random.getChance(50)) {
@@ -195,12 +214,6 @@ public class DistrictParcel extends Parcel {
                     partitionZ(grid, 1);
                 }
 
-//                if(cut<1)
-//                    cut=1;
-//                else if(cut>chunkSizeZ-1)
-//                    cut=chunkSizeZ-1;
-//
-//                partitionZ(grid,cut);
             }else {                 //put a street inbetween
                 if(cut<1)
                     cut=1;
@@ -216,8 +229,8 @@ public class DistrictParcel extends Parcel {
 
     @Override
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        partition1.postPopulate(generator,chunk);
-        partition2.postPopulate(generator,chunk);
+        if (partition1 != null) partition1.postPopulate(generator,chunk);
+        if (partition2 != null) partition2.postPopulate(generator,chunk);
     }
 
     private int getNormalCut(double mean, double sigma, GridRandom random){

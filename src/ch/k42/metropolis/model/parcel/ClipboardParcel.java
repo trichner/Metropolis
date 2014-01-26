@@ -3,15 +3,16 @@ package ch.k42.metropolis.model.parcel;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
+import ch.k42.metropolis.minions.VoronoiGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.grid.Grid;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 
 import ch.k42.metropolis.WorldEdit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
@@ -96,31 +97,6 @@ public class ClipboardParcel extends Parcel {
                     break;
             }
         }
-
-        if (generator.worldEnvironment == World.Environment.NETHER) {
-            lavaRivers(generator, chunk);
-        }
-
-    }
-
-    /**
-     * generates lava rivers over the builds
-     */
-    private void lavaRivers(MetropolisGenerator generator, Chunk chunk){
-
-        double altscale = 16;
-
-        SimplexOctaveGenerator lavaGen = new SimplexOctaveGenerator(generator.getWorldSeed(), 2);
-
-        for(int z=this.chunkZ<<4;z<this.chunkZ<<4;z++){
-            for(int x=this.chunkX<<4;x<this.chunkX<<4;x++){
-                double alternate = lavaGen.noise(x * altscale, z * altscale, 0.3D, 0.6D, true);
-
-                for(int y=0;y<generator.getWorld().getMaxHeight();y++) {
-                    generator.getWorld().getBlockAt(x,y,z).setType(Material.AIR);
-                }
-            }
-        }
     }
 
     /**
@@ -139,7 +115,10 @@ public class ClipboardParcel extends Parcel {
                 for(int y=0;Math.abs(y)<Math.abs(s.Y);y+=ydir){
                     generator.getWorld().getBlockAt(v.X+x,v.Y+y,v.Z+z).setType(Material.AIR);
                 }
-                generator.getWorld().getBlockAt(v.X+x,v.Y-1,v.Z+z).setType(floor); // make sure the floor is massive
+                Block below = generator.getWorld().getBlockAt(v.X + x, v.Y - 1, v.Z + z);
+                if (!below.isEmpty()) {
+                    generator.getWorld().getBlockAt(v.X+x,v.Y-1,v.Z+z).setType(floor);
+                }
             }
         }
     }

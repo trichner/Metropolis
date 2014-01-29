@@ -54,13 +54,13 @@ public class OrePopulator extends BlockPopulator {
 
     /* Material, Iterations, Amount, maxHeight */
     private static final OreVein[] veins = new OreVein[]{
-            new OreVein(Material.GRAVEL, 10, 32, 64),
-            new OreVein(Material.COAL_ORE, 10, 32, 64),
-            new OreVein(Material.IRON_ORE, 10, 16, 64),
-            new OreVein(Material.GOLD_ORE, 2, 8, 32),
-            new OreVein(Material.REDSTONE_ORE, 8, 7, 32),
-            new OreVein(Material.DIAMOND_ORE, 1, 7, 16),
-            new OreVein(Material.LAPIS_ORE, 1, 6, 32)
+        new OreVein(Material.GRAVEL, 10, 32, 64),
+        new OreVein(Material.COAL_ORE, 10, 32, 64),
+        new OreVein(Material.IRON_ORE, 10, 16, 64),
+        new OreVein(Material.GOLD_ORE, 2, 8, 32),
+        new OreVein(Material.REDSTONE_ORE, 8, 7, 32),
+        new OreVein(Material.DIAMOND_ORE, 1, 7, 16),
+        new OreVein(Material.LAPIS_ORE, 1, 6, 32)
     };
 
     /**

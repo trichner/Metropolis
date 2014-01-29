@@ -79,7 +79,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case SOUTH:
-                    offset = new Cartesian(cut.startPoint + 1, 0, clipboard.getSizeZ(direction));
+                    offset = new Cartesian(cut.startPoint - 1, 0, clipboard.getSizeZ(direction));
                     size = new Cartesian(cut.length, cutoutHeight, cutoutDepth);
                     roadCheck = grid.getParcel(chunkX, chunkZ + (clipboard.getSizeZ(direction) >> 4)).getContextType();
                     if (roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY)) {
@@ -87,7 +87,7 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case WEST:
-                    offset = new Cartesian(-1, 0, cut.startPoint + 1);
+                    offset = new Cartesian(-1, 0, cut.startPoint - 1);
                     size = new Cartesian(-cutoutDepth, cutoutHeight, cut.length);
                     parcel = grid.getParcel(chunkX - 1, chunkZ);
                     roadCheck = parcel.getContextType();

@@ -11,6 +11,7 @@ import org.bukkit.Chunk;
 
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +42,7 @@ public class DistrictParcel extends Parcel {
         grid = generator.getGridProvider().getGrid(chunkX, chunkZ);
         GridRandom random = grid.getRandom();
         ContextProvider context = generator.getContextProvider();
-        Direction roadDir = findRoad();
+        Direction roadDir = findRoad(random);
         boolean roadFacing = roadDir != Direction.NONE;
 
         if (!roadFacing) {
@@ -50,10 +51,12 @@ public class DistrictParcel extends Parcel {
 
         // TODO Randomly choose size!
 
+        ContextType localContext = context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random);
+        List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
+        int buildChance = schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0;
+
         //---- Randomly decide to place a schematic, first find one with correct orientation, if none found, place any that fits context
-        if (random.getChance(90)) { //FIXME Hardcoded
-            ContextType localContext = context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random);
-            List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
+        if (random.getChance(buildChance)) { //FIXME Hardcoded
             if (schems != null && schems.size() > 0) {
                 generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                 Clipboard schem = schems.get(random.getRandomInt(schems.size()));
@@ -86,7 +89,7 @@ public class DistrictParcel extends Parcel {
 
         //---
         if ((chunkSizeX < 2) && (chunkSizeZ < 2)) { //no more iterations
-            List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner
+            schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir, roadFacing); //just use context in one corner
             if (schems != null && schems.size() > 0) {
                 generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                 Clipboard schem = schems.get(random.getRandomInt(schems.size()));
@@ -213,7 +216,7 @@ public class DistrictParcel extends Parcel {
         return (int) Math.round(mean + random.getRandomGaussian() * sigma);
     }
 
-    private Direction findRoad() {
+    private Direction findRoad(GridRandom random) {
 
         boolean northP = grid.getParcel(chunkX, chunkZ - 1).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX, chunkZ - 1).getContextType().equals(ContextType.HIGHWAY);
@@ -227,17 +230,17 @@ public class DistrictParcel extends Parcel {
         boolean eastP = grid.getParcel(chunkX + chunkSizeX, chunkZ).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX + chunkSizeX, chunkZ).getContextType().equals(ContextType.HIGHWAY);
 
-        if (northP) {
-            return Direction.NORTH;
-        } else if (southP) {
-            return Direction.SOUTH;
-        } else if (eastP) {
-            return Direction.EAST;
-        } else if (westP) {
-            return Direction.WEST;
-        }
+//        if (northP) {
+//            return Direction.NORTH;
+//        } else if (southP) {
+//            return Direction.SOUTH;
+//        } else if (eastP) {
+//            return Direction.EAST;
+//        } else if (westP) {
+//            return Direction.WEST;
+//        }
 
-        return Direction.NONE; // haven't found any streets
+        return Direction.getRandomDirection(random, northP, southP, eastP, westP); // haven't found any streets
     }
 
     private void partitionXwithRoads(Grid grid, int cut) {

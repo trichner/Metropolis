@@ -6,6 +6,7 @@ import ch.k42.metropolis.minions.DecayOption;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.material.Door;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import java.util.Random;
@@ -53,6 +54,14 @@ public class DecayProviderNormal extends DecayProvider {
 
                     if (options.getExceptions().contains(block.getType())) { // do we ignore this type of block?
                         continue;
+                    }
+
+                    if (block.getType() == Material.WOODEN_DOOR && block.getRelative(0, 1, 0).getType() == Material.WOODEN_DOOR) {
+                        if (random.nextInt(100) < 80) {
+                            byte data = block.getData();
+                            data ^= 4;
+                            block.setData(data);
+                        }
                     }
 
                     if (!block.isEmpty() && isValid(block) && (holeNoise > fulldecay)) {

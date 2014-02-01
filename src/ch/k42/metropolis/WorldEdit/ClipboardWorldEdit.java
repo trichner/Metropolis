@@ -104,7 +104,7 @@ public class ClipboardWorldEdit extends Clipboard {
             settings.setGroundLevelY(streetLvlEstimate);
             groundLevelY = streetLvlEstimate;
             generator.reportDebug("Ground Level: " + settings.getGroundLevelY());
-            if (!storeConfig(schemname + metaExtension)) {
+            if (!storeConfig(settings.getPath())) {
                 generator.reportDebug("Can't storeConfig config file.");
             }
         }

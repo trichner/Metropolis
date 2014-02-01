@@ -40,9 +40,9 @@ public class SchematicConfig extends AbstractSchematicConfig {
     private RoadType roadType = RoadType.NONE;
     private Set<Material> decayExceptionMaterials = new HashSet();
     private String[] schematics = {};
+    private String path;
 
-    public SchematicConfig() {
-    }
+    public SchematicConfig() {}
 
     public int getGroundLevelY() {
         return groundLevelY;
@@ -54,6 +54,14 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     public int getLootMinLevel() {
         return lootMinLevel;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     /**

@@ -221,6 +221,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
                     String json = new String(Files.readAllBytes(configFile.toPath()));
                     json = Nimmersatt.friss(json);
                     SchematicConfig config = gson.fromJson(json, SchematicConfig.class);
+                    config.setPath(configFile.getPath());
                     if (config.getSchematics().size() > 0) {
                         batchedConfigs.add(config);
                         generator.reportMessage("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " added.");

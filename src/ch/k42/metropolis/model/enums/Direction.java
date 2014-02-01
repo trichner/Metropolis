@@ -37,8 +37,24 @@ public enum Direction {
         return output;
     }
 
+    public static Direction getRandomDirection(GridRandom random, boolean north, boolean south, boolean east, boolean west) {
+        ArrayList<Direction> dirs = getDirections(north, south, east, west);
+        if (!north && !east && !south && !west) return Direction.NONE;
+        Direction output = dirs.get(random.getRandomInt(dirs.size()));
+        return output;
+    }
+
     public static Direction[] getDirections() {
         Direction[] dirs = {Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST};
+        return dirs;
+    }
+
+    public static ArrayList<Direction> getDirections(boolean north, boolean south, boolean east, boolean west) {
+        ArrayList<Direction> dirs = new ArrayList<Direction>();
+        if (north) dirs.add(Direction.NORTH);
+        if (south) dirs.add(Direction.SOUTH);
+        if (east) dirs.add(Direction.EAST);
+        if (west) dirs.add(Direction.WEST);
         return dirs;
     }
 }

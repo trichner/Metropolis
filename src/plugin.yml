@@ -18,6 +18,10 @@ commands:
       description: retrieves info about the location
       usage: /freder
       permission: metropolis.command
+  grot:
+        description: displays some statistics about this grid
+        usage: /grot
+        permission: metropolis.command
 permissions:
   metropolis.*:
     description: Gives access to all Metropolis commands

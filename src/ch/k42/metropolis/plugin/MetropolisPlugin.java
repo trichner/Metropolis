@@ -1,6 +1,7 @@
 package ch.k42.metropolis.plugin;
 
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
+import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import org.bukkit.Bukkit;
@@ -52,6 +53,8 @@ public class MetropolisPlugin extends JavaPlugin {
         cmd.setExecutor(new CommandMetropolisMaria(this));
         cmd = getCommand("freder");
         cmd.setExecutor(new CommandMetropolisFreder(this));
+        cmd = getCommand("grot");
+        cmd.setExecutor(new CommandMetropolisGrot(this));
     }
 
     public MetropolisGenerator getGenerator() {

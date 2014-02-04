@@ -22,10 +22,10 @@ abstract public class Grid {
     protected int chunkX;
     protected int chunkZ;
 
-    public Grid(GridProvider gridProvider, GridRandom random, int chunkX, int chunkZ) {
+    public Grid(GridProvider gridProvider, GridRandom random,GridStatistics statistics, int chunkX, int chunkZ) {
         this.random = random;
         this.gridProvider = gridProvider;
-        this.statistics = new GridStatistics();
+        this.statistics = statistics;
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
     }

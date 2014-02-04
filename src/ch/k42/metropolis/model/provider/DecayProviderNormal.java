@@ -155,18 +155,27 @@ public class DecayProviderNormal extends DecayProvider {
     protected boolean isValid(Block block) {
         return (
                 block.getType() != Material.GRASS
-                        //&& block.getType() != Material.DIRT
-                        && block.getType() != Material.LEAVES
-                        && block.getType() != Material.LOG
+                && block.getType() != Material.DIRT
+                && block.getType() != Material.LEAVES
+                && block.getType() != Material.LOG
+                && block.getType() != Material.WATER
+                && block.getType() != Material.STATIONARY_WATER
+                && block.getType() != Material.LAVA
+                && block.getType() != Material.STATIONARY_LAVA
         );
     }
 
     protected boolean isSupporting(Block block) {
         return (
+
                 block.getType() != Material.LEAVES
-                        && block.getType() != Material.VINE
-                        && block.getType() != Material.LOG
-                        && !block.isEmpty()
+                && block.getType() != Material.VINE
+                && block.getType() != Material.LOG
+                && block.getType() != Material.WATER
+                && block.getType() != Material.STATIONARY_WATER
+                && block.getType() != Material.LAVA
+                && block.getType() != Material.STATIONARY_LAVA
+                && !block.isEmpty()
         );
     }
 }

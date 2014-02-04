@@ -38,17 +38,18 @@ public class ContextProvider {
         SimplexOctaveGenerator gen1 = new SimplexOctaveGenerator(seed, 2);
         SimplexOctaveGenerator gen2 = new SimplexOctaveGenerator(seed, 2);
 
+        double scale = 1;
         double scatterScale = 0.5;
         double holeScale = 0.01;
-        double maxHeight = gen1.noise(chunkX * holeScale, chunkZ * holeScale, 0.3D, 0.6D, true);
-        maxHeight += (gen1.noise(chunkX * scatterScale, chunkZ * scatterScale, 0.3D, 0.6D, true))/5;
+        double maxHeight = gen1.noise(chunkX * (holeScale * scale), chunkZ * (holeScale * scale), 0.3D, 0.6D, true);
+        maxHeight += (gen1.noise(chunkX * (scatterScale * scale), chunkZ * (scatterScale * scale), 0.3D, 0.6D, true))/5;
 
         double altscale = 0.05;
 
-        if (maxHeight < -0.4) {
+        if (maxHeight < -0.3) {
             return ContextType.RESIDENTIAL;
-        } else if (maxHeight < 0.2) {
-            double alternate = gen2.noise(chunkX * altscale, chunkZ * altscale, 0.3D, 0.6D, true);
+        } else if (maxHeight < 0.3) {
+            double alternate = gen2.noise(chunkX * (altscale * scale), chunkZ * (altscale * scale), 0.3D, 0.6D, true);
             if (alternate > 0.2) {
                 return ContextType.INDUSTRIAL;
             } else {

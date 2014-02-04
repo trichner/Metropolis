@@ -96,7 +96,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
         populators.add(new MetropolisBlockPopulator());
         populators.add(new CavePopulator());
-        populators.add(new OrePopulator()); // last place some ore
+        populators.add(new OrePopulator(world)); // last place some ore
         populators.add(new BedrockFloorPopulator());
         return populators;
     }

@@ -139,18 +139,9 @@ public class DistrictParcel extends Parcel {
                     } else {
                         partitionX(grid, chunkSizeX - 6);
                     }
-                } else if (chunkSizeX > 6) {
-                    if (random.getChance(50)) {
-                        partitionX(grid, 4);
-                    } else {
-                        partitionX(grid, chunkSizeX - 4);
-                    }
                 } else if (chunkSizeX > 4) {
-                    if (random.getChance(50)) {
-                        partitionX(grid, 2);
-                    } else {
-                        partitionX(grid, chunkSizeX - 2);
-                    }
+                    int offset = random.getRandomInt(1, chunkSizeX-1);
+                    partitionX(grid, offset);
                 } else {
                     partitionX(grid, 1);
                 }
@@ -177,18 +168,9 @@ public class DistrictParcel extends Parcel {
                     } else {
                         partitionZ(grid, chunkSizeZ - 6);
                     }
-                } else if (chunkSizeZ > 6) {
-                    if (random.getChance(50)) {
-                        partitionZ(grid, 4);
-                    } else {
-                        partitionZ(grid, chunkSizeZ - 4);
-                    }
                 } else if (chunkSizeZ > 4) {
-                    if (random.getChance(50)) {
-                        partitionZ(grid, 2);
-                    } else {
-                        partitionZ(grid, chunkSizeZ - 2);
-                    }
+                    int offset = random.getRandomInt(1, chunkSizeZ-1);
+                    partitionZ(grid, offset);
                 } else {
                     partitionZ(grid, 1);
                 }

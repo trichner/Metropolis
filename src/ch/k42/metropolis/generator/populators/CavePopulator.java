@@ -131,6 +131,7 @@ public class CavePopulator extends BlockPopulator {
     static void buildCave(World world, XYZ[] snakeBlocks, CaveType caveType) {
         if (snakeBlocks.length > 0) {
             int midpoint = Math.abs(snakeBlocks[0].y + snakeBlocks[snakeBlocks.length - 1].y) / 2;
+            int lavapoint = Math.min(midpoint, 24);
             for (XYZ loc : snakeBlocks) {
                 Block block = world.getBlockAt(loc.x, loc.y, loc.z);
                 if (!block.isEmpty() && !block.isLiquid() && block.getType() != Material.BEDROCK) {
@@ -145,7 +146,7 @@ public class CavePopulator extends BlockPopulator {
                             block.setType(Material.DIRT);
                             break;
                         case LAVA:
-                            if (loc.y < midpoint) {
+                            if (loc.y < lavapoint) {
                                 block.setType(Material.STATIONARY_LAVA);
                             } else {
                                 block.setType(Material.AIR);

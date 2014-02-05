@@ -53,18 +53,25 @@ public class DistrictParcel extends Parcel {
 
         ContextType localContext = context.getContext(chunkX, chunkZ, 1);
         List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
-        int buildChance = schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0;
+
+
+        int buildChance = 80; //schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
 
         //---- Randomly decide to place a schematic, first find one with correct orientation, if none found, place any that fits context
         if (random.getChance(buildChance)) { //FIXME Hardcoded
             if (schems != null && schems.size() > 0) {
                 generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                 Clipboard schem = schems.get(random.getRandomInt(schems.size()));
-                while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
+                while (!random.getChance(schem.getSettings().getOddsOfAppearance())) { //fixme potential endless loop
                     schem = schems.get(random.getRandomInt(schems.size()));
                 }
                 parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
                 parcel.populate(generator, chunk);
+
+
+                grid.getStatistics().logSchematic(schem);
+
+                //placed stuff
                 return;
             } else { // find a schematic, but ignore road
                 generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext + "going over to fallback");
@@ -79,6 +86,10 @@ public class DistrictParcel extends Parcel {
                         }
                         parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
                         parcel.populate(generator, chunk);
+
+                        grid.getStatistics().logSchematic(schem);   // make log entry
+
+                        //placed schem
                         return;
                     } else {
                         generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext);
@@ -98,6 +109,7 @@ public class DistrictParcel extends Parcel {
                 }
                 parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ, 1), roadDir);
                 parcel.populate(generator, chunk);
+                grid.getStatistics().logSchematic(schem);   // make log entry
                 return;
             } else {
                 generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ, 1) + "going over to fallback");
@@ -111,6 +123,7 @@ public class DistrictParcel extends Parcel {
                     }
                     parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ, 1), roadDir);
                     parcel.populate(generator, chunk);
+                    grid.getStatistics().logSchematic(schem);    // make log entry
                     return;
                 }
                 parcel = new EmptyParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ);
@@ -126,6 +139,7 @@ public class DistrictParcel extends Parcel {
 
         // Failed? partition into 2 sub lots
         if (chunkSizeX > chunkSizeZ) { //if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occur
+
             double mean = chunkSizeX / 2.0;
             double sigma = mean / 4.0;
             int cut = getNormalCut(mean, sigma, random); //random.getRandomInt(1,chunkSizeX-1);
@@ -155,6 +169,7 @@ public class DistrictParcel extends Parcel {
                 partitionXwithRoads(grid, cut);
             }
         } else {
+            //FIXME Hardcoded
             double mean = chunkSizeZ / 2.0;
             double sigma = mean / 2.0;
             int cut = getNormalCut(mean, sigma, random);
@@ -211,16 +226,6 @@ public class DistrictParcel extends Parcel {
 
         boolean eastP = grid.getParcel(chunkX + chunkSizeX, chunkZ).getContextType().equals(ContextType.STREET) ||
                 grid.getParcel(chunkX + chunkSizeX, chunkZ).getContextType().equals(ContextType.HIGHWAY);
-
-//        if (northP) {
-//            return Direction.NORTH;
-//        } else if (southP) {
-//            return Direction.SOUTH;
-//        } else if (eastP) {
-//            return Direction.EAST;
-//        } else if (westP) {
-//            return Direction.WEST;
-//        }
 
         return Direction.getRandomDirection(random, northP, southP, eastP, westP); // haven't found any streets
     }

@@ -18,7 +18,7 @@ public class UrbanGrid extends Grid {
     private DistrictParcel district;
 
     public UrbanGrid(GridProvider provider, GridRandom random, int chunkX, int chunkZ) {
-        super(provider, random, chunkX, chunkZ);
+        super(provider, random,new AthmosStat(), chunkX, chunkZ);
         placeHighways();
         district = new DistrictParcel(this, chunkX + 1, chunkZ + 1, GRID_SIZE - 2, GRID_SIZE - 2);
     }

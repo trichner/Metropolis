@@ -1,7 +1,9 @@
 package ch.k42.metropolis.model.grid;
 
-import java.util.HashMap;
-import java.util.Map;
+
+import ch.k42.metropolis.WorldEdit.Clipboard;
+
+import javax.sound.sampled.Clip;
 
 /**
  * This should keep track of statistics of a Grid, not
@@ -9,48 +11,29 @@ import java.util.Map;
  *
  * @author Thomas Richner
  */
-public class GridStatistics {
+public interface GridStatistics {
 
-    private class Incrementor {
-        private int value = 0;
+    public void logSchematic(Clipboard p);
 
-        public int increment() {
-            value++;
-            return value;
-        }
+    /**
+     * How many times this clipboard has been placed
+     * @param p clipboard to evaluate
+     * @return absolute count of this clipboard on this grid
+     */
+    public int getClipboardCount(Clipboard p);
 
-        public int decrement() {
-            value--;
-            return value;
-        }
+    /**
+     * How many times a clipboard has been placed in relation
+     * to all placed clipboards on this grid
+     * @param p clipboard to evaluate
+     * @return p_count/global_count or 0 if none placed
+     */
+    public double getRelativeClipboardCount(Clipboard p);
 
-        public int getValue() {
-            return value;
-        }
-
-        public double getDouble() {
-            return (double) value;
-        }
-    }
-
-    private int numberOfEntries = 0;
-
-    private Map<Integer, Incrementor> sizes = new HashMap<Integer, Incrementor>();
-
-    public void incrementSize(int sizeX, int sizeZ) {
-        int area = sizeX * sizeZ;
-        Incrementor incrementor = sizes.get(area);
-        if (incrementor == null) {
-            incrementor = new Incrementor();
-        }
-        incrementor.increment();
-        sizes.put(area, incrementor);
-        numberOfEntries++;
-    }
-
-    public double getDistribution(int sizeX, int sizeZ) {
-        if (numberOfEntries == 0) return 0;
-        return sizes.get(sizeX * sizeZ).getDouble() / numberOfEntries;
-    }
+    /**
+     * Returns the current statistics in a human readable format
+     * @return
+     */
+    public String printStatistics();
 
 }

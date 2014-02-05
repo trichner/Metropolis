@@ -2,6 +2,7 @@ package ch.k42.metropolis.model.grid;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.minions.Incr;
+import ch.k42.metropolis.model.enums.Direction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,33 +12,93 @@ import java.util.Map;
  */
 public class AthmosStat implements GridStatistics {
 
-    private Map<Clipboard,Incr> stats = new HashMap<>();
+    private static class Size{
+        private int x;
+        private int z;
+
+        private Size(int x, int z) {
+            if(x>z){
+                this.x = x;
+                this.z = z;
+            }else {
+                this.x = z;
+                this.z = x;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return " s: " + x + "/" + z;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Size size = (Size) o;
+
+            if (x != size.x) return false;
+            if (z != size.z) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+//            int result = x;
+//            result = 31 * result + z;
+//            return result;
+            return (x << 16) | z;
+        }
+    }
+
+    private Map<Clipboard,Incr> statsByName = new HashMap<>();
+    private Map<Size,Incr> statsBySize = new HashMap<>();
     private Incr count = new Incr();
 
-    @Override
-    public void logSchematic(Clipboard p) {
-        if(stats.containsKey(p)){
-            stats.get(p).incr();
+    private void logByName(Clipboard p){
+        if(statsByName.containsKey(p)){
+            statsByName.get(p).incr();
         }else{
             Incr i = new Incr();
             i.incr();
-            stats.put(p,i);
+            statsByName.put(p, i);
         }
-        count.incr();
+    }
+
+    private void logBySize(Clipboard p){
+        Size s = new Size(p.getSizeX(Direction.NORTH),p.getSizeZ(Direction.NORTH));
+        if(statsBySize.containsKey(s)){
+            statsBySize.get(s).incr();
+        }else{
+            Incr i = new Incr();
+            i.incr();
+            statsBySize.put(s, i);
+        }
     }
 
     @Override
-    public int getCount(Clipboard p) {
-        if(stats.containsKey(p))
-            return stats.get(p).val();
+    public void logSchematic(Clipboard p) {
+        logByName(p);
+        logBySize(p);
+        count.incr();
+    }
+
+
+
+    @Override
+    public int getClipboardCount(Clipboard p) {
+        if(statsByName.containsKey(p))
+            return statsByName.get(p).val();
         return 0;
     }
 
     @Override
-    public double getRelativeCount(Clipboard p) {
+    public double getRelativeClipboardCount(Clipboard p) {
         int gcount = count.val();
         if(gcount==0) return 0;
-        double pcount = getCount(p);
+        double pcount = getClipboardCount(p);
         double rel = pcount/gcount;
         return rel;
     }
@@ -47,9 +108,17 @@ public class AthmosStat implements GridStatistics {
         StringBuffer sb = new StringBuffer();
         sb.append("- Statistics -----------\n");
         sb.append(" global count: ").append(count).append('\n');
-        for(Clipboard c : stats.keySet()){
-            sb.append(" ").append(c.toString()).append(" : ").append(stats.get(c).val()).append('\n');
+
+        sb.append("---# By Name: \n");
+        for(Clipboard c : statsByName.keySet()){
+            sb.append(" ").append(String.format("%-10s", c.toString())).append(" : ").append(statsByName.get(c).val()).append('\n');
         }
+
+        sb.append("---# By Size: \n");
+        for(Size s : statsBySize.keySet()){
+            sb.append(" ").append(String.format("%-10s", s.toString())).append(" : ").append(statsBySize.get(s).val()).append('\n');
+        }
+
         return sb.toString();
     }
 }

@@ -55,7 +55,7 @@ public class DistrictParcel extends Parcel {
         List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
 
 
-        int buildChance = schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
+        int buildChance = 80; //schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
 
         //---- Randomly decide to place a schematic, first find one with correct orientation, if none found, place any that fits context
         if (random.getChance(buildChance)) { //FIXME Hardcoded
@@ -87,7 +87,7 @@ public class DistrictParcel extends Parcel {
                         parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
                         parcel.populate(generator, chunk);
 
-                        grid.getStatistics().logSchematic(schem);
+                        grid.getStatistics().logSchematic(schem);   // make log entry
 
                         //placed schem
                         return;
@@ -109,7 +109,7 @@ public class DistrictParcel extends Parcel {
                 }
                 parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
                 parcel.populate(generator, chunk);
-                grid.getStatistics().logSchematic(schem);
+                grid.getStatistics().logSchematic(schem);   // make log entry
                 return;
             } else {
                 generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random) + "going over to fallback");
@@ -123,7 +123,7 @@ public class DistrictParcel extends Parcel {
                     }
                     parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(generator.getWorldSeed(), chunkX, chunkZ, random), roadDir);
                     parcel.populate(generator, chunk);
-                    grid.getStatistics().logSchematic(schem);
+                    grid.getStatistics().logSchematic(schem);    // make log entry
                     return;
                 }
                 parcel = new EmptyParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ);

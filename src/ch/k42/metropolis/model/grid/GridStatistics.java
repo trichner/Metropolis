@@ -20,7 +20,7 @@ public interface GridStatistics {
      * @param p clipboard to evaluate
      * @return absolute count of this clipboard on this grid
      */
-    public int getCount(Clipboard p);
+    public int getClipboardCount(Clipboard p);
 
     /**
      * How many times a clipboard has been placed in relation
@@ -28,7 +28,7 @@ public interface GridStatistics {
      * @param p clipboard to evaluate
      * @return p_count/global_count or 0 if none placed
      */
-    public double getRelativeCount(Clipboard p);
+    public double getRelativeClipboardCount(Clipboard p);
 
     /**
      * Returns the current statistics in a human readable format

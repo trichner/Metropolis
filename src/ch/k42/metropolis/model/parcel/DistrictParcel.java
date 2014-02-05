@@ -36,6 +36,20 @@ public class DistrictParcel extends Parcel {
     private boolean fallback;
 
     public void populate(MetropolisGenerator generator, Chunk chunk) {
+        /*
+         * TODO
+         *
+         * This function has grown too big & complex, it should be divided into understandable
+         * blocks
+         *
+         * 1. No iterations?
+         *
+         * 2. No streets?
+         *
+         * 3. Partion and go back to 1.
+         *
+         */
+
 
         fallback = generator.getPlugin().getMetropolisConfig().allowDirectionFallbackPlacing();
         ClipboardProvider clips = generator.getClipboardProvider();
@@ -55,23 +69,21 @@ public class DistrictParcel extends Parcel {
         List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
 
 
-        int buildChance = 80; //schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
+        int buildChance = 100; //schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
 
         //---- Randomly decide to place a schematic, first find one with correct orientation, if none found, place any that fits context
         if (random.getChance(buildChance)) { //FIXME Hardcoded
             if (schems != null && schems.size() > 0) {
+
                 generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                 Clipboard schem = schems.get(random.getRandomInt(schems.size()));
                 while (!random.getChance(schem.getSettings().getOddsOfAppearance())) { //fixme potential endless loop
                     schem = schems.get(random.getRandomInt(schems.size()));
                 }
+
                 parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
                 parcel.populate(generator, chunk);
 
-
-                grid.getStatistics().logSchematic(schem);
-
-                //placed stuff
                 return;
             } else { // find a schematic, but ignore road
                 generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext + "going over to fallback");
@@ -86,10 +98,6 @@ public class DistrictParcel extends Parcel {
                         }
                         parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
                         parcel.populate(generator, chunk);
-
-                        grid.getStatistics().logSchematic(schem);   // make log entry
-
-                        //placed schem
                         return;
                     } else {
                         generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext);
@@ -109,12 +117,11 @@ public class DistrictParcel extends Parcel {
                 }
                 parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ), roadDir);
                 parcel.populate(generator, chunk);
-                grid.getStatistics().logSchematic(schem);   // make log entry
                 return;
-            } else {
-                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ) + "going over to fallback");
+            } else { //=====FALLBACK
+                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ, 1) + "going over to fallback");
                 //FALLBACK
-                schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, roadFacing); //just use context in one corner
+                schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ, 1), roadDir, false); //just use context in one corner
                 if (schems != null && schems.size() > 0) {
                     generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                     Clipboard schem = schems.get(random.getRandomInt(schems.size()));
@@ -134,6 +141,7 @@ public class DistrictParcel extends Parcel {
         }
 
         final int blockSize = 14;
+        final int sigma_factor = 6;
 
         generator.reportDebug("chunkSizeX: " + chunkSizeX + ", chunkSizeZ: " + chunkSizeZ);
 
@@ -141,8 +149,13 @@ public class DistrictParcel extends Parcel {
         if (chunkSizeX > chunkSizeZ) { //if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occur
 
             double mean = chunkSizeX / 2.0;
-            double sigma = mean / 4.0;
+            double sigma = mean / sigma_factor;
             int cut = getNormalCut(mean, sigma, random); //random.getRandomInt(1,chunkSizeX-1);
+
+            if (cut < 1)
+                cut = 1;
+            else if (cut > chunkSizeX - 2)
+                cut = chunkSizeX - 2;
 
             //partitionX(grid,cut);
             if (chunkSizeX < blockSize) { //FIXME Hardcoded
@@ -161,18 +174,20 @@ public class DistrictParcel extends Parcel {
                 }
 
             } else {
-                if (cut < 1)
-                    cut = 1;
-                else if (cut > chunkSizeX - 2)
-                    cut = chunkSizeX - 2;
+
 
                 partitionXwithRoads(grid, cut);
             }
         } else {
             //FIXME Hardcoded
             double mean = chunkSizeZ / 2.0;
-            double sigma = mean / 2.0;
+            double sigma = mean / sigma_factor;
             int cut = getNormalCut(mean, sigma, random);
+
+            if (cut < 1) // sanitize cut
+                cut = 1;
+            else if (cut > chunkSizeZ - 2)
+                cut = chunkSizeZ - 2;
 
             //partitionZ(grid,cut);
             if (chunkSizeZ < blockSize) { // No place for streets
@@ -191,11 +206,6 @@ public class DistrictParcel extends Parcel {
                 }
 
             } else {                 //put a street inbetween
-                if (cut < 1)
-                    cut = 1;
-                else if (cut > chunkSizeZ - 2)
-                    cut = chunkSizeZ - 2;
-
                 partitionZwithRoads(grid, cut);
             }
         }

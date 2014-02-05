@@ -30,6 +30,7 @@ public class ClipboardParcel extends Parcel {
         super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, contextType);
         this.clipboard = clipboard;
         this.direction = direction;
+        grid.getStatistics().logSchematic(clipboard);
         grid.fillParcels(chunkX, chunkZ, this);
     }
 

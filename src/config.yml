@@ -6,3 +6,4 @@ consoleOutput:
 generator:
     enableChestRenaming:  true
     enableSpawnerPlacing: true
+    enableDirectionFallbackPlacing: false

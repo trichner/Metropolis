@@ -164,8 +164,8 @@
   
   <property name="compiler.args.metropolis" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
   
-  <property name="metropolis.output.dir" value="/production/Metropolis"/>
-  <property name="metropolis.testoutput.dir" value="/test/Metropolis"/>
+  <property name="metropolis.output.dir" value="${module.metropolis.basedir}/production/Metropolis"/>
+  <property name="metropolis.testoutput.dir" value="${module.metropolis.basedir}/test/Metropolis"/>
   
   <path id="metropolis.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->

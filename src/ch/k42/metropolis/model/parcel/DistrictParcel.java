@@ -119,9 +119,9 @@ public class DistrictParcel extends Parcel {
                 parcel.populate(generator, chunk);
                 return;
             } else { //=====FALLBACK
-                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ, 1) + "going over to fallback");
+                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ) + "going over to fallback");
                 //FALLBACK
-                schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ, 1), roadDir, false); //just use context in one corner
+                schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, false); //just use context in one corner
                 if (schems != null && schems.size() > 0) {
                     generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                     Clipboard schem = schems.get(random.getRandomInt(schems.size()));

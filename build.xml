@@ -61,24 +61,31 @@
   <property name="jdk.bin.1.7" value="${jdk.home.1.7}/bin"/>
   <path id="jdk.classpath.1.7">
     <fileset dir="${jdk.home.1.7}">
+      <include name="lib/ant-javafx.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javafx-doclet.jar"/>
+      <include name="lib/javafx-mx.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="lib/tools.jar"/>
       <include name="jre/lib/charsets.jar"/>
       <include name="jre/lib/deploy.jar"/>
+      <include name="jre/lib/htmlconverter.jar"/>
       <include name="jre/lib/javaws.jar"/>
       <include name="jre/lib/jce.jar"/>
       <include name="jre/lib/jfr.jar"/>
       <include name="jre/lib/jfxrt.jar"/>
+      <include name="jre/lib/JObjC.jar"/>
       <include name="jre/lib/jsse.jar"/>
       <include name="jre/lib/management-agent.jar"/>
       <include name="jre/lib/plugin.jar"/>
       <include name="jre/lib/resources.jar"/>
       <include name="jre/lib/rt.jar"/>
-      <include name="jre/lib/ext/access-bridge-64.jar"/>
       <include name="jre/lib/ext/dnsns.jar"/>
-      <include name="jre/lib/ext/jaccess.jar"/>
       <include name="jre/lib/ext/localedata.jar"/>
       <include name="jre/lib/ext/sunec.jar"/>
       <include name="jre/lib/ext/sunjce_provider.jar"/>
-      <include name="jre/lib/ext/sunmscapi.jar"/>
+      <include name="jre/lib/ext/sunpkcs11.jar"/>
       <include name="jre/lib/ext/zipfs.jar"/>
     </fileset>
   </path>
@@ -90,53 +97,34 @@
   
   <!-- Project Libraries -->
   
-  <path id="library.chestlootz_1-9-4.classpath">
-    <pathelement location="${basedir}/lib/ChestLootz_1-9-4.jar"/>
-  </path>
-  
-  <path id="library.craftbukkit-1.7.2-r0.2.classpath">
-    <pathelement location="${basedir}/lib/craftbukkit-1.7.2-R0.2.jar"/>
-  </path>
-  
-  <path id="library.craftbukkit-1.7.2-r0.2_(2).classpath">
-    <pathelement location="${basedir}/lib/craftbukkit-1.7.2-R0.2.jar"/>
-  </path>
-  
-  <path id="library.dummypermscompat-1.7.classpath">
-    <pathelement location="${basedir}/lib/dummypermscompat-1.7.jar"/>
-  </path>
-  
-  <path id="library.guava-15.0.classpath">
-    <pathelement location="${basedir}/lib/guava-15.0.jar"/>
-  </path>
-  
-  <path id="library.jchronic-0.2.4a.classpath">
-    <pathelement location="${basedir}/lib/jchronic-0.2.4a.jar"/>
-  </path>
-  
-  <path id="library.js-1.7r2.classpath">
-    <pathelement location="${basedir}/lib/js-1.7R2.jar"/>
+  <path id="library.craftbukkit.classpath">
+    <pathelement location="${basedir}/test/craftbukkit.jar"/>
   </path>
   
   <path id="library.js.classpath">
     <pathelement location="${basedir}/lib/js.jar"/>
   </path>
   
-  <path id="library.junit-4.8.1.classpath">
-    <pathelement location="${basedir}/lib/junit-4.8.1.jar"/>
-  </path>
-  
-  <path id="library.truezip-6.8.3.classpath">
-    <pathelement location="${basedir}/lib/truezip-6.8.3.jar"/>
+  <path id="library.lib.classpath">
+    <pathelement location="${basedir}/lib/guava-15.0.jar"/>
+    <pathelement location="${basedir}/lib/worldedit.jar"/>
   </path>
   
   <path id="library.worldedit.classpath">
     <pathelement location="${basedir}/lib/worldedit.jar"/>
   </path>
-  
-  <path id="library.worldedit_(2).classpath">
-    <pathelement location="${basedir}/lib/worldedit.jar"/>
+  <!-- Register Custom Compiler Taskdefs -->
+  <property name="javac2.home" value="${idea.home}/lib"/>
+  <path id="javac2.classpath">
+    <pathelement location="${javac2.home}/javac2.jar"/>
+    <pathelement location="${javac2.home}/jdom.jar"/>
+    <pathelement location="${javac2.home}/asm4-all.jar"/>
+    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
   </path>
+  <target name="register.custom.compilers">
+    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
+    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
+  </target>
   
   <!-- Modules -->
   
@@ -150,10 +138,10 @@
   <property name="module.jdk.bin.metropolis" value="${project.jdk.bin}"/>
   <property name="module.jdk.classpath.metropolis" value="${project.jdk.classpath}"/>
   
-  <property name="compiler.args.metropolis" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
+  <property name="compiler.args.metropolis" value="${compiler.args}"/>
   
-  <property name="metropolis.output.dir" value="${basedir}/output/production/Metropolis"/>
-  <property name="metropolis.testoutput.dir" value="${basedir}/output/test/Metropolis"/>
+  <property name="metropolis.output.dir" value="${module.metropolis.basedir}/out/production/Metropolis"/>
+  <property name="metropolis.testoutput.dir" value="${module.metropolis.basedir}/out/test/Metropolis"/>
   
   <path id="metropolis.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
@@ -161,68 +149,36 @@
   
   <path id="metropolis.module.production.classpath">
     <path refid="${module.jdk.classpath.metropolis}"/>
-    <path refid="library.guava-15.0.classpath"/>
-    <path refid="library.jchronic-0.2.4a.classpath"/>
+    <path refid="library.lib.classpath"/>
     <path refid="library.js.classpath"/>
-    <path refid="library.js-1.7r2.classpath"/>
-    <path refid="library.junit-4.8.1.classpath"/>
-    <path refid="library.truezip-6.8.3.classpath"/>
-    <path refid="library.dummypermscompat-1.7.classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2.classpath"/>
     <path refid="library.worldedit.classpath"/>
-    <path refid="library.worldedit_(2).classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2_(2).classpath"/>
-    <path refid="library.chestlootz_1-9-4.classpath"/>
+    <path refid="library.craftbukkit.classpath"/>
   </path>
   
   <path id="metropolis.runtime.production.module.classpath">
     <pathelement location="${metropolis.output.dir}"/>
-    <path refid="library.guava-15.0.classpath"/>
-    <path refid="library.jchronic-0.2.4a.classpath"/>
+    <path refid="library.lib.classpath"/>
     <path refid="library.js.classpath"/>
-    <path refid="library.js-1.7r2.classpath"/>
-    <path refid="library.junit-4.8.1.classpath"/>
-    <path refid="library.truezip-6.8.3.classpath"/>
-    <path refid="library.dummypermscompat-1.7.classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2.classpath"/>
     <path refid="library.worldedit.classpath"/>
-    <path refid="library.worldedit_(2).classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2_(2).classpath"/>
-    <path refid="library.chestlootz_1-9-4.classpath"/>
+    <path refid="library.craftbukkit.classpath"/>
   </path>
   
   <path id="metropolis.module.classpath">
     <path refid="${module.jdk.classpath.metropolis}"/>
     <pathelement location="${metropolis.output.dir}"/>
-    <path refid="library.guava-15.0.classpath"/>
-    <path refid="library.jchronic-0.2.4a.classpath"/>
+    <path refid="library.lib.classpath"/>
     <path refid="library.js.classpath"/>
-    <path refid="library.js-1.7r2.classpath"/>
-    <path refid="library.junit-4.8.1.classpath"/>
-    <path refid="library.truezip-6.8.3.classpath"/>
-    <path refid="library.dummypermscompat-1.7.classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2.classpath"/>
     <path refid="library.worldedit.classpath"/>
-    <path refid="library.worldedit_(2).classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2_(2).classpath"/>
-    <path refid="library.chestlootz_1-9-4.classpath"/>
+    <path refid="library.craftbukkit.classpath"/>
   </path>
   
   <path id="metropolis.runtime.module.classpath">
     <pathelement location="${metropolis.testoutput.dir}"/>
     <pathelement location="${metropolis.output.dir}"/>
-    <path refid="library.guava-15.0.classpath"/>
-    <path refid="library.jchronic-0.2.4a.classpath"/>
+    <path refid="library.lib.classpath"/>
     <path refid="library.js.classpath"/>
-    <path refid="library.js-1.7r2.classpath"/>
-    <path refid="library.junit-4.8.1.classpath"/>
-    <path refid="library.truezip-6.8.3.classpath"/>
-    <path refid="library.dummypermscompat-1.7.classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2.classpath"/>
     <path refid="library.worldedit.classpath"/>
-    <path refid="library.worldedit_(2).classpath"/>
-    <path refid="library.craftbukkit-1.7.2-r0.2_(2).classpath"/>
-    <path refid="library.chestlootz_1-9-4.classpath"/>
+    <path refid="library.craftbukkit.classpath"/>
   </path>
   
   
@@ -243,15 +199,15 @@
   
   <target name="compile.module.metropolis" depends="compile.module.metropolis.production,compile.module.metropolis.tests" description="Compile module Metropolis"/>
   
-  <target name="compile.module.metropolis.production" description="Compile module Metropolis; production classes">
+  <target name="compile.module.metropolis.production" depends="register.custom.compilers" description="Compile module Metropolis; production classes">
     <mkdir dir="${metropolis.output.dir}"/>
-    <javac destdir="${metropolis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.metropolis}/javac">
+    <javac2 destdir="${metropolis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.metropolis}/javac">
       <compilerarg line="${compiler.args.metropolis}"/>
       <bootclasspath refid="metropolis.module.bootclasspath"/>
       <classpath refid="metropolis.module.production.classpath"/>
       <src refid="metropolis.module.sourcepath"/>
       <patternset refid="excluded.from.compilation.metropolis"/>
-    </javac>
+    </javac2>
     
     <copy todir="${metropolis.output.dir}">
       <fileset dir="${module.metropolis.basedir}/src">
@@ -261,7 +217,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.metropolis.tests" depends="compile.module.metropolis.production" description="compile module Metropolis; test classes" unless="skip.tests"/>
+  <target name="compile.module.metropolis.tests" depends="register.custom.compilers,compile.module.metropolis.production" description="compile module Metropolis; test classes" unless="skip.tests"/>
   
   <target name="clean.module.metropolis" description="cleanup module">
     <delete dir="${metropolis.output.dir}"/>
@@ -278,7 +234,7 @@
   
   <target name="init.artifacts">
     <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
-    <property name="artifact.output.metropolis" value="${basedir}/bin"/>
+    <property name="artifact.output.metropolis" value="${basedir}/test/plugins"/>
     <mkdir dir="${artifacts.temp.dir}"/>
     <property name="temp.jar.path.Metropolis.jar" value="${artifacts.temp.dir}/Metropolis.jar"/>
   </target>

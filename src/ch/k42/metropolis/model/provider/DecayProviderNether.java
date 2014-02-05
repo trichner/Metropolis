@@ -63,6 +63,14 @@ public class DecayProviderNether extends DecayProvider {
                         continue;
                     }
 
+                    if (block.getType() == Material.WOODEN_DOOR && block.getRelative(0, 1, 0).getType() == Material.WOODEN_DOOR) {
+                        if (random.nextInt(100) < 80) {
+                            byte data = block.getData();
+                            data ^= 4;
+                            block.setData(data);
+                        }
+                    }
+
                     if (!block.isEmpty() && (holeNoise > fulldecay)) {
                         block.setType(Material.AIR);
                     } else if (isValid(block) && holeNoise > partialdecay) {
@@ -93,9 +101,7 @@ public class DecayProviderNether extends DecayProvider {
                                 block.getRelative(0, -1, 0)
                         };
 
-                        if ((block.getType().isBurnable() || block.getType() == Material.NETHERRACK) && neighbors[0].isEmpty() && random.nextBoolean()) {
-                            neighbors[0].setType(Material.FIRE);
-                        }
+                        if (isOnFire(block, neighbors[0]) && random.nextBoolean()) neighbors[0].setType(Material.FIRE);
 
                         if (block.isEmpty() && !neighbors[5].isEmpty()) {
                             int prob = 0;
@@ -110,5 +116,34 @@ public class DecayProviderNether extends DecayProvider {
                 }
             }
         }
+    }
+
+    protected static boolean isOnFire(Block block, Block above) {
+        return (
+                block.getType().isBurnable()
+                        && block.getType() != Material.NETHERRACK
+                        && above.isEmpty()
+        );
+    }
+
+    protected static boolean isRemovable(Block block) {
+        return (
+            block.getType() != Material.THIN_GLASS
+                && block.getType() != Material.GLASS
+                && block.getType() != Material.STAINED_GLASS
+                && block.getType() != Material.STAINED_GLASS_PANE
+                && block.getType() != Material.WOODEN_DOOR
+        );
+    }
+
+    protected static boolean isRemoved(Block block) {
+        return (
+            block.getType() != Material.DOUBLE_PLANT
+                && block.getType() != Material.LONG_GRASS
+                && block.getType() != Material.LEAVES
+                && block.getType() != Material.VINE
+                && block.getType() != Material.WATER
+                && block.getType() != Material.STATIONARY_WATER
+        );
     }
 }

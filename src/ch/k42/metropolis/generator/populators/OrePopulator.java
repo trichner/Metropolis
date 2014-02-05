@@ -15,54 +15,26 @@ import java.util.Random;
  */
 public class OrePopulator extends BlockPopulator {
 
+    private OreVein[] ores = {
+        new OreVein("GRAVEL", 32, 10, 1, 0),
+        new OreVein("COAL_ORE", 16, 21, 1, 0),
+        new OreVein("IRON_ORE", 8, 21, 0.8, 0),
+        new OreVein("GOLD_ORE", 8, 8, 0.75, 0),
+        new OreVein("REDSTONE_ORE", 7, 10, 0.7, 0),
+        new OreVein("DIAMOND_ORE", 7, 1, 0.4, 0),
+        new OreVein("LAPIS_ORE", 6, 3, 0.5, 0)
+    };
 
-
-    public class OreVein {
-
-        private Material ore;
-        private int amount;
-        private int iter;
-        private double range;
-
-        public OreVein (Material ore, int amount, int iter, double range) {
-            this.ore = ore;
-            this.amount = amount;
-            this.iter = iter;
-            this.range = range;
-        }
-
-        public int getIter(){
-            return iter;
-        }
-
-        public Material getOre() {
-            return ore;
-        }
-
-        public double getRange() {
-            return range;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-    }
-
-    private ArrayList<OreVein> ores;
     private final Random random;
+    public static final int oreLevel = 62;
 
     public OrePopulator(World world) {
-
         this.random = new Random(world.getSeed());
-        this.ores = new ArrayList<OreVein>();
+    }
 
-        ores.add(new OreVein(Material.GRAVEL, 32, 10, 1));
-        ores.add(new OreVein(Material.COAL_ORE, 16, 21, 1));
-        ores.add(new OreVein(Material.IRON_ORE, 8, 21, 0.8));
-        ores.add(new OreVein(Material.GOLD_ORE, 8, 8, 0.75));
-        ores.add(new OreVein(Material.REDSTONE_ORE, 7, 10, 0.7));
-        ores.add(new OreVein(Material.DIAMOND_ORE, 7, 1, 0.4));
-        ores.add(new OreVein(Material.LAPIS_ORE, 6, 3, 0.5));
+    public OrePopulator(World world, OreVein[] ores) {
+        this(world);
+        this.ores = ores;
     }
 
     private void createClump(World world, Material oreType, int size, int x, int y, int z){
@@ -105,7 +77,9 @@ public class OrePopulator extends BlockPopulator {
                                 double d15 = (i5 + 0.5D - d9) / (d11 / 2.0D);
 
                                 //noinspection deprecation,deprecation
-                                if ((d13 * d13 + d14 * d14 + d15 * d15 >= 1.0D) || (world.getBlockTypeIdAt(i3, i4, i5) != Material.STONE.getId())){
+                                if ((d13 * d13 + d14 * d14 + d15 * d15 >= 1.0D)
+                                        || (world.getBlockTypeIdAt(i3, i4, i5) != Material.STONE.getId())
+                                        || i4 > oreLevel){
                                     continue;
                                 }
 
@@ -118,8 +92,6 @@ public class OrePopulator extends BlockPopulator {
         }
     }
 
-    private static final int oreLevel = 64;
-
     @Override
     public void populate(World world, Random random, Chunk chunk){
         int x, y, z, i;
@@ -128,10 +100,10 @@ public class OrePopulator extends BlockPopulator {
         int worldChunkZ = chunk.getZ() * 16;
 
         for (OreVein ore : ores) {
-            for (i = 0; i < ore.getIter(); ++i){
+            for (i = 0; i < ore.getNum(); ++i){
                 x = worldChunkX + this.random.nextInt(16);
                 z = worldChunkZ + this.random.nextInt(16);
-                y = this.random.nextInt((int) (oreLevel * ore.getRange()));
+                y = this.random.nextInt(ore.getRange()) + ore.getOffset();
 
                 this.createClump(world, ore.getOre(), ore.getAmount(), x, y, z);
             }

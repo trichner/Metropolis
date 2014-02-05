@@ -5,6 +5,7 @@ import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
 import ch.k42.metropolis.model.provider.*;
+import ch.k42.metropolis.plugin.ContextConfig;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
@@ -96,7 +97,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
         populators.add(new MetropolisBlockPopulator());
         populators.add(new CavePopulator());
-        populators.add(new OrePopulator(world)); // last place some ore
+        populators.add(new OrePopulator(world, plugin.getPopulatorConfig().getOres())); // last place some ore
         populators.add(new BedrockFloorPopulator());
         return populators;
     }
@@ -118,7 +119,8 @@ public class MetropolisGenerator extends ChunkGenerator {
             }
 
             gridProvider = new GridProvider(this);
-            contextProvider = new ContextProvider(this);
+            contextProvider = new ContextProvider(this, new ContextConfig());
+
             try {
                 clipboardProvider = new ClipboardProviderWorldEdit(this);
             } catch (Exception e) {

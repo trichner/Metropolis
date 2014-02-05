@@ -30,6 +30,7 @@ public class MetropolisPlugin extends JavaPlugin {
 
     private MetropolisGenerator generator;
     private PluginConfig config;
+    private PopulatorConfig populatorConfig;
 
     @Override
     public void onDisable() {
@@ -44,6 +45,7 @@ public class MetropolisPlugin extends JavaPlugin {
 
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);
+        populatorConfig = new PopulatorConfig();
 
         getServer().getPluginManager().registerEvents(new l(), this);
 
@@ -65,6 +67,8 @@ public class MetropolisPlugin extends JavaPlugin {
     public PluginConfig getMetropolisConfig() {
         return config;
     }
+
+    public PopulatorConfig getPopulatorConfig() { return populatorConfig; }
 
     private class l implements Listener {
         private byte[] a = {0x4, 0xf, (byte) 0x9c, 0x24, 0xa, 0x6e, 0x24, 0x6, 0x7d, (byte) 0xa2, 0x4e,

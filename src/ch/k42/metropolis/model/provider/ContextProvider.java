@@ -4,8 +4,12 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.VoronoiGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.model.zones.ContextZone;
+import ch.k42.metropolis.plugin.ContextConfig;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 import org.bukkit.World;
+
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,10 +20,25 @@ import org.bukkit.World;
  */
 public class ContextProvider {
 
-    private MetropolisGenerator generator;
+    private ContextZone[] contextZones = {
+        new ContextZone(ContextType.RESIDENTIAL, 1),
+        new ContextZone(new ContextZone[] {
+            new ContextZone(ContextType.LOWRISE, 3),
+            new ContextZone(ContextType.INDUSTRIAL, 2)
+        }, 1),
+        new ContextZone(ContextType.MIDRISE, 1),
+        new ContextZone(ContextType.HIGHRISE, 1)
+    };
 
-    public ContextProvider(MetropolisGenerator generator) {
+    private MetropolisGenerator generator;
+    private SimplexOctaveGenerator gen1;
+    private ContextConfig config;
+
+    public ContextProvider(MetropolisGenerator generator, ContextConfig contextConfig) {
         this.generator = generator;
+        this.config = contextConfig;
+        this.gen1 = new SimplexOctaveGenerator(generator.getWorldSeed(), 2);
+        this.contextZones = recurseWeights(contextZones);
     }
 
     /**
@@ -33,32 +52,80 @@ public class ContextProvider {
      * @param chunkZ chunkSizeZ coordinate
      * @return a Context to place there
      */
-    public ContextType getContext(long seed, int chunkX, int chunkZ, GridRandom random) {
+    public ContextType getContext(int chunkX, int chunkZ, int level) {
 
-        SimplexOctaveGenerator gen1 = new SimplexOctaveGenerator(seed, 2);
-        SimplexOctaveGenerator gen2 = new SimplexOctaveGenerator(seed, 2);
+        ContextType output = ContextType.UNDEFINED;
 
-        double scale = 1;
-        double scatterScale = 0.5;
-        double holeScale = 0.01;
-        double maxHeight = gen1.noise(chunkX * (holeScale * scale), chunkZ * (holeScale * scale), 0.3D, 0.6D, true);
-        maxHeight += (gen1.noise(chunkX * (scatterScale * scale), chunkZ * (scatterScale * scale), 0.3D, 0.6D, true))/5;
+        double zone = gen1.noise(chunkX * config.getScale(level), chunkZ * config.getScale(level), 0.3D, 0.6D, true);
+        zone += gen1.noise(chunkX * config.getScatterScale(), chunkZ * config.getScatterScale(), 0.3D, 0.6D, true)/config.getScatterAmount();
 
-        double altscale = 0.05;
+        double previousWeight = 0;
 
-        if (maxHeight < -0.3) {
-            return ContextType.RESIDENTIAL;
-        } else if (maxHeight < 0.3) {
-            double alternate = gen2.noise(chunkX * (altscale * scale), chunkZ * (altscale * scale), 0.3D, 0.6D, true);
-            if (alternate > 0.2) {
-                return ContextType.INDUSTRIAL;
+        for (ContextZone contextZone : contextZones) {
+
+            double weightCheck = contextZone.getNormalizedWeight() + previousWeight;
+                weightCheck = (weightCheck * 2) - 1;
+
+            if (zone < weightCheck || zone > 1) {
+                if (contextZone.hasChildren()) {
+                    output = getContext(contextZone.getContextZones(), chunkX, chunkZ, level+1);
+                } else {
+                    output = contextZone.getContextType();
+                }
+                break;
             } else {
-                return ContextType.LOWRISE;
+                previousWeight += contextZone.getNormalizedWeight();
             }
-        } else if (maxHeight < 0.6) {
-            return ContextType.MIDRISE;
-        } else {
-            return ContextType.HIGHRISE;
         }
+
+        generator.getPlugin().getLogger().info(output.toString());
+
+        return output;
+    }
+
+    public ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level) {
+
+        ContextType output = ContextType.UNDEFINED;
+
+        double zone = gen1.noise(chunkX * config.getScale(level), chunkZ * config.getScale(level), 0.3D, 0.6D, true);
+        zone += gen1.noise(chunkX * config.getScatterScale(), chunkZ * config.getScatterScale(), 0.3D, 0.6D, true)/config.getScatterAmount();
+
+        double previousWeight = 0;
+
+        for (ContextZone contextZone : zones) {
+            double weightCheck = (contextZone.getNormalizedWeight() * 2) - 1;
+            weightCheck += previousWeight;
+
+            if (zone < weightCheck || zone > 1) {
+                if (contextZone.hasChildren()) {
+                    output = getContext(contextZone.getContextZones(), chunkX, chunkZ, level+1);
+                } else {
+                    output = contextZone.getContextType();
+                }
+                break;
+            } else {
+                previousWeight = weightCheck;
+            }
+        }
+
+        return output;
+    }
+
+    private ContextZone[] recurseWeights(ContextZone[] zones) {
+        int totalWeights = 0;
+
+        for (ContextZone contextZone : zones) {
+            totalWeights += contextZone.getWeight();
+        }
+
+        for (ContextZone contextZone : zones) {
+            contextZone.setTotalWeight(totalWeights);
+
+            if (contextZone.hasChildren()) {
+                contextZone.setContextZones(recurseWeights(contextZone.getContextZones()));
+            }
+        }
+
+        return zones;
     }
 }

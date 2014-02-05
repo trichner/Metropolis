@@ -137,19 +137,7 @@
   <path id="library.worldedit_(2).classpath">
     <pathelement location="${basedir}/lib/worldedit.jar"/>
   </path>
-  <!-- Register Custom Compiler Taskdefs
-  <property name="javac2.home" value="${idea.home}/lib"/>
-  <path id="javac2.classpath">
-    <pathelement location="${javac2.home}/javac2.jar"/>
-    <pathelement location="${javac2.home}/jdom.jar"/>
-    <pathelement location="${javac2.home}/asm4-all.jar"/>
-    <pathelement location="${javac2.home}/jgoodies-forms.jar"/>
-  </path>
-  <target name="register.custom.compilers">
-    <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
-    <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
-  </target>
-    -->
+  
   <!-- Modules -->
   
   
@@ -164,8 +152,8 @@
   
   <property name="compiler.args.metropolis" value="-encoding UTF-8 -source 1.7 ${compiler.args}"/>
   
-  <property name="metropolis.output.dir" value="${module.metropolis.basedir}/production/Metropolis"/>
-  <property name="metropolis.testoutput.dir" value="${module.metropolis.basedir}/test/Metropolis"/>
+  <property name="metropolis.output.dir" value="${basedir}/output/production/Metropolis"/>
+  <property name="metropolis.testoutput.dir" value="${basedir}/output/test/Metropolis"/>
   
   <path id="metropolis.module.bootclasspath">
     <!-- Paths to be included in compilation bootclasspath -->
@@ -255,9 +243,16 @@
   
   <target name="compile.module.metropolis" depends="compile.module.metropolis.production,compile.module.metropolis.tests" description="Compile module Metropolis"/>
   
-  <target name="compile.module.metropolis.production" depends="" description="Compile module Metropolis; production classes">
+  <target name="compile.module.metropolis.production" description="Compile module Metropolis; production classes">
     <mkdir dir="${metropolis.output.dir}"/>
-
+    <javac destdir="${metropolis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.metropolis}/javac">
+      <compilerarg line="${compiler.args.metropolis}"/>
+      <bootclasspath refid="metropolis.module.bootclasspath"/>
+      <classpath refid="metropolis.module.production.classpath"/>
+      <src refid="metropolis.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.metropolis"/>
+    </javac>
+    
     <copy todir="${metropolis.output.dir}">
       <fileset dir="${module.metropolis.basedir}/src">
         <patternset refid="compiler.resources"/>

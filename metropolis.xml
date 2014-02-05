@@ -137,7 +137,7 @@
   <path id="library.worldedit_(2).classpath">
     <pathelement location="${basedir}/lib/worldedit.jar"/>
   </path>
-  <!-- Register Custom Compiler Taskdefs -->
+  <!-- Register Custom Compiler Taskdefs
   <property name="javac2.home" value="${idea.home}/lib"/>
   <path id="javac2.classpath">
     <pathelement location="${javac2.home}/javac2.jar"/>
@@ -149,7 +149,7 @@
     <taskdef name="javac2" classname="com.intellij.ant.Javac2" classpathref="javac2.classpath"/>
     <taskdef name="instrumentIdeaExtensions" classname="com.intellij.ant.InstrumentIdeaExtensions" classpathref="javac2.classpath"/>
   </target>
-  
+    -->
   <!-- Modules -->
   
   
@@ -255,16 +255,9 @@
   
   <target name="compile.module.metropolis" depends="compile.module.metropolis.production,compile.module.metropolis.tests" description="Compile module Metropolis"/>
   
-  <target name="compile.module.metropolis.production" depends="register.custom.compilers" description="Compile module Metropolis; production classes">
+  <target name="compile.module.metropolis.production" depends="" description="Compile module Metropolis; production classes">
     <mkdir dir="${metropolis.output.dir}"/>
-    <javac2 destdir="${metropolis.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.metropolis}/javac">
-      <compilerarg line="${compiler.args.metropolis}"/>
-      <bootclasspath refid="metropolis.module.bootclasspath"/>
-      <classpath refid="metropolis.module.production.classpath"/>
-      <src refid="metropolis.module.sourcepath"/>
-      <patternset refid="excluded.from.compilation.metropolis"/>
-    </javac2>
-    
+
     <copy todir="${metropolis.output.dir}">
       <fileset dir="${module.metropolis.basedir}/src">
         <patternset refid="compiler.resources"/>
@@ -273,7 +266,7 @@
     </copy>
   </target>
   
-  <target name="compile.module.metropolis.tests" depends="register.custom.compilers,compile.module.metropolis.production" description="compile module Metropolis; test classes" unless="skip.tests"/>
+  <target name="compile.module.metropolis.tests" depends="compile.module.metropolis.production" description="compile module Metropolis; test classes" unless="skip.tests"/>
   
   <target name="clean.module.metropolis" description="cleanup module">
     <delete dir="${metropolis.output.dir}"/>

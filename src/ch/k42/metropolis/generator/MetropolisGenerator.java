@@ -8,7 +8,8 @@ import ch.k42.metropolis.model.provider.*;
 import ch.k42.metropolis.plugin.ContextConfig;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.*;
-import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
@@ -119,7 +120,7 @@ public class MetropolisGenerator extends ChunkGenerator {
             }
 
             gridProvider = new GridProvider(this);
-            contextProvider = new ContextProvider(this, new ContextConfig());
+            contextProvider = new ContextProvider(this, plugin.getContextConfig());
 
             try {
                 clipboardProvider = new ClipboardProviderWorldEdit(this);
@@ -217,6 +218,4 @@ public class MetropolisGenerator extends ChunkGenerator {
         plugin.getLogger().warning(message + " ---- " + e.getMessage());
         e.printStackTrace();
     }
-
-
 }

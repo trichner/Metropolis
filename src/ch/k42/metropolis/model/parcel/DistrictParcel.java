@@ -51,7 +51,7 @@ public class DistrictParcel extends Parcel {
 
         // TODO Randomly choose size!
 
-        ContextType localContext = context.getContext(chunkX, chunkZ, 1);
+        ContextType localContext = context.getContext(chunkX, chunkZ);
         List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
 
 
@@ -77,7 +77,7 @@ public class DistrictParcel extends Parcel {
                 generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext + "going over to fallback");
                 //FALLBACK
                 if (fallback) {
-                    schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ, 1), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
+                    schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
                     if (schems != null && schems.size() > 0) {
                         generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                         Clipboard schem = schems.get(random.getRandomInt(schems.size()));
@@ -100,34 +100,34 @@ public class DistrictParcel extends Parcel {
 
         //---
         if ((chunkSizeX < 2) && (chunkSizeZ < 2)) { //no more iterations
-            schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ, 1), roadDir, roadFacing); //just use context in one corner
+            schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, roadFacing); //just use context in one corner
             if (schems != null && schems.size() > 0) {
                 generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                 Clipboard schem = schems.get(random.getRandomInt(schems.size()));
                 while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
                     schem = schems.get(random.getRandomInt(schems.size()));
                 }
-                parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ, 1), roadDir);
+                parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ), roadDir);
                 parcel.populate(generator, chunk);
                 grid.getStatistics().logSchematic(schem);   // make log entry
                 return;
             } else {
-                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ, 1) + "going over to fallback");
+                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ) + "going over to fallback");
                 //FALLBACK
-                schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ, 1), roadDir, roadFacing); //just use context in one corner
+                schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, roadFacing); //just use context in one corner
                 if (schems != null && schems.size() > 0) {
                     generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                     Clipboard schem = schems.get(random.getRandomInt(schems.size()));
                     while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
                         schem = schems.get(random.getRandomInt(schems.size()));
                     }
-                    parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ, 1), roadDir);
+                    parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, context.getContext(chunkX, chunkZ), roadDir);
                     parcel.populate(generator, chunk);
                     grid.getStatistics().logSchematic(schem);    // make log entry
                     return;
                 }
                 parcel = new EmptyParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ);
-                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ, 1));
+                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ));
 
             }
             return; // in every case! we can't partition more! 1x1 should be available

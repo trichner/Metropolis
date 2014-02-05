@@ -1,6 +1,7 @@
 package ch.k42.metropolis.model.zones;
 
 import ch.k42.metropolis.model.enums.ContextType;
+import org.bukkit.craftbukkit.libs.com.google.gson.annotations.Expose;
 
 import java.util.Arrays;
 
@@ -9,9 +10,11 @@ import java.util.Arrays;
  */
 public class ContextZone {
 
+    @Expose
     private ContextZone[] contextZones;
+    @Expose
     private ContextType contextType;
-    private boolean hasChildren = false;
+    @Expose
     private double weight;
     private double totalWeight;
 
@@ -25,7 +28,6 @@ public class ContextZone {
     }
 
     public ContextZone(ContextZone[] contextZones, double weight) {
-        this.hasChildren = true;
         this.contextZones = contextZones;
         this.weight = weight;
     }
@@ -39,7 +41,6 @@ public class ContextZone {
     }
 
     public void setContextZones(ContextZone[] contextZones) {
-        this.hasChildren = true;
         this.contextZones = contextZones;
     }
 
@@ -52,7 +53,7 @@ public class ContextZone {
     }
 
     public boolean hasChildren() {
-        return hasChildren;
+        return contextZones != null && contextZones.length > 0;
     }
 
     public double getWeight() {
@@ -64,7 +65,6 @@ public class ContextZone {
         return "ContextZone{" +
                 "contextZones=" + Arrays.toString(contextZones) +
                 ", contextType=" + contextType +
-                ", hasChildren=" + hasChildren +
                 ", weight=" + weight +
                 ", totalWeight=" + totalWeight +
                 '}';

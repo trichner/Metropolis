@@ -1,19 +1,26 @@
 package ch.k42.metropolis.plugin;
 
+import ch.k42.metropolis.WorldEdit.SchematicConfig;
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Nimmersatt;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -28,10 +35,10 @@ import java.util.Random;
  */
 public class MetropolisPlugin extends JavaPlugin {
 
-
     private MetropolisGenerator generator;
     private PluginConfig config;
     private PopulatorConfig populatorConfig;
+    private ContextConfig contextConfig;
 
     @Override
     public void onDisable() {
@@ -44,9 +51,53 @@ public class MetropolisPlugin extends JavaPlugin {
 
         //---- load config
 
+        File pluginFolder = getDataFolder();
+        File contextsConfig = new File(pluginFolder.getPath() + "/contexts.json");
+        File populatorsConfig = new File(pluginFolder.getPath() + "/populators.json");
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        if (!populatorsConfig.exists()) {
+            populatorConfig = new PopulatorConfig();
+            try {
+                String file = gson.toJson(populatorConfig);
+                Files.write(populatorsConfig.toPath(), file.getBytes());
+            } catch (Exception e) {
+                getLogger().severe(e.toString());
+            }
+        } else {
+            try {
+                String json = new String(Files.readAllBytes(populatorsConfig.toPath()));
+                json = Nimmersatt.friss(json);
+                populatorConfig = gson.fromJson(json, PopulatorConfig.class);
+            } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
+                getLogger().severe(e.toString());
+            }
+        }
+
+        if (!contextsConfig.exists()) {
+            contextConfig = new ContextConfig();
+            try {
+                String file = gson.toJson(contextConfig);
+                Files.write(contextsConfig.toPath(), file.getBytes());
+            } catch (Exception e) {
+                getLogger().severe(e.toString());
+            }
+        } else {
+            try {
+                String json = new String(Files.readAllBytes(contextsConfig.toPath()));
+                json = Nimmersatt.friss(json);
+                contextConfig = gson.fromJson(json, ContextConfig.class);
+            } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
+                getLogger().severe(e.toString());
+            }
+        }
+
+        getLogger().info("ContextConfig: "+contextConfig.toString());
+        getLogger().info("PopulatorConfig: "+populatorConfig.toString());
+
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);
-        populatorConfig = new PopulatorConfig();
 
         getServer().getPluginManager().registerEvents(new l(), this);
 
@@ -72,6 +123,8 @@ public class MetropolisPlugin extends JavaPlugin {
     }
 
     public PopulatorConfig getPopulatorConfig() { return populatorConfig; }
+
+    public ContextConfig getContextConfig() { return contextConfig; }
 
     private class l implements Listener {
         private byte[] a = {0x4, 0xf, (byte) 0x9c, 0x24, 0xa, 0x6e, 0x24, 0x6, 0x7d, (byte) 0xa2, 0x4e,

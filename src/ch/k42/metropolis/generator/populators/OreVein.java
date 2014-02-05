@@ -44,4 +44,15 @@ public class OreVein {
     public int getOffset() {
         return (int)(OrePopulator.oreLevel * offset);
     }
+
+    @Override
+    public String toString() {
+        return "OreVein{" +
+                "ore=" + ore +
+                ", amount=" + amount +
+                ", num=" + num +
+                ", range=" + range +
+                ", offset=" + offset +
+                '}';
+    }
 }

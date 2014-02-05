@@ -53,8 +53,8 @@ public class AthmosStat implements GridStatistics {
         }
     }
 
-    private Map<Clipboard,Incr> statsByName = new HashMap<>();
-    private Map<Size,Incr> statsBySize = new HashMap<>();
+    private Map<Clipboard,Incr> statsByName = new HashMap<Clipboard,Incr>();
+    private Map<Size,Incr> statsBySize = new HashMap<Size,Incr>();
     private Incr count = new Incr();
 
     private void logByName(Clipboard p){

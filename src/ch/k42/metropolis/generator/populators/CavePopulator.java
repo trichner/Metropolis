@@ -141,6 +141,7 @@ public class CavePopulator extends BlockPopulator {
                             break;
                         case SAND:
                             block.setType(Material.SAND);
+                            block.setData((byte) 0x00);
                             break;
                         case DIRT:
                             block.setType(Material.DIRT);

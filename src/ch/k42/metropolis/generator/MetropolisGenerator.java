@@ -8,6 +8,7 @@ import ch.k42.metropolis.model.provider.*;
 import ch.k42.metropolis.plugin.ContextConfig;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.*;
+import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.generator.BlockPopulator;
@@ -139,6 +140,9 @@ public class MetropolisGenerator extends ChunkGenerator {
             byte[][] chunk = new byte[world.getMaxHeight() / 16][];
             for (int x = 0; x < 16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z = 0; z < 16; z++) {
+
+                    biomes.setBiome(x,z, Biome.PLAINS);
+
                     int maxHeight = 65; //how thick we want out flat terrain to be
                     for (int y = 1; y < maxHeight; y++) {
                         Material decay = natureDecay.checkBlock(world, (chunkX * 16) + x, y, (chunkZ * 16) + z);

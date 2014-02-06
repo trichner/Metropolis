@@ -26,6 +26,9 @@ public class PluginConfig {
     private static String pathDirectionFallbackPlacing = "generator.enableDirectionFallbackPlacing";
     private boolean directionFallbackPlacing = false;
 
+    private static String pathBuildChance = "generator.buildChance";
+    private int buildChance = 80;
+
     //private static String pathDebug = "consoleOutput.debug";
 
     public PluginConfig(FileConfiguration configFile) {
@@ -34,6 +37,11 @@ public class PluginConfig {
         this.spawnerPlacing = configFile.getBoolean(pathSpawnerPlacing, spawnerPlacing);
         this.crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing, crossContextPlacing);
         this.directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing, directionFallbackPlacing);
+        this.buildChance = configFile.getInt(pathBuildChance,buildChance);
+    }
+
+    public int getBuildChance() {
+        return buildChance;
     }
 
     public boolean isDebugEnabled() {

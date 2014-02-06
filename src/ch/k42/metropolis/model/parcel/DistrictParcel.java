@@ -10,6 +10,7 @@ import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
 
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -52,6 +53,9 @@ public class DistrictParcel extends Parcel {
 
 
         fallback = generator.getPlugin().getMetropolisConfig().allowDirectionFallbackPlacing();
+
+
+
         ClipboardProvider clips = generator.getClipboardProvider();
         grid = generator.getGridProvider().getGrid(chunkX, chunkZ);
         GridRandom random = grid.getRandom();
@@ -69,41 +73,43 @@ public class DistrictParcel extends Parcel {
         List<Clipboard> schems = clips.getFit(chunkSizeX, chunkSizeZ, localContext, roadDir, roadFacing); //just use context in one corner
 
 
-        int buildChance = 100; //schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
+        int buildChance = generator.getPlugin().getMetropolisConfig().getBuildChance(); //schems.size() > 0 ? 80 - (65/(schems.size()+1)) : 0; // FIXME Not normalized!
 
         //---- Randomly decide to place a schematic, first find one with correct orientation, if none found, place any that fits context
         if (random.getChance(buildChance)) { //FIXME Hardcoded
             if (schems != null && schems.size() > 0) {
 
                 generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
-                Clipboard schem = schems.get(random.getRandomInt(schems.size()));
-                while (!random.getChance(schem.getSettings().getOddsOfAppearance())) { //fixme potential endless loop
-                    schem = schems.get(random.getRandomInt(schems.size()));
-                }
 
-                parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
-                parcel.populate(generator, chunk);
+                Collections.shuffle(schems);
 
-                return;
-            } else { // find a schematic, but ignore road
-                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext + "going over to fallback");
-                //FALLBACK
-                if (fallback) {
-                    schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, roadFacing); //just use context in one corner //TODO use Direction.NONE
-                    if (schems != null && schems.size() > 0) {
-                        generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
-                        Clipboard schem = schems.get(random.getRandomInt(schems.size()));
-                        while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
-                            schem = schems.get(random.getRandomInt(schems.size()));
-                        }
-                        parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
+                for(Clipboard c : schems){
+                    if(random.getChance(c.getSettings().getOddsOfAppearance())){
+                        parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, c, localContext, roadDir);
                         parcel.populate(generator, chunk);
                         return;
-                    } else {
-                        generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext);
                     }
                 }
             }
+//            else { // find a schematic, but ignore road
+//                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext + "going over to fallback");
+//                //FALLBACK
+//                if (fallback) {
+//                    schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, false); //just use context in one corner //TODO use Direction.NONE
+//                    if (schems != null && schems.size() > 0) {
+//                        generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
+//                        Clipboard schem = schems.get(random.getRandomInt(schems.size()));
+//                        while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
+//                            schem = schems.get(random.getRandomInt(schems.size()));
+//                        }
+//                        parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
+//                        parcel.populate(generator, chunk);
+//                        return;
+//                    } else {
+//                        generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext);
+//                    }
+//                }
+//            }
         }
 
         //---
@@ -180,9 +186,9 @@ public class DistrictParcel extends Parcel {
             }
         } else {
             //FIXME Hardcoded
-            double mean = chunkSizeZ / 2.0;
+            double  mean = chunkSizeZ / 2.0;
             double sigma = mean / sigma_factor;
-            int cut = getNormalCut(mean, sigma, random);
+            int      cut = getNormalCut(mean, sigma, random);
 
             if (cut < 1) // sanitize cut
                 cut = 1;

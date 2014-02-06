@@ -7,6 +7,7 @@ import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.RoadType;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import net.minecraft.util.org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
 import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
@@ -154,6 +155,9 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
             // forget all those shape and ore type and just go for the world name
             schematicsFolder = findFolder(pluginFolder, foldername);
             cacheFolder = findFolder(pluginFolder, cachename);
+
+            // Delete all files in the Cache folder
+            FileUtils.cleanDirectory(cacheFolder);
 
 //			// shape folder (normal, floating, etc.)
 //			File shapeFolder = findFolder(pluginFolder, generator.shapeProvider.getCollectionName());

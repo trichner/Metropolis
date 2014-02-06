@@ -134,7 +134,7 @@ public class CavePopulator extends BlockPopulator {
             int lavapoint = Math.min(midpoint, 24);
             for (XYZ loc : snakeBlocks) {
                 Block block = world.getBlockAt(loc.x, loc.y, loc.z);
-                if (!block.isEmpty() && !block.isLiquid() && block.getType() != Material.BEDROCK) {
+                if (!block.isEmpty() && block.getType() != Material.BEDROCK) {
                     switch (caveType) {
                         case AIR:
                             block.setType(Material.AIR);

@@ -37,8 +37,8 @@ public class MetropolisPlugin extends JavaPlugin {
 
     private MetropolisGenerator generator;
     private PluginConfig config;
-    private PopulatorConfig populatorConfig;
-    private ContextConfig contextConfig;
+    private PopulatorConfig populatorConfig = new PopulatorConfig();
+    private ContextConfig contextConfig = new ContextConfig();
 
     @Override
     public void onDisable() {
@@ -57,44 +57,32 @@ public class MetropolisPlugin extends JavaPlugin {
 
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-        if (!populatorsConfig.exists()) {
-            populatorConfig = new PopulatorConfig();
-            try {
+        try {
+
+            if (!populatorsConfig.exists()) {
                 String file = gson.toJson(populatorConfig);
                 Files.write(populatorsConfig.toPath(), file.getBytes());
-            } catch (Exception e) {
-                getLogger().severe(e.toString());
-            }
-        } else {
-            try {
+            } else {
                 String json = new String(Files.readAllBytes(populatorsConfig.toPath()));
                 json = Nimmersatt.friss(json);
                 populatorConfig = gson.fromJson(json, PopulatorConfig.class);
-            } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
-                getLogger().severe(e.toString());
             }
-        }
 
-        if (!contextsConfig.exists()) {
-            contextConfig = new ContextConfig();
-            try {
+            if (!contextsConfig.exists()) {
                 String file = gson.toJson(contextConfig);
                 Files.write(contextsConfig.toPath(), file.getBytes());
-            } catch (Exception e) {
-                getLogger().severe(e.toString());
-            }
-        } else {
-            try {
+            } else {
                 String json = new String(Files.readAllBytes(contextsConfig.toPath()));
                 json = Nimmersatt.friss(json);
                 contextConfig = gson.fromJson(json, ContextConfig.class);
-            } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
-                getLogger().severe(e.toString());
             }
-        }
 
-        getLogger().info("ContextConfig: "+contextConfig.toString());
-        getLogger().info("PopulatorConfig: "+populatorConfig.toString());
+            getLogger().info("ContextConfig: "+contextConfig.toString());
+            getLogger().info("PopulatorConfig: "+populatorConfig.toString());
+
+        } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
+            getLogger().severe(e.getMessage());
+        }
 
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);

@@ -71,6 +71,14 @@ public class DecayProviderNether extends DecayProvider {
                         }
                     }
 
+                    if (block.getType() == Material.WATER) {
+                        block.setType(Material.LAVA);
+                    }
+
+                    if (block.getType() == Material.STATIONARY_WATER) {
+                        block.setType(Material.STATIONARY_LAVA);
+                    }
+
                     if (!block.isEmpty() && (holeNoise > fulldecay)) {
                         block.setType(Material.AIR);
                     } else if (isValid(block) && holeNoise > partialdecay) {

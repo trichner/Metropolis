@@ -12,15 +12,15 @@ import java.util.Arrays;
 public class ContextConfig {
 
     @Expose
-    private double scale = 1.0D;
+    private double scale = 0.2D;
     @Expose
-    private double scatterScale = 0.05D;
+    private double scatterScale = 0.2D;
     @Expose
-    private double scatterAmount = 0.5D;
+    private double scatterAmount = 5D;
     @Expose
     private double mainScale = 0.01D;
     @Expose
-    private double recurseScale = 5.0D;
+    private double recurseScale = 10.0D;
     @Expose
     private ContextZone[] contextZones = {
         new ContextZone(ContextType.RESIDENTIAL, 1),
@@ -40,7 +40,7 @@ public class ContextConfig {
     }
 
     public double getScatterScale() {
-        return scatterScale * scale;
+        return scatterScale;
     }
 
     public double getScatterAmount() {

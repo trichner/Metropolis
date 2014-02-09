@@ -1,6 +1,8 @@
 # Metropolis World Generator
 
-Authors: Thomas Richner, Aaron Brewer
+**Authors:** Thomas Richner, Aaron Brewer
+
+**License:** [GNU General Public License, version 3 (GPL-3.0)](http://opensource.org/licenses/gpl-3.0)
 
 In the future, wealthy industrialists rule the vast city of Metropolis from high-rise tower complexes, while a lower class of underground-dwelling workers toil constantly to operate the machines that provide its power. The Master of Metropolis is the ruthless Joh Fredersen (Alfred Abel), whose son Freder (Gustav Fröhlich) idles away his time in a pleasure garden with the other children of the rich. Freder is interrupted by the arrival of a young woman named Maria (Brigitte Helm), who has brought a group of workers' children to see the privileged lifestyle led by the rich. Maria and the children are quickly ushered away, but Freder is fascinated by Maria and descends to the workers' city in an attempt to find her.
 
@@ -118,3 +120,7 @@ This will also override any "schematic.json" files that are automatically bootst
 Type: `boolean`
 
 Do not use rotated version of this schematic.
+
+### Wow, such plugin, much work
+
+_DAthmosSZLtk6LC1wJVcgdXchPXuhb1a9E_

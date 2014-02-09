@@ -7,6 +7,8 @@ import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Nimmersatt;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -16,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -39,6 +42,19 @@ public class MetropolisPlugin extends JavaPlugin {
     private PluginConfig config;
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
+
+    @Override
+    public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+        getLogger().info(id);
+        World.Environment env = World.Environment.NORMAL;
+        if (id == "NETHER") {
+            env = World.Environment.NETHER;
+        } else if (id == "THE_END") {
+            env = World.Environment.THE_END;
+        }
+        generator = new MetropolisGenerator(this, worldName, env);
+        return generator;
+    }
 
     @Override
     public void onDisable() {

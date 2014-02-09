@@ -104,6 +104,13 @@ public class MetropolisGenerator extends ChunkGenerator {
         return populators;
     }
 
+    @Override
+    public boolean canSpawn(World world, int x, int z) {
+        return true;
+    }
+
+
+
     public void initializeWorldInfo(World aWorld) {
 
         // initialize the shaping logic
@@ -164,13 +171,11 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public byte[] generate(World world, Random random, int x, int z) {
-        //reportDebug("generate !!!");
         return super.generate(world, random, x, z);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
     public short[][] generateExtBlockSections(World world, Random random, int x, int z, BiomeGrid biomes) {
-        //reportDebug("generateExtBlockSections !!!");
         return super.generateExtBlockSections(world, random, x, z, biomes);    //To change body of overridden methods use File | Settings | File Templates.
     }
 

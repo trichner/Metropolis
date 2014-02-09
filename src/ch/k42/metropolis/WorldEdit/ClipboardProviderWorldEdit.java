@@ -316,7 +316,6 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
         ClipboardKey key = new ClipboardKey(chunkX, chunkZ, contextType, RoadType.NONE, roadDir, roadFacing);
         List<Clipboard> list = clipboards.get(key);
         if (list == null) list = new LinkedList<Clipboard>();
-        Bukkit.getServer().getLogger().info(list.toString());
         return list;
     }
 

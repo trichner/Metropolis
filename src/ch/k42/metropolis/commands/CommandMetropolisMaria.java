@@ -9,10 +9,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.generator.ChunkGenerator;
 
 /**
- * This command starts the generation of Metropolis if not already existent
+ * This command starts the generation of Metropolis if not already exsistent
  * or warps the player to Metropolis
  * Credits to the creator of CityWorld, gave me some inspiration ;)
  *
@@ -37,7 +36,8 @@ public class CommandMetropolisMaria implements CommandExecutor {
             if (world == null && player.hasPermission("metropolis.create")) {
                 sender.sendMessage("Maria is working hard... This will take a moment...");
 
-                String worldname = DEFAULT_WORLD_NAME;
+                String worldname;
+                worldname = DEFAULT_WORLD_NAME;
 
                 if (split.length > 0) {
                     if (!split[0].isEmpty()) {
@@ -111,8 +111,12 @@ public class CommandMetropolisMaria implements CommandExecutor {
         Bukkit.getLogger().info("---- Metropolis already built");
         if (metropolis == null) {
             // if neither then create/build it!
-            plugin.getDefaultWorldGenerator(worldname, env.toString());
-            metropolis = Bukkit.getServer().getWorld(worldname);
+            WorldCreator worldcreator = new WorldCreator(worldname);
+            worldcreator.environment(env);
+            MetropolisGenerator generator = new MetropolisGenerator(plugin, worldname, env);
+            plugin.setGenerator(generator);
+            worldcreator.generator(generator);
+            metropolis = Bukkit.getServer().createWorld(worldcreator);
         }
         return metropolis;
     }

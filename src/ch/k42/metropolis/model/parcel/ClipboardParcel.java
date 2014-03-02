@@ -13,6 +13,7 @@ import ch.k42.metropolis.WorldEdit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.v1_7_R1.CraftChunk;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
@@ -40,6 +41,7 @@ public class ClipboardParcel extends Parcel {
             clipboard.paste(generator, (chunkX << 4), (chunkZ << 4), Constants.BUILD_HEIGHT, direction);
             // TODO use config, don't always destroy
             generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(streetLevel), clipboard.getSizeY(), clipboard.getDecayOptions());
+            ((CraftChunk)chunk).getHandle().initLighting();
         }
     }
 

@@ -17,14 +17,14 @@ public class DecayOption {
 
     private static final double defaultHoleScale = 1.0 / 20.0;
     private static final double defaultLeavesScale = 1.0 / 10.0;
-    private static final double defaultFulldecay = 0.5D;
-    private static final double defaultPartialdecay = 0.3D;
-    private static final double defaultLeavesdecay = 0.1D;
+    private static final double defaultFullDecay = 0.5D;
+    private static final double defaultPartialDecay = 0.3D;
+    private static final double defaultLeavesDecay = 0.1D;
 
     private static final double defaultDecayIntensity = 1;
 
 
-    private static final DecayOption defaultOptions = new DecayOption(defaultHoleScale, defaultLeavesScale, defaultFulldecay, defaultPartialdecay, defaultLeavesdecay);
+    private static final DecayOption defaultOptions = new DecayOption(defaultHoleScale, defaultLeavesScale, defaultFullDecay, defaultPartialDecay, defaultLeavesDecay);
 
     /**
      * An instance of DecayOption with hardcoded default options
@@ -71,10 +71,10 @@ public class DecayOption {
         } else if (intensity > 0 && intensity <= 1) {
             holeScale = defaultHoleScale;
             leavesScale = defaultLeavesScale;
-            fulldecay = 1 - defaultFulldecay * intensity;
+            fulldecay = 1 - defaultFullDecay * intensity;
             if (fulldecay < -0.8) fulldecay = -0.8;
             partialdecay = fulldecay - 0.2D;
-            leavesdecay = defaultLeavesdecay;
+            leavesdecay = defaultLeavesDecay;
         } else {
             //Throw an error! maybe...
         }
@@ -94,10 +94,10 @@ public class DecayOption {
         } else if (intensity > 0 && intensity <= 1) {
             holeScale = defaultHoleScale;
             leavesScale = defaultLeavesScale;
-            fulldecay = 1 - defaultFulldecay * intensity;
+            fulldecay = 1 - defaultFullDecay * intensity;
             if (fulldecay < -0.8) fulldecay = -0.8;
             partialdecay = fulldecay - 0.2D;
-            leavesdecay = defaultLeavesdecay;
+            leavesdecay = defaultLeavesDecay;
         } else {
             //Throw an error! maybe...
         }

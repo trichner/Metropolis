@@ -79,7 +79,7 @@ public class DistrictParcel extends Parcel {
         if (random.getChance(buildChance)) { //FIXME Hardcoded
             if (schems != null && schems.size() > 0) {
 
-                generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
+                //generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
 
                 Collections.shuffle(schems);
 
@@ -116,7 +116,7 @@ public class DistrictParcel extends Parcel {
         if ((chunkSizeX < 2) && (chunkSizeZ < 2)) { //no more iterations
             schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, roadFacing); //just use context in one corner
             if (schems != null && schems.size() > 0) {
-                generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
+                //generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                 Clipboard schem = schems.get(random.getRandomInt(schems.size()));
                 while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
                     schem = schems.get(random.getRandomInt(schems.size()));
@@ -125,11 +125,11 @@ public class DistrictParcel extends Parcel {
                 parcel.populate(generator, chunk);
                 return;
             } else { //=====FALLBACK
-                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ) + "going over to fallback");
+                //generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + context.getContext(chunkX, chunkZ) + "going over to fallback");
                 //FALLBACK
                 schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, false); //just use context in one corner
                 if (schems != null && schems.size() > 0) {
-                    generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
+                    //generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
                     Clipboard schem = schems.get(random.getRandomInt(schems.size()));
                     while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
                         schem = schems.get(random.getRandomInt(schems.size()));
@@ -149,7 +149,7 @@ public class DistrictParcel extends Parcel {
         final int blockSize = 14;
         final int sigma_factor = 6;
 
-        generator.reportDebug("chunkSizeX: " + chunkSizeX + ", chunkSizeZ: " + chunkSizeZ);
+        //generator.reportDebug("chunkSizeX: " + chunkSizeX + ", chunkSizeZ: " + chunkSizeZ);
 
         // Failed? partition into 2 sub lots
         if (chunkSizeX > chunkSizeZ) { //if(sizeX>sizeZ){ // cut longer half, might prevent certain sizes to occur

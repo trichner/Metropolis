@@ -3,10 +3,13 @@ package ch.k42.metropolis.model.provider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
+import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
+import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.material.Door;
+import org.bukkit.material.LongGrass;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import java.util.Random;
@@ -123,24 +126,51 @@ public class DecayProviderNormal extends DecayProvider {
                         if (leavesNoise > leavesdecay && holeNoise > partialdecay && block.isEmpty()) {
                             int support = 0;
 
-                            for (int n = 0; n < neighbors.length; n++)
-                                support += this.isSupporting(neighbors[n]) ? 1 : 0;
+                            for (int n = 0; n < neighbors.length; n++) {
+                                if (n == 0) {
+                                    double holeAboveNoise = noiseGen.noise(x * holeScale, (y+1) * holeScale, z * holeScale, 0.3D, 0.6D, true);
+                                    support += this.isSupporting(neighbors[n], holeAboveNoise, fulldecay) ? 1 : 0;
+                                } else if (n == 3) {
+                                    double holeAsideNoise = noiseGen.noise((x+1) * holeScale, y * holeScale, z * holeScale, 0.3D, 0.6D, true);
+                                    support += this.isSupporting(neighbors[n], holeAsideNoise, fulldecay) ? 1 : 0;
+                                } else {
+                                    support += this.isSupporting(neighbors[n]) ? 1 : 0;
+                                }
+                            }
 
-                            if (support > 0)
-                                block.setTypeIdAndData(Material.LEAVES.getId(), (byte) random.nextInt(4), true);
+                            if (support == 1) {
+                                if (random.nextBoolean())
+                                    block.setTypeIdAndData(Material.LEAVES.getId(), (byte) (4 + random.nextInt(4)), true);
+                            } else if (support > 2 && block.getLightLevel() > 7 && neighbors[0].isEmpty()) {
+                                block.setType(Material.GRASS);
+                                if (random.nextDouble() < 0.1) {
+                                    world.generateTree(neighbors[0].getLocation(), TreeType.TREE);
+                                } else {
+                                    if (random.nextDouble() < 0.1) {
+                                        neighbors[0].setTypeIdAndData(Material.RED_ROSE.getId(), (byte) random.nextInt(8), true);
+                                    } else {
+                                        LongGrass grass = new LongGrass();
+                                        grass.setSpecies(GrassSpecies.NORMAL);
+                                        neighbors[0].setType(grass.getItemType());
+                                        neighbors[0].setData(grass.getData());
+                                    }
+                                }
+                            } else if (support > 1) {
+                                block.setTypeIdAndData(Material.LEAVES.getId(), (byte) (4 + random.nextInt(4)), true);
+                            }
                         }
 
                         if (block.isEmpty() && random.nextBoolean() && !neighbors[5].isEmpty()) {
 
                             byte vineMeta = 0;
 
-                            if (!neighbors[1].isEmpty() && neighbors[1].getType() != Material.VINE)
+                            if (neighbors[1].getType().isSolid() && neighbors[1].getType() != Material.VINE)
                                 vineMeta += 4;
-                            if (!neighbors[2].isEmpty() && neighbors[2].getType() != Material.VINE)
+                            if (neighbors[2].getType().isSolid() && neighbors[2].getType() != Material.VINE)
                                 vineMeta += 1;
-                            if (!neighbors[3].isEmpty() && neighbors[3].getType() != Material.VINE)
+                            if (neighbors[3].getType().isSolid() && neighbors[3].getType() != Material.VINE)
                                 vineMeta += 8;
-                            if (!neighbors[4].isEmpty() && neighbors[4].getType() != Material.VINE)
+                            if (neighbors[4].getType().isSolid() && neighbors[4].getType() != Material.VINE)
                                 vineMeta += 2;
 
                             if (vineMeta > 0)
@@ -169,13 +199,17 @@ public class DecayProviderNormal extends DecayProvider {
         return (
 
                 block.getType() != Material.LEAVES
-                && block.getType() != Material.VINE
-                && block.getType() != Material.LOG
-                && block.getType() != Material.WATER
-                && block.getType() != Material.STATIONARY_WATER
-                && block.getType() != Material.LAVA
-                && block.getType() != Material.STATIONARY_LAVA
-                && !block.isEmpty()
+                        && block.getType() != Material.VINE
+                        && block.getType() != Material.LOG
+                        && block.getType() != Material.WATER
+                        && block.getType() != Material.STATIONARY_WATER
+                        && block.getType() != Material.LAVA
+                        && block.getType() != Material.STATIONARY_LAVA
+                        && !block.isEmpty()
         );
+    }
+
+    protected boolean isSupporting(Block block, double holeAbove, double fullDecay) {
+        return (isSupporting(block) && (holeAbove < fullDecay));
     }
 }

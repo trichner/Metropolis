@@ -2,12 +2,11 @@ package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.GridRandom;
-import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.LootType;
 import ch.k42.metropolis.model.enums.RoadType;
 import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
 
 import java.util.Arrays;
 import java.util.HashSet;

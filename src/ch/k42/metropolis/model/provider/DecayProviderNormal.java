@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.material.Door;
 import org.bukkit.material.LongGrass;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
@@ -134,7 +133,7 @@ public class DecayProviderNormal extends DecayProvider {
                                     double holeAsideNoise = noiseGen.noise((x+1) * holeScale, y * holeScale, z * holeScale, 0.3D, 0.6D, true);
                                     support += this.isSupporting(neighbors[n], holeAsideNoise, fulldecay) ? 1 : 0;
                                 } else {
-                                    support += this.isSupporting(neighbors[n]) ? 1 : 0;
+                                support += this.isSupporting(neighbors[n]) ? 1 : 0;
                                 }
                             }
 

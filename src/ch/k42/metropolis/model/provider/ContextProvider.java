@@ -1,15 +1,10 @@
 package ch.k42.metropolis.model.provider;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.VoronoiGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
-import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.model.zones.ContextZone;
 import ch.k42.metropolis.plugin.ContextConfig;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
-import org.bukkit.World;
-
-import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.

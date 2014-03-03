@@ -79,6 +79,28 @@ public class DecayProviderNether extends DecayProvider {
                         block.setType(Material.STATIONARY_LAVA);
                     }
 
+                    if (block.getType() == Material.GRASS) {
+                        block.setType(Material.DIRT);
+                    }
+
+                    if (isRemoved(block)) {
+                        block.setType(Material.AIR);
+                    }
+
+                    Block[] neighbors = {
+                            block.getRelative(0, 1, 0),
+                            block.getRelative(0, 0, -1),
+                            block.getRelative(0, 0, 1),
+                            block.getRelative(1, 0, 0),
+                            block.getRelative(-1, 0, 0),
+                            block.getRelative(0, -1, 0)
+                    };
+
+                    if (isOnFire(block, neighbors[0]) && random.nextBoolean()) {
+                        block.setType(Material.FIRE);
+                        neighbors[0].setType(Material.FIRE);
+                    }
+
                     if (!block.isEmpty() && (holeNoise > fulldecay)) {
                         block.setType(Material.AIR);
                     } else if (isValid(block) && holeNoise > partialdecay) {
@@ -87,29 +109,15 @@ public class DecayProviderNether extends DecayProvider {
                             case SANDSTONE:
                             case COBBLESTONE:
                             case CLAY_BRICK:
-                                if (random.nextInt(100) < 40) break; // 40% happens nothing
-                                block.setType(Material.NETHERRACK);
-                                break;
                             case BRICK:
                             case SMOOTH_BRICK:
-                                if (random.nextInt(100) < 40) break; // 40% happens nothing
-                                block.setType(Material.NETHER_BRICK);
+                                if (random.nextInt(100) < 40) break; // 40% nothing
+                                block.setType(Material.NETHERRACK);
                                 break;
                             default:
                                 block.setType(Material.AIR);
                                 break;
                         }
-
-                        Block[] neighbors = {
-                                block.getRelative(0, 1, 0),
-                                block.getRelative(0, 0, -1),
-                                block.getRelative(0, 0, 1),
-                                block.getRelative(1, 0, 0),
-                                block.getRelative(-1, 0, 0),
-                                block.getRelative(0, -1, 0)
-                        };
-
-                        if (isOnFire(block, neighbors[0]) && random.nextBoolean()) neighbors[0].setType(Material.FIRE);
 
                         if (block.isEmpty() && !neighbors[5].isEmpty()) {
                             int prob = 0;
@@ -129,7 +137,6 @@ public class DecayProviderNether extends DecayProvider {
     protected static boolean isOnFire(Block block, Block above) {
         return (
                 block.getType().isBurnable()
-                        && block.getType() != Material.NETHERRACK
                         && above.isEmpty()
         );
     }
@@ -145,13 +152,16 @@ public class DecayProviderNether extends DecayProvider {
     }
 
     protected static boolean isRemoved(Block block) {
+        Material type = block.getType();
         return (
-            block.getType() != Material.DOUBLE_PLANT
-                && block.getType() != Material.LONG_GRASS
-                && block.getType() != Material.LEAVES
-                && block.getType() != Material.VINE
-                && block.getType() != Material.WATER
-                && block.getType() != Material.STATIONARY_WATER
+                type == Material.DOUBLE_PLANT
+                || type == Material.LONG_GRASS
+                || type == Material.LEAVES
+                || type == Material.LOG
+                || type == Material.LOG_2
+                || type == Material.VINE
+                || type == Material.WATER
+                || type == Material.STATIONARY_WATER
         );
     }
 }

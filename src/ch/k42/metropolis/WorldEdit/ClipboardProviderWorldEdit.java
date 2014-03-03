@@ -1,10 +1,10 @@
 package ch.k42.metropolis.WorldEdit;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Nimmersatt;
-import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.RoadType;
+import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.minecraft.util.org.apache.commons.io.FileUtils;
@@ -104,11 +104,11 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
 
     private GlobalSchematicConfig globalSettings;
 
-    public ClipboardProviderWorldEdit(MetropolisGenerator generator) throws Exception {
+    public ClipboardProviderWorldEdit(MetropolisPlugin plugin) throws Exception {
         super();
         //==== First load the plugin
         WorldEditPlugin worldEditPlugin = null;
-        generator.reportDebug("looking for WorldEdit");
+        plugin.getLogger().info("looking for WorldEdit");
         PluginManager pm = Bukkit.getServer().getPluginManager();
         worldEditPlugin = (WorldEditPlugin) pm.getPlugin(pluginName);
 
@@ -140,18 +140,19 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
         WorldEdit worldEdit = worldEditPlugin.getWorldEdit();
 
         // Yay! found it!
-        generator.reportMessage("[ClipboardProvider] Found WorldEdit, enabling its schematics");
+
+        plugin.getLogger().info("[ClipboardProvider] Found WorldEdit, enabling its schematics");
 
         // find the files
-        File pluginFolder = generator.getPlugin().getDataFolder();
-        generator.reportDebug("looking for PluginFolder");
+        File pluginFolder = plugin.getDataFolder();
+        plugin.getLogger().info("looking for PluginFolder");
 
         if (!pluginFolder.isDirectory()) {
             pluginFolder.mkdir();
         }
 
         if (pluginFolder.isDirectory()) {
-            generator.reportDebug("found PluginFolder");
+            plugin.getLogger().info("found PluginFolder");
             // forget all those shape and ore type and just go for the world name
             schematicsFolder = findFolder(pluginFolder, foldername);
             cacheFolder = findFolder(pluginFolder, cachename);
@@ -164,9 +165,9 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
 //
 //			// finally ores are used to figure out the collection folder (normal, nether, theend, etc.)
 //			schematicsFolder = findFolder(shapeFolder, generator.oreProvider.getCollectionName());
-            generator.reportDebug("loading clips");
-            loadClips(generator);
-            generator.reportDebug("loaded clips");
+            plugin.getLogger().info("loading clips");
+            loadClips(plugin);
+            plugin.getLogger().info("loaded clips");
         }
     }
 
@@ -210,7 +211,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
         };
     }
 
-    public void loadClips(MetropolisGenerator generator) throws Exception {
+    public void loadClips(MetropolisPlugin plugin) throws Exception {
 
         if (schematicsFolder != null && cacheFolder != null) {
 
@@ -228,10 +229,10 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
                     config.setPath(configFile.getPath());
                     if (config.getSchematics().size() > 0) {
                         batchedConfigs.add(config);
-                        generator.reportMessage("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " added.");
+                        plugin.getLogger().info("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " added.");
                     }
                 } catch (Exception e) {
-                    generator.reportException("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " could NOT be loaded", e);
+                    plugin.getLogger().info("[ClipboardProvider] BatchConfiguation " + configFile.getName() + " could NOT be loaded");
                 }
             }
 
@@ -241,7 +242,7 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
             for (File schematicFile : schematicFiles) {
                 try {
                     Clipboard clip = null;
-                    clip = new ClipboardWorldEdit(generator, schematicFile, cacheFolder, globalSettings, batchedConfigs);
+                    clip = new ClipboardWorldEdit(plugin, schematicFile, cacheFolder, globalSettings, batchedConfigs);
                     clipboardsByName.put(clip.getName(), clip);
                     for (ContextType c : clip.getContextTypes()) { // add to all possible directions and contexts
                         for (Direction dir : Direction.getDirections()) {
@@ -256,9 +257,9 @@ public class ClipboardProviderWorldEdit implements ClipboardProvider {
                         }
                     }
 
-                    generator.reportMessage("[ClipboardProvider] Schematic " + schematicFile.getName() + " successfully loaded.");
+                    plugin.getLogger().info("[ClipboardProvider] Schematic " + schematicFile.getName() + " successfully loaded.");
                 } catch (Exception e) {
-                    generator.reportException("[ClipboardProvider] Schematic " + schematicFile.getName() + " could NOT be loaded", e);
+                    plugin.getLogger().info("[ClipboardProvider] Schematic " + schematicFile.getName() + " could NOT be loaded");
                 }
             }
 

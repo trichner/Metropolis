@@ -1,20 +1,17 @@
 package ch.k42.metropolis.model.parcel;
 
+import ch.k42.metropolis.WorldEdit.Clipboard;
+import ch.k42.metropolis.WorldEdit.SchematicConfig;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
-import ch.k42.metropolis.minions.VoronoiGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.grid.Grid;
 import org.bukkit.Chunk;
-
-import ch.k42.metropolis.WorldEdit.*;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_7_R1.CraftChunk;
-import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
  * Represents a Parcel with a schematic/clipboard as building.

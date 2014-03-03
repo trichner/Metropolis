@@ -1,16 +1,17 @@
 package ch.k42.metropolis.WorldEdit;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.md5checksum;
-import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.Direction;
+import ch.k42.metropolis.plugin.MetropolisPlugin;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -58,17 +59,17 @@ public abstract class Clipboard {
      * Size in chunks
      */
 
-    public Clipboard(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
+    public Clipboard(MetropolisPlugin plugin, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
 
         this.name = file.getName();
         this.globalSettings = globalSettings;
         this.hashstring = md5checksum.getMD5Checksum(file);
         this.cache = cacheFolder;
 
-        generator.reportDebug(this.name + ": " + hashstring);
+        plugin.getLogger().info(this.name + ": " + hashstring);
 
         // grab the data
-        load(generator, file, batchedConfigs);
+        load(plugin, file, batchedConfigs);
 
         // finish figuring things out
         blockCount = sizeX * sizeY * sizeZ;
@@ -78,7 +79,7 @@ public abstract class Clipboard {
 
     }
 
-    protected abstract void load(MetropolisGenerator generator, File file, List<SchematicConfig> batchedConfigs) throws Exception;
+    protected abstract void load(MetropolisPlugin plugin, File file, List<SchematicConfig> batchedConfigs) throws Exception;
 
     public abstract void paste(MetropolisGenerator generator, int blockX, int blockZ, int streetLevel, Direction direction);
 

@@ -7,13 +7,17 @@ import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.provider.EnvironmentProvider;
+import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.schematic.SchematicFormat;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
@@ -37,8 +41,6 @@ public class ClipboardWorldEdit extends Clipboard {
     private final static String metaExtension = ".json";
 
     private File cacheFolder;
-    private World world;
-    private EnvironmentProvider natureDecay;
     private CuboidClipboard cuboid;
 
     private File northFile;
@@ -48,16 +50,14 @@ public class ClipboardWorldEdit extends Clipboard {
 
     private static SchematicFormat format;
 
-    public ClipboardWorldEdit(MetropolisGenerator generator, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
-        super(generator, file, cacheFolder, globalSettings, batchedConfigs);
-        world = generator.getWorld();
-        natureDecay = generator.getNatureDecayProvider();
+    public ClipboardWorldEdit(MetropolisPlugin plugin, File file, File cacheFolder, GlobalSchematicConfig globalSettings, List<SchematicConfig> batchedConfigs) throws Exception {
+        super(plugin, file, cacheFolder, globalSettings, batchedConfigs);
     }
 
     private boolean hasBootstrappedConfig = false;
 
     @Override
-    protected void load(MetropolisGenerator generator, File schemfile, List<SchematicConfig> batchedConfigs) throws Exception {
+    protected void load(MetropolisPlugin plugin, File schemfile, List<SchematicConfig> batchedConfigs) throws Exception {
 
         String schemname = schemfile.getAbsolutePath();
 
@@ -103,9 +103,9 @@ public class ClipboardWorldEdit extends Clipboard {
             int streetLvlEstimate = estimateStreetLevel();
             settings.setGroundLevelY(streetLvlEstimate);
             groundLevelY = streetLvlEstimate;
-            generator.reportDebug("Ground Level: " + settings.getGroundLevelY());
+            plugin.getLogger().info("Ground Level: " + settings.getGroundLevelY());
             if (!storeConfig(settings.getPath())) {
-                generator.reportDebug("Can't storeConfig config file.");
+                plugin.getLogger().info("Can't storeConfig config file.");
             }
         }
     }
@@ -144,7 +144,7 @@ public class ClipboardWorldEdit extends Clipboard {
             editSession.setFastMode(true);
 
             //place Schematic
-            place(editSession, at, true, direction);
+            place(generator, editSession, at, true, direction);
 
             try {
                 //fill chests
@@ -285,7 +285,9 @@ public class ClipboardWorldEdit extends Clipboard {
         return globalSettings.getRandomChestLevel(random, min, max);
     }
 
-    private void place(EditSession editSession, Vector pos, boolean noAir, Direction direction) throws Exception {
+    private void place(MetropolisGenerator generator, EditSession editSession, Vector pos, boolean noAir, Direction direction) throws Exception {
+
+        EnvironmentProvider natureDecay = generator.getNatureDecayProvider();
 
         CuboidClipboard cc;
         chests.clear();
@@ -312,7 +314,7 @@ public class ClipboardWorldEdit extends Clipboard {
 
                     BaseBlock block = cc.getBlock(new Vector(x, y, z));
                     Vector vec = new Vector(x, y, z).add(pos);
-                    Material decay = natureDecay.checkBlock(world, (int) vec.getX(), (int) vec.getY(), (int) vec.getZ());
+                    Material decay = natureDecay.checkBlock(generator.getWorld(), (int) vec.getX(), (int) vec.getY(), (int) vec.getZ());
 
                     if (decay != null) {
                         block.setType(decay.getId());

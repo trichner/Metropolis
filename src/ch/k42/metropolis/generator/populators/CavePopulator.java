@@ -1,6 +1,7 @@
 package ch.k42.metropolis.generator.populators;
 
 import ch.k42.metropolis.minions.Constants;
+import ch.k42.metropolis.minions.XYZ;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -10,8 +11,6 @@ import org.bukkit.generator.BlockPopulator;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-
-import ch.k42.metropolis.minions.XYZ;
 
 /**
  * Adds caves within the stone. Based on the Nordic world plugin.

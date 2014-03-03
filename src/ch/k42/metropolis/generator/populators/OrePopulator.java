@@ -1,11 +1,10 @@
 package ch.k42.metropolis.generator.populators;
 
 import org.bukkit.Chunk;
-import org.bukkit.World;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.generator.BlockPopulator;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 /**

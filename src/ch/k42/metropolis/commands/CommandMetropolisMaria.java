@@ -4,12 +4,10 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.generator.ChunkGenerator;
 
 /**
  * This command starts the generation of Metropolis if not already existent

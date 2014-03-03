@@ -5,16 +5,18 @@ import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
 import ch.k42.metropolis.model.provider.*;
-import ch.k42.metropolis.plugin.ContextConfig;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +32,6 @@ public class MetropolisGenerator extends ChunkGenerator {
         @Override
         public void populate(World aWorld, Random random, Chunk chunk) {
             try {
-                MetropolisGenerator.this.initializeWorldInfo(aWorld);
                 gridProvider.populate(MetropolisGenerator.this, chunk);
                 gridProvider.postPopulate(MetropolisGenerator.this, chunk);
             } catch (Exception e) {
@@ -40,11 +41,10 @@ public class MetropolisGenerator extends ChunkGenerator {
     }
 
     private MetropolisPlugin plugin;
-    private World world;
     private Long worldSeed;
+    private World world;
 
     public String worldName;
-    public World.Environment worldEnvironment;
 
     private ClipboardProviderWorldEdit clipboardProvider;
     private GridProvider gridProvider;
@@ -52,10 +52,11 @@ public class MetropolisGenerator extends ChunkGenerator {
     public DecayProvider decayProvider;
     public EnvironmentProvider natureDecay;
 
-    public MetropolisGenerator(MetropolisPlugin plugin, String worldName, World.Environment env) {
+    public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProviderWorldEdit clipboardProvider) {
+        this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;
         this.worldName = worldName;
-        this.worldEnvironment = env;
+        plugin.getLogger().info("Running MetropolisGenerator.");
     }
 
     public ClipboardProviderWorldEdit getClipboardProvider() {
@@ -78,16 +79,12 @@ public class MetropolisGenerator extends ChunkGenerator {
         return natureDecay;
     }
 
-    public MetropolisPlugin getPlugin() {
-        return plugin;
-    }
-
-    public String getPluginName() {
-        return plugin.getName();
-    }
-
     public World getWorld() {
         return world;
+    }
+
+    public MetropolisPlugin getPlugin() {
+        return plugin;
     }
 
     public Long getWorldSeed() {
@@ -97,6 +94,11 @@ public class MetropolisGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
+        plugin.getLogger().info("getDefaultPopulators: " + world.toString());
+        this.world = world;
+        this.worldSeed = world.getSeed();
+        this.gridProvider = new GridProvider(this);
+        this.contextProvider = new ContextProvider(this, plugin.getContextConfig());
         populators.add(new MetropolisBlockPopulator());
         populators.add(new CavePopulator());
         populators.add(new OrePopulator(world, plugin.getPopulatorConfig().getOres())); // last place some ore
@@ -109,42 +111,21 @@ public class MetropolisGenerator extends ChunkGenerator {
         return true;
     }
 
-
-
-    public void initializeWorldInfo(World aWorld) {
-
-        // initialize the shaping logic
-        if (world == null) {
-            world = aWorld;
-
-            worldSeed = world.getSeed();
-
-            if (worldEnvironment == World.Environment.NETHER) {
-                decayProvider = new DecayProviderNether(this, new Random(worldSeed + 6));
-                natureDecay = new NetherEnvironmentProvider(worldSeed);
-            } else {
-                decayProvider = new DecayProviderNormal(this, new Random(worldSeed + 6));
-                natureDecay = new NormalEnvironmentProvider(worldSeed);
-            }
-
-            gridProvider = new GridProvider(this);
-            contextProvider = new ContextProvider(this, plugin.getContextConfig());
-
-            try {
-                clipboardProvider = new ClipboardProviderWorldEdit(this);
-            } catch (Exception e) {
-                plugin.getLogger().warning("Failed to load clipboard: " + e.getMessage());
-            }
-        }
-    }
-
     @Override
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
+        if (natureDecay == null || decayProvider == null) {
+            if (aWorld.getEnvironment() == World.Environment.NETHER) {
+                decayProvider = new DecayProviderNether(this, new Random(aWorld.getSeed() + 6));
+                natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());
+            } else {
+                decayProvider = new DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
+                natureDecay = new NormalEnvironmentProvider(aWorld.getSeed());
+            }
+        }
+
         try {
 
-            initializeWorldInfo(aWorld);
-
-            byte[][] chunk = new byte[world.getMaxHeight() / 16][];
+            byte[][] chunk = new byte[aWorld.getMaxHeight() / 16][];
             for (int x = 0; x < 16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z = 0; z < 16; z++) {
 
@@ -152,7 +133,7 @@ public class MetropolisGenerator extends ChunkGenerator {
 
                     int maxHeight = 65; //how thick we want out flat terrain to be
                     for (int y = 1; y < maxHeight; y++) {
-                        Material decay = natureDecay.checkBlock(world, (chunkX * 16) + x, y, (chunkZ * 16) + z);
+                        Material decay = natureDecay.checkBlock(aWorld, (chunkX * 16) + x, y, (chunkZ * 16) + z);
                         if (decay != null) {
                             setBlock(x, y, z, chunk, decay);
                         } else {
@@ -209,18 +190,9 @@ public class MetropolisGenerator extends ChunkGenerator {
         return new Location(world, spawnX, spawnY, spawnZ);
     }
 
-
-    public void reportMessage(String message) {
-        plugin.getLogger().info(message);
-    }
-
     public void reportDebug(String message) {
         if (plugin.getMetropolisConfig().isDebugEnabled())
             plugin.getLogger().info("[====DEBUG====]" + message);
-    }
-
-    public void reportMessage(String message1, String message2) {
-        plugin.getLogger().info(message1 + "     " + message2);
     }
 
     public void reportException(String message, Exception e) {

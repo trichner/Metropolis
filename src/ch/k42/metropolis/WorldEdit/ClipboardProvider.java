@@ -1,9 +1,9 @@
 package ch.k42.metropolis.WorldEdit;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.model.enums.ContextType;
 import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.enums.RoadType;
+import ch.k42.metropolis.plugin.MetropolisPlugin;
 
 import java.util.List;
 
@@ -20,10 +20,10 @@ public interface ClipboardProvider {
      * Loads all available schematics, this method must be executed before any
      * get is called in order to get actual schematics
      *
-     * @param generator the generator
+     * @param plugin the metropolis plugin
      * @throws Exception
      */
-    public void loadClips(MetropolisGenerator generator) throws Exception;
+    public void loadClips(MetropolisPlugin plugin) throws Exception;
 
 
     /**

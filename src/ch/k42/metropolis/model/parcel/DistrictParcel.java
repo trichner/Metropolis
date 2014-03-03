@@ -1,18 +1,17 @@
 package ch.k42.metropolis.model.parcel;
 
+import ch.k42.metropolis.WorldEdit.Clipboard;
+import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.minions.GridRandom;
-import ch.k42.metropolis.WorldEdit.*;
-import ch.k42.metropolis.model.provider.ContextProvider;
 import ch.k42.metropolis.model.enums.ContextType;
+import ch.k42.metropolis.model.enums.Direction;
 import ch.k42.metropolis.model.grid.Grid;
+import ch.k42.metropolis.model.provider.ContextProvider;
 import org.bukkit.Chunk;
-
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.

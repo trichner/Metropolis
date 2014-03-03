@@ -1,6 +1,5 @@
 package ch.k42.metropolis.commands;
 
-import ch.k42.metropolis.model.parcel.Parcel;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -34,9 +33,9 @@ public class CommandMetropolisGrot implements CommandExecutor {
                     int chunkX = location.getBlockX() >> 4;
                     int chunkZ = location.getBlockZ() >> 4;
 
-                    String stats = plugin.getGenerator().getGridProvider().getGrid(chunkX,chunkZ).getStatistics().printStatistics();
+//                    String stats = plugin.getGenerator().getGridProvider().getGrid(chunkX,chunkZ).getStatistics().printStatistics();
 
-                    player.sendMessage(stats);
+//                    player.sendMessage(stats);
 
                     return true;
                 } else {

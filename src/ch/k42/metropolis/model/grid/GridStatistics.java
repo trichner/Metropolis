@@ -3,8 +3,6 @@ package ch.k42.metropolis.model.grid;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 
-import javax.sound.sampled.Clip;
-
 /**
  * This should keep track of statistics of a Grid, not
  * implemented yet.

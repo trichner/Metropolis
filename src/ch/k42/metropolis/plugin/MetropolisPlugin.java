@@ -1,14 +1,12 @@
 package ch.k42.metropolis.plugin;
 
-import ch.k42.metropolis.WorldEdit.SchematicConfig;
+import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Nimmersatt;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,13 +21,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 
 /**
  * Main Class for the Metropolis plugin.
@@ -38,22 +34,14 @@ import java.util.Random;
  */
 public class MetropolisPlugin extends JavaPlugin {
 
-    private MetropolisGenerator generator;
     private PluginConfig config;
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
+    private ClipboardProviderWorldEdit clipboardProvider;
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        getLogger().info(id);
-        World.Environment env = World.Environment.NORMAL;
-        if (id == "NETHER") {
-            env = World.Environment.NETHER;
-        } else if (id == "THE_END") {
-            env = World.Environment.THE_END;
-        }
-        generator = new MetropolisGenerator(this, worldName, env);
-        return generator;
+        return new MetropolisGenerator(this, worldName, clipboardProvider);
     }
 
     @Override
@@ -66,6 +54,11 @@ public class MetropolisPlugin extends JavaPlugin {
         super.onEnable();    //To change body of overridden methods use File | Settings | File Templates.
 
         //---- load config
+        try {
+            clipboardProvider = new ClipboardProviderWorldEdit(this);
+        } catch (Exception e) {
+            getLogger().warning("Failed to load clipboard provider: " + e.getMessage());
+        }
 
         File pluginFolder = getDataFolder();
         File contextsConfig = new File(pluginFolder.getPath() + "/contexts.json");
@@ -93,9 +86,6 @@ public class MetropolisPlugin extends JavaPlugin {
                 contextConfig = gson.fromJson(json, ContextConfig.class);
             }
 
-            getLogger().info("ContextConfig: "+contextConfig.toString());
-            getLogger().info("PopulatorConfig: "+populatorConfig.toString());
-
         } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
             getLogger().severe(e.getMessage());
         }
@@ -112,14 +102,6 @@ public class MetropolisPlugin extends JavaPlugin {
         cmd.setExecutor(new CommandMetropolisFreder(this));
         cmd = getCommand("grot");
         cmd.setExecutor(new CommandMetropolisGrot(this));
-    }
-
-    public MetropolisGenerator getGenerator() {
-        return generator;
-    }
-
-    public void setGenerator(MetropolisGenerator generator) {
-        this.generator = generator;
     }
 
     public PluginConfig getMetropolisConfig() {

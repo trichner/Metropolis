@@ -15,18 +15,17 @@ public class NetherEnvironmentProvider extends EnvironmentProvider {
 
     public NetherEnvironmentProvider(Long seed) {
         super(seed);
-        this.lava = new VoronoiGenerator(seed, (short) 2);
+        this.lava = new VoronoiGenerator(seed, (short) 0);
     }
 
     public Material checkBlock(World world, int posX, int posY, int posZ) {
 
         double frequency = 0.01; // the reciprocal of the distance between points
         double frequency2 = 0.1; // the reciprocal of the distance between points
-        int size = 2;
+        int size = 1;
 
-//        Block block = world.getBlockAt(posX, posY, posZ);
-        double maxHeight = lava.noise((posX + 10) / size, (posZ + 10) / size, frequency);
-        double innerHeight = lava.noise((posX + 10) / size, (posZ + 10) / size, frequency2);
+        double maxHeight = lava.noise(posX / size, posZ / size, frequency);
+        double innerHeight = lava.noise(posX / size, posZ / size, frequency2);
 
         double overlay = maxHeight + (innerHeight / 10);
         if (overlay < 0.06) {

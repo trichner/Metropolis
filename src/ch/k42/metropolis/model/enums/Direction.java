@@ -1,10 +1,8 @@
 package ch.k42.metropolis.model.enums;
 
 import ch.k42.metropolis.minions.GridRandom;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Possible values: north, south, west, east

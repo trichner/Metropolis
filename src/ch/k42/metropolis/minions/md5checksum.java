@@ -1,6 +1,8 @@
 package ch.k42.metropolis.minions;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.MessageDigest;
 
 public class md5checksum {

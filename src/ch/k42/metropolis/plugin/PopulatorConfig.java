@@ -1,6 +1,8 @@
 package ch.k42.metropolis.plugin;
+
 import ch.k42.metropolis.generator.populators.OreVein;
 import org.bukkit.craftbukkit.libs.com.google.gson.annotations.Expose;
+
 import java.util.Arrays;
 
 /**

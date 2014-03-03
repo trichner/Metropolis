@@ -28,10 +28,10 @@ package ch.k42.metropolis.minions;
  * either expressed or implied, of anybody else.
  */
 
+import org.bukkit.block.Chest;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
-import org.bukkit.block.Chest;
 
 public class DirtyHacks {
     private DirtyHacks() {

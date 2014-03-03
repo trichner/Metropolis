@@ -83,6 +83,10 @@ public class DecayProviderNether extends DecayProvider {
                         block.setType(Material.DIRT);
                     }
 
+                    if (block.getType() == Material.YELLOW_FLOWER && block.getType() == Material.RED_ROSE) {
+                        block.setType(Material.LONG_GRASS);
+                    }
+
                     if (isRemoved(block)) {
                         block.setType(Material.AIR);
                     }
@@ -96,10 +100,10 @@ public class DecayProviderNether extends DecayProvider {
                             block.getRelative(0, -1, 0)
                     };
 
-                    if (isOnFire(block, neighbors[0]) && random.nextBoolean()) {
-                        block.setType(Material.FIRE);
-                        neighbors[0].setType(Material.FIRE);
-                    }
+//                    if (isOnFire(block, neighbors[0]) && random.nextBoolean()) {
+//                        block.setType(Material.FIRE);
+//                        neighbors[0].setType(Material.FIRE);
+//                    }
 
                     if (!block.isEmpty() && (holeNoise > fulldecay)) {
                         block.setType(Material.AIR);

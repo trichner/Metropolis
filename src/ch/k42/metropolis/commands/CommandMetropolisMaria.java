@@ -4,6 +4,7 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -106,11 +107,14 @@ public class CommandMetropolisMaria implements CommandExecutor {
         Bukkit.getLogger().info("---- looking for Metropolis");
         // built yet?
         World metropolis = Bukkit.getServer().getWorld(worldname);
-        Bukkit.getLogger().info("---- Metropolis already built");
-        if (metropolis == null) {
+        if (metropolis != null) {
+            Bukkit.getLogger().info("---- Metropolis already built");
+        } else {
             // if neither then create/build it!
-            plugin.getDefaultWorldGenerator(worldname, env.toString());
-            metropolis = Bukkit.getServer().getWorld(worldname);
+            WorldCreator worldCreator = new WorldCreator(worldname);
+            worldCreator.environment(env);
+            metropolis = Bukkit.getServer().createWorld(worldCreator);
+            plugin.getDefaultWorldGenerator(worldname, "");
         }
         return metropolis;
     }

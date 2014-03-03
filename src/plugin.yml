@@ -1,6 +1,6 @@
 name: Metropolis
 main: ch.k42.metropolis.plugin.MetropolisPlugin
-version: 0.0.7
+version: 0.0.8
 load: startup
 authors: [AthmosPrime, trichner, spaceribs]
 website: k42.ch

@@ -90,25 +90,6 @@ public class DistrictParcel extends Parcel {
                     }
                 }
             }
-//            else { // find a schematic, but ignore road
-//                generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext + "going over to fallback");
-//                //FALLBACK
-//                if (fallback) {
-//                    schems = clips.getFit(chunkSizeX, chunkSizeZ, context.getContext(chunkX, chunkZ), roadDir, false); //just use context in one corner //TODO use Direction.NONE
-//                    if (schems != null && schems.size() > 0) {
-//                        generator.reportDebug("Found " + schems.size() + " schematics for this spot, placing one");
-//                        Clipboard schem = schems.get(random.getRandomInt(schems.size()));
-//                        while (!random.getChance(schem.getSettings().getOddsOfAppearance())) {
-//                            schem = schems.get(random.getRandomInt(schems.size()));
-//                        }
-//                        parcel = new ClipboardParcel(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, schem, localContext, roadDir);
-//                        parcel.populate(generator, chunk);
-//                        return;
-//                    } else {
-//                        generator.reportDebug("No schems found for size " + chunkSizeX + "x" + chunkSizeZ + " , context=" + localContext);
-//                    }
-//                }
-//            }
         }
 
         //---

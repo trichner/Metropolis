@@ -99,8 +99,12 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.world = world;
         this.worldSeed = world.getSeed();
         this.gridProvider = new GridProvider(this);
-        this.contextProvider = new ContextProvider(this, plugin.getContextConfig());
+        this.contextProvider = new ContextProviderSimplex(this, plugin.getContextConfig());
 
+        /*
+         * We should decouple them from here and decouple
+         * the populator config from the plugin config
+         */
         populators.add(new MetropolisBlockPopulator());
         populators.add(new CavePopulator());
         populators.add(new OrePopulator(world, plugin.getPopulatorConfig().getOres())); // last place some ore

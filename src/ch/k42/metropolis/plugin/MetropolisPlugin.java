@@ -7,10 +7,8 @@ import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.generator.populators.PopulatorConfig;
 import ch.k42.metropolis.minions.Nimmersatt;
-import ch.k42.metropolis.model.grid.urbanGrid.ContextConfig;
-import org.bukkit.Bukkit;
+import ch.k42.metropolis.grid.urbanGrid.ContextConfig;
 import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
@@ -19,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -27,9 +24,6 @@ import java.io.File;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 /**
  * Main Class for the Metropolis plugin.

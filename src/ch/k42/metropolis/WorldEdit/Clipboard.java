@@ -5,8 +5,8 @@ import ch.k42.metropolis.minions.Cartesian;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.md5checksum;
-import ch.k42.metropolis.model.enums.ContextType;
-import ch.k42.metropolis.model.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 
 import java.io.File;

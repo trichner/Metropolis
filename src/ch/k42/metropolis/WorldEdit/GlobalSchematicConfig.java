@@ -1,9 +1,9 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.minions.GridRandom;
-import ch.k42.metropolis.model.enums.ContextType;
-import ch.k42.metropolis.model.enums.LootType;
-import ch.k42.metropolis.model.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.grid.urbanGrid.enums.LootType;
+import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 

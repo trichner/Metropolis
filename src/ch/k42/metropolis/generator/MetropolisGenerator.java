@@ -4,7 +4,8 @@ import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
-import ch.k42.metropolis.model.provider.*;
+import ch.k42.metropolis.grid.common.GridProvider;
+import ch.k42.metropolis.grid.urbanGrid.provider.*;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -99,10 +100,12 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.worldSeed = world.getSeed();
         this.gridProvider = new GridProvider(this);
         this.contextProvider = new ContextProvider(this, plugin.getContextConfig());
+
         populators.add(new MetropolisBlockPopulator());
         populators.add(new CavePopulator());
         populators.add(new OrePopulator(world, plugin.getPopulatorConfig().getOres())); // last place some ore
         populators.add(new BedrockFloorPopulator());
+
         return populators;
     }
 

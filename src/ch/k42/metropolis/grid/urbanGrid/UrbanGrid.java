@@ -1,8 +1,12 @@
 package ch.k42.metropolis.grid.urbanGrid;
 
+import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.grid.common.Grid;
+import ch.k42.metropolis.grid.urbanGrid.provider.ContextProvider;
+import ch.k42.metropolis.grid.urbanGrid.provider.ContextProviderVoroni;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
-import ch.k42.metropolis.grid.common.Grid;
 import ch.k42.metropolis.grid.urbanGrid.parcel.DistrictParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.HighwayParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
@@ -16,12 +20,16 @@ import ch.k42.metropolis.grid.common.GridProvider;
 public class UrbanGrid extends Grid {
     private Parcel[][] parcels = new Parcel[GRID_SIZE][GRID_SIZE];
 
+    private ContextProvider contextProvider;
     private DistrictParcel district;
+    private GridStatistics statistics;
 
-    public UrbanGrid(GridProvider provider, GridRandom random, int chunkX, int chunkZ) {
-        super(provider, random,new AthmosStat(), chunkX, chunkZ);
+    public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
+        super(random,provider,generator, root);
+        this.statistics = new AthmosStat();
+        contextProvider = new ContextProviderVoroni(random);//generator.getContextProvider();
         placeHighways();
-        district = new DistrictParcel(this, chunkX + 1, chunkZ + 1, GRID_SIZE - 2, GRID_SIZE - 2);
+        district = new DistrictParcel(this, root.X + 1, root.Y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -29,17 +37,17 @@ public class UrbanGrid extends Grid {
         int maxidx = GRID_SIZE - 1;
 
         // fill in the corners with Highway
-        setParcel(0, 0, new HighwayParcel(this, chunkX, chunkZ, RoadType.HIGHWAY_C_SE));
-        setParcel(0, maxidx, new HighwayParcel(this, chunkX, chunkZ + maxidx, RoadType.HIGHWAY_C_NE));
-        setParcel(maxidx, 0, new HighwayParcel(this, chunkX + maxidx, chunkZ, RoadType.HIGHWAY_C_SW));
-        setParcel(maxidx, maxidx, new HighwayParcel(this, chunkX + maxidx, chunkZ + maxidx, RoadType.HIGHWAY_C_NW));
+        setParcel(0, 0, new HighwayParcel(this, root.X, root.Y, RoadType.HIGHWAY_C_SE));
+        setParcel(0, maxidx, new HighwayParcel(this, root.X, root.Y + maxidx, RoadType.HIGHWAY_C_NE));
+        setParcel(maxidx, 0, new HighwayParcel(this, root.X + maxidx, root.Y, RoadType.HIGHWAY_C_SW));
+        setParcel(maxidx, maxidx, new HighwayParcel(this, root.X + maxidx, root.Y + maxidx, RoadType.HIGHWAY_C_NW));
 
         // fill in all highways
         for (int i = 1; i < maxidx; i++) {
-            setParcel(0, i, new HighwayParcel(this, chunkX, chunkZ + i, RoadType.HIGHWAY_SIDE_E)); //
-            setParcel(i, 0, new HighwayParcel(this, chunkX + i, chunkZ, RoadType.HIGHWAY_SIDE_S));
-            setParcel(i, maxidx, new HighwayParcel(this, chunkX + i, chunkZ + maxidx, RoadType.HIGHWAY_SIDE_N));
-            setParcel(maxidx, i, new HighwayParcel(this, chunkX + maxidx, chunkZ + i, RoadType.HIGHWAY_SIDE_W));
+            setParcel(0, i, new HighwayParcel(this, root.X, root.Y + i, RoadType.HIGHWAY_SIDE_E)); //
+            setParcel(i, 0, new HighwayParcel(this, root.X + i, root.Y, RoadType.HIGHWAY_SIDE_S));
+            setParcel(i, maxidx, new HighwayParcel(this, root.X + i, root.Y + maxidx, RoadType.HIGHWAY_SIDE_N));
+            setParcel(maxidx, i, new HighwayParcel(this, root.X + maxidx, root.Y + i, RoadType.HIGHWAY_SIDE_W));
         }
     }
 
@@ -56,7 +64,6 @@ public class UrbanGrid extends Grid {
         // make sure it's positive and between [0, GRID_SIZE)
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
-        //if(x>=GRID_SIZE || x<0 || z>=GRID_SIZE || z<0 ) throw new IndexOutOfBoundsException("Parcel not found in this grid ["+chunkSizeX+"]["+chunkSizeZ+"]");
 
         parcels[x][z] = parcel;
 
@@ -71,6 +78,7 @@ public class UrbanGrid extends Grid {
         }
     }
 
+
     /**
      * Calculates the relative coordinates
      *
@@ -82,5 +90,13 @@ public class UrbanGrid extends Grid {
         if (ret < 0)
             ret += GRID_SIZE;
         return ret;
+    }
+
+    public GridStatistics getStatistics() {
+        return statistics;
+    }
+
+    public ContextProvider getContextProvider() {
+        return contextProvider;
     }
 }

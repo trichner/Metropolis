@@ -1,10 +1,10 @@
 package ch.k42.metropolis.grid.common;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
-import com.google.common.base.Optional;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import org.bukkit.Chunk;
@@ -40,10 +40,10 @@ public class GridProvider {
 
     private Table<Integer,Integer,Grid> grids = HashBasedTable.create();
 
-    private World world;
+    private MetropolisGenerator generator;
 
     public GridProvider(MetropolisGenerator generator) {
-        this.world = generator.getWorld();
+        this.generator = generator;
     }
 
     /**
@@ -70,7 +70,7 @@ public class GridProvider {
         Grid grid = grids.get(chunkX,chunkZ);
 
         if (grid == null) { // does it exsist? or do we need to create one?
-            grid = getNewGrid(chunkX, chunkZ); //TODO not always same grid
+            grid = getNewGrid(chunkX, chunkZ); // This should be randomized and decoupled
             grids.put(chunkX,chunkZ, grid);
         }
 
@@ -115,8 +115,8 @@ public class GridProvider {
         int originX = getGridOrigin(chunkX);
         int originZ = getGridOrigin(chunkZ);
 
-        long seed = world.getSeed();
-        return new UrbanGrid(this, new GridRandom(seed, originX, originZ), originX, originZ); // FIXME mooaaar grids
+        long seed = generator.getWorldSeed();
+        return new UrbanGrid(this, new GridRandom(seed, originX, originZ),generator, new Cartesian2D(originX,originZ)); // FIXME mooaaar grids
     }
 
     private static int getGridOrigin(int chunk) {

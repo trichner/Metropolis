@@ -1,5 +1,8 @@
 package ch.k42.metropolis.grid.common;
 
+import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.grid.common.GridProvider;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.GridStatistics;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
@@ -15,23 +18,17 @@ abstract public class Grid {
 
     public static final int GRID_SIZE = GridProvider.GRID_SIZE;
 
-    protected GridStatistics statistics;
     protected GridRandom random;
     protected GridProvider gridProvider;
+    protected MetropolisGenerator generator;
 
-    protected int chunkX;
-    protected int chunkZ;
+    protected Cartesian2D root;
 
-    public Grid(GridProvider gridProvider, GridRandom random,GridStatistics statistics, int chunkX, int chunkZ) {
+    protected Grid(GridRandom random, GridProvider gridProvider, MetropolisGenerator generator, Cartesian2D root) {
         this.random = random;
         this.gridProvider = gridProvider;
-        this.statistics = statistics;
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
-    }
-
-    public GridStatistics getStatistics() {
-        return statistics;
+        this.generator = generator;
+        this.root = root;
     }
 
     public GridRandom getRandom() {

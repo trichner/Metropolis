@@ -88,6 +88,7 @@ public class MetropolisPlugin extends JavaPlugin {
             getLogger().severe(e.getMessage());
         }
 
+        this.saveDefaultConfig(); // this saves the config provided in the jar if no config was found
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);
 

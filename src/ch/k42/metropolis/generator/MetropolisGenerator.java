@@ -50,6 +50,7 @@ public class MetropolisGenerator extends ChunkGenerator {
     private ClipboardProviderWorldEdit clipboardProvider;
     private GridProvider gridProvider;
     private ContextProvider contextProvider;
+
     public DecayProvider decayProvider;
     public EnvironmentProvider natureDecay;
 

@@ -29,8 +29,6 @@ public class PluginConfig {
     private static String pathBuildChance = "generator.buildChance";
     private int buildChance = 80;
 
-    //private static String pathDebug = "consoleOutput.debug";
-
     public PluginConfig(FileConfiguration configFile) {
         this.debugOutput = configFile.getBoolean(pathDebug, debugOutput);
         this.chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
@@ -54,10 +52,6 @@ public class PluginConfig {
 
     public boolean isSpawnerPlacing() {
         return spawnerPlacing;
-    }
-
-    public boolean allowCrossContextPlacing() {
-        return crossContextPlacing;
     }
 
     public boolean allowDirectionFallbackPlacing() {

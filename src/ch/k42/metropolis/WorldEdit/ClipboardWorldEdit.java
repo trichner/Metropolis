@@ -1,7 +1,7 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Cartesian;
+import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
@@ -150,11 +150,11 @@ public class ClipboardWorldEdit extends Clipboard {
                 //fill chests
                 World world = generator.getWorld();
                 GridRandom rand = generator.getGridProvider().getRandom(blockX >> 4, blockZ >> 4);
-                Cartesian base = new Cartesian(blockX, blockY, blockZ);
+                Cartesian3D base = new Cartesian3D(blockX, blockY, blockZ);
 
                 if (generator.getPlugin().getMetropolisConfig().isChestRenaming()) { //do we really want to name them all?
-                    for (Cartesian c : chests) {
-                        Cartesian temp = base.add(c);
+                    for (Cartesian3D c : chests) {
+                        Cartesian3D temp = base.add(c);
                         Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
                         if (block.getType() == Material.CHEST) {
                             if (!rand.getChance(settings.getChestOdds())) { //we were unlucky, chest doesn't get placed{
@@ -179,8 +179,8 @@ public class ClipboardWorldEdit extends Clipboard {
                 //set spawners
 
                 if (generator.getPlugin().getMetropolisConfig().isSpawnerPlacing()) { // do we even place any?
-                    for (Cartesian c : spawners) {
-                        Cartesian temp = base.add(c);
+                    for (Cartesian3D c : spawners) {
+                        Cartesian3D temp = base.add(c);
                         Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
 
                         if (block.getType() == Material.SPONGE) {
@@ -322,9 +322,9 @@ public class ClipboardWorldEdit extends Clipboard {
                     }
 
                     if (block.getId() == Material.CHEST.getId()) {
-                        chests.add(new Cartesian(x, y, z));
+                        chests.add(new Cartesian3D(x, y, z));
                     } else if (block.getId() == Material.SPONGE.getId()) {
-                        spawners.add(new Cartesian(x, y, z));
+                        spawners.add(new Cartesian3D(x, y, z));
                     }
 
                     editSession.setBlock(vec, block);

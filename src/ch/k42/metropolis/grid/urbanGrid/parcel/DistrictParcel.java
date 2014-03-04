@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.parcel;
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
@@ -27,14 +28,13 @@ public class DistrictParcel extends Parcel {
 
     private Parcel parcel = null;    //it it doesn't get partitioned, only placed, use this
 
-    public DistrictParcel(Grid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
+    public DistrictParcel(UrbanGrid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
         super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, ContextType.UNDEFINED);
         grid.fillParcels(chunkX, chunkZ, this);
+        this.grid = grid;
     }
 
-    private Grid grid;
-    private boolean fallback;
-
+    private UrbanGrid grid;
     public void populate(MetropolisGenerator generator, Chunk chunk) {
         /*
          * TODO
@@ -49,16 +49,16 @@ public class DistrictParcel extends Parcel {
          * 3. Partion and go back to 1.
          *
          */
-
-
-        fallback = generator.getPlugin().getMetropolisConfig().allowDirectionFallbackPlacing();
-
-
-
         ClipboardProvider clips = generator.getClipboardProvider();
-        grid = generator.getGridProvider().getGrid(chunkX, chunkZ);
+
+//        Grid g = generator.getGridProvider().getGrid(chunkX, chunkZ);
+//        if(!(g instanceof UrbanGrid)){
+//            throw new IllegalArgumentException("District Parcel is only valid on UrbanGrids");
+//        }
+//        grid = (UrbanGrid) g;
+
         GridRandom random = grid.getRandom();
-        ContextProvider context = generator.getContextProvider();
+        ContextProvider context = grid.getContextProvider();
         Direction roadDir = findRoad(random);
         boolean roadFacing = roadDir != Direction.NONE;
 
@@ -226,7 +226,7 @@ public class DistrictParcel extends Parcel {
         return Direction.getRandomDirection(random, northP, southP, eastP, westP); // haven't found any streets
     }
 
-    private void partitionXwithRoads(Grid grid, int cut) {
+    private void partitionXwithRoads(UrbanGrid grid, int cut) {
         partition1 = new DistrictParcel(grid, chunkX, chunkZ, cut, chunkSizeZ);
         for (int i = chunkZ; i < chunkZ + chunkSizeZ; i++) {
             grid.setParcel(chunkX + cut, i, new RoadParcel(grid, chunkX + cut, i));
@@ -234,12 +234,12 @@ public class DistrictParcel extends Parcel {
         partition2 = new DistrictParcel(grid, chunkX + cut + 1, chunkZ, chunkSizeX - cut - 1, chunkSizeZ);
     }
 
-    private void partitionX(Grid grid, int cut) {
+    private void partitionX(UrbanGrid grid, int cut) {
         partition1 = new DistrictParcel(grid, chunkX, chunkZ, cut, chunkSizeZ);
         partition2 = new DistrictParcel(grid, chunkX + cut, chunkZ, chunkSizeX - cut, chunkSizeZ);
     }
 
-    private void partitionZwithRoads(Grid grid, int cut) {
+    private void partitionZwithRoads(UrbanGrid grid, int cut) {
         partition1 = new DistrictParcel(grid, chunkX, chunkZ, chunkSizeX, cut);
         for (int i = chunkX; i < chunkX + chunkSizeX; i++) {
             grid.setParcel(i, chunkZ + cut, new RoadParcel(grid, i, chunkZ + cut));
@@ -247,7 +247,7 @@ public class DistrictParcel extends Parcel {
         partition2 = new DistrictParcel(grid, chunkX, chunkZ + cut + 1, chunkSizeX, chunkSizeZ - cut - 1);
     }
 
-    private void partitionZ(Grid grid, int cut) {
+    private void partitionZ(UrbanGrid grid, int cut) {
         partition1 = new DistrictParcel(grid, chunkX, chunkZ, chunkSizeX, cut);
         partition2 = new DistrictParcel(grid, chunkX, chunkZ + cut, chunkSizeX, chunkSizeZ - cut);
     }

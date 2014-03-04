@@ -1,7 +1,7 @@
 package ch.k42.metropolis.WorldEdit;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Cartesian;
+import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.md5checksum;
@@ -35,8 +35,8 @@ public abstract class Clipboard {
 
     protected SchematicConfig settings;
     protected GlobalSchematicConfig globalSettings;
-    protected List<Cartesian> chests = new ArrayList<Cartesian>();
-    protected List<Cartesian> spawners = new ArrayList<Cartesian>();
+    protected List<Cartesian3D> chests = new ArrayList<Cartesian3D>();
+    protected List<Cartesian3D> spawners = new ArrayList<Cartesian3D>();
 
     protected String name;
     protected String hashstring;
@@ -142,11 +142,11 @@ public abstract class Clipboard {
         return settings;
     }
 
-    public List<Cartesian> getChests() {
+    public List<Cartesian3D> getChests() {
         return chests;
     }
 
-    public List<Cartesian> getSpawners() {
+    public List<Cartesian3D> getSpawners() {
         return spawners;
     }
 

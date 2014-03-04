@@ -48,7 +48,7 @@ public class BedrockFloorPopulator extends BlockPopulator {
                                                 {0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}};// 16
     @Override
     public void populate(World world, Random random, Chunk chunk) {
-        if(chunk.getX()==0 && chunk.getZ()==0){
+        if(chunk.getX()%512==0 && chunk.getZ()%512==0){
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     chunk.getBlock(x, 0, z).setType(Material.BEDROCK);
@@ -57,7 +57,7 @@ public class BedrockFloorPopulator extends BlockPopulator {
                     }
                 }
             }
-        }else if(chunk.getX()==1 && chunk.getZ()==0){
+        }else if(chunk.getX()%512==1 && chunk.getZ()%512==0){
             for (int x = 0; x < 16; x++) {
                 for (int z = 0; z < 16; z++) {
                     chunk.getBlock(x, 0, z).setType(Material.BEDROCK);

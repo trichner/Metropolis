@@ -5,11 +5,10 @@ import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
 import com.google.common.base.Optional;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This Class provides storage for all parcels.
@@ -20,7 +19,7 @@ import java.util.Map;
  */
 public class GridProvider {
 
-    public static final int GRID_SIZE = 64;
+    public static final int GRID_SIZE = 64; // DO NOT CHANGE! UNFORSEEN CONSEQUENCES...
 
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         Parcel p = getParcel(chunk.getX(), chunk.getZ());
@@ -39,37 +38,8 @@ public class GridProvider {
         }
     }
 
-    public static class GridKey {
-        protected int gridX;
-        protected int gridZ;
+    private Table<Integer,Integer,Grid> grids = HashBasedTable.create();
 
-        public GridKey(int chunkX, int chunkZ) {
-            gridX = getGridOrigin(chunkX);
-            gridZ = getGridOrigin(chunkZ);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            GridKey gridKey = (GridKey) o;
-
-            if (gridX != gridKey.gridX) return false;
-            if (gridZ != gridKey.gridZ) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            int result = gridX;
-            result = 31 * result + gridZ;
-            return result;
-        }
-    }
-
-    private Map<GridKey, Optional<Grid>> grids = new HashMap();
     private World world;
 
     public GridProvider(MetropolisGenerator generator) {
@@ -97,15 +67,14 @@ public class GridProvider {
      * @return the grid at the given coordinate or null if there is none
      */
     public Grid getGrid(int chunkX, int chunkZ) {
-        GridKey key = new GridKey(chunkX, chunkZ);
-        Optional<Grid> ogrid = grids.get(key);
+        Grid grid = grids.get(chunkX,chunkZ);
 
-        if (ogrid == null) { // does it exsist? or do we need to create one?
-            ogrid = getNewGrid(chunkX, chunkZ); //TODO not always same grid
-            grids.put(key, ogrid);
+        if (grid == null) { // does it exsist? or do we need to create one?
+            grid = getNewGrid(chunkX, chunkZ); //TODO not always same grid
+            grids.put(chunkX,chunkZ, grid);
         }
 
-        return ogrid.get();
+        return grid;
     }
 
     /**
@@ -141,13 +110,13 @@ public class GridProvider {
         }
     }
 
-    private Optional<Grid> getNewGrid(int chunkX, int chunkZ) {
+    private Grid getNewGrid(int chunkX, int chunkZ) {
 
         int originX = getGridOrigin(chunkX);
         int originZ = getGridOrigin(chunkZ);
 
         long seed = world.getSeed();
-        return Optional.of((Grid) new UrbanGrid(this, new GridRandom(seed, originX, originZ), originX, originZ)); // FIXME mooaaar grids
+        return new UrbanGrid(this, new GridRandom(seed, originX, originZ), originX, originZ); // FIXME mooaaar grids
     }
 
     private static int getGridOrigin(int chunk) {

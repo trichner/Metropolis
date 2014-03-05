@@ -5,13 +5,19 @@ import ch.k42.metropolis.grid.urbanGrid.ContextZone;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.minions.voronoi.Pnt;
+import ch.k42.metropolis.minions.voronoi.Triangle;
+import ch.k42.metropolis.minions.voronoi.Triangulation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Created by Thomas on 04.03.14.
+ * Created by thomas on 3/5/14.
  */
-public class ContextProviderVoroni implements ContextProvider {
+public class ContextProviderVoronoi2 implements ContextProvider {
 
     private static final double CONTEXT_DIAMETER = 20.0;
     private static final int DIAMETER_STDDEVIATION = 5; //should be smaller than CONTEXT_DIAMETER/2
@@ -26,26 +32,25 @@ public class ContextProviderVoroni implements ContextProvider {
         CONTEXTS.add(ContextType.INDUSTRIAL);
     }
 
-    private final class VoronoiVertex{
+    private Set<Cartesian2D> delauneyNodes = new HashSet<>();
+    private Triangulation dt;
+    private GridRandom random;
 
-        private Cartesian2D vertex;
-        private ContextType context;
-
-        private VoronoiVertex(Cartesian2D vertex, ContextType context) {
-            this.vertex = vertex;
-            this.context = context;
-        }
+    public ContextProviderVoronoi2(GridRandom random){
+        this.random = random;
+        initDT();
     }
 
-    private static final int limit(int x){
-        if(x<0) return 0;
-        else if(x>=GRID_SIZE) return GRID_SIZE-1;
-        return x;
-    }
+    private void initDT(){
+        //Init triangle containing the full grid
+        Pnt[] initPnt = new Pnt[3];
+        initPnt[0] = new Pnt(-1.5*GRID_SIZE,-1.5*GRID_SIZE);
+        initPnt[1] = new Pnt(2.5*GRID_SIZE,-1.5*GRID_SIZE);
+        initPnt[2] = new Pnt(.5 * GRID_SIZE,2.5*GRID_SIZE);
+        Triangle init = new Triangle(initPnt);
+        dt = new Triangulation(init);
+        // add some points in the grid
 
-    private List<VoronoiVertex> voronoiVertices = new ArrayList<>(9);
-
-    public ContextProviderVoroni(GridRandom random) {
         int numPoints = (int) Math.round((GRID_SIZE-1)/CONTEXT_DIAMETER);
         int x,y;
         for(int i=0;i<numPoints;i++){
@@ -56,17 +61,16 @@ public class ContextProviderVoroni implements ContextProvider {
                 y+= random.getRandomGaussian()*DIAMETER_STDDEVIATION;
                 x = limit(x);
                 y = limit(y);
-                voronoiVertices.add(new VoronoiVertex(new Cartesian2D(x,y),getRandomContext(random)));
+                dt.delaunayPlace(new Pnt(x,y));
             }
         }
     }
 
-
-
-    private static final ContextType getRandomContext(GridRandom random){
-        return CONTEXTS.get(random.getRandomInt(CONTEXTS.size()));
+    private static final int limit(int x){
+        if(x<0) return 0;
+        else if(x>=GRID_SIZE) return GRID_SIZE-1;
+        return x;
     }
-
 
     @Override
     public ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level) {
@@ -75,17 +79,6 @@ public class ContextProviderVoroni implements ContextProvider {
 
     @Override
     public ContextType getContext(int chunkX, int chunkZ) {
-        Cartesian2D vertex = new Cartesian2D(chunkX,chunkZ);
-        ContextType context = ContextType.HIGHRISE;
-        int distance;
-        int minDistance = Integer.MAX_VALUE;
-        for(VoronoiVertex voronoi : voronoiVertices){
-            distance = voronoi.vertex.manhattanDistance(vertex);
-            if(distance<minDistance){
-                minDistance = distance;
-                context = voronoi.context;
-            }
-        }
-        return context;
+        return null;
     }
 }

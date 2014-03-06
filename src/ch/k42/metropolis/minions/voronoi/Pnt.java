@@ -310,7 +310,7 @@ public class Pnt {
      *
      * @param simplex an array of Pnts representing a simplex
      * @return an array of signs showing relation between this Pnt and simplex
-     * @throws IllegalArgumentExcpetion if the simplex is degenerate
+     * @throws java.lang.IllegalArgumentException if the simplex is degenerate
      */
     public int[] relation (Pnt[] simplex) {
         /* In 2D, we compute the cross of this matrix:

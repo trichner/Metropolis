@@ -27,7 +27,7 @@ public class UrbanGrid extends Grid {
     public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
         super(random,provider,generator, root);
         this.statistics = new AthmosStat();
-        contextProvider = new ContextProviderVoroni(random);//generator.getContextProvider();
+        contextProvider = generator.getContextProvider();//new ContextProviderVoroni(random);
         placeHighways();
         district = new DistrictParcel(this, root.X + 1, root.Y + 1, GRID_SIZE - 2, GRID_SIZE - 2);
     }

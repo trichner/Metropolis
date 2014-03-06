@@ -29,10 +29,6 @@ import java.util.List;
 
 
 public abstract class Clipboard {
-
-
-    protected final static int nullspots_constant = 1; //HARDCODED
-
     protected SchematicConfig settings;
     protected GlobalSchematicConfig globalSettings;
     protected List<Cartesian3D> chests = new ArrayList<Cartesian3D>();

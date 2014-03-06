@@ -26,7 +26,7 @@ public class ContextProviderVoroni implements ContextProvider {
         CONTEXTS.add(ContextType.INDUSTRIAL);
     }
 
-    private final class VoronoiVertex{
+    private static final class VoronoiVertex{
 
         private Cartesian2D vertex;
         private ContextType context;

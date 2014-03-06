@@ -1,4 +1,4 @@
-package ch.k42.metropolis.grid.urbanGrid;
+package ch.k42.metropolis.grid.urbanGrid.context;
 
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import org.bukkit.craftbukkit.libs.com.google.gson.annotations.Expose;

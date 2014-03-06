@@ -7,7 +7,7 @@ import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.generator.populators.PopulatorConfig;
 import ch.k42.metropolis.minions.Nimmersatt;
-import ch.k42.metropolis.grid.urbanGrid.ContextConfig;
+import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import org.bukkit.Sound;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;

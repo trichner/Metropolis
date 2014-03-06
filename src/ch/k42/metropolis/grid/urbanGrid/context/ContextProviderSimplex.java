@@ -1,9 +1,8 @@
-package ch.k42.metropolis.grid.urbanGrid.provider;
+package ch.k42.metropolis.grid.urbanGrid.context;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.grid.urbanGrid.ContextZone;
-import ch.k42.metropolis.grid.urbanGrid.ContextConfig;
+import ch.k42.metropolis.minions.Cartesian2D;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**
@@ -71,8 +70,8 @@ public class ContextProviderSimplex implements ContextProvider {
      */
 
     @Override
-    public ContextType getContext(int chunkX, int chunkZ) {
-        return getContext(contextZones, chunkX, chunkZ, 1);
+    public ContextType getContext(Cartesian2D place) {
+        return getContext(contextZones, place.X, place.Y, 1);
     }
 
     private ContextZone[] recurseWeights(ContextZone[] zones) {

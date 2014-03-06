@@ -1,7 +1,6 @@
-package ch.k42.metropolis.grid.urbanGrid.provider;
+package ch.k42.metropolis.grid.urbanGrid.context;
 
 import ch.k42.metropolis.grid.common.GridProvider;
-import ch.k42.metropolis.grid.urbanGrid.ContextZone;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
@@ -74,11 +73,11 @@ public class ContextProviderVoronoi2 implements ContextProvider {
 
     @Override
     public ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level) {
-        return getContext(chunkX,chunkZ);
+        return getContext(new Cartesian2D(chunkX,chunkZ));
     }
 
     @Override
-    public ContextType getContext(int chunkX, int chunkZ) {
+    public ContextType getContext(Cartesian2D place) {
         return null;
     }
 }

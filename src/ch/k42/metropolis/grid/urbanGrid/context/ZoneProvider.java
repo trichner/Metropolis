@@ -1,4 +1,4 @@
-package ch.k42.metropolis.grid.urbanGrid.provider;
+package ch.k42.metropolis.grid.urbanGrid.context;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.GridRandom;

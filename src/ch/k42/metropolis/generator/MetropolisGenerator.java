@@ -34,12 +34,8 @@ public class MetropolisGenerator extends ChunkGenerator {
 
         @Override
         public void populate(World aWorld, Random random, Chunk chunk) {
-            try {
-                gridProvider.populate(MetropolisGenerator.this, chunk);
-                gridProvider.postPopulate(MetropolisGenerator.this, chunk);
-            } catch (Exception e) {
-                logException("BlockPopulator FAILED", e);
-            }
+            gridProvider.getGrid(chunk.getX(),chunk.getZ()).populate(MetropolisGenerator.this, chunk);
+            gridProvider.getGrid(chunk.getX(),chunk.getZ()).postPopulate(MetropolisGenerator.this, chunk);
         }
     }
 

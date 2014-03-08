@@ -113,22 +113,23 @@ public class ClipboardLoaderWE {
                 cuboid = format.load(eastFile);
                 clip = new ClipboardWE(cuboid,config,globalConfig);
                 thash = hash + ".EAST";
+
                 clipstore.put( thash,clip);
-                size = new Cartesian2D(cuboid.getWidth(),cuboid.getLength());
+                size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
                 dao.storeClipboard(thash,file.getName(), Direction.EAST,config,size);
 
                 cuboid = format.load(southFile);
                 clip = new ClipboardWE(cuboid,config,globalConfig);
                 thash = hash + ".SOUTH";
                 clipstore.put(thash,clip);
-                size = new Cartesian2D(cuboid.getWidth(),cuboid.getLength());
+                size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
                 dao.storeClipboard(thash,file.getName(), Direction.SOUTH,config,size);
 
                 cuboid = format.load(westFile);
                 clip = new ClipboardWE(cuboid,config,globalConfig);
                 thash = hash + ".WEST";
                 clipstore.put(thash,clip);
-                size = new Cartesian2D(cuboid.getWidth(),cuboid.getLength());
+                size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
                 dao.storeClipboard(thash,file.getName(), Direction.WEST,config,size);
 
 
@@ -136,7 +137,7 @@ public class ClipboardLoaderWE {
                 clip = new ClipboardWE(cuboid,config,globalConfig);
                 thash = hash + ".NORTH";
                 clipstore.put(thash,clip);
-                size = new Cartesian2D(cuboid.getWidth(),cuboid.getLength());
+                size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
                 dao.storeClipboard(thash,file.getName(), Direction.NORTH,config,size);
 
             } catch (IOException e) {
@@ -152,5 +153,4 @@ public class ClipboardLoaderWE {
         }
         return clipstore;
     }
-
 }

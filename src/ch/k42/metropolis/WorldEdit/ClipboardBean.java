@@ -35,20 +35,6 @@ public class ClipboardBean {
     @Column private int size_x;
     @Column private int size_y;
 
-    public ClipboardBean(){
-
-    }
-
-    public ClipboardBean(String fileHash, String fileName, Direction direction, ContextType context, RoadType roadType, Cartesian2D size) {
-        this.fileName = fileName;
-        this.fileHash = fileHash;
-        this.direction = direction;
-        this.context = context;
-        this.size_x = size.X;
-        this.size_y = size.Y;
-        this.roadType = roadType;
-    }
-
     public Long getId() {
         return id;
     }

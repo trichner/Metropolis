@@ -21,22 +21,22 @@ public class GridProvider {
 
     public static final int GRID_SIZE = 64; // DO NOT CHANGE! UNFORSEEN CONSEQUENCES...
 
-    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        Parcel p = getParcel(chunk.getX(), chunk.getZ());
-        Parcel pN = getParcel(chunk.getX(), chunk.getZ() - 1);
-        Parcel pS = getParcel(chunk.getX(), chunk.getZ() + 1);
-        Parcel pE = getParcel(chunk.getX() + 1, chunk.getZ());
-        Parcel pW = getParcel(chunk.getX() - 1, chunk.getZ());
-        if (p != null) {
-            p.postPopulate(generator, chunk);
-            if (pN != null) pN.postPopulate(generator, chunk);
-            if (pS != null) pS.postPopulate(generator, chunk);
-            if (pE != null) pE.postPopulate(generator, chunk);
-            if (pW != null) pW.postPopulate(generator, chunk);
-        } else {
-            generator.reportDebug("found empty Parcel: [" + chunk.getX() + "][" + chunk.getZ() + "]");
-        }
-    }
+//    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+//        Parcel p = getParcel(chunk.getX(), chunk.getZ());
+//        Parcel pN = getParcel(chunk.getX(), chunk.getZ() - 1);
+//        Parcel pS = getParcel(chunk.getX(), chunk.getZ() + 1);
+//        Parcel pE = getParcel(chunk.getX() + 1, chunk.getZ());
+//        Parcel pW = getParcel(chunk.getX() - 1, chunk.getZ());
+//        if (p != null) {
+//            p.postPopulate(generator, chunk);
+//            if (pN != null) pN.postPopulate(generator, chunk);
+//            if (pS != null) pS.postPopulate(generator, chunk);
+//            if (pE != null) pE.postPopulate(generator, chunk);
+//            if (pW != null) pW.postPopulate(generator, chunk);
+//        } else {
+//            generator.reportDebug("found empty Parcel: [" + chunk.getX() + "][" + chunk.getZ() + "]");
+//        }
+//    }
 
     private Table<Integer,Integer,Grid> grids = HashBasedTable.create();
 
@@ -45,19 +45,19 @@ public class GridProvider {
     public GridProvider(MetropolisGenerator generator) {
         this.generator = generator;
     }
-
-    /**
-     * Evaluates the Parcel at the given absolute chunk coordinates
-     *
-     * @param chunkX x coordinate
-     * @param chunkZ z coordinate
-     * @return parcel at the given coordinate
-     */
-    public Parcel getParcel(int chunkX, int chunkZ) {
-        int x = getChunkOffset(chunkX);
-        int z = getChunkOffset(chunkZ);
-        return getGrid(chunkX, chunkZ).getParcel(x, z);
-    }
+//
+//    /**
+//     * Evaluates the Parcel at the given absolute chunk coordinates
+//     *
+//     * @param chunkX x coordinate
+//     * @param chunkZ z coordinate
+//     * @return parcel at the given coordinate
+//     */
+//    public Parcel getParcel(int chunkX, int chunkZ) {
+//        int x = getChunkOffset(chunkX);
+//        int z = getChunkOffset(chunkZ);
+//        return getGrid(chunkX, chunkZ).getParcel(x, z);
+//    }
 
     /**
      * Returns the grid at the given relative coordinates in the interval [0,Grid.GRIDSIZE)
@@ -77,18 +77,18 @@ public class GridProvider {
         return grid;
     }
 
-    /**
-     * Places the Parcel at the given absolute chunk coordinates
-     *
-     * @param chunkX x coordinate
-     * @param chunkZ z coordinate
-     * @param parcel at the given coordinate
-     */
-    public void setParcel(int chunkX, int chunkZ, Parcel parcel) {
-        int x = getChunkOffset(chunkX);
-        int z = getChunkOffset(chunkZ);
-        getGrid(chunkX, chunkZ).setParcel(x, z, parcel);
-    }
+//    /**
+//     * Places the Parcel at the given absolute chunk coordinates
+//     *
+//     * @param chunkX x coordinate
+//     * @param chunkZ z coordinate
+//     * @param parcel at the given coordinate
+//     */
+//    public void setParcel(int chunkX, int chunkZ, Parcel parcel) {
+//        int x = getChunkOffset(chunkX);
+//        int z = getChunkOffset(chunkZ);
+//        getGrid(chunkX, chunkZ).setParcel(x, z, parcel);
+//    }
 
     /**
      * Evaluates the Parcel at the given absolute chunk coordinates
@@ -101,14 +101,14 @@ public class GridProvider {
         return getGrid(chunkX, chunkZ).getRandom();
     }
 
-    public void populate(MetropolisGenerator generator, Chunk chunk) {
-        Parcel p = getParcel(chunk.getX(), chunk.getZ());
-        if (p != null) {
-            p.populate(generator, chunk);
-        } else {
-            generator.reportDebug("found empty Parcel: [" + chunk.getX() + "][" + chunk.getZ() + "]");
-        }
-    }
+//    public void populate(MetropolisGenerator generator, Chunk chunk) {
+//        Parcel p = getParcel(chunk.getX(), chunk.getZ());
+//        if (p != null) {
+//            p.populate(generator, chunk);
+//        } else {
+//            generator.reportDebug("found empty Parcel: [" + chunk.getX() + "][" + chunk.getZ() + "]");
+//        }
+//    }
 
     private Grid getNewGrid(int chunkX, int chunkZ) {
 

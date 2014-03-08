@@ -5,7 +5,6 @@ import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
-import com.avaje.ebean.EbeanServer;
 import com.avaje.ebean.Query;
 import org.bukkit.Bukkit;
 
@@ -19,7 +18,7 @@ import java.util.List;
  */
 public class ClipboardDAO {
 
-   private final EbeanServer database;
+   private final MetropolisPlugin plugin;
 
     public ClipboardDAO(MetropolisPlugin plugin) {
         try {
@@ -27,7 +26,7 @@ public class ClipboardDAO {
         } catch (PersistenceException e){
             plugin.installDDL();
         }
-        this.database = plugin.getDatabase();
+        this.plugin = plugin;
     }
 
     public void storeClipboard(String fileHash,String fileName, Direction direction, SchematicConfig config, Cartesian2D size){
@@ -43,39 +42,51 @@ public class ClipboardDAO {
     }
 
     public void storeClipboard(String fileHash,String fileName, Direction direction, ContextType context,RoadType roadType, Cartesian2D size){
-        ClipboardBean bean = database.createEntityBean(ClipboardBean.class);
+        ClipboardBean bean = plugin.getDatabase().createEntityBean(ClipboardBean.class);
         bean.setContext(context);
         bean.setDirection(direction);
         bean.setFileHash(fileHash);
         bean.setSize(size);
         bean.setFileName(fileName);
         bean.setRoadType(roadType);
-        database.save(bean);
+        plugin.getDatabase().save(bean);
     }
 
     public List<String> findAllClipboardHashes(Cartesian2D size,ContextType context,Direction direction){
         return getHashes(findAllClipboards(size, context, direction));
     }
     public List<ClipboardBean> findAllClipboards(Cartesian2D size,ContextType context,Direction direction){
-        Query<ClipboardBean> query = database.find(ClipboardBean.class);
+        Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
         query.where().eq("size_x",size.X).eq("size_y",size.Y).eq("context",context).eq("direction",direction);
+        query.select("fileHash,fileName");
         return query.findList();
     }
     public List<ClipboardBean> findAllClipboardRoads(RoadType roadType){
-        Query<ClipboardBean> query = database.find(ClipboardBean.class);
-        query.where().eq("roadType",roadType);
-        return query.findList();
+        Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
+        query.where().eq("roadType",roadType); //FIXME filename not needed
+        query.select("fileHash,fileName");
+        List<ClipboardBean> beans = query.findList();
+        Bukkit.getLogger().info("QUERY: " + beans.size());
+        for(ClipboardBean bean : beans){
+            Bukkit.getLogger().info("result: " + bean.getFileName());
+        }
+        return beans;
     }
     public List<String> findAllClipboardRoadHashes(RoadType roadType){
         return getHashes(findAllClipboardRoads(roadType));
     }
 
-    public List<ClipboardBean> findAllClipboards(){
-        Query<ClipboardBean> query = database.find(ClipboardBean.class);
-        return query.findList();
+    public List<String> findAllClipboardHashes(){
+        Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).select("fileHash");
+        List<ClipboardBean> beans = query.findList();
+        Bukkit.getLogger().info("QUERY: " + beans.size());
+        for(ClipboardBean bean : beans){
+            Bukkit.getLogger().info("result: " + bean.getFileName());
+        }
+        return getHashes(beans);
     }
 
-    private static List<String> getHashes(Collection<ClipboardBean> beans){
+    private List<String> getHashes(Collection<ClipboardBean> beans){
         List<String> hashes = new LinkedList<>();
         for(ClipboardBean bean : beans){ hashes.add(bean.getFileHash()); }
         return hashes;

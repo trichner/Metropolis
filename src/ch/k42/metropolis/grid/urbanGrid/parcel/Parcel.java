@@ -1,6 +1,7 @@
 package ch.k42.metropolis.grid.urbanGrid.parcel;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.common.Grid;
 import org.bukkit.Chunk;
@@ -19,10 +20,10 @@ public abstract class Parcel {
     protected int chunkSizeZ;
 
     protected ContextType contextType;
-    protected Grid grid;
+    protected UrbanGrid grid;
 
 
-    public Parcel(Grid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, ContextType contextType) {
+    public Parcel(UrbanGrid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, ContextType contextType) {
         this.chunkX = chunkX;
         this.chunkZ = chunkZ;
         this.chunkSizeX = chunkSizeX;

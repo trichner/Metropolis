@@ -89,11 +89,19 @@ public class ClipboardProviderDB implements ClipboardProvider {
             for(String clip : clipstore.keySet()){
                 Bukkit.getLogger().info("clipstore: " + clip);
             }
-            for(ClipboardBean clip : dao.findAllClipboards()){
-                Bukkit.getLogger().info("dao hash: "+clip.getFileHash());
-                Bukkit.getLogger().info("dao name: "+clip.getFileName());
-                Bukkit.getLogger().info("dao roadType: "+clip.getRoadType());
+            List<String> beans = dao.findAllClipboardHashes();
+            if(beans!=null){
+                for(String clip : beans){
+                    if(clip==null){
+                        Bukkit.getLogger().info("Bean was NULL ???");
+                        continue;
+                    }
+                    Bukkit.getLogger().info("dao hash: "+clip);
+                }
+            }else {
+                Bukkit.getLogger().info("DAO query failed!");
             }
+
         }
     }
 

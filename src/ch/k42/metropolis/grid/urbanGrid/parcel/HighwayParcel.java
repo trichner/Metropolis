@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.parcel;
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
@@ -24,7 +25,7 @@ public class HighwayParcel extends StreetParcel {
 
     private RoadType roadType = RoadType.NONE;
 
-    public HighwayParcel(Grid grid, int chunkX, int chunkZ, RoadType roadType) {
+    public HighwayParcel(UrbanGrid grid, int chunkX, int chunkZ, RoadType roadType) {
         super(grid, chunkX, chunkZ, 1, 1, ContextType.HIGHWAY);
         this.roadType = roadType;
     }

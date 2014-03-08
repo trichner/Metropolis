@@ -43,7 +43,7 @@ public class UrbanGrid extends Grid {
         contextProvider = generator.getContextProvider();//new ContextProviderVoroni(random);
         this.clipboardProvider = generator.getClipboardProvider();
         placeHighways();
-        recSetDistricts(new Cartesian2D(1,1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
+        recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -67,6 +67,16 @@ public class UrbanGrid extends Grid {
 
     @Override
     public void populate(MetropolisGenerator generator, Chunk chunk) {
+        Bukkit.getLogger().info("populating!");
+        for(Parcel[] parr : parcels){
+            for(Parcel p : parr){
+                if(p==null){
+                    Bukkit.getLogger().info("parcel is null");
+                }else {
+                    Bukkit.getLogger().info(p.toString());
+                }
+            }
+        }
         getParcel(chunk.getX(),chunk.getZ()).populate(generator,chunk);
     }
 

@@ -15,31 +15,28 @@ import javax.persistence.*;
 public class ClipboardBean {
 
     @Id
-    private Long id;
+    Integer id;
 
-    @Column private String fileHash;
-    @Column private String fileName;
+    String fileHash;
+    String fileName;
 
-    @Column
     @Enumerated(EnumType.STRING)
-    private Direction direction;
+    Direction direction;
 
-    @Column
     @Enumerated(EnumType.STRING)
-    private ContextType context;
+    ContextType context;
 
-    @Column
     @Enumerated(EnumType.STRING)
-    private RoadType roadType;
+    RoadType roadType;
 
-    @Column private int size_x;
-    @Column private int size_y;
+    int size_x;
+    int size_y;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

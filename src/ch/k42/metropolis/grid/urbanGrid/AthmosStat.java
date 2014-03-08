@@ -68,7 +68,7 @@ public class AthmosStat implements GridStatistics {
     }
 
     private void logBySize(Clipboard p){
-        Size s = new Size(p.getSizeX(Direction.NORTH),p.getSizeZ(Direction.NORTH));
+        Size s = new Size(p.getSize().X,p.getSize().Z);
         if(statsBySize.containsKey(s)){
             statsBySize.get(s).incr();
         }else{

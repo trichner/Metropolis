@@ -7,7 +7,7 @@ website: k42.ch
 description: Metropolis (1927)
 softdepend: [WorldEdit]
 loadbefore: [Multiverse-Core, dimension-door, multiworld]
-database: false
+database: true
 prefix: Metropolis
 commands:
   metropolis:

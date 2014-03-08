@@ -1,6 +1,9 @@
 package ch.k42.metropolis.plugin;
 
-import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
+import ch.k42.metropolis.WorldEdit.ClipboardBean;
+import ch.k42.metropolis.WorldEdit.ClipboardDAO;
+import ch.k42.metropolis.WorldEdit.ClipboardProvider;
+import ch.k42.metropolis.WorldEdit.ClipboardProviderDB;
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
@@ -21,9 +24,12 @@ import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Main Class for the Metropolis plugin.
@@ -35,11 +41,24 @@ public class MetropolisPlugin extends JavaPlugin {
     private PluginConfig config;
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
-    private ClipboardProviderWorldEdit clipboardProvider;
+    private ClipboardProvider clipboardProvider;
+    private ClipboardDAO clipboardDAO;
+
+    @Override
+    public void installDDL() {
+        super.installDDL();
+    }
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
         return new MetropolisGenerator(this, worldName, clipboardProvider);
+    }
+
+    @Override
+    public List<Class<?>> getDatabaseClasses() {
+        List<Class<?>> classes = new LinkedList<>();
+        classes.add(ClipboardBean.class);
+        return classes;
     }
 
     @Override
@@ -53,9 +72,14 @@ public class MetropolisPlugin extends JavaPlugin {
 
         //---- load config
         try {
-            clipboardProvider = new ClipboardProviderWorldEdit(this);
-        } catch (Exception e) {
-            getLogger().warning("Failed to load clipboard provider: " + e.getMessage());
+            clipboardProvider = new ClipboardProviderDB();
+            clipboardProvider.loadClips(this);
+        } catch (ClipboardProviderDB.PluginNotFoundException e) {
+            getLogger().throwing(this.getClass().getName(), "Failed to load clipboard provider: " + e.getMessage(), e);
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            getLogger().throwing(this.getClass().getName(), "Failed to load clipboards: " + e.getMessage(), e);
+            e.printStackTrace();
         }
 
         File pluginFolder = getDataFolder();

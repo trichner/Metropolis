@@ -4,8 +4,16 @@ import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.LootType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.minions.Nimmersatt;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
+import org.bukkit.craftbukkit.libs.com.google.gson.JsonSyntaxException;
 import org.bukkit.entity.EntityType;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * Created with IntelliJ IDEA.
@@ -138,6 +146,34 @@ public class GlobalSchematicConfig extends AbstractSchematicConfig {
         }
         int random = rand.getRandomInt(minthreshold, maxthreshold);
         return getLevel(random);
+    }
+
+    public static GlobalSchematicConfig fromFile(String path) {
+        Gson gson = new Gson();
+        try {
+            String json = new String(Files.readAllBytes(Paths.get(path)));
+            json = Nimmersatt.friss(json);
+            return gson.fromJson(json, GlobalSchematicConfig.class);
+
+        } catch (JsonSyntaxException e) { // catch all exceptions, inclusive any JSON fails
+            Bukkit.getLogger().throwing(GlobalSchematicConfig.class.getName(), "Couldn't load global schematic config.", e);
+        } catch (IOException e) {
+            Bukkit.getLogger().throwing(GlobalSchematicConfig.class.getName(),"Couldn't load global schematic config.",e);
+        }finally {
+            return  new GlobalSchematicConfig(); // couldn't read config file? use default
+        }
+    }
+
+    public boolean toFile(String path) {
+        try {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            String file = gson.toJson(this);
+            Files.write(Paths.get(path), file.getBytes()); //overwrite existing stuff
+            return true;
+        } catch (IOException e) {
+            Bukkit.getLogger().throwing(this.getClass().getName(), "storeConfig config", e);
+            return false;
+        }
     }
 
 }

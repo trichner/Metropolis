@@ -23,4 +23,9 @@ public final class Cartesian2D {
     public final  int manhattanDistance(Cartesian2D c){
         return Math.abs(c.X-X)+Math.abs(c.Y-Y);
     }
+
+    @Override
+    public String toString() {
+        return "["+X+"/"+Y+"]";
+    }
 }

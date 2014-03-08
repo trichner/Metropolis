@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.parcel;
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
@@ -48,77 +49,35 @@ public class RoadParcel extends StreetParcel {
             ClipboardProvider cprovider = generator.getClipboardProvider();
             Clipboard clip = null;
             GridRandom random = grid.getRandom();
-            List<Clipboard> clips;
+            List<Clipboard> clips = null;
             if (hasNorth) {
                 if (hasSouth) {
                     if (hasEast) {
                         if (hasWest) { // X
-                            clips = getFits(cprovider, RoadType.STREET_X);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_x-cross_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_X);
                         } else { // N S E
-                            clips = getFits(cprovider, RoadType.STREET_T_E);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_t-cross-SN_v1.schematic"); // maybe  SN
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit(  RoadType.STREET_T_E);
                         }
                     } else {
                         if (hasWest) { // N S W
-                            clips = getFits(cprovider, RoadType.STREET_T_W);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_t-cross-NS_v1.schematic"); // maybe  NS
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_T_W);
                         } else { // N S
-                            clips = getFits(cprovider, RoadType.STREET_I_NS);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_straight-NS_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit(  RoadType.STREET_I_NS);
                         }
                     }
 
                 } else {
                     if (hasEast) {
                         if (hasWest) { // N E W
-                            clips = getFits(cprovider, RoadType.STREET_T_N);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_t-cross-EW_v1.schematic"); // maybe  WE
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_T_N);
                         } else { // N E
-                            clips = getFits(cprovider, RoadType.STREET_C_NE);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_curve-EN_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_C_NE);
                         }
                     } else {
                         if (hasWest) { // N W
-                            clips = getFits(cprovider, RoadType.STREET_C_NW);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_curve-WN_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_C_NW);
                         } else { // N
-                            clip = generator.getClipboardProvider().getByName("street_deadend-N_v1.schematic"); //TODO no deadends!
+                            //TODO no deadends!
                         }
                     }
                 }
@@ -126,63 +85,42 @@ public class RoadParcel extends StreetParcel {
                 if (hasSouth) {
                     if (hasEast) {
                         if (hasWest) { // E W S
-                            clips = getFits(cprovider, RoadType.STREET_T_S);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_t-cross-WE_v1.schematic"); // maybe  EW
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_T_S);
                         } else { // S E
-                            clips = getFits(cprovider, RoadType.STREET_C_SE);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_curve_SE_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_C_SE);
                         }
                     } else {
                         if (hasWest) { // S W
-                            clips = getFits(cprovider, RoadType.STREET_C_SW);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_curve_SW_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_C_SW);
                         } else { // S
-                            clip = generator.getClipboardProvider().getByName("street_deadend-S_v1.schematic");
+                            // no deadends
                         }
                     }
 
                 } else {
                     if (hasEast) {
                         if (hasWest) { // E W
-                            clips = getFits(cprovider, RoadType.STREET_I_EW);
-                            if (clips == null || clips.size() == 0) {
-                                generator.reportDebug("Can't find road fit, using hardcoded fallback.");
-                                clip = generator.getClipboardProvider().getByName("street_straight-WE_v1.schematic");
-                            } else {
-                                clip = clips.get(random.getRandomInt(clips.size()));
-                            }
+                            clips = cprovider.getRoadFit( RoadType.STREET_I_EW);
                         } else { // E
-                            clip = generator.getClipboardProvider().getByName("street_deadend-E_v1.schematic");
+                            // no deadens
                         }
                     } else {
                         if (hasWest) { // W
-                            clip = generator.getClipboardProvider().getByName("street_deadend_W_v1.schematic");
+                            //no deadends
                         } else { // none, is an isolated road
                             generator.reportDebug("found an isolated roadcell, nothing placed"); // better solution?
                         }
                     }
                 }
             }
-            if (clip != null) {
-                road = clip;
-                clip.paste(generator, chunkX << 4, chunkZ << 4, Constants.BUILD_HEIGHT, Direction.NORTH); // FIXME Hardcoded street level
+
+            if ((clips != null) && (clips.size()>0)) {
+                road = clips.get(random.getRandomInt(clips.size()));
+                clip.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
                 decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
                 decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
+            }else{
+                generator.reportDebug("Couldn't find road fit.");
             }
 
         } else {
@@ -190,16 +128,12 @@ public class RoadParcel extends StreetParcel {
         }
     }
 
-    private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type) {
-        return cprovider.getRoadFit(1, 1, ContextType.STREET, type);
-    }
-
     @Override
     public String toString() {
         String info = "RoadParcel +[" + chunkX + "][" + chunkZ + "] ";
 
         if (road != null)
-            info += "Schemname: " + road.getName();
+            info += "Schemname: " + road;
         else
             info += " No schem found. ";
 

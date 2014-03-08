@@ -4,11 +4,11 @@ import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.SchematicConfig;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
-import ch.k42.metropolis.grid.common.Grid;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,10 +36,10 @@ public class ClipboardParcel extends Parcel {
     public void populate(MetropolisGenerator generator, Chunk chunk) {
         if (chunk.getX() == (chunkX) && chunk.getZ() == (chunkZ)) {
             int streetLevel = Constants.BUILD_HEIGHT;
-            clipboard.paste(generator, (chunkX << 4), (chunkZ << 4), Constants.BUILD_HEIGHT, direction);
+            clipboard.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT);
             // TODO use config, don't always destroy
-            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(streetLevel), clipboard.getSizeY(), clipboard.getDecayOptions());
-            ((CraftChunk)chunk).getHandle().initLighting();
+            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(streetLevel), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
+            ((CraftChunk)chunk).getHandle().initLighting(); //FIXME doesn't work...
         }
     }
 
@@ -51,7 +51,7 @@ public class ClipboardParcel extends Parcel {
         //To change body of implemented methods use File | Settings | File Templates.
 
         //---- make sidewalk cutouts
-        SchematicConfig.RoadCutout[] cuts = clipboard.getSettings().getCutouts();
+        SchematicConfig.RoadCutout[] cuts = clipboard.getConfig().getCutouts();
 
         Cartesian3D base = new Cartesian3D(this.chunkX << 4, Constants.BUILD_HEIGHT - 1, this.chunkZ << 4);
 
@@ -62,7 +62,7 @@ public class ClipboardParcel extends Parcel {
 
             switch (direction) {
                 case NORTH:
-                    offset = new Cartesian3D(clipboard.getSizeX(direction) - cut.startPoint, 0, -1);
+                    offset = new Cartesian3D(clipboard.getSize().X - cut.startPoint, 0, -1);
                     size = new Cartesian3D(-cut.length, cutoutHeight, -cutoutDepth);
                     parcel = grid.getParcel(chunkX, chunkZ - 1);
                     roadCheck = parcel.getContextType();
@@ -71,18 +71,18 @@ public class ClipboardParcel extends Parcel {
                     }
                     break;
                 case EAST:
-                    offset = new Cartesian3D(clipboard.getSizeX(direction), 0, clipboard.getSizeZ(direction) - cut.startPoint);
+                    offset = new Cartesian3D(clipboard.getSize().X, 0, clipboard.getSize().Z - cut.startPoint);
                     size = new Cartesian3D(cutoutDepth, cutoutHeight, -cut.length);
-                    parcel = grid.getParcel(chunkX + (clipboard.getSizeX(direction) >> 4), chunkZ);
+                    parcel = grid.getParcel(chunkX + (clipboard.getSize().X >> 4), chunkZ);
                     roadCheck = parcel.getContextType();
                     if (roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY)) {
                         cutoutBlocks(generator, base.add(offset), size, Material.STONE);
                     }
                     break;
                 case SOUTH:
-                    offset = new Cartesian3D(cut.startPoint - 1, 0, clipboard.getSizeZ(direction));
+                    offset = new Cartesian3D(cut.startPoint - 1, 0, clipboard.getSize().Z);
                     size = new Cartesian3D(cut.length, cutoutHeight, cutoutDepth);
-                    roadCheck = grid.getParcel(chunkX, chunkZ + (clipboard.getSizeZ(direction) >> 4)).getContextType();
+                    roadCheck = grid.getParcel(chunkX, chunkZ + (clipboard.getSize().Z >> 4)).getContextType();
                     if (roadCheck.equals(ContextType.STREET) || roadCheck.equals(ContextType.HIGHWAY)) {
                         cutoutBlocks(generator, base.add(offset), size, Material.STONE);
                     }

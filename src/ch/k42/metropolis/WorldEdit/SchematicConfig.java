@@ -6,8 +6,15 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.LootType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.minions.Nimmersatt;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.JsonSyntaxException;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -144,6 +151,23 @@ public class SchematicConfig extends AbstractSchematicConfig {
 
     public RoadCutout[] getCutouts() {
         return cutouts;
+    }
+
+    public static SchematicConfig fromFile(File file){
+        Gson gson = new Gson();
+        try {
+            String json = new String(Files.readAllBytes(file.toPath()));
+            json = Nimmersatt.friss(json);
+            SchematicConfig config = gson.fromJson(json, SchematicConfig.class);
+            config.setPath(file.getPath());
+            return config;
+        } catch (IOException e) {
+            Bukkit.getLogger().throwing(SchematicConfig.class.getName(),"Can't load SchematicConfig: " + file.getName(),e);
+        } catch (JsonSyntaxException e){
+            Bukkit.getLogger().throwing(SchematicConfig.class.getName(),"Can't parse SchematicConfig: " + file.getName(),e);
+        }
+        return null;
+
     }
 
 }

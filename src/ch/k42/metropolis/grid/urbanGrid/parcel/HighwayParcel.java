@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.parcel;
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
@@ -56,7 +57,7 @@ public class HighwayParcel extends StreetParcel {
             clip = clips.get(grid.getRandom().getRandomInt(clips.size()));
 
         if (clip != null) {
-            clip.paste(generator, chunkX << 4, chunkZ << 4, Constants.BUILD_HEIGHT, Direction.NORTH); // FIXME Hardcoded street level
+            clip.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
             this.road = clip;
             decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
             decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
@@ -83,14 +84,14 @@ public class HighwayParcel extends StreetParcel {
     }
 
     private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type) {
-        return cprovider.getRoadFit(1, 1, ContextType.HIGHWAY, type);
+        return cprovider.getRoadFit(type);
     }
 
     @Override
     public String toString() {
         String info = "RoadParcel +[" + chunkX + "][" + chunkZ + "] ";
         if (road != null)
-            info += "Schemname: " + road.getName();
+            info += "Schemname: " + road;
         else
             info += " No schem found. ";
         return info;

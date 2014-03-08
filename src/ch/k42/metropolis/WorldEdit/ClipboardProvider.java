@@ -3,8 +3,10 @@ package ch.k42.metropolis.WorldEdit;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 /**
@@ -23,28 +25,24 @@ public interface ClipboardProvider {
      * @param plugin the metropolis plugin
      * @throws Exception
      */
-    public void loadClips(MetropolisPlugin plugin) throws Exception;
+    public void loadClips(MetropolisPlugin plugin) throws FileNotFoundException;
 
 
     /**
      * Returns a list containing all available clipboards that match the size and context
      *
-     * @param chunkX      chunksize in X direction
-     * @param chunkZ      chunksize in Z direction
-     * @param contextType context of the structure
      * @param roadType    defines the type of the road, only applies if context is STREET
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getRoadFit(int chunkX, int chunkZ, ContextType contextType, RoadType roadType);
+    public List<Clipboard> getRoadFit(RoadType roadType);
 
     /**
      * Returns a list containing all available clipboards that match the size and context
      *
-     * @param chunkX      chunksize in X direction
-     * @param chunkZ      chunksize in Z direction
+     * @param size  size in chunks
      * @param contextType context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(int chunkX, int chunkZ, ContextType contextType, Direction roadDir, boolean roadFacing);
+    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType, Direction roadDir);
 
 }

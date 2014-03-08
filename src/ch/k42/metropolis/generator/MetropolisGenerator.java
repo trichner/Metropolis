@@ -1,6 +1,6 @@
 package ch.k42.metropolis.generator;
 
-import ch.k42.metropolis.WorldEdit.ClipboardProviderWorldEdit;
+import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
@@ -38,7 +38,7 @@ public class MetropolisGenerator extends ChunkGenerator {
                 gridProvider.populate(MetropolisGenerator.this, chunk);
                 gridProvider.postPopulate(MetropolisGenerator.this, chunk);
             } catch (Exception e) {
-                reportException("BlockPopulator FAILED", e);
+                logException("BlockPopulator FAILED", e);
             }
         }
     }
@@ -49,21 +49,21 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     public String worldName;
 
-    private ClipboardProviderWorldEdit clipboardProvider;
+    private ClipboardProvider clipboardProvider;
     private GridProvider gridProvider;
     private ContextProvider contextProvider;
 
     public DecayProvider decayProvider;
     public EnvironmentProvider natureDecay;
 
-    public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProviderWorldEdit clipboardProvider) {
+    public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProvider clipboardProvider) {
         this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;
         this.worldName = worldName;
         plugin.getLogger().info("Running MetropolisGenerator.");
     }
 
-    public ClipboardProviderWorldEdit getClipboardProvider() {
+    public ClipboardProvider getClipboardProvider() {
         return clipboardProvider;
     }
 
@@ -155,7 +155,7 @@ public class MetropolisGenerator extends ChunkGenerator {
             return chunk;//byteChunk.blocks;
 
         } catch (Exception e) {
-            reportException("ChunkPopulator FAILED: " + e.getMessage(), e);
+            logException("ChunkPopulator FAILED: " + e.getMessage(), e);
             return null;
         }
     }
@@ -205,8 +205,8 @@ public class MetropolisGenerator extends ChunkGenerator {
             plugin.getLogger().info("[====DEBUG====]" + message);
     }
 
-    public void reportException(String message, Exception e) {
-        plugin.getLogger().warning(message + " ---- " + e.getMessage());
+    public void logException(String message, Exception e) {
+        plugin.getLogger().throwing(MetropolisGenerator.class.getName(), message + " ---- " + e.getMessage(), e);
         e.printStackTrace();
     }
 }

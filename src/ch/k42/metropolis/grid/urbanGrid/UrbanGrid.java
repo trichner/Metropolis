@@ -16,10 +16,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.minions.Minions;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Represents a grid occupied fully with buildings
@@ -31,13 +28,20 @@ public class UrbanGrid extends Grid {
 
     private ContextProvider contextProvider;
     private GridStatistics statistics;
-    private Set<District> districts = new TreeSet<>();
+    private ClipboardProvider clipboardProvider;
+
+    //private Set<District> districts = new TreeSet<>();
+
+
+    private Set<Parcel> parcelSet = new HashSet<>();
 
     public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
         super(random,provider,generator, root);
         this.statistics = new AthmosStat();
         contextProvider = generator.getContextProvider();//new ContextProviderVoroni(random);
+        this.clipboardProvider = generator.getClipboardProvider();
         placeHighways();
+        recSetDistricts(new Cartesian2D(1,1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -109,23 +113,20 @@ public class UrbanGrid extends Grid {
     }
 
     private static final int blockSize = 14;
-    private static final int sigma_factor = 6;
+    private static final int sigma_factor = 5;
 
     public void recSetDistricts(Cartesian2D base,Cartesian2D size) {
 
         if (size.X > size.Y) {
+            if (size.X < blockSize) {
+                //Context context = Context.getRandom(this,base);
 
-
-            if (size.X < blockSize) { //FIXME Hardcoded
-                Context context = Context.getRandom(this,base);
-                districts.add(new District(base,size,context));
+                //districts.add(new District(base,size,context));
             } else {
                 int cut = makeCut(size.X);
                 partitionXwithRoads(base,size,cut);
             }
         } else {
-            //FIXME Hardcoded
-
             if (size.Y < blockSize) { // No place for streets
                 //place a new Block
 
@@ -136,6 +137,100 @@ public class UrbanGrid extends Grid {
         }
 
     }
+
+    private boolean placeRandom(Cartesian2D base,Cartesian2D size){
+        Direction direction = findRoad(base,size,random);
+        ContextType context = contextProvider.getContext(base);
+        List<Clipboard> clips = clipboardProvider.getFit(size,context,direction);
+        if(clips.size()!=0){ // can we place anything?
+            Collections.shuffle(clips);
+            for(Clipboard c : clips){
+                if(random.getChance(c.getConfig().getOddsOfAppearance())){
+                    parcelSet.add(new ClipboardParcel(this, base.X, base.Y, size.X, size.Y, c, context, direction));
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    private boolean placeRandomForSure(Cartesian2D base,Cartesian2D size){
+        Direction direction = findRoad(base,size,random);
+        ContextType context = contextProvider.getContext(base);
+        List<Clipboard> clips = clipboardProvider.getFit(size,context,direction);
+        if(clips.size()!=0){ // can we place anything?
+            Collections.shuffle(clips);
+
+            for(int i=0;i<20;i++){
+                for(Clipboard c : clips){
+                    if(random.getChance(c.getConfig().getOddsOfAppearance())){
+                        parcelSet.add(new ClipboardParcel(this, base.X, base.Y, size.X, size.Y, c, context, direction));
+                        return true;
+                    }
+                }
+            }
+            generator.reportDebug("Couldn't place schem for sure! Tried 20 times, but all odds failed me.");
+
+        }
+        return false;
+    }
+
+    private void recPartitionX(Cartesian2D base, Cartesian2D size){
+        // place schem?
+        if(placeRandom(base,size)){
+           return;
+        }
+
+        if(size.X==1){ // can't make smaller
+            if(!placeRandomForSure(base,size))
+                parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
+        }else {
+            int cut = makeCut(size.X);
+            recPartitionZ(base, new Cartesian2D(cut, size.Y));
+            recPartitionZ(new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+        }
+    }
+
+    private void recPartitionZ(Cartesian2D base, Cartesian2D size){
+        if(!placeRandom(base,size)){
+            return;
+        }
+        if(size.Y==1){ // can't make smaller
+            if(!placeRandomForSure(base,size))
+                parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
+        }else {
+            int cut = makeCut(size.Y);
+            recPartitionX(base, new Cartesian2D(size.X, cut));
+            recPartitionX(new Cartesian2D(base.X , base.Y+ cut), new Cartesian2D(size.X, size.Y - cut));
+        }
+
+    }
+
+    private Direction findRoad(Cartesian2D base,Cartesian2D size,GridRandom random) {
+        List<Direction> directions = new LinkedList<>();
+
+        if(this.getParcel(base.X, base.Y - 1).getContextType().equals(ContextType.STREET) ||
+                this.getParcel(base.X, base.Y - 1).getContextType().equals(ContextType.HIGHWAY))
+            directions.add(Direction.NORTH);
+
+        if(this.getParcel(base.X, base.Y + size.Y).getContextType().equals(ContextType.STREET) ||
+                this.getParcel(base.X, base.Y + size.Y).getContextType().equals(ContextType.HIGHWAY))
+            directions.add(Direction.SOUTH);
+
+        if(this.getParcel(base.X - 1, base.Y).getContextType().equals(ContextType.STREET) ||
+                this.getParcel(base.X - 1, base.Y).getContextType().equals(ContextType.HIGHWAY))
+            directions.add(Direction.WEST);
+
+        if(this.getParcel(base.X + size.X, base.Y).getContextType().equals(ContextType.STREET) ||
+                this.getParcel(base.X + size.X, base.Y).getContextType().equals(ContextType.HIGHWAY))
+            directions.add(Direction.EAST);
+
+        if(directions.size()==0) return Direction.NONE;
+
+        return directions.get(random.getRandomInt(directions.size()));
+    }
+
 
     private final int makeCut(int x){
         double  mean = x / 2.0;

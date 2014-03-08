@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.enums;
 import ch.k42.metropolis.minions.GridRandom;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Possible values: north, south, west, east
@@ -36,7 +37,7 @@ public enum Direction {
     }
 
     public static Direction getRandomDirection(GridRandom random, boolean north, boolean south, boolean east, boolean west) {
-        ArrayList<Direction> dirs = getDirections(north, south, east, west);
+        List<Direction> dirs = getDirections(north, south, east, west);
         if (!north && !east && !south && !west) return Direction.NONE;
         Direction output = dirs.get(random.getRandomInt(dirs.size()));
         return output;
@@ -47,7 +48,7 @@ public enum Direction {
         return dirs;
     }
 
-    public static ArrayList<Direction> getDirections(boolean north, boolean south, boolean east, boolean west) {
+    public static List<Direction> getDirections(boolean north, boolean south, boolean east, boolean west) {
         ArrayList<Direction> dirs = new ArrayList<Direction>();
         if (north) dirs.add(Direction.NORTH);
         if (south) dirs.add(Direction.SOUTH);

@@ -38,14 +38,12 @@ public class RoadParcel extends StreetParcel {
 
             // determine street needed
 
-            ContextType context = grid.getParcel(chunkX + 1, chunkZ).getContextType();
-            boolean hasEast = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
-            context = grid.getParcel(chunkX - 1, chunkZ).getContextType();
-            boolean hasWest = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
-            context = grid.getParcel(chunkX, chunkZ - 1).getContextType();
-            boolean hasNorth = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
-            context = grid.getParcel(chunkX, chunkZ + 1).getContextType();
-            boolean hasSouth = context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
+            boolean hasEast,hasWest,hasNorth,hasSouth;
+
+            hasEast = isStreet(grid.getParcel(chunkX + 1, chunkZ));
+            hasWest = isStreet(grid.getParcel(chunkX - 1, chunkZ));
+            hasNorth = isStreet(grid.getParcel(chunkX, chunkZ - 1));
+            hasSouth = isStreet(grid.getParcel(chunkX, chunkZ + 1));
 
             ClipboardProvider cprovider = generator.getClipboardProvider();
             Clipboard clip = null;
@@ -127,6 +125,12 @@ public class RoadParcel extends StreetParcel {
         } else {
             generator.reportDebug("Wanted to place road where it should not belong...");
         }
+    }
+
+    private static boolean isStreet(Parcel p){
+        if(p==null) return false;
+        ContextType context = p.getContextType();
+        return context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
     }
 
     @Override

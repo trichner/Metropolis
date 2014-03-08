@@ -101,6 +101,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
     public List<Clipboard> getRoadFit(RoadType roadType) {
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardRoadHashes(roadType)){
+            if(hash==null) continue;
             clips.add(clipstore.get(hash));
         }
         return clips;
@@ -110,6 +111,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
     public List<Clipboard> getFit(Cartesian2D size, ContextType contextType, Direction direction) {
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,contextType,direction)){
+            if(hash==null) continue;
             clips.add(clipstore.get(hash));
         }
         return clips;

@@ -54,7 +54,7 @@ public class ClipboardWE implements Clipboard {
 
             //fill chests
             World world = generator.getWorld();
-            GridRandom rand = generator.getGridProvider().getRandom(base.X,base.Y);
+            GridRandom rand = generator.getGridProvider().getGrid(base.X,base.Y).getRandom();
             Cartesian3D base3 = new Cartesian3D(base.X<< 4, blockY,  base.Y<< 4);
 
             if (generator.getPlugin().getMetropolisConfig().isChestRenaming()) { //do we really want to name them all?

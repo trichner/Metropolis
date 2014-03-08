@@ -78,4 +78,10 @@ public abstract class StreetParcel extends Parcel {
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         // Do nothing.
     }
+
+    protected static boolean isStreet(Parcel p){
+        if(p==null) return false;
+        ContextType context = p.getContextType();
+        return context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
+    }
 }

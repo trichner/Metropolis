@@ -33,13 +33,13 @@ public class HighwayParcel extends StreetParcel {
     @Override
     public void populate(MetropolisGenerator generator, Chunk chunk) {
 
-        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && grid.getParcel(chunkX + 1, chunkZ).getContextType().equals(ContextType.STREET)) {
+        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && isStreet(grid.getParcel(chunkX + 1, chunkZ))){
             roadType = RoadType.HIGHWAY_T_E;
-        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && grid.getParcel(chunkX - 1, chunkZ).getContextType().equals(ContextType.STREET)) {
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && isStreet(grid.getParcel(chunkX - 1, chunkZ))){
             roadType = RoadType.HIGHWAY_T_W;
-        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && grid.getParcel(chunkX, chunkZ + 1).getContextType().equals(ContextType.STREET)) {
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && isStreet(grid.getParcel(chunkX, chunkZ + 1))){
             roadType = RoadType.HIGHWAY_T_S;
-        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && grid.getParcel(chunkX, chunkZ - 1).getContextType().equals(ContextType.STREET)) {
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && isStreet(grid.getParcel(chunkX, chunkZ - 1))){
             roadType = RoadType.HIGHWAY_T_N;
         }
 
@@ -69,16 +69,16 @@ public class HighwayParcel extends StreetParcel {
 
     @Override
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && grid.getParcel(chunkX + 1, chunkZ).getContextType().equals(ContextType.STREET)) {
+        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && isStreet(grid.getParcel(chunkX + 1, chunkZ))){
             roadType = RoadType.HIGHWAY_T_E;
             findAndPlaceClip(generator, chunk, roadType);
-        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && grid.getParcel(chunkX - 1, chunkZ).getContextType().equals(ContextType.STREET)) {
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && isStreet(grid.getParcel(chunkX - 1, chunkZ))){
             roadType = RoadType.HIGHWAY_T_W;
             findAndPlaceClip(generator, chunk, roadType);
-        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && grid.getParcel(chunkX, chunkZ + 1).getContextType().equals(ContextType.STREET)) {
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && isStreet(grid.getParcel(chunkX, chunkZ + 1))){
             roadType = RoadType.HIGHWAY_T_S;
             findAndPlaceClip(generator, chunk, roadType);
-        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && grid.getParcel(chunkX, chunkZ - 1).getContextType().equals(ContextType.STREET)) {
+        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && isStreet(grid.getParcel(chunkX, chunkZ - 1))){
             roadType = RoadType.HIGHWAY_T_N;
             findAndPlaceClip(generator, chunk, roadType);
         }
@@ -90,7 +90,7 @@ public class HighwayParcel extends StreetParcel {
 
     @Override
     public String toString() {
-        String info = "RoadParcel +[" + chunkX + "][" + chunkZ + "] ";
+        String info = "HighWay +[" + chunkX + "][" + chunkZ + "] ";
         if (road != null)
             info += "Schemname: " + road;
         else

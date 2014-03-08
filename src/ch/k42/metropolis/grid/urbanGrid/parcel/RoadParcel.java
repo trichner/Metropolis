@@ -37,7 +37,6 @@ public class RoadParcel extends StreetParcel {
         if (chunk.getX() == (chunkX) && chunk.getZ() == (chunkZ)) {
 
             // determine street needed
-
             boolean hasEast,hasWest,hasNorth,hasSouth;
 
             hasEast = isStreet(grid.getParcel(chunkX + 1, chunkZ));
@@ -46,9 +45,10 @@ public class RoadParcel extends StreetParcel {
             hasSouth = isStreet(grid.getParcel(chunkX, chunkZ + 1));
 
             ClipboardProvider cprovider = generator.getClipboardProvider();
-            Clipboard clip = null;
             GridRandom random = grid.getRandom();
+
             List<Clipboard> clips = null;
+
             if (hasNorth) {
                 if (hasSouth) {
                     if (hasEast) {
@@ -115,7 +115,7 @@ public class RoadParcel extends StreetParcel {
 
             if ((clips != null) && (clips.size()>0)) {
                 road = clips.get(random.getRandomInt(clips.size()));
-                clip.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
+                road.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
                 decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
                 decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
             }else{
@@ -127,11 +127,7 @@ public class RoadParcel extends StreetParcel {
         }
     }
 
-    private static boolean isStreet(Parcel p){
-        if(p==null) return false;
-        ContextType context = p.getContextType();
-        return context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
-    }
+
 
     @Override
     public String toString() {

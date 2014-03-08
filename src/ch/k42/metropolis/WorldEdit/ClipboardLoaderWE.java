@@ -68,7 +68,9 @@ public class ClipboardLoaderWE {
         File cacheSchemFolder;
         SchematicFormat format;
         CuboidClipboard cuboid;
-        for(File file : schematicFiles){
+        for(File file : schematicFiles){ // TODO use threads
+
+
             String hash;
             try {
                 hash = Minions.getMD5Checksum(file);
@@ -150,6 +152,8 @@ public class ClipboardLoaderWE {
                 Bukkit.getLogger().throwing(ClipboardLoaderWE.class.getName(),"loadSchematics",e);
                 continue;
             }
+
+
         }
         return clipstore;
     }

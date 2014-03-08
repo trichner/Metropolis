@@ -42,7 +42,6 @@ public class MetropolisPlugin extends JavaPlugin {
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
     private ClipboardProvider clipboardProvider;
-    private ClipboardDAO clipboardDAO;
 
     @Override
     public void installDDL() {
@@ -70,17 +69,7 @@ public class MetropolisPlugin extends JavaPlugin {
     public void onEnable() {
         super.onEnable();    //To change body of overridden methods use File | Settings | File Templates.
 
-        //---- load config
-        try {
-            clipboardProvider = new ClipboardProviderDB();
-            clipboardProvider.loadClips(this);
-        } catch (ClipboardProviderDB.PluginNotFoundException e) {
-            getLogger().throwing(this.getClass().getName(), "Failed to load clipboard provider: " + e.getMessage(), e);
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            getLogger().throwing(this.getClass().getName(), "Failed to load clipboards: " + e.getMessage(), e);
-            e.printStackTrace();
-        }
+
 
         File pluginFolder = getDataFolder();
         File contextsConfig = new File(pluginFolder.getPath() + "/contexts.json");
@@ -115,6 +104,18 @@ public class MetropolisPlugin extends JavaPlugin {
         this.saveDefaultConfig(); // this saves the config provided in the jar if no config was found
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);
+
+        //---- clips
+        try {
+            clipboardProvider = new ClipboardProviderDB();
+            clipboardProvider.loadClips(this);
+        } catch (ClipboardProviderDB.PluginNotFoundException e) {
+            getLogger().throwing(this.getClass().getName(), "Failed to load clipboard provider: " + e.getMessage(), e);
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            getLogger().throwing(this.getClass().getName(), "Failed to load clipboards: " + e.getMessage(), e);
+            e.printStackTrace();
+        }
 
         getServer().getPluginManager().registerEvents(new l(), this);
 

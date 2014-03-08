@@ -32,9 +32,6 @@ public class UrbanGrid extends Grid {
     private GridStatistics statistics;
     private ClipboardProvider clipboardProvider;
 
-    //private Set<District> districts = new TreeSet<>();
-
-
     private Set<Parcel> parcelSet = new HashSet<>();
 
     public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
@@ -44,6 +41,8 @@ public class UrbanGrid extends Grid {
         this.clipboardProvider = generator.getClipboardProvider();
         placeHighways();
         recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
+        Bukkit.getLogger().info("Set new grid.");
+        Bukkit.getLogger().info(this.toString());
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -68,21 +67,23 @@ public class UrbanGrid extends Grid {
     @Override
     public void populate(MetropolisGenerator generator, Chunk chunk) {
         Bukkit.getLogger().info("populating!");
-        for(Parcel[] parr : parcels){
-            for(Parcel p : parr){
-                if(p==null){
-                    Bukkit.getLogger().info("parcel is null");
-                }else {
-                    Bukkit.getLogger().info(p.toString());
-                }
-            }
+        Parcel p = getParcel(chunk.getX(), chunk.getZ());
+        if(p!=null){
+            p.populate(generator, chunk);
+        }else {
+            Bukkit.getLogger().warning("NULL Parcel found");
         }
-        getParcel(chunk.getX(),chunk.getZ()).populate(generator,chunk);
+
     }
 
     @Override
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-        getParcel(chunk.getX(),chunk.getZ()).postPopulate(generator, chunk);
+        Parcel p = getParcel(chunk.getX(),chunk.getZ());
+        if(p!=null){
+            p.postPopulate(generator, chunk);
+        }else {
+            Bukkit.getLogger().warning("NULL Parcel found");
+        }
     }
 
     public Parcel getParcel(int chunkX, int chunkZ) {
@@ -141,6 +142,7 @@ public class UrbanGrid extends Grid {
                 //Context context = Context.getRandom(this,base);
 
                 //districts.add(new District(base,size,context));
+                recPartitionX(base,size);
             } else {
                 int cut = makeCut(size.X);
                 partitionXwithRoads(base,size,cut);
@@ -148,7 +150,7 @@ public class UrbanGrid extends Grid {
         } else {
             if (size.Y < blockSize) { // No place for streets
                 //place a new Block
-
+                recPartitionZ(base,size);
             } else {                 //put a street inbetween
                 int cut = makeCut(size.Y);
                 partitionZwithRoads(base,size,cut);
@@ -278,4 +280,25 @@ public class UrbanGrid extends Grid {
         recSetDistricts(new Cartesian2D(base.X,base.Y+cut+1),new Cartesian2D(initSize.X,initSize.Y-cut-1));
     }
 
+    @Override
+    public String  toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("================ UrbanGrid ================\n");
+        for(Parcel[] parr : parcels){
+            for(Parcel p : parr){
+                if(p==null){
+                    sb.append("0");
+                }else {
+                    if(p instanceof StreetParcel){
+                        sb.append("R");
+                    }else{
+                        sb.append("P");
+                    }
+                }
+                sb.append(" ");
+            }
+            sb.append('\n');
+        }
+        return sb.toString();
+    }
 }

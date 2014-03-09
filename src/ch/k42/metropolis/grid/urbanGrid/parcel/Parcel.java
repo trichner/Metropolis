@@ -87,4 +87,10 @@ public abstract class Parcel {
                 ", contextType=" + contextType +
                 '}';
     }
+
+    public static boolean isStreet(Parcel p){
+        if(p==null) return false;
+        ContextType context = p.getContextType();
+        return context.equals(ContextType.STREET) || context.equals(ContextType.HIGHWAY);
+    }
 }

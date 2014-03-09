@@ -21,19 +21,19 @@ abstract public class Grid {
 
     protected GridRandom random;
     protected GridProvider gridProvider;
-    //protected MetropolisGenerator generator;
+    protected MetropolisGenerator generator;
 
     protected Cartesian2D root;
 
     protected Grid(GridRandom random, GridProvider gridProvider, MetropolisGenerator generator, Cartesian2D root) {
         this.random = random;
         this.gridProvider = gridProvider;
-        //this.generator = generator;
+        this.generator = generator;
         this.root = root;
     }
 
-    public abstract void populate(MetropolisGenerator generator,Chunk chunk);
-    public void postPopulate(MetropolisGenerator generator,Chunk chunk){};
+    public abstract void populate(Chunk chunk);
+    public void postPopulate(Chunk chunk){};
 
     public GridRandom getRandom() {
         return random;

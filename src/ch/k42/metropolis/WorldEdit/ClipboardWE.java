@@ -12,6 +12,7 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -44,7 +45,7 @@ public class ClipboardWE implements Clipboard {
     @Override
     public void paste(MetropolisGenerator generator, Cartesian2D base, int streetLevel) {
         int blockY = getBottom(streetLevel);
-        Vector at = new Vector(base.X << 4, blockY << 4, base.Y);
+        Vector at = new Vector(base.X << 4, blockY , base.Y << 4);
         try {
             EditSession editSession = getEditSession(generator);
             editSession.setFastMode(true);
@@ -121,7 +122,7 @@ public class ClipboardWE implements Clipboard {
         EnvironmentProvider natureDecay = generator.getNatureDecayProvider();
         chests.clear();
         spawners.clear();
-
+        Bukkit.getLogger().info("Placing at " + pos.getX() + "/"+pos.getY()+"/"+pos.getZ());
         for (int x = 0; x < cuboid.getWidth(); x++) {
             for (int y = 0; y < cuboid.getHeight(); y++) {
                 for (int z = 0; z < cuboid.getLength(); z++) {

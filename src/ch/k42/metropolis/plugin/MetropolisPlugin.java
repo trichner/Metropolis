@@ -41,6 +41,7 @@ public class MetropolisPlugin extends JavaPlugin {
     private PluginConfig config;
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
+
     private ClipboardProvider clipboardProvider;
 
     @Override
@@ -67,10 +68,6 @@ public class MetropolisPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        super.onEnable();    //To change body of overridden methods use File | Settings | File Templates.
-
-
-
         File pluginFolder = getDataFolder();
         File contextsConfig = new File(pluginFolder.getPath() + "/contexts.json");
         File populatorsConfig = new File(pluginFolder.getPath() + "/populators.json");
@@ -105,8 +102,8 @@ public class MetropolisPlugin extends JavaPlugin {
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);
 
-        //---- clips
-        try {
+        //---- clips, load after config is ready
+        try { // load them as early as possible
             clipboardProvider = new ClipboardProviderDB();
             clipboardProvider.loadClips(this);
         } catch (ClipboardProviderDB.PluginNotFoundException e) {
@@ -116,6 +113,7 @@ public class MetropolisPlugin extends JavaPlugin {
             getLogger().throwing(this.getClass().getName(), "Failed to load clipboards: " + e.getMessage(), e);
             e.printStackTrace();
         }
+
 
         getServer().getPluginManager().registerEvents(new l(), this);
 

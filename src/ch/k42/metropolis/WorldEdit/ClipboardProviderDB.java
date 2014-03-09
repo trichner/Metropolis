@@ -15,6 +15,7 @@ import org.bukkit.plugin.PluginManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,9 @@ public class ClipboardProviderDB implements ClipboardProvider {
 
     private WorldEdit worldEdit;
     private ClipboardDAO dao;
-    private Map<String,Clipboard> clipstore;
+    private Map<String,Clipboard> clipstore = new HashMap<>();
+
+    private boolean isLoaded = false;
 
     public ClipboardProviderDB() throws PluginNotFoundException {
         //==== First load the plugin
@@ -94,14 +97,15 @@ public class ClipboardProviderDB implements ClipboardProvider {
                 Bukkit.getLogger().info("dao hash: "+clip);
             }
         }
+        isLoaded = true;
     }
 
 
     @Override
     public List<Clipboard> getRoadFit(RoadType roadType) {
+        if(!isLoaded) Bukkit.getLogger().warning("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardRoadHashes(roadType)){
-            if(hash==null) continue;
             clips.add(clipstore.get(hash));
         }
         return clips;
@@ -109,9 +113,9 @@ public class ClipboardProviderDB implements ClipboardProvider {
 
     @Override
     public List<Clipboard> getFit(Cartesian2D size, ContextType contextType, Direction direction) {
+        if(!isLoaded) Bukkit.getLogger().warning("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,contextType,direction)){
-            if(hash==null) continue;
             clips.add(clipstore.get(hash));
         }
         return clips;

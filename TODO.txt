@@ -1,0 +1,4 @@
+TODO
+
+- Use Cache, don't always load schems again
+- Make loading concurrent

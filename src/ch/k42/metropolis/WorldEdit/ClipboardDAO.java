@@ -29,16 +29,24 @@ public class ClipboardDAO {
         this.plugin = plugin;
     }
 
-    public void storeClipboard(String fileHash,String fileName, Direction direction, SchematicConfig config, Cartesian2D size){
-        Bukkit.getLogger().info("Storing clipboard:");
+    public boolean storeClipboard(String fileHash,String fileName, Direction direction, SchematicConfig config, Cartesian2D size){
+//        Bukkit.getLogger().info("Storing clipboard:");
 //        Bukkit.getLogger().info("   fileHash: " +fileHash);
 //        Bukkit.getLogger().info("   fileName: " +fileName);
 //        Bukkit.getLogger().info("   direction: " +direction.name());
 //        Bukkit.getLogger().info("   config: " +config);
 //        Bukkit.getLogger().info("   size: " +size);
+        if(config==null){
+            Bukkit.getLogger().warning(String.format("Schematic '%s' has no valid config file.",fileName));
+            return false;
+        }else if(config.getContext()==null){
+            Bukkit.getLogger().warning(String.format("Schematic '%s' has no valid context in config",fileName));
+            return false;
+        }
         for(ContextType context : config.getContext()){
             storeClipboard(fileHash, fileName, direction, context,config.getRoadType(), size);
         }
+        return true;
     }
 
     public void storeClipboard(String fileHash,String fileName, Direction direction, ContextType context,RoadType roadType, Cartesian2D size){
@@ -63,7 +71,7 @@ public class ClipboardDAO {
     }
     public List<ClipboardBean> findAllClipboardRoads(RoadType roadType){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
-        query.where().eq("roadType",roadType); //FIXME filename not needed
+        query.where().eq("roadType",roadType);
         query.select("fileHash,fileName");
         List<ClipboardBean> beans = query.findList();
         Bukkit.getLogger().info("QUERY: " + beans.size());

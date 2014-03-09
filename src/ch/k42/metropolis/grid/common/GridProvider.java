@@ -37,6 +37,8 @@ public class GridProvider {
      * @return the grid at the given coordinate or null if there is none
      */
     public Grid getGrid(int chunkX, int chunkZ) {
+        chunkX = getGridOrigin(chunkX);
+        chunkZ = getGridOrigin(chunkZ);
         Grid grid = grids.get(chunkX,chunkZ);
 
         if (grid == null) { // does it exsist? or do we need to create one?

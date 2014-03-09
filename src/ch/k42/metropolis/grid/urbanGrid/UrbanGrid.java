@@ -42,7 +42,7 @@ public class UrbanGrid extends Grid {
         placeHighways();
         recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
         Bukkit.getLogger().info("Set new grid.");
-        Bukkit.getLogger().info(this.toString());
+        //Bukkit.getLogger().info(this.toString());
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -65,24 +65,23 @@ public class UrbanGrid extends Grid {
     }
 
     @Override
-    public void populate(MetropolisGenerator generator, Chunk chunk) {
+    public void populate(Chunk chunk) {
         Bukkit.getLogger().info("populating!");
         Parcel p = getParcel(chunk.getX(), chunk.getZ());
         if(p!=null){
             p.populate(generator, chunk);
         }else {
-            Bukkit.getLogger().warning("NULL Parcel found");
+            Bukkit.getLogger().warning("Parcel not found");
         }
-
     }
 
     @Override
-    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+    public void postPopulate(Chunk chunk) {
         Parcel p = getParcel(chunk.getX(),chunk.getZ());
         if(p!=null){
             p.postPopulate(generator, chunk);
         }else {
-            Bukkit.getLogger().warning("NULL Parcel found");
+            //Bukkit.getLogger().warning("Parcel found");
         }
     }
 
@@ -231,20 +230,16 @@ public class UrbanGrid extends Grid {
     private Direction findRoad(Cartesian2D base,Cartesian2D size,GridRandom random) {
         List<Direction> directions = new LinkedList<>();
 
-        if(this.getParcel(base.X, base.Y - 1).getContextType().equals(ContextType.STREET) ||
-                this.getParcel(base.X, base.Y - 1).getContextType().equals(ContextType.HIGHWAY))
+        if(Parcel.isStreet(this.getParcel(base.X, base.Y - 1)))
             directions.add(Direction.NORTH);
 
-        if(this.getParcel(base.X, base.Y + size.Y).getContextType().equals(ContextType.STREET) ||
-                this.getParcel(base.X, base.Y + size.Y).getContextType().equals(ContextType.HIGHWAY))
+        if(Parcel.isStreet(this.getParcel(base.X, base.Y + size.Y)))
             directions.add(Direction.SOUTH);
 
-        if(this.getParcel(base.X - 1, base.Y).getContextType().equals(ContextType.STREET) ||
-                this.getParcel(base.X - 1, base.Y).getContextType().equals(ContextType.HIGHWAY))
+        if(Parcel.isStreet(this.getParcel(base.X - 1, base.Y)))
             directions.add(Direction.WEST);
 
-        if(this.getParcel(base.X + size.X, base.Y).getContextType().equals(ContextType.STREET) ||
-                this.getParcel(base.X + size.X, base.Y).getContextType().equals(ContextType.HIGHWAY))
+        if(Parcel.isStreet(this.getParcel(base.X + size.X, base.Y)))
             directions.add(Direction.EAST);
 
         if(directions.size()==0) return Direction.NONE;

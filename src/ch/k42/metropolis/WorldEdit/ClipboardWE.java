@@ -66,15 +66,16 @@ public class ClipboardWE implements Clipboard {
                         if (!rand.getChance(config.getChestOdds())) { //we were unlucky, chest doesn't get placed{
                             block.setType(Material.AIR);
                         } else { //rename chest
-                            Chest chest = (Chest) block.getState(); //block has to be a chest
-                            //chest.getInventory()
-                            String name = DirtyHacks.getChestName(chest);
-                            //generator.reportDebug("Was name: [" + name + "]");
-                            name = validateChestName(rand, name);
-                            //generator.reportDebug("New name: " + name);
 
-                            nameChest(chest, name);
-                            //generator.reportDebug("Placed a chest!");
+
+                            try {
+                                Chest chest = (Chest) block.getState(); //block has to be a chest
+                                String name = DirtyHacks.getChestName(chest);
+                                name = validateChestName(rand, name);
+                                nameChest(chest, name);
+                            }catch (NullPointerException e){
+                                generator.reportDebug("NPE while naming chest.");
+                            }
                         }
                     } else {
                         generator.reportDebug("Chest coordinates were wrong! (" + block + ")");
@@ -122,7 +123,6 @@ public class ClipboardWE implements Clipboard {
         EnvironmentProvider natureDecay = generator.getNatureDecayProvider();
         chests.clear();
         spawners.clear();
-        Bukkit.getLogger().info("Placing at " + pos.getX() + "/"+pos.getY()+"/"+pos.getZ());
         for (int x = 0; x < cuboid.getWidth(); x++) {
             for (int y = 0; y < cuboid.getHeight(); y++) {
                 for (int z = 0; z < cuboid.getLength(); z++) {

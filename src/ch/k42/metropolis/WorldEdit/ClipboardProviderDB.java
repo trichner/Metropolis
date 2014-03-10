@@ -1,5 +1,6 @@
 package ch.k42.metropolis.WorldEdit;
 
+import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
@@ -77,15 +78,15 @@ public class ClipboardProviderDB implements ClipboardProvider {
             if (schematicsFolder == null || cacheFolder == null)
                 throw new FileNotFoundException("Couldn't find required folders.");
             // Delete all files in the Cache folder
-            try {
-                FileUtils.cleanDirectory(cacheFolder);
-            } catch (IOException e) {
-                plugin.getLogger().warning("Can't clear cache folder. File permissions wrong?");
-            }
+//            try {
+//                FileUtils.cleanDirectory(cacheFolder);
+//            } catch (IOException e) {
+//                plugin.getLogger().warning("Can't clear cache folder. File permissions wrong?");
+//            }
 
             plugin.getLogger().info("loading clips");
-
-            clipstore = ClipboardLoaderWE.loadSchematics(schematicsFolder,cacheFolder,dao);
+            ClipboardLoader loader = Factory.getDefaultLoader(dao);
+            clipstore = loader.loadSchematics(schematicsFolder,cacheFolder);
 
             plugin.getLogger().info("loaded clips");
 

@@ -39,7 +39,7 @@ public class ClipboardParcel extends Parcel {
             clipboard.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT);
             // TODO use config, don't always destroy
             generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(streetLevel), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
-            ((CraftChunk)chunk).getHandle().initLighting(); //FIXME doesn't work...
+
         }
     }
 
@@ -98,6 +98,7 @@ public class ClipboardParcel extends Parcel {
                     break;
             }
         }
+        ((CraftChunk)chunk).getHandle().initLighting(); //FIXME does it work?
     }
 
     /**

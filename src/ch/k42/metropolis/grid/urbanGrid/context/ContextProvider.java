@@ -7,6 +7,6 @@ import ch.k42.metropolis.minions.Cartesian2D;
  * Created by Thomas on 04.03.14.
  */
 public interface ContextProvider {
-    ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level);
-    ContextType getContext(Cartesian2D place);
+    public ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level);
+    public ContextType getContext(Cartesian2D place);
 }

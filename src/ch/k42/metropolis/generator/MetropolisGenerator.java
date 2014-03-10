@@ -1,12 +1,12 @@
 package ch.k42.metropolis.generator;
 
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
+import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
-import ch.k42.metropolis.grid.urbanGrid.context.ContextProviderSimplex;
 import ch.k42.metropolis.grid.urbanGrid.provider.*;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import org.bukkit.Chunk;
@@ -98,7 +98,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.world = world;
         this.worldSeed = world.getSeed();
         this.gridProvider = new GridProvider(this);
-        this.contextProvider = new ContextProviderSimplex(this, plugin.getContextConfig());
+        this.contextProvider = Factory.getDefaultContextProvider(this, plugin.getContextConfig());
 
         /*
          * We should decouple them from here and decouple

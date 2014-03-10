@@ -12,13 +12,15 @@ import org.bukkit.Bukkit;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 /**
  * Created by Thomas on 07.03.14.
  */
-public class ClipboardLoaderWE implements ClipboardLoader {
+public class ClipboardLoaderWECache implements ClipboardLoader{
 
     private static final String GLOBAL_SETTINGS = "global_settings.json";
     private static final String JSON_FILE = ".json";
@@ -28,7 +30,7 @@ public class ClipboardLoaderWE implements ClipboardLoader {
     private ClipboardDAO dao;
     private Map<String,Clipboard> clipstore ;
 
-    public ClipboardLoaderWE(ClipboardDAO dao) {
+    public ClipboardLoaderWECache(ClipboardDAO dao) {
         this.dao = dao;
     }
 
@@ -69,8 +71,9 @@ public class ClipboardLoaderWE implements ClipboardLoader {
         return config;
     }
 
-    @Override
-    public Map<String,Clipboard> loadSchematics(File schematicsFolder, File cacheFolder){
+
+
+    public Map<String,Clipboard> loadSchematics(File schematicsFolder,File cacheFolder){
         clipstore = new HashMap<>();
         Bukkit.getLogger().info("loading schematic config files...");
         globalConfig = GlobalSchematicConfig.fromFile(schematicsFolder.getPath() + File.separator + GLOBAL_SETTINGS);
@@ -85,19 +88,22 @@ public class ClipboardLoaderWE implements ClipboardLoader {
         SchematicFormat format;
         CuboidClipboard cuboid;
 
-
         int length = schematicFiles.size();
+
+        Set<String> cachedHashes = getCachedHashes(cacheFolder);
+
         for(int i=0;i<length;i++){ // TODO use threads http://www.javapractices.com/topic/TopicAction.do?Id=247, maybe even load async in Clipboard
             File file = schematicFiles.get(i);
-            Bukkit.getLogger().info(String.format("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName()));
 
+            Bukkit.getLogger().info(String.format("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName()));
             SchematicConfig config = findConfig(file.getName());
             if(config==null) continue;
 
             String hash;
             try {
                 hash = Minions.getMD5Checksum(file);
-                cacheSchemFolder = new File(cacheFolder,hash);
+
+
 
                 /*
                  * Now the loader should check if the schematic is already cached and
@@ -114,10 +120,8 @@ public class ClipboardLoaderWE implements ClipboardLoader {
                  * -
                  */
 
-                if (!cacheSchemFolder.isDirectory()) {
-                    if (!cacheSchemFolder.mkdir())
-                        throw new UnsupportedOperationException("[WorldEdit] Could not create/find the folder: " + cacheSchemFolder.getAbsolutePath() + File.separator + file.getName());
-                }
+                cacheSchemFolder = getCacheFolder(cacheFolder,hash);
+
                 format = SchematicFormat.getFormat(file);
                 if(config.getContext().contains(ContextType.STREET) || config.getContext().contains(ContextType.HIGHWAY)){ // TODO we could get rid of rotated roads...
                     File streetFile =    new File(cacheSchemFolder, "STREET.schematic");
@@ -134,21 +138,28 @@ public class ClipboardLoaderWE implements ClipboardLoader {
                     File southFile =    new File(cacheSchemFolder, "SOUTH.schematic");
                     File westFile =     new File(cacheSchemFolder, "WEST.schematic");
 
-                    // load the actual blocks
-                    cuboid = format.load(file);
+                    boolean cached = cachedHashes.contains(hash);
+                    if(!cached){ // not cached? rotate and save
+                        cachedHashes.remove(hash); // take it out, we wan't to delete unused caches
 
-                    //cache the north face first
-                    format.save(cuboid, northFile);
+                        // load the actual blocks
+                        cuboid = format.load(file);
 
-                    //get each cuboid direction and save them
-                    cuboid.rotate2D(90);
-                    format.save(cuboid, eastFile);
+                        //cache the north face first
+                        format.save(cuboid, northFile);
 
-                    cuboid.rotate2D(90);
-                    format.save(cuboid, southFile);
+                        //get each cuboid direction and save them
+                        cuboid.rotate2D(90);
+                        format.save(cuboid, eastFile);
 
-                    cuboid.rotate2D(90);
-                    format.save(cuboid, westFile);
+                        cuboid.rotate2D(90);
+                        format.save(cuboid, southFile);
+
+                        cuboid.rotate2D(90);
+                        format.save(cuboid, westFile);
+                    }else{
+                        Bukkit.getLogger().info("Schematic already cached, no need to rotate.");
+                    }
 
                     // reload them and put them into memory
                     boolean success;
@@ -162,17 +173,58 @@ public class ClipboardLoaderWE implements ClipboardLoader {
                     }
                 }
             } catch (IOException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWE.class.getName(),"loadSchematics",e);
+                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
                 continue;
             } catch (DataException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWE.class.getName(),"loadSchematics",e);
+                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
                 continue;
             } catch (NoSuchAlgorithmException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWE.class.getName(),"loadSchematics",e);
+                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
                 continue;
             }
         }
+        removeUnusedCache(cachedHashes,cacheFolder);
+        cleanupDB();
         return clipstore;
+    }
+
+    private void cleanupDB(){
+        List<String> dbhashes = dao.findAllClipboardHashes();
+        for(String hash : dbhashes){
+            if(!clipstore.containsKey(hash)){ // not loaded?
+                dao.deleteClipboardHash(hash);
+            }
+        }
+    }
+
+
+    private File getCacheFolder(File cacheFolder,String hash){
+        File cacheSchemFolder = new File(cacheFolder,hash);
+        if (!cacheSchemFolder.isDirectory()) {
+            if (!cacheSchemFolder.mkdir())
+                throw new UnsupportedOperationException("[WorldEdit] Could not create/find the folder: " + cacheSchemFolder.getAbsolutePath() + File.separator + hash);
+        }
+        return cacheSchemFolder;
+    }
+
+    private void removeUnusedCache(Set<String> cachedHashes,File cacheFolder) {
+        for(String hash : cachedHashes){
+            dao.deleteClipboardHash(hash);
+            try {
+                Files.delete(Paths.get(cacheFolder.getAbsolutePath()+File.separator+hash));
+            } catch (IOException e) {
+                Minions.w("Can't delete cached schematic '%s', are file permissions correct?",hash);
+            }
+        }
+    }
+
+    private Set<String> getCachedHashes(File cacheFolder){
+        Set<String> hashes = new HashSet<>();
+        File[] subfolders = cacheFolder.listFiles(Minions.isDirectory());
+        for(File folder : subfolders){
+            hashes.add(folder.getName());
+        }
+        return hashes;
     }
 
     private boolean loadFromCache(File file,String hash,Direction direction,SchematicConfig config){
@@ -182,10 +234,13 @@ public class ClipboardLoaderWE implements ClipboardLoader {
             Clipboard clip = new ClipboardWE(cuboid,config,globalConfig);
             String thash = hash + "." + direction.name();
             clipstore.put(thash,clip);
-            Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
-            dao.storeClipboard(thash,file.getName(), direction,config,size);
-            if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
-                dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
+            if(!dao.containsHash(thash)){ // check if already in
+                //DAO
+                Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
+                dao.storeClipboard(thash,file.getName(), direction,config,size);
+                if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
+                    dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
+                }
             }
             return true;
         } catch (IOException e) {

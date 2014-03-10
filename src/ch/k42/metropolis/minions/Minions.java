@@ -1,25 +1,53 @@
 package ch.k42.metropolis.minions;
 
+import ch.k42.metropolis.generator.MetropolisGenerator;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
+
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by Thomas on 06.03.14.
  */
 public class Minions {
+
+
+    public static final void w(String msg){
+        Bukkit.getLogger().warning(msg);
+    }
+
+    public static final void w(String msg,Object... args){
+        Bukkit.getLogger().warning(String.format(msg,args));
+    }
+
     /**
      * Limits value x between [0,max)
      * @param max
      * @param x
-     * @return "Math.min(max,Math.max (0,x))";
+     * @return 0 if max==0 or "Math.min(max,Math.max (0,x))";
      */
     public static final int limit(int max, int x){
         if(x<0) return 0;
-        else if(x>=max) return max-1;
+        if(max==0) return 0;
+        if(x>=max) return max-1;
         return x;
+    }
+
+    public static final MetropolisGenerator getGeneratorForPlayer(Player player){
+        World world = player.getWorld();
+        ChunkGenerator cgenerator = world.getGenerator();
+        if(cgenerator instanceof MetropolisGenerator){
+            MetropolisGenerator generator = (MetropolisGenerator) cgenerator;
+            return generator;
+        }
+        return null;
     }
 
     public static final File findFolder(File parent, String name){
@@ -53,16 +81,17 @@ public class Minions {
         InputStream fis = new FileInputStream(file);
 
         byte[] buffer = new byte[1024];
-        MessageDigest complete = MessageDigest.getInstance("MD5");
+        MessageDigest hash = MessageDigest.getInstance("MD5");
+        hash.update(file.getName().getBytes());
         int numRead;
         do {
             numRead = fis.read(buffer);
             if (numRead > 0) {
-                complete.update(buffer, 0, numRead);
+                hash.update(buffer, 0, numRead);
             }
         } while (numRead != -1);
         fis.close();
-        return complete.digest();
+        return hash.digest();
     }
 
     public static String getMD5Checksum(File file) throws IOException, NoSuchAlgorithmException {

@@ -1,14 +1,12 @@
 package ch.k42.metropolis.plugin;
 
-import ch.k42.metropolis.WorldEdit.ClipboardBean;
-import ch.k42.metropolis.WorldEdit.ClipboardDAO;
-import ch.k42.metropolis.WorldEdit.ClipboardProvider;
-import ch.k42.metropolis.WorldEdit.ClipboardProviderDB;
+import ch.k42.metropolis.WorldEdit.*;
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.generator.populators.PopulatorConfig;
+import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import org.bukkit.Sound;
@@ -66,14 +64,10 @@ public class MetropolisPlugin extends JavaPlugin {
         super.onDisable();    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    @Override
-    public void onEnable() {
-        File pluginFolder = getDataFolder();
-        File contextsConfig = new File(pluginFolder.getPath() + "/contexts.json");
-        File populatorsConfig = new File(pluginFolder.getPath() + "/populators.json");
-
+    private void loadJsonConfigs(){
+        File contextsConfig = new File(getDataFolder().getPath() + "/contexts.json");
+        File populatorsConfig = new File(getDataFolder().getPath() + "/populators.json");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
         try {
 
             if (!populatorsConfig.exists()) {
@@ -97,14 +91,18 @@ public class MetropolisPlugin extends JavaPlugin {
         } catch (Exception e) { // catch all exceptions, inclusive any JSON fails
             getLogger().severe(e.getMessage());
         }
+    }
 
+    private void loadPluginConfig(){
         this.saveDefaultConfig(); // this saves the config provided in the jar if no config was found
         FileConfiguration configFile = getConfig();
         config = new PluginConfig(configFile);
+    }
 
+    private void loadClipboards(){
         //---- clips, load after config is ready
-        try { // load them as early as possible
-            clipboardProvider = new ClipboardProviderDB();
+        try {
+            clipboardProvider = Factory.getDefaultClipboardProvider();
             clipboardProvider.loadClips(this);
         } catch (ClipboardProviderDB.PluginNotFoundException e) {
             getLogger().throwing(this.getClass().getName(), "Failed to load clipboard provider: " + e.getMessage(), e);
@@ -113,10 +111,21 @@ public class MetropolisPlugin extends JavaPlugin {
             getLogger().throwing(this.getClass().getName(), "Failed to load clipboards: " + e.getMessage(), e);
             e.printStackTrace();
         }
+    }
 
+    @Override
+    public void onEnable() {
+
+        loadJsonConfigs();
+        loadPluginConfig();
+        loadClipboards();
 
         getServer().getPluginManager().registerEvents(new l(), this);
+        registerCommands();
 
+    }
+
+    private void registerCommands(){
         //---- add our command
         PluginCommand cmd = getCommand("metropolis");
         cmd.setExecutor(new CommandMetropolisMaria(this));

@@ -66,7 +66,6 @@ public class UrbanGrid extends Grid {
 
     @Override
     public void populate(Chunk chunk) {
-        Bukkit.getLogger().info("populating!");
         Parcel p = getParcel(chunk.getX(), chunk.getZ());
         if(p!=null){
             p.populate(generator, chunk);
@@ -85,6 +84,8 @@ public class UrbanGrid extends Grid {
         }
     }
 
+
+
     public Parcel getParcel(int chunkX, int chunkZ) {
         // make sure it's positive and between [0, GRID_SIZE)
         int x = getChunkOffset(chunkX);
@@ -96,9 +97,7 @@ public class UrbanGrid extends Grid {
         // make sure it's positive and between [0, GRID_SIZE)
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
-
         parcels[x][z] = parcel;
-
     }
 
     public void fillParcels(int chunkX, int chunkZ, Parcel parcel) {
@@ -135,12 +134,8 @@ public class UrbanGrid extends Grid {
     private static final int sigma_factor = 5;
 
     public void recSetDistricts(Cartesian2D base,Cartesian2D size) {
-
         if (size.X > size.Y) {
             if (size.X < blockSize) {
-                //Context context = Context.getRandom(this,base);
-
-                //districts.add(new District(base,size,context));
                 recPartitionX(base,size);
             } else {
                 int cut = makeCut(size.X);
@@ -155,7 +150,6 @@ public class UrbanGrid extends Grid {
                 partitionZwithRoads(base,size,cut);
             }
         }
-
     }
 
     private boolean placeRandom(Cartesian2D base,Cartesian2D size){
@@ -170,7 +164,6 @@ public class UrbanGrid extends Grid {
                     return true;
                 }
             }
-
         }
         return false;
     }
@@ -197,29 +190,46 @@ public class UrbanGrid extends Grid {
     }
 
     private void recPartitionX(Cartesian2D base, Cartesian2D size){
-        // place schem?
-        if(placeRandom(base,size)){
-           return;
-        }
-
-        if(size.X==1){ // can't make smaller
-            if(!placeRandomForSure(base,size))
-                parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
+        if(size.X<2){ // can't make smaller
+            if(placeRandom(base,size)){
+                return;
+            }
+            if(size.Y<2){
+                if(!placeRandomForSure(base,size)){
+                    parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
+                    return;
+                }
+            }
+            recPartitionZ(base, size);
+            return;
         }else {
-            int cut = makeCut(size.X);
-            recPartitionZ(base, new Cartesian2D(cut, size.Y));
-            recPartitionZ(new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+            if(placeRandom(base,size)){
+                return;
+            }else {
+                int cut = makeCut(size.X);
+                recPartitionZ(base, new Cartesian2D(cut, size.Y));
+                recPartitionZ(new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+            }
         }
     }
 
     private void recPartitionZ(Cartesian2D base, Cartesian2D size){
-        if(!placeRandom(base,size)){
+        if(size.Y<2){ // can't make smaller
+            if(placeRandom(base,size)){
+                return;
+            }
+            if(size.X<2){
+                if(!placeRandomForSure(base,size)){
+                    parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
+                    return;
+                } 
+            }
+            recPartitionX(base,size);
             return;
-        }
-        if(size.Y==1){ // can't make smaller
-            if(!placeRandomForSure(base,size))
-                parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
         }else {
+            if(placeRandom(base,size)){
+                return;
+            }
             int cut = makeCut(size.Y);
             recPartitionX(base, new Cartesian2D(size.X, cut));
             recPartitionX(new Cartesian2D(base.X , base.Y+ cut), new Cartesian2D(size.X, size.Y - cut));

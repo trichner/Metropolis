@@ -1,10 +1,10 @@
 package ch.k42.metropolis.generator;
 
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
-import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
+import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.provider.*;

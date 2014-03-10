@@ -1,14 +1,16 @@
 package ch.k42.metropolis.plugin;
 
-import ch.k42.metropolis.WorldEdit.*;
+import ch.k42.metropolis.WorldEdit.ClipboardBean;
+import ch.k42.metropolis.WorldEdit.ClipboardProvider;
+import ch.k42.metropolis.WorldEdit.ClipboardProviderDB;
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.generator.populators.PopulatorConfig;
 import ch.k42.metropolis.grid.common.Factory;
-import ch.k42.metropolis.minions.Nimmersatt;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
+import ch.k42.metropolis.minions.Nimmersatt;
 import org.bukkit.Sound;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -28,6 +30,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedList;
 import java.util.List;
+
+
 
 /**
  * Main Class for the Metropolis plugin.

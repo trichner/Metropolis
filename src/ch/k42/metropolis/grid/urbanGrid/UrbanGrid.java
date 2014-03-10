@@ -4,16 +4,14 @@ import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.WorldEdit.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.common.Grid;
-import ch.k42.metropolis.grid.urbanGrid.districts.Context;
-import ch.k42.metropolis.grid.urbanGrid.districts.District;
+import ch.k42.metropolis.grid.common.GridProvider;
+import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.parcel.*;
-import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
-import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
-import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.minions.Minions;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -26,6 +24,7 @@ import java.util.*;
  * @author Thomas Richner
  */
 public class UrbanGrid extends Grid {
+
     private Parcel[][] parcels = new Parcel[GRID_SIZE][GRID_SIZE];
 
     private ContextProvider contextProvider;
@@ -37,12 +36,11 @@ public class UrbanGrid extends Grid {
     public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
         super(random,provider,generator, root);
         this.statistics = new AthmosStat();
-        contextProvider = generator.getContextProvider();//new ContextProviderVoroni(random);
+        contextProvider = generator.getContextProvider();
         this.clipboardProvider = generator.getClipboardProvider();
         placeHighways();
         recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
         Bukkit.getLogger().info("Set new grid.");
-        //Bukkit.getLogger().info(this.toString());
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -184,7 +182,6 @@ public class UrbanGrid extends Grid {
                 }
             }
             Bukkit.getLogger().info("Couldn't place schem for sure! Tried 20 times, but all odds failed me.");
-
         }
         return false;
     }

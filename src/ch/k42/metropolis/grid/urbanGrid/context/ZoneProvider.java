@@ -1,8 +1,8 @@
 package ch.k42.metropolis.grid.urbanGrid.context;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.minions.GridRandom;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 /**

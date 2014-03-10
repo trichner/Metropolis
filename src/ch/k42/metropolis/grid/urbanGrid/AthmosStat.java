@@ -2,7 +2,6 @@ package ch.k42.metropolis.grid.urbanGrid;
 
 import ch.k42.metropolis.WorldEdit.Clipboard;
 import ch.k42.metropolis.minions.Incr;
-import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 
 import java.util.HashMap;
 import java.util.Map;

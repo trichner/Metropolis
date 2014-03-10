@@ -20,14 +20,7 @@ package ch.k42.metropolis.minions.voronoi;
  * DEALINGS IN THE SOFTWARE.
  */
 
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A 2D Delaunay Triangulation (DT) with incremental site insertion.

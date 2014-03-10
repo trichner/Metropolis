@@ -40,6 +40,9 @@ public class ClipboardWE implements Clipboard {
         this.config = config;
         this.globalConfig = globalConfig;
         this.blockCount = cuboid.getHeight()*cuboid.getLength()*cuboid.getWidth();
+        if(config.getGroundLevelY()==0){
+            config.setGroundLevelY(estimateStreetLevel());
+        }
     }
 
     @Override
@@ -220,6 +223,22 @@ public class ClipboardWE implements Clipboard {
         int min = config.getLootMinLevel();
         int max = config.getLootMaxLevel();
         return globalConfig.getRandomChestLevel(random, min, max);
+    }
+
+    /**
+     * estimates the street level of a schematic, useful for bootstrapping settings
+     *
+     * @return
+     */
+    private int estimateStreetLevel() {
+        if (cuboid.getHeight() - 2 < 0) return 1;
+
+        for (int y = cuboid.getHeight() - 2; y >= 0; y--) {
+            int b = cuboid.getPoint(new Vector(0, y, 0)).getType();
+            if (b != Material.AIR.getId() && b != Material.LONG_GRASS.getId() && b != Material.YELLOW_FLOWER.getId())
+                return y + 1;
+        }
+        return 1;
     }
 
     @Override

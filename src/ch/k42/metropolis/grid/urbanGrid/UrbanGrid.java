@@ -1,13 +1,12 @@
 package ch.k42.metropolis.grid.urbanGrid;
 
-import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.common.Grid;
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
-import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.districts.District;
+import ch.k42.metropolis.grid.urbanGrid.districts.IDistrict;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.parcel.*;
 import ch.k42.metropolis.grid.urbanGrid.statistics.AthmosStat;
@@ -33,7 +32,7 @@ public class UrbanGrid extends Grid {
     private GridStatistics statistics;
     private ClipboardProvider clipboardProvider;
 
-    private Set<Parcel> parcelSet = new HashSet<>();
+    private Set<IDistrict> districtSet = new HashSet<>();
 
     public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
         super(random,provider,generator, root);
@@ -41,7 +40,10 @@ public class UrbanGrid extends Grid {
         contextProvider = generator.getContextProvider();
         this.clipboardProvider = generator.getClipboardProvider();
         placeHighways();
-        recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1),new Cartesian2D(GRID_SIZE-2,GRID_SIZE-2));
+        recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1), new Cartesian2D(GRID_SIZE - 2, GRID_SIZE - 2));
+        for(IDistrict district :districtSet){
+            district.fillDistrict();
+        }
         Bukkit.getLogger().info("Set new grid.");
     }
 
@@ -131,141 +133,33 @@ public class UrbanGrid extends Grid {
     }
 
     private static final int blockSize = 14;
-    private static final int sigma_factor = 5;
+
 
     public void recSetDistricts(Cartesian2D base,Cartesian2D size) {
         if (size.X > size.Y) {
             if (size.X < blockSize) {
-                recPartitionX(base,size);
+                //recPartitionX(base,size);
+                addDistrict(base, size);
             } else {
-                int cut = makeCut(size.X);
+                int cut = Minions.makeCut(random, size.X);
                 partitionXwithRoads(base,size,cut);
             }
         } else {
             if (size.Y < blockSize) { // No place for streets
                 //place a new Block
-                recPartitionZ(base,size);
+                //recPartitionZ(base,size);
+                addDistrict(base,size);
             } else {                 //put a street inbetween
-                int cut = makeCut(size.Y);
+                int cut = Minions.makeCut(random, size.Y);
+
                 partitionZwithRoads(base,size,cut);
             }
         }
-    }
-
-    private boolean placeRandom(Cartesian2D base,Cartesian2D size){
-        Direction direction = findRoad(base,size,random);
-        ContextType context = contextProvider.getContext(base);
-        List<Clipboard> clips = clipboardProvider.getFit(size,context,direction);
-        if(clips.size()!=0){ // can we place anything?
-            Collections.shuffle(clips);
-            for(Clipboard c : clips){
-                if(random.getChance(c.getConfig().getOddsOfAppearance())){
-                    parcelSet.add(new ClipboardParcel(this, base.X, base.Y, size.X, size.Y, c, context, direction));
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean placeRandomForSure(Cartesian2D base,Cartesian2D size){
-        Direction direction = findRoad(base,size,random);
-        ContextType context = contextProvider.getContext(base);
-        List<Clipboard> clips = clipboardProvider.getFit(size,context,direction);
-        if(clips.size()!=0){ // can we place anything?
-            Collections.shuffle(clips);
-
-            for(int i=0;i<20;i++){
-                for(Clipboard c : clips){
-                    if(random.getChance(c.getConfig().getOddsOfAppearance())){
-                        parcelSet.add(new ClipboardParcel(this, base.X, base.Y, size.X, size.Y, c, context, direction));
-                        return true;
-                    }
-                }
-            }
-            Bukkit.getLogger().info("Couldn't place schem for sure! Tried 20 times, but all odds failed me.");
-        }
-        return false;
-    }
-
-    private void recPartitionX(Cartesian2D base, Cartesian2D size){
-        if(size.X<2){ // can't make smaller
-            if(placeRandom(base,size)){
-                return;
-            }
-            if(size.Y<2){
-                if(!placeRandomForSure(base,size)){
-                    parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
-                    return;
-                }
-            }
-            recPartitionZ(base, size);
-            return;
-        }else {
-            if(placeRandom(base,size)){
-                return;
-            }else {
-                int cut = makeCut(size.X);
-                recPartitionZ(base, new Cartesian2D(cut, size.Y));
-                recPartitionZ(new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
-            }
-        }
-    }
-
-    private void recPartitionZ(Cartesian2D base, Cartesian2D size){
-        if(size.Y<2){ // can't make smaller
-            if(placeRandom(base,size)){
-                return;
-            }
-            if(size.X<2){
-                if(!placeRandomForSure(base,size)){
-                    parcelSet.add(new EmptyParcel(this,base.X,base.Y,size.X,size.Y));
-                    return;
-                } 
-            }
-            recPartitionX(base,size);
-            return;
-        }else {
-            if(placeRandom(base,size)){
-                return;
-            }
-            int cut = makeCut(size.Y);
-            recPartitionX(base, new Cartesian2D(size.X, cut));
-            recPartitionX(new Cartesian2D(base.X , base.Y+ cut), new Cartesian2D(size.X, size.Y - cut));
-        }
-
-    }
-
-    private Direction findRoad(Cartesian2D base,Cartesian2D size,GridRandom random) {
-        List<Direction> directions = new LinkedList<>();
-
-        if(Parcel.isStreet(this.getParcel(base.X, base.Y - 1)))
-            directions.add(Direction.NORTH);
-
-        if(Parcel.isStreet(this.getParcel(base.X, base.Y + size.Y)))
-            directions.add(Direction.SOUTH);
-
-        if(Parcel.isStreet(this.getParcel(base.X - 1, base.Y)))
-            directions.add(Direction.WEST);
-
-        if(Parcel.isStreet(this.getParcel(base.X + size.X, base.Y)))
-            directions.add(Direction.EAST);
-
-        if(directions.size()==0) return Direction.NONE;
-
-        return directions.get(random.getRandomInt(directions.size()));
-    }
-
-
-    private final int makeCut(int x){
-        double  mean = x / 2.0;
-        double sigma = mean / sigma_factor;
-        int      cut = getNormalCut(mean, sigma);
-        return Minions.limit(x - 2, cut) + 1;
-    }
-
-    private final int getNormalCut(double mean, double sigma) {
-        return (int) Math.round(mean + random.getRandomGaussian() * sigma);
+    } 
+    private void addDistrict(Cartesian2D base,Cartesian2D size){
+        IDistrict district = new District();
+        district.initDistrict(base,size,this);
+        districtSet.add(district);
     }
 
     private void partitionXwithRoads(Cartesian2D base,Cartesian2D initSize, int cut) {
@@ -304,5 +198,9 @@ public class UrbanGrid extends Grid {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    public ClipboardProvider getClipboardProvider() {
+        return clipboardProvider;
     }
 }

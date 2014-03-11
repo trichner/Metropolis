@@ -14,7 +14,6 @@ public class EmptyParcel extends Parcel {
 
     public EmptyParcel(UrbanGrid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ) {
         super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, ContextType.UNDEFINED);
-        grid.fillParcels(chunkX, chunkZ, this);
     }
 
     @Override

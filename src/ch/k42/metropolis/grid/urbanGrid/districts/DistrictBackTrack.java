@@ -16,7 +16,7 @@ import java.util.*;
 /**
  * Created by Thomas on 06.03.14.
  */
-public class District implements IDistrict {
+public class DistrictBackTrack implements IDistrict {
     public static final int MAX_TRY = 5;
 
     private Cartesian2D base,size;

@@ -103,4 +103,20 @@ public class Minions {
         return result;
     }
 
+    private static final int sigma_factor = 5;
+
+    public static final int makeCut(GridRandom random,int x){
+        double  mean = x / 2.0;
+        double sigma = mean / sigma_factor;
+        int      cut = getNormalCut(random,mean, sigma);
+        return Minions.limit(x - 2, cut) + 1;
+    }
+
+    public static final int getNormalCut(GridRandom random,double mean, double sigma) {
+        return (int) Math.round(mean + random.getRandomGaussian() * sigma);
+    }
+
+    public static final int square(int x){
+        return x*x;
+    }
 }

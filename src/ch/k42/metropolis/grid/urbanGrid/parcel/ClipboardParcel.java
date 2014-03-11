@@ -30,7 +30,6 @@ public class ClipboardParcel extends Parcel {
         this.clipboard = clipboard;
         this.direction = direction;
         grid.getStatistics().logSchematic(clipboard);
-        grid.fillParcels(chunkX, chunkZ, this);
     }
 
     public void populate(MetropolisGenerator generator, Chunk chunk) {

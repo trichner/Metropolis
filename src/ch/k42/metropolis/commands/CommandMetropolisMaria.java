@@ -27,7 +27,7 @@ public class CommandMetropolisMaria implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] split) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             World world = Bukkit.getServer().getWorld(DEFAULT_WORLD_NAME);
@@ -38,15 +38,15 @@ public class CommandMetropolisMaria implements CommandExecutor {
 
                 String worldname = DEFAULT_WORLD_NAME;
 
-                if (split.length > 0) {
-                    if (!split[0].isEmpty()) {
-                        worldname = split[0];
+                if (args.length > 0) {
+                    if (!args[0].isEmpty()) {
+                        worldname = args[0];
                     }
                 }
 
-                if (split.length > 1) {
-                    if (!split[1].isEmpty() && (split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END"))) {
-                        world = getDefaultMetropolis(worldname, World.Environment.valueOf(split[1]));
+                if (args.length > 1) {
+                    if (!args[1].isEmpty() && (args[1].equals("NORMAL") || args[1].equals("NETHER") || args[1].equals("THE_END"))) {
+                        world = getDefaultMetropolis(worldname, World.Environment.valueOf(args[1]));
                     } else {
                         world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
                     }
@@ -83,15 +83,15 @@ public class CommandMetropolisMaria implements CommandExecutor {
             String worldname;
             worldname = DEFAULT_WORLD_NAME;
 
-            if (split.length > 0) {
-                if (!split[0].isEmpty()) {
-                    worldname = split[0];
+            if (args.length > 0) {
+                if (!args[0].isEmpty()) {
+                    worldname = args[0];
                 }
             }
 
-            if (split.length > 1) {
-                if (!split[1].isEmpty() && (split[1].equals("NORMAL") || split[1].equals("NETHER") || split[1].equals("THE_END"))) {
-                    world = getDefaultMetropolis(worldname, World.Environment.valueOf(split[1]));
+            if (args.length > 1) {
+                if (!args[1].isEmpty() && (args[1].equals("NORMAL") || args[1].equals("NETHER") || args[1].equals("THE_END"))) {
+                    world = getDefaultMetropolis(worldname, World.Environment.valueOf(args[1]));
                 } else {
                     world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
                 }
@@ -99,7 +99,7 @@ public class CommandMetropolisMaria implements CommandExecutor {
                 world = getDefaultMetropolis(worldname, World.Environment.NORMAL);
             }
         }
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return false;
     }
 
     // prime world support (loosely based on ExpansiveTerrain)

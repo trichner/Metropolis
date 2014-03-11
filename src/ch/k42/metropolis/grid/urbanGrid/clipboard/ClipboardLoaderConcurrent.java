@@ -9,6 +9,7 @@ import ch.k42.metropolis.minions.Minions;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
+import net.minecraft.util.io.netty.util.internal.ConcurrentSet;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -18,11 +19,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * Created by Thomas on 07.03.14.
  */
-public class ClipboardLoaderWECache implements ClipboardLoader{
+public class ClipboardLoaderConcurrent implements ClipboardLoader{
 
     private static final String GLOBAL_SETTINGS = "global_settings.json";
     private static final String JSON_FILE = ".json";
@@ -30,14 +32,15 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
     private Map<String,SchematicConfig> configs;
     private GlobalSchematicConfig globalConfig;
     private ClipboardDAO dao;
-    private Map<String,Clipboard> clipstore ;
+    private ConcurrentMap<String,Clipboard> clipstore ;
+    private ConcurrentSet<String> cachedHashes;
 
-    public ClipboardLoaderWECache(ClipboardDAO dao) {
+    public ClipboardLoaderConcurrent(ClipboardDAO dao) {
         this.dao = dao;
     }
 
     private boolean loadSchematicConfigs(File folder){
-        configs = new HashMap<>();
+        configs = new ConcurrentHashMap<>();
         List<File> configFiles = Minions.findAllFilesRecursively(folder,new ArrayList<File>(),new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
@@ -73,64 +76,39 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         return config;
     }
 
+    private class LoadTask implements Runnable {
+
+        private File file;
+        private File cacheFolder;
+
+        private LoadTask(File file, File cacheFolder) {
+            this.file = file;
+            this.cacheFolder = cacheFolder;
+        }
 
 
-    public Map<String,Clipboard> loadSchematics(File schematicsFolder,File cacheFolder){
-        clipstore = new HashMap<>();
-        Bukkit.getLogger().info("loading schematic config files...");
-        globalConfig = GlobalSchematicConfig.fromFile(schematicsFolder.getPath() + File.separator + GLOBAL_SETTINGS);
-        loadSchematicConfigs(schematicsFolder);
-
-        List<File> schematicFiles = Minions.findAllFilesRecursively(schematicsFolder, new ArrayList<File>(), new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) { return name.endsWith(".schematic");  }
-        });
-
-        File cacheSchemFolder;
-        SchematicFormat format;
-        CuboidClipboard cuboid;
-
-        int length = schematicFiles.size();
-
-        Set<String> cachedHashes = getCachedHashes(cacheFolder);
-
-        for(int i=0;i<length;i++){ // TODO use threads http://www.javapractices.com/topic/TopicAction.do?Id=247, maybe even load async in Clipboard
-            File file = schematicFiles.get(i);
-
-            Bukkit.getLogger().info(String.format("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName()));
+        @Override
+        public void run() {
+            Bukkit.getLogger().info(String.format("Loading schematic '%s'",file.getName()));
             SchematicConfig config = findConfig(file.getName());
-            if(config==null) continue;
+
+            if(config==null) return;
 
             String hash;
             try {
                 hash = Minions.getMD5Checksum(file);
+                File cacheSchemFolder = getCacheFolder(cacheFolder,hash);
 
 
-
-                /*
-                 * Now the loader should check if the schematic is already cached and
-                 * load it from there
-                 *
-                 * 1. make collection of all cached hashes
-                 * 2. hash schematic, if already cached and in db, only load
-                 * 3. if not, cache schematic and add it to db
-                 * 4. cached schem with no schematic? -> delete
-                 *
-                 * Bonus:
-                 * -load asynchronously and threaded (Tasks)
-                 * -option to flush cache
-                 * -
-                 */
-
-                cacheSchemFolder = getCacheFolder(cacheFolder,hash);
-
-                format = SchematicFormat.getFormat(file);
+                SchematicFormat format = SchematicFormat.getFormat(file);
+                CuboidClipboard cuboid;
                 if(config.getContext().contains(ContextType.STREET) || config.getContext().contains(ContextType.HIGHWAY)){ // TODO we could get rid of rotated roads...
                     File streetFile =    new File(cacheSchemFolder, "STREET.schematic");
                     // load the actual blocks
                     cuboid = format.load(file);
                     format.save(cuboid, streetFile);
                     Clipboard clip = new ClipboardWE(cuboid,config,globalConfig);
+                    cachedHashes.remove(hash);
                     hash += ".STREET";
                     clipstore.put( hash,clip);
                     dao.storeClipboard(hash,file.getName(), Direction.NONE,config, new Cartesian2D(1,1));
@@ -175,16 +153,35 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
                     }
                 }
             } catch (IOException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
-                continue;
+                Minions.w(" IOException: Unable to load schematic '%s'",file.getName());
             } catch (DataException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
-                continue;
+                Minions.w(" DataException: Unable to load schematic '%s'",file.getName());
             } catch (NoSuchAlgorithmException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
-                continue;
+                Minions.w(" HashingException: Unable to load schematic '%s'",file.getName());
             }
         }
+    }
+
+
+    public Map<String,Clipboard> loadSchematics(File schematicsFolder,File cacheFolder){
+        clipstore = new ConcurrentHashMap<>();
+
+        Bukkit.getLogger().info("loading schematic config files...");
+        globalConfig = GlobalSchematicConfig.fromFile(schematicsFolder.getPath() + File.separator + GLOBAL_SETTINGS);
+        loadSchematicConfigs(schematicsFolder);
+
+        List<File> schematicFiles = Minions.findAllFilesRecursively(schematicsFolder, new ArrayList<File>(), new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) { return name.endsWith(".schematic");  }
+        });
+
+        Executor executor = Executors.newFixedThreadPool(8);
+
+        for(File schematic:schematicFiles){
+            executor.execute(new LoadTask(schematic,cacheFolder));
+        }
+
+        cachedHashes = getCachedHashes(cacheFolder);
 
         removeUnusedCache(cachedHashes,cacheFolder);
         cleanupDB();
@@ -221,8 +218,8 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         }
     }
 
-    private Set<String> getCachedHashes(File cacheFolder){
-        Set<String> hashes = new HashSet<>();
+    private ConcurrentSet<String> getCachedHashes(File cacheFolder){
+        ConcurrentSet<String> hashes = new ConcurrentSet<>();
         File[] subfolders = cacheFolder.listFiles(Minions.isDirectory());
         for(File folder : subfolders){
             hashes.add(folder.getName());

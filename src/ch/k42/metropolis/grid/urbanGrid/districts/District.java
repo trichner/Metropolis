@@ -27,23 +27,15 @@ public class District implements IDistrict {
     public void fillDistrict(){
         this.context = grid.getContextProvider().getContext(base);
 
-        Set<Parcel> max = new HashSet<>();
-        int score=0,tscore;
-        for(int i=0;i<MAX_TRY;i++){
-            Set<Parcel> parcels = new HashSet<>();
+        Set<Parcel> parcels = new HashSet<>();
 
-            if(size.X>size.Y){
-                tscore = recPartitionX(parcels, base,size);
-            }else {
-                tscore = recPartitionZ(parcels,base,size);
-            }
-            if(tscore>score){
-                score = tscore;
-                max = parcels;
-            }
+        if(size.X>size.Y){
+            recPartitionX(parcels, base,size);
+        }else {
+            recPartitionZ(parcels,base,size);
         }
 
-        for(Parcel parcel : max){
+        for(Parcel parcel : parcels){
             grid.fillParcels(parcel.getChunkX(),parcel.getChunkZ(),parcel);
         }
     }

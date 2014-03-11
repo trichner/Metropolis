@@ -1,5 +1,6 @@
-package ch.k42.metropolis.WorldEdit;
+package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
+import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
@@ -71,6 +72,8 @@ public class ClipboardDAO {
         //printResults(beans);
         return beans;
     }
+
+
     public List<ClipboardBean> findAllClipboardRoads(RoadType roadType){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
         query.where().eq("roadType",roadType);
@@ -89,6 +92,8 @@ public class ClipboardDAO {
         //printResults(beans);
         return getHashes(beans);
     }
+
+
 
     public boolean deleteClipboardHash(String hash){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).where().like("fileHash",hash).query();

@@ -1,6 +1,6 @@
-package ch.k42.metropolis.grid.urbanGrid;
+package ch.k42.metropolis.grid.urbanGrid.statistics;
 
-import ch.k42.metropolis.WorldEdit.Clipboard;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
 import ch.k42.metropolis.minions.Incr;
 
 import java.util.HashMap;

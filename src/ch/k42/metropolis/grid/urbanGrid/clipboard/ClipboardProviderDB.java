@@ -1,4 +1,4 @@
-package ch.k42.metropolis.WorldEdit;
+package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;

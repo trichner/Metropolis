@@ -1,8 +1,8 @@
 package ch.k42.metropolis.plugin;
 
-import ch.k42.metropolis.WorldEdit.ClipboardBean;
-import ch.k42.metropolis.WorldEdit.ClipboardProvider;
-import ch.k42.metropolis.WorldEdit.ClipboardProviderDB;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardBean;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProviderDB;
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;

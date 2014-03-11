@@ -1,7 +1,7 @@
 package ch.k42.metropolis.grid.urbanGrid.parcel;
 
-import ch.k42.metropolis.WorldEdit.Clipboard;
-import ch.k42.metropolis.WorldEdit.SchematicConfig;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
+import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;

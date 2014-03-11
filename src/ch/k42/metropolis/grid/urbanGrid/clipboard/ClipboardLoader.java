@@ -1,4 +1,4 @@
-package ch.k42.metropolis.WorldEdit;
+package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 import java.io.File;
 import java.util.Map;

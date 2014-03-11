@@ -1,7 +1,7 @@
 package ch.k42.metropolis.grid.common;
 
-import ch.k42.metropolis.WorldEdit.*;
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.*;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProviderSimplex;

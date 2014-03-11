@@ -1,5 +1,7 @@
-package ch.k42.metropolis.WorldEdit;
+package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
+import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
+import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.provider.EnvironmentProvider;
 import ch.k42.metropolis.minions.Cartesian2D;

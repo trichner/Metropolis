@@ -1,4 +1,4 @@
-package ch.k42.metropolis.WorldEdit;
+package ch.k42.metropolis.grid.urbanGrid.config;
 
 import ch.k42.metropolis.minions.GridRandom;
 import org.bukkit.entity.EntityType;

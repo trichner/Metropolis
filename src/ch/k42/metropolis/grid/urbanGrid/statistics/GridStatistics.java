@@ -1,7 +1,7 @@
-package ch.k42.metropolis.grid.urbanGrid;
+package ch.k42.metropolis.grid.urbanGrid.statistics;
 
 
-import ch.k42.metropolis.WorldEdit.Clipboard;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
 
 /**
  * This should keep track of statistics of a Grid, not

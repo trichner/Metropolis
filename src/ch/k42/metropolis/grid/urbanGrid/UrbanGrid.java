@@ -1,7 +1,7 @@
 package ch.k42.metropolis.grid.urbanGrid;
 
-import ch.k42.metropolis.WorldEdit.Clipboard;
-import ch.k42.metropolis.WorldEdit.ClipboardProvider;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.common.Grid;
 import ch.k42.metropolis.grid.common.GridProvider;
@@ -10,6 +10,8 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.parcel.*;
+import ch.k42.metropolis.grid.urbanGrid.statistics.AthmosStat;
+import ch.k42.metropolis.grid.urbanGrid.statistics.GridStatistics;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;

@@ -3,8 +3,10 @@ package ch.k42.metropolis.minions;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.generator.ChunkGenerator;
+import sun.util.logging.resources.logging_de;
 
 import java.io.*;
 import java.security.MessageDigest;
@@ -118,5 +120,25 @@ public class Minions {
 
     public static final int square(int x){
         return x*x;
+    }
+
+    /**
+     * Selects a random entry from a List
+     *
+     * @param rand a number between [0,SUM]
+     * @return
+     */
+    public static int getRandomWeighted(List<Integer> odds,GridRandom rand) {
+        int[] thresholds = new int[odds.size()];
+        thresholds[0] = odds.get(0);
+        for (int i = 1; i < odds.size(); i++) {
+            thresholds[i] = thresholds[i-1] + odds.get(i);
+        }
+        int random = rand.getRandomInt(thresholds[thresholds.length-1]);
+        for (int i = 0; i < thresholds.length; i++) {
+            if (random < thresholds[i])
+                return i;
+        }
+        return 0; // something went wrong
     }
 }

@@ -44,44 +44,40 @@ public class District implements IDistrict {
         Direction direction = findRoad(base, size);
         List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context, direction);
         if(clips.size()!=0){ // can we place anything?
-            Collections.shuffle(clips);
+            List<Integer> sums = new LinkedList<>();
             for(Clipboard c : clips){
-                if(grid.getRandom().getChance(c.getConfig().getOddsOfAppearance())){
-                    return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, c, context, direction);
-                }
+                sums.add(c.getConfig().getOddsOfAppearance());
             }
+            return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, clips.get(Minions.getRandomWeighted(sums,grid.getRandom())), context, direction);
         }
         return null;
     }
 
-    private Parcel placeRandomForSure(Cartesian2D base,Cartesian2D size){
+    private Parcel placeRandom(Cartesian2D base,Cartesian2D size,int buildChance){
+        if(!(grid.getRandom().getChance(buildChance))) return null;
         Direction direction = findRoad(base, size);
         List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context, direction);
         if(clips.size()!=0){ // can we place anything?
-            Collections.shuffle(clips);
-            for(int i=0;i<20;i++){
-                for(Clipboard c : clips){
-                    if(grid.getRandom().getChance(c.getConfig().getOddsOfAppearance())){
-                        return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, c, context, direction);
-                    }
-                }
+            List<Integer> sums = new LinkedList<>();
+            for(Clipboard c : clips){
+                sums.add(c.getConfig().getOddsOfAppearance());
             }
-            Bukkit.getLogger().info("Couldn't place schem for sure! Tried 20 times, but all odds failed me.");
-            // you failed! just take the first one
-            return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, clips.get(0), context, direction);
+            return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, clips.get(Minions.getRandomWeighted(sums,grid.getRandom())), context, direction);
         }
         return null;
     }
+
+    private static final int BUILD_CHANCE = 80;
 
     private int recPartitionX(Set<Parcel> parcels,Cartesian2D base, Cartesian2D size){
         Parcel parcel;
         if(size.X<2){ // can't make smaller
-            if((parcel=placeRandom(base,size))!=null){
+            if((parcel=placeRandom(base,size,BUILD_CHANCE))!=null){
                 parcels.add(parcel);
                 return Minions.square(size.X * size.Y);
             }
             if(size.Y<2){
-                if((parcel=placeRandomForSure(base,size))==null){
+                if((parcel=placeRandom(base, size))==null){
                     parcels.add(new EmptyParcel(grid,base.X,base.Y,size.X,size.Y));
                     return 0;
                 }else {
@@ -91,7 +87,7 @@ public class District implements IDistrict {
             }
             return recPartitionZ(parcels,base, size);
         }else {
-            if((parcel=placeRandom(base,size))!=null){
+            if((parcel=placeRandom(base,size,BUILD_CHANCE))!=null){
                 parcels.add(parcel);
                 return Minions.square(size.X * size.Y);
             }else {
@@ -107,12 +103,12 @@ public class District implements IDistrict {
     private int recPartitionZ(Set<Parcel> parcels,Cartesian2D base, Cartesian2D size){
         Parcel parcel;
         if(size.Y<2){ // can't make smaller
-            if((parcel=placeRandom(base,size))!=null){
+            if((parcel=placeRandom(base,size,BUILD_CHANCE))!=null){
                 parcels.add(parcel);
                 return Minions.square(size.X * size.Y);
             }
             if(size.X<2){
-                if((parcel=placeRandomForSure(base,size))==null){
+                if((parcel=placeRandom(base, size))==null){
                     parcels.add(new EmptyParcel(grid,base.X,base.Y,size.X,size.Y));
                     return 0;
                 }else {
@@ -122,7 +118,7 @@ public class District implements IDistrict {
             }
             return recPartitionX(parcels,base, size);
         }else {
-            if((parcel=placeRandom(base,size))!=null){
+            if((parcel=placeRandom(base,size,BUILD_CHANCE))!=null){
                 parcels.add(parcel);
                 return Minions.square(size.X * size.Y);
             }else {

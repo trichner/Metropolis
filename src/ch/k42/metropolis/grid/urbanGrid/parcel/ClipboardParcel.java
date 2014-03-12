@@ -6,6 +6,7 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
@@ -25,8 +26,8 @@ public class ClipboardParcel extends Parcel {
     private Clipboard clipboard;
     private Direction direction;
 
-    public ClipboardParcel(UrbanGrid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, Clipboard clipboard, ContextType contextType, Direction direction) {
-        super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, contextType);
+    public ClipboardParcel(UrbanGrid grid, Cartesian2D base, Cartesian2D size, Clipboard clipboard, ContextType contextType, SchematicType schematicType, Direction direction) {
+        super(base,size,contextType,schematicType,grid);
         this.clipboard = clipboard;
         this.direction = direction;
         grid.getStatistics().logSchematic(clipboard);

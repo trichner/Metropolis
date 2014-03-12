@@ -6,9 +6,11 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import org.bukkit.Chunk;
+import sun.net.www.content.image.gif;
 
 import java.util.List;
 
@@ -23,8 +25,10 @@ public class HighwayParcel extends StreetParcel {
 
     private RoadType roadType = RoadType.NONE;
 
-    public HighwayParcel(UrbanGrid grid, int chunkX, int chunkZ, RoadType roadType) {
-        super(grid, chunkX, chunkZ, 1, 1, ContextType.HIGHWAY);
+    private static final Cartesian2D size = new Cartesian2D(1,1);
+
+    public HighwayParcel(UrbanGrid grid, Cartesian2D base, RoadType roadType) {
+        super(base, size, ContextType.HIGHWAY, SchematicType.HIGHWAY, grid);
         this.roadType = roadType;
     }
 

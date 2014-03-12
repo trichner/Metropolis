@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 
@@ -34,7 +35,16 @@ public interface ClipboardProvider {
      * @param roadType    defines the type of the road, only applies if context is STREET
      * @return list containing all matching clipboards, might be empty but never null
      */
+    @Deprecated
     public List<Clipboard> getRoadFit(RoadType roadType);
+
+    /**
+     * Returns a list containing all available clipboards that match the size and context
+     *
+     * @param roadType    defines the type of the road, only applies if context is STREET
+     * @return list containing all matching clipboards, might be empty but never null
+     */
+    public List<Clipboard> getRoadFit(RoadType roadType,ContextType contextType);
 
     /**
      * Returns a list containing all available clipboards that match the size and context
@@ -43,6 +53,6 @@ public interface ClipboardProvider {
      * @param contextType context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType, Direction roadDir);
+    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction roadDir);
 
 }

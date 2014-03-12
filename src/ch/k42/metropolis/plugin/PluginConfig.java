@@ -11,50 +11,53 @@ import org.bukkit.configuration.file.FileConfiguration;
  */
 public class PluginConfig {
 
-    private static String pathDebug = "consoleOutput.debug";
-    private boolean debugOutput = false;
+    private static final String pathDebug = "consoleOutput.debug";
+    private static boolean debugOutput = false;
 
-    private static String pathChestRenaming = "generator.enableChestRenaming";
-    private boolean chestRenaming = false;
+    private static final String pathChestRenaming = "generator.enableChestRenaming";
+    private static boolean  chestRenaming = false;
 
-    private static String pathSpawnerPlacing = "generator.enableSpawnerPlacing";
-    private boolean spawnerPlacing = false;
+    private static final String pathSpawnerPlacing = "generator.enableSpawnerPlacing";
+    private static boolean spawnerPlacing = false;
 
-    private static String pathCrossContextPlacing = "generator.enableCrossContextPlacing";
-    private boolean crossContextPlacing = false;
+    private static final String pathCrossContextPlacing = "generator.enableCrossContextPlacing";
+    private static boolean crossContextPlacing = false;
 
-    private static String pathDirectionFallbackPlacing = "generator.enableDirectionFallbackPlacing";
-    private boolean directionFallbackPlacing = false;
+    private static final String pathDirectionFallbackPlacing = "generator.enableDirectionFallbackPlacing";
+    private static boolean directionFallbackPlacing = false;
 
-    private static String pathBuildChance = "generator.buildChance";
-    private int buildChance = 80;
+    private static final String pathBuildChance = "generator.buildChance";
+    private static int buildChance = 80;
 
-    public PluginConfig(FileConfiguration configFile) {
-        this.debugOutput = configFile.getBoolean(pathDebug, debugOutput);
-        this.chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
-        this.spawnerPlacing = configFile.getBoolean(pathSpawnerPlacing, spawnerPlacing);
-        this.crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing, crossContextPlacing);
-        this.directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing, directionFallbackPlacing);
-        this.buildChance = configFile.getInt(pathBuildChance,buildChance);
-    }
+    private PluginConfig() {}
 
-    public int getBuildChance() {
+    public static int getBuildChance() {
         return buildChance;
     }
 
-    public boolean isDebugEnabled() {
+    public static boolean isDebugEnabled() {
         return debugOutput;
     }
 
-    public boolean isChestRenaming() {
+    public static boolean isChestRenaming() {
         return chestRenaming;
     }
 
-    public boolean isSpawnerPlacing() {
+    public static boolean isSpawnerPlacing() {
         return spawnerPlacing;
     }
 
-    public boolean allowDirectionFallbackPlacing() {
+    public static boolean allowDirectionFallbackPlacing() {
         return directionFallbackPlacing;
     }
+
+    public static void loadFromFile(FileConfiguration configFile){
+        debugOutput = configFile.getBoolean(pathDebug, debugOutput);
+        chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
+        spawnerPlacing = configFile.getBoolean(pathSpawnerPlacing, spawnerPlacing);
+        crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing, crossContextPlacing);
+        directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing, directionFallbackPlacing);
+        buildChance = configFile.getInt(pathBuildChance,buildChance);
+    }
+
 }

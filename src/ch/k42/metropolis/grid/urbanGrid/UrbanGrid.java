@@ -52,17 +52,17 @@ public class UrbanGrid extends Grid {
         int maxidx = GRID_SIZE - 1;
 
         // fill in the corners with Highway
-        setParcel(0, 0, new HighwayParcel(this, root.X, root.Y, RoadType.HIGHWAY_C_SE));
-        setParcel(0, maxidx, new HighwayParcel(this, root.X, root.Y + maxidx, RoadType.HIGHWAY_C_NE));
-        setParcel(maxidx, 0, new HighwayParcel(this, root.X + maxidx, root.Y, RoadType.HIGHWAY_C_SW));
-        setParcel(maxidx, maxidx, new HighwayParcel(this, root.X + maxidx, root.Y + maxidx, RoadType.HIGHWAY_C_NW));
+        setParcel(0, 0, new HighwayParcel(this, root, RoadType.HIGHWAY_C_SE));
+        setParcel(0, maxidx, new HighwayParcel(this, new Cartesian2D(root.X, root.Y + maxidx), RoadType.HIGHWAY_C_NE));
+        setParcel(maxidx, 0, new HighwayParcel(this, new Cartesian2D(root.X + maxidx, root.Y), RoadType.HIGHWAY_C_SW));
+        setParcel(maxidx, maxidx, new HighwayParcel(this, new Cartesian2D(root.X + maxidx, root.Y + maxidx), RoadType.HIGHWAY_C_NW));
 
         // fill in all highways
         for (int i = 1; i < maxidx; i++) {
-            setParcel(0, i, new HighwayParcel(this, root.X, root.Y + i, RoadType.HIGHWAY_SIDE_E)); //
-            setParcel(i, 0, new HighwayParcel(this, root.X + i, root.Y, RoadType.HIGHWAY_SIDE_S));
-            setParcel(i, maxidx, new HighwayParcel(this, root.X + i, root.Y + maxidx, RoadType.HIGHWAY_SIDE_N));
-            setParcel(maxidx, i, new HighwayParcel(this, root.X + maxidx, root.Y + i, RoadType.HIGHWAY_SIDE_W));
+            setParcel(0, i, new HighwayParcel(this, new Cartesian2D( root.X, root.Y + i), RoadType.HIGHWAY_SIDE_E)); //
+            setParcel(i, 0, new HighwayParcel(this, new Cartesian2D(root.X + i, root.Y), RoadType.HIGHWAY_SIDE_S));
+            setParcel(i, maxidx, new HighwayParcel(this, new Cartesian2D(root.X + i, root.Y + maxidx), RoadType.HIGHWAY_SIDE_N));
+            setParcel(maxidx, i, new HighwayParcel(this, new Cartesian2D(root.X + maxidx, root.Y + i), RoadType.HIGHWAY_SIDE_W));
         }
     }
 
@@ -164,7 +164,7 @@ public class UrbanGrid extends Grid {
 
     private void partitionXwithRoads(Cartesian2D base,Cartesian2D initSize, int cut) {
         for (int i = base.Y; i < base.Y + initSize.Y; i++) {
-            this.setParcel(base.X + cut, i, new RoadParcel(this, base.X + cut, i));
+            this.setParcel(base.X + cut, i, new RoadParcel(this,new Cartesian2D(base.X + cut, i)));
         }
         recSetDistricts(base,new Cartesian2D(cut,initSize.Y));
         recSetDistricts(new Cartesian2D(base.X+cut+1,base.Y),new Cartesian2D(initSize.X-cut-1,initSize.Y));
@@ -172,7 +172,7 @@ public class UrbanGrid extends Grid {
 
     private void partitionZwithRoads(Cartesian2D base,Cartesian2D initSize, int cut) {
         for (int i = base.X; i < base.X + initSize.X; i++) {
-            this.setParcel(i, base.Y + cut, new RoadParcel(this, i, base.Y + cut));
+            this.setParcel(i, base.Y + cut, new RoadParcel(this, new Cartesian2D(i, base.Y + cut)));
         }
         recSetDistricts(base,new Cartesian2D(initSize.X,cut));
         recSetDistricts(new Cartesian2D(base.X,base.Y+cut+1),new Cartesian2D(initSize.X,initSize.Y-cut-1));

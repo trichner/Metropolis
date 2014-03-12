@@ -8,6 +8,7 @@ import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.plugin.PluginConfig;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.Vector;
@@ -61,7 +62,7 @@ public class ClipboardWE implements Clipboard {
             GridRandom rand = generator.getGridProvider().getGrid(base.X,base.Y).getRandom();
             Cartesian3D base3 = new Cartesian3D(base.X<< 4, blockY,  base.Y<< 4);
 
-            if (generator.getPlugin().getMetropolisConfig().isChestRenaming()) { //do we really want to name them all?
+            if (PluginConfig.isChestRenaming()) { //do we really want to name them all?
                 for (Cartesian3D c : chests) {
                     Cartesian3D temp = base3.add(c);
                     Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
@@ -88,7 +89,7 @@ public class ClipboardWE implements Clipboard {
 
             //set spawners
 
-            if (generator.getPlugin().getMetropolisConfig().isSpawnerPlacing()) { // do we even place any?
+            if (PluginConfig.isSpawnerPlacing()) { // do we even place any?
                 for (Cartesian3D c : spawners) {
                     Cartesian3D temp = base3.add(c);
                     Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
@@ -186,10 +187,10 @@ public class ClipboardWE implements Clipboard {
         //chest has level? -> Assumption: Chest fully named
 
         char lastchar = name.charAt(name.length() - 1);
-        boolean fail = false;
+        boolean fail;
         try {
 
-            int level = Integer.getInteger(String.valueOf(lastchar));
+            int level = Integer.parseInt(String.valueOf(lastchar));
             fail = level > 5 || level < 1;
         } catch (NumberFormatException e) {
             fail = true;

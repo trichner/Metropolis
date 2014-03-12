@@ -4,12 +4,13 @@ import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.grid.urbanGrid.parcel.ClipboardParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.EmptyParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
-import org.bukkit.Bukkit;
+import ch.k42.metropolis.plugin.PluginConfig;
 
 import java.util.*;
 
@@ -40,34 +41,35 @@ public class District implements IDistrict {
         }
     }
 
-    private Parcel placeRandom(Cartesian2D base,Cartesian2D size){
+    private Parcel placeRandomBuild(Cartesian2D base, Cartesian2D size){
         Direction direction = findRoad(base, size);
-        List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context, direction);
+        List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context,SchematicType.BUILD, direction);
         if(clips.size()!=0){ // can we place anything?
             List<Integer> sums = new LinkedList<>();
             for(Clipboard c : clips){
                 sums.add(c.getConfig().getOddsOfAppearance());
             }
-            return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, clips.get(Minions.getRandomWeighted(sums,grid.getRandom())), context, direction);
+            return new ClipboardParcel(grid, base, size, clips.get(Minions.getRandomWeighted(sums,grid.getRandom())), context,SchematicType.BUILD, direction);
         }
         return null;
     }
 
     private Parcel placeRandom(Cartesian2D base,Cartesian2D size,int buildChance){
         if(!(grid.getRandom().getChance(buildChance))) return null;
+
         Direction direction = findRoad(base, size);
-        List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context, direction);
+        List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context, SchematicType.BUILD,direction);
         if(clips.size()!=0){ // can we place anything?
             List<Integer> sums = new LinkedList<>();
             for(Clipboard c : clips){
                 sums.add(c.getConfig().getOddsOfAppearance());
             }
-            return new ClipboardParcel(grid, base.X, base.Y, size.X, size.Y, clips.get(Minions.getRandomWeighted(sums,grid.getRandom())), context, direction);
+            return new ClipboardParcel(grid, base, size, clips.get(Minions.getRandomWeighted(sums,grid.getRandom())), context, SchematicType.BUILD, direction);
         }
         return null;
     }
 
-    private static final int BUILD_CHANCE = 80;
+    private int BUILD_CHANCE = PluginConfig.getBuildChance();
 
     private int recPartitionX(Set<Parcel> parcels,Cartesian2D base, Cartesian2D size){
         Parcel parcel;
@@ -77,8 +79,8 @@ public class District implements IDistrict {
                 return Minions.square(size.X * size.Y);
             }
             if(size.Y<2){
-                if((parcel=placeRandom(base, size))==null){
-                    parcels.add(new EmptyParcel(grid,base.X,base.Y,size.X,size.Y));
+                if((parcel= placeRandomBuild(base, size))==null){
+                    parcels.add(new EmptyParcel(base,size,context,SchematicType.BUILD,grid));
                     return 0;
                 }else {
                     parcels.add(parcel);
@@ -108,8 +110,8 @@ public class District implements IDistrict {
                 return Minions.square(size.X * size.Y);
             }
             if(size.X<2){
-                if((parcel=placeRandom(base, size))==null){
-                    parcels.add(new EmptyParcel(grid,base.X,base.Y,size.X,size.Y));
+                if((parcel= placeRandomBuild(base, size))==null){
+                    parcels.add(new EmptyParcel(base,size,context,SchematicType.BUILD,grid));
                     return 0;
                 }else {
                     parcels.add(parcel);

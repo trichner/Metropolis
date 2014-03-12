@@ -6,6 +6,7 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.GridRandom;
@@ -20,11 +21,10 @@ import java.util.List;
  */
 public class RoadParcel extends StreetParcel {
 
-    private static final int chunkSizeX = 1;
-    private static final int chunkSizeZ = 1;
+    private static final Cartesian2D size = new Cartesian2D(1,1);
 
-    public RoadParcel(UrbanGrid grid, int chunkX, int chunkZ) {
-        super(grid, chunkX, chunkZ, chunkSizeX, chunkSizeZ, ContextType.STREET);
+    public RoadParcel(UrbanGrid grid, Cartesian2D base) {
+        super(base, size, ContextType.STREET, SchematicType.ROAD,grid);
         grid.fillParcels(chunkX, chunkZ, this);
     }
 

@@ -40,7 +40,6 @@ import java.util.List;
  */
 public class MetropolisPlugin extends JavaPlugin {
 
-    private PluginConfig config;
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
 
@@ -100,7 +99,7 @@ public class MetropolisPlugin extends JavaPlugin {
     private void loadPluginConfig(){
         this.saveDefaultConfig(); // this saves the config provided in the jar if no config was found
         FileConfiguration configFile = getConfig();
-        config = new PluginConfig(configFile);
+        PluginConfig.loadFromFile(configFile);
     }
 
     private void loadClipboards(){
@@ -137,10 +136,6 @@ public class MetropolisPlugin extends JavaPlugin {
         cmd.setExecutor(new CommandMetropolisFreder(this));
         cmd = getCommand("grot");
         cmd.setExecutor(new CommandMetropolisGrot(this));
-    }
-
-    public PluginConfig getMetropolisConfig() {
-        return config;
     }
 
     public PopulatorConfig getPopulatorConfig() { return populatorConfig; }

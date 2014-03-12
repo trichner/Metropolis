@@ -1,9 +1,6 @@
 package ch.k42.metropolis.grid.urbanGrid.config;
 
-import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
-import ch.k42.metropolis.grid.urbanGrid.enums.LootType;
-import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.*;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
@@ -42,13 +39,18 @@ public class SchematicConfig extends AbstractSchematicConfig {
     private int decayIntensityInPercent = 100;
 
     private RoadCutout[] cutouts = {};
-    private ContextType[] context = {ContextType.HIGHRISE, ContextType.MIDRISE, ContextType.LOWRISE, ContextType.RESIDENTIAL, ContextType.INDUSTRIAL, ContextType.FARM, ContextType.PARK};
+    private ContextType[] context = null; //{ContextType.HIGHRISE, ContextType.MIDRISE, ContextType.LOWRISE, ContextType.RESIDENTIAL, ContextType.INDUSTRIAL, ContextType.FARM, ContextType.PARK};
     private RoadType roadType = RoadType.NONE;
     private Set<Material> decayExceptionMaterials = new HashSet();
     private String[] schematics = {};
     private String path;
+    private SchematicType schematicType = null;
 
     public SchematicConfig() {}
+
+    public SchematicType getSchematicType() {
+        return schematicType;
+    }
 
     public int getGroundLevelY() {
         return groundLevelY;

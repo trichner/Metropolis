@@ -9,6 +9,7 @@ import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.provider.*;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -197,7 +198,7 @@ public class MetropolisGenerator extends ChunkGenerator {
     }
 
     public void reportDebug(String message) {
-        if (plugin.getMetropolisConfig().isDebugEnabled())
+        if (PluginConfig.isDebugEnabled())
             plugin.getLogger().info("[====DEBUG====]" + message);
     }
 

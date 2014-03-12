@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class ClipboardBean {
     ContextType context;
 
     @Enumerated(EnumType.STRING)
+    SchematicType schematicType;
+
+    @Enumerated(EnumType.STRING)
     RoadType roadType;
 
     int size_x;
@@ -38,6 +42,14 @@ public class ClipboardBean {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public SchematicType getSchematicType() {
+        return schematicType;
+    }
+
+    public void setSchematicType(SchematicType schematicType) {
+        this.schematicType = schematicType;
     }
 
     public String getFileHash() {

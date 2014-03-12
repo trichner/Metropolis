@@ -4,6 +4,7 @@ import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
@@ -111,10 +112,15 @@ public class ClipboardProviderDB implements ClipboardProvider {
     }
 
     @Override
-    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType, Direction direction) {
+    public List<Clipboard> getRoadFit(RoadType roadType, ContextType contextType) { //FIXME
+        return getRoadFit(roadType);
+    }
+
+    @Override
+    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction direction) {
         if(!isLoaded) Bukkit.getLogger().warning("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
-        for(String hash : dao.findAllClipboardHashes(size,contextType,direction)){
+        for(String hash : dao.findAllClipboardHashes(size,contextType,schematicType,direction)){
             clips.add(clipstore.get(hash));
         }
         return clips;

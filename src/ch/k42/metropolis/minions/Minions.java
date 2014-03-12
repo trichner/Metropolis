@@ -28,6 +28,14 @@ public class Minions {
         Bukkit.getLogger().warning(String.format(msg,args));
     }
 
+    public static final void i(String msg){
+        Bukkit.getLogger().info(msg);
+    }
+
+    public static final void i(String msg,Object... args){
+        Bukkit.getLogger().info(String.format(msg,args));
+    }
+
     /**
      * Limits value x between [0,max)
      * @param max

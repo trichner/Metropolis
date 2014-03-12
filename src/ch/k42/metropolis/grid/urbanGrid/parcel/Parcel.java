@@ -3,6 +3,8 @@ package ch.k42.metropolis.grid.urbanGrid.parcel;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
+import ch.k42.metropolis.minions.Cartesian2D;
 import org.bukkit.Chunk;
 
 /**
@@ -20,15 +22,17 @@ public abstract class Parcel {
 
     protected ContextType contextType;
     protected UrbanGrid grid;
+    protected SchematicType schematicType;
 
 
-    public Parcel(UrbanGrid grid, int chunkX, int chunkZ, int chunkSizeX, int chunkSizeZ, ContextType contextType) {
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
-        this.chunkSizeX = chunkSizeX;
-        this.chunkSizeZ = chunkSizeZ;
-        this.grid = grid;
+    protected Parcel(Cartesian2D base, Cartesian2D size, ContextType contextType, SchematicType schematicType,UrbanGrid grid) {
+        this.chunkX = base.X;
+        this.chunkZ = base.Y;
+        this.chunkSizeX = size.X;
+        this.chunkSizeZ = size.Y;
         this.contextType = contextType;
+        this.schematicType = schematicType;
+        this.grid = grid;
     }
 
     public abstract void populate(MetropolisGenerator generator, Chunk chunk);

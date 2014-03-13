@@ -129,7 +129,7 @@ public class ClipboardLoaderWE implements ClipboardLoader {
                     // load the actual blocks
                     cuboid = format.load(file);
                     format.save(cuboid, streetFile);
-                    Clipboard clip = new ClipboardWE(cuboid,config,globalConfig);
+                    Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
                     hash += ".STREET";
                     clipstore.put( hash,clip);
                     dao.storeClipboard(hash,file.getName(), Direction.NONE,config, new Cartesian2D(1,1));
@@ -184,7 +184,7 @@ public class ClipboardLoaderWE implements ClipboardLoader {
         try {
             SchematicFormat format = SchematicFormat.getFormat(file);
             CuboidClipboard cuboid = format.load(file);
-            Clipboard clip = new ClipboardWE(cuboid,config,globalConfig);
+            Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
             String thash = hash + "." + direction.name();
             clipstore.put(thash,clip);
             Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);

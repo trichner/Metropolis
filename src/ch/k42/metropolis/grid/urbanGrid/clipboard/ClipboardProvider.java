@@ -32,6 +32,7 @@ public interface ClipboardProvider {
     /**
      * Returns a list containing all available clipboards that match the size and context
      *
+     * @deprecated use getRoadFit(roadType,contextType) instead
      * @param roadType    defines the type of the road, only applies if context is STREET
      * @return list containing all matching clipboards, might be empty but never null
      */
@@ -42,6 +43,7 @@ public interface ClipboardProvider {
      * Returns a list containing all available clipboards that match the size and context
      *
      * @param roadType    defines the type of the road, only applies if context is STREET
+     * @param contextType the context of the road
      * @return list containing all matching clipboards, might be empty but never null
      */
     public List<Clipboard> getRoadFit(RoadType roadType,ContextType contextType);
@@ -54,5 +56,14 @@ public interface ClipboardProvider {
      * @return list containing all matching clipboards, might be empty but never null
      */
     public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction roadDir);
+
+    /**
+     * Returns a list containing all available clipboards that match the size and context
+     *
+     * @param size  size in chunks
+     * @param schematicType the type of the schematic context of the structure
+     * @return list containing all matching clipboards, might be empty but never null
+     */
+    public List<Clipboard> getFit(Cartesian2D size, SchematicType schematicType, Direction roadDir);
 
 }

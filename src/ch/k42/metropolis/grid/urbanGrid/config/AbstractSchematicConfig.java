@@ -1,6 +1,7 @@
 package ch.k42.metropolis.grid.urbanGrid.config;
 
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.minions.Minions;
 import org.bukkit.entity.EntityType;
 
 /**
@@ -93,7 +94,7 @@ public abstract class AbstractSchematicConfig {
             if (random < Spawners[i].getThreshold())
                 return Spawners[i].getType();
         }
-        org.bukkit.Bukkit.getLogger().warning("No EntityType for Spawner could be randomly determinated, random argument too low?");
+        Minions.w("No EntityType for Spawner could be randomly determinated, random argument too low?");
         return Spawners[0].getType();
     }
 

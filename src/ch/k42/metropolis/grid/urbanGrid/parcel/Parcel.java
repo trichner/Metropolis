@@ -24,7 +24,6 @@ public abstract class Parcel {
     protected UrbanGrid grid;
     protected SchematicType schematicType;
 
-
     protected Parcel(Cartesian2D base, Cartesian2D size, ContextType contextType, SchematicType schematicType,UrbanGrid grid) {
         this.chunkX = base.X;
         this.chunkZ = base.Y;
@@ -33,6 +32,10 @@ public abstract class Parcel {
         this.contextType = contextType;
         this.schematicType = schematicType;
         this.grid = grid;
+    }
+
+    public SchematicType getSchematicType() {
+        return schematicType;
     }
 
     public abstract void populate(MetropolisGenerator generator, Chunk chunk);

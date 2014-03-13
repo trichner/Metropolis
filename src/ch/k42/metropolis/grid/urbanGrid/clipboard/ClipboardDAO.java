@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -43,13 +44,13 @@ public class ClipboardDAO {
 
     public boolean storeClipboard(String fileHash,String fileName, Direction direction, SchematicConfig config, Cartesian2D size){
         if(config==null){
-            Bukkit.getLogger().warning(String.format("Schematic '%s' has no valid config file.",fileName));
+            Minions.w(String.format("Schematic '%s' has no valid config file.", fileName));
             return false;
         }else if(config.getContext()==null){
-            Bukkit.getLogger().warning(String.format("Schematic '%s' has no valid context in config",fileName));
+            Minions.w(String.format("Schematic '%s' has no valid context in config", fileName));
             return false;
         }else if(config.getSchematicType()==null){
-            Bukkit.getLogger().warning(String.format("Schematic '%s' has no valid SchematicType in config",fileName));
+            Minions.w(String.format("Schematic '%s' has no valid SchematicType in config", fileName));
             return false;
         }
         for(ContextType context : config.getContext()){
@@ -70,18 +71,32 @@ public class ClipboardDAO {
         plugin.getDatabase().save(bean);
     }
 
-    public List<String> findAllClipboardHashes(Cartesian2D size,ContextType context, SchematicType schematicType, Direction direction){
-        return getHashes(findAllClipboards(size, context,schematicType, direction));
-    }
+
 
     public boolean containsHash(String hash){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).where().eq("fileHash",hash).query();
         return query.findRowCount()!=0;
     }
 
+    public List<String> findAllClipboardHashes(Cartesian2D size,ContextType context, SchematicType schematicType, Direction direction){
+        return getHashes(findAllClipboards(size, context,schematicType, direction));
+    }
+
     public List<ClipboardBean> findAllClipboards(Cartesian2D size,ContextType context,SchematicType schematicType,Direction direction){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
         query.where().eq("size_x",size.X).eq("size_y",size.Y).eq("context",context).eq("direction",direction).eq("schematicType",schematicType);
+        query.select("fileHash,fileName");
+        List<ClipboardBean> beans = query.findList();
+        return beans;
+    }
+
+    public List<String> findAllClipboardHashes(Cartesian2D size,SchematicType schematicType, Direction direction){
+        return getHashes(findAllClipboards(size,schematicType, direction));
+    }
+
+    public List<ClipboardBean> findAllClipboards(Cartesian2D size,SchematicType schematicType,Direction direction){
+        Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
+        query.where().eq("size_x",size.X).eq("size_y",size.Y).eq("direction",direction).eq("schematicType",schematicType);
         query.select("fileHash,fileName");
         List<ClipboardBean> beans = query.findList();
         return beans;
@@ -110,8 +125,17 @@ public class ClipboardDAO {
     public boolean deleteClipboardHash(String hash){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).where().like("fileHash",hash).query();
         List<ClipboardBean> beans = query.findList();
-        plugin.getDatabase().delete(ClipboardBean.class,beans);
+        List<Integer> ids = getIDs(beans);
+        plugin.getDatabase().delete(ClipboardBean.class,ids);
         return true;
+    }
+
+    private List<Integer> getIDs(Collection<ClipboardBean> beans){
+        List<Integer> ids = new ArrayList<>();
+        for(ClipboardBean bean : beans){
+            ids.add(bean.getId());
+        }
+        return ids;
     }
 
     private List<String> getHashes(Collection<ClipboardBean> beans){

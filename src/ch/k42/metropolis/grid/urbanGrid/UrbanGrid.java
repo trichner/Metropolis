@@ -1,9 +1,11 @@
 package ch.k42.metropolis.grid.urbanGrid;
 
+import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.common.Grid;
 import ch.k42.metropolis.grid.common.GridProvider;
+import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardWE;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.districts.District;
 import ch.k42.metropolis.grid.urbanGrid.districts.IDistrict;
@@ -72,7 +74,7 @@ public class UrbanGrid extends Grid {
         if(p!=null){
             p.populate(generator, chunk);
         }else {
-            Bukkit.getLogger().warning("Parcel not found");
+            Minions.w("Parcel not found");
         }
     }
 
@@ -82,7 +84,7 @@ public class UrbanGrid extends Grid {
         if(p!=null){
             p.postPopulate(generator, chunk);
         }else {
-            //Bukkit.getLogger().warning("Parcel found");
+            //Minions.w("Parcel found");
         }
     }
 
@@ -198,6 +200,27 @@ public class UrbanGrid extends Grid {
             sb.append('\n');
         }
         return sb.toString();
+    }
+
+    public Set<ClipboardParcel> getNeighbours(Cartesian2D center,int radius){
+        int centerX = getChunkOffset(center.X);
+        int centerY = getChunkOffset(center.Y);
+        Set<ClipboardParcel> neighbours = new HashSet<>();
+        for(int x= centerX-radius;x<=centerX+radius;x++){
+            if(!inRange(x)) continue;
+            for(int y= centerY-radius;y<=centerY+radius;y++){
+                if(!inRange(y)) continue;
+                Parcel p = parcels[x][y];
+                if(p==null) continue;
+                if(!(p instanceof  ClipboardParcel)) continue;
+                neighbours.add((ClipboardParcel)p);
+            }
+        }
+        return neighbours;
+    }
+
+    private boolean inRange(int x){
+        return x>=0 && x<GRID_SIZE;
     }
 
     public ClipboardProvider getClipboardProvider() {

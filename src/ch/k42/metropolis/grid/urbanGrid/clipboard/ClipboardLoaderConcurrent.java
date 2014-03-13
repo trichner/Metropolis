@@ -107,7 +107,7 @@ public class ClipboardLoaderConcurrent implements ClipboardLoader{
                     // load the actual blocks
                     cuboid = format.load(file);
                     format.save(cuboid, streetFile);
-                    Clipboard clip = new ClipboardWE(cuboid,config,globalConfig);
+                    Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
                     cachedHashes.remove(hash);
                     hash += ".STREET";
                     clipstore.put( hash,clip);
@@ -231,7 +231,7 @@ public class ClipboardLoaderConcurrent implements ClipboardLoader{
         try {
             SchematicFormat format = SchematicFormat.getFormat(file);
             CuboidClipboard cuboid = format.load(file);
-            Clipboard clip = new ClipboardWE(cuboid,config,globalConfig);
+            Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
             String thash = hash + "." + direction.name();
             clipstore.put(thash,clip);
             if(!dao.containsHash(thash)){ // check if already in

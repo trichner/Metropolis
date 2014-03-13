@@ -33,8 +33,28 @@ public class ClipboardParcel extends Parcel {
         grid.getStatistics().logSchematic(clipboard);
     }
 
+    /*
+     * WARNING: This is not a correct implementation of 'equals' but it fits our purpose
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ClipboardParcel)) return false;
+
+        ClipboardParcel that = (ClipboardParcel) o;
+
+        return clipboard.getGroupId().equals(that.clipboard.getGroupId());
+    }
+
+
+    @Override
+    public int hashCode() {
+        return clipboard.getGroupId().hashCode();
+    }
+
     public void populate(MetropolisGenerator generator, Chunk chunk) {
         if (chunk.getX() == (chunkX) && chunk.getZ() == (chunkZ)) {
+            if(clipboard==null) return;
             int streetLevel = Constants.BUILD_HEIGHT;
             clipboard.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT);
             // TODO use config, don't always destroy
@@ -46,10 +66,14 @@ public class ClipboardParcel extends Parcel {
     private final int cutoutDepth = 8;
     private final int cutoutHeight = 8;
 
+    public Clipboard getClipboard() {
+        return clipboard;
+    }
+
     @Override
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         //To change body of implemented methods use File | Settings | File Templates.
-
+        if(clipboard==null) return;
         //---- make sidewalk cutouts
         SchematicConfig.RoadCutout[] cuts = clipboard.getConfig().getCutouts();
 
@@ -128,6 +152,8 @@ public class ClipboardParcel extends Parcel {
 
     @Override
     public String toString() {
+        if(clipboard==null)
+            return "ClipboardParcel: No clip found";
         return "ClipboardParcel: " + clipboard.toString();
     }
 }

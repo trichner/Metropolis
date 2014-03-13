@@ -35,12 +35,14 @@ public class ClipboardWE implements Clipboard {
     private List<Cartesian3D> chests = new ArrayList<>();
     private List<Cartesian3D> spawners = new ArrayList<>();
     private int blockCount;
+    private String groupId;
 
-    public ClipboardWE(CuboidClipboard cuboid, SchematicConfig config, GlobalSchematicConfig globalConfig) {
+    public ClipboardWE(CuboidClipboard cuboid, SchematicConfig config, GlobalSchematicConfig globalConfig,String groupId) {
         this.cuboid = cuboid;
         this.config = config;
         this.globalConfig = globalConfig;
         this.blockCount = cuboid.getHeight()*cuboid.getLength()*cuboid.getWidth();
+        this.groupId = groupId;
         if(config.getGroundLevelY()==0){
             config.setGroundLevelY(estimateStreetLevel());
         }
@@ -159,6 +161,11 @@ public class ClipboardWE implements Clipboard {
     @Override
     public SchematicConfig getConfig() {
         return config;
+    }
+
+    @Override
+    public String getGroupId() {
+        return groupId;
     }
 
     private EditSession getEditSession(MetropolisGenerator generator) {

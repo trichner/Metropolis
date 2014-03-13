@@ -19,4 +19,10 @@ public interface Clipboard {
     public Cartesian3D getSize();
     public int getBottom(int streetlevel);
     public SchematicConfig getConfig();
+
+    /**
+     * A unique ID which is the same for one clipboard and it's rotations
+     * @return unique groupId
+     */
+    public String getGroupId();
 }

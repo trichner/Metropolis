@@ -4,6 +4,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.LootType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.minions.Nimmersatt;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
@@ -106,7 +107,7 @@ public class GlobalSchematicConfig extends AbstractSchematicConfig {
      */
     public int getRandomChestLevel(GridRandom rand, int min, int max) {
         if (min < 1 || min > 5 || max < 1 || max > 5) {
-            Bukkit.getLogger().warning("Invalid config option for a schematic, minChestLevel or maxChestLevel are out of range! Valid: [1,5]");
+            Minions.w("Invalid config option for a schematic, minChestLevel or maxChestLevel are out of range! Valid: [1,5]");
             return 1;
         }
         if (min >= max) return min; // can't choose?

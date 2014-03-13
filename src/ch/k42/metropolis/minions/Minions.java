@@ -1,6 +1,7 @@
 package ch.k42.metropolis.minions;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
@@ -20,20 +21,35 @@ import java.util.List;
 public class Minions {
 
 
+    private static final String TAG = "[Metropolis] ";
+
     public static final void w(String msg){
-        Bukkit.getLogger().warning(msg);
+        Bukkit.getLogger().warning(TAG+msg);
     }
 
     public static final void w(String msg,Object... args){
-        Bukkit.getLogger().warning(String.format(msg,args));
+        Bukkit.getLogger().warning(TAG+String.format(msg,args));
     }
 
+
+
     public static final void i(String msg){
-        Bukkit.getLogger().info(msg);
+        Bukkit.getLogger().info(TAG+msg);
     }
 
     public static final void i(String msg,Object... args){
-        Bukkit.getLogger().info(String.format(msg,args));
+        Bukkit.getLogger().info(TAG+String.format(msg,args));
+    }
+
+    private static final String DTAG = "[Debug] ";
+    public static final void d(String msg){
+        if(PluginConfig.isDebugEnabled())
+            Bukkit.getLogger().info(TAG + DTAG +msg);
+    }
+
+    public static final void d(String msg,Object... args){
+        if(PluginConfig.isDebugEnabled())
+            Bukkit.getLogger().info(TAG+ DTAG +String.format(msg,args));
     }
 
     /**

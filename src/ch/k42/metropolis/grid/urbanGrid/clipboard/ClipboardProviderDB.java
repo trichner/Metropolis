@@ -10,6 +10,7 @@ import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 
@@ -47,7 +48,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
 
         // not there? darn
         if (worldEditPlugin == null) {
-            Bukkit.getLogger().warning("No WorldEdit found!");
+            Minions.w("No WorldEdit found!");
             throw new PluginNotFoundException("Couldn't find WorldEdit plugin.");
         }
 
@@ -90,11 +91,11 @@ public class ClipboardProviderDB implements ClipboardProvider {
             plugin.getLogger().info("loaded clips");
 
             for(String clip : clipstore.keySet()){
-                Bukkit.getLogger().info("clipstore: " + clip);
+                Minions.d("clipstore: " + clip);
             }
             List<String> beans = dao.findAllClipboardHashes();
             for(String clip : beans){
-                Bukkit.getLogger().info("dao hash: "+clip);
+                Minions.d("dao hash: "+clip);
             }
         }
         isLoaded = true;
@@ -103,7 +104,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
 
     @Override
     public List<Clipboard> getRoadFit(RoadType roadType) {
-        if(!isLoaded) Bukkit.getLogger().warning("Schematics not loaded!");
+        if(!isLoaded) Minions.w("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardRoadHashes(roadType)){
             clips.add(clipstore.get(hash));
@@ -118,9 +119,19 @@ public class ClipboardProviderDB implements ClipboardProvider {
 
     @Override
     public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction direction) {
-        if(!isLoaded) Bukkit.getLogger().warning("Schematics not loaded!");
+        if(!isLoaded) Minions.w("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,contextType,schematicType,direction)){
+            clips.add(clipstore.get(hash));
+        }
+        return clips;
+    }
+
+    @Override
+    public List<Clipboard> getFit(Cartesian2D size, SchematicType schematicType, Direction roadDir) {
+        if(!isLoaded) Minions.w("Schematics not loaded!");
+        List<Clipboard> clips = new LinkedList<>();
+        for(String hash : dao.findAllClipboardHashes(size,schematicType,roadDir)){
             clips.add(clipstore.get(hash));
         }
         return clips;

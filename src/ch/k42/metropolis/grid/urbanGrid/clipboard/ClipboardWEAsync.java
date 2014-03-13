@@ -13,6 +13,7 @@ import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -191,6 +192,12 @@ public class ClipboardWEAsync implements Clipboard {
     @Override
     public SchematicConfig getConfig() {
         return config;
+    }
+
+    @Override
+    public String getGroupId() {
+        throw new NotImplementedException();
+
     }
 
     private EditSession getEditSession(MetropolisGenerator generator) {

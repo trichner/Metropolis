@@ -6,6 +6,40 @@
 
 In the future, wealthy industrialists rule the vast city of Metropolis from high-rise tower complexes, while a lower class of underground-dwelling workers toil constantly to operate the machines that provide its power. The Master of Metropolis is the ruthless Joh Fredersen (Alfred Abel), whose son Freder (Gustav Fröhlich) idles away his time in a pleasure garden with the other children of the rich. Freder is interrupted by the arrival of a young woman named Maria (Brigitte Helm), who has brought a group of workers' children to see the privileged lifestyle led by the rich. Maria and the children are quickly ushered away, but Freder is fascinated by Maria and descends to the workers' city in an attempt to find her.
 
+## Basic Flow
+As of commit [48aee](https://github.com/trichner/Metropolis/commit/48aee8f0a946d5edde7055ba6da30d85cba55de5). Most logic can be found in [District.java](https://github.com/trichner/Metropolis/blob/master/src/ch/k42/metropolis/grid/urbanGrid/districts/District.java). 
+
+1. start with a 64x64 chunk sized 'grid'
+2. place half of a highway around the whole grid
+3. start dividing the inner space randomly into two smaller spaces and put a road between them
+4. for each of the smaller spaces, do 3. until the longer side is shorter than 'blockSize'
+5. If the space is 1x1 chunk, place a schematic at all cost, prefering BUILD over FILLER, end of procedure
+6. try to place a schematic in the current space, prefering BUILD over FILLER, no duplicates
+7. if a schematic was placed, end of procedure
+8. divide the space randomly into two smaller plots and repeat from 5. 
+ 
+
+Space partitioning is done by 'Binary Space Partitioning', the cuts follow a normal distribution with mean size/2.
+
+ 
+## Plugin Configuration
+
+```
+consoleOutput:
+    debug: true # Decides how verbose the console output is. If you have troubles, enable this and investigate.
+
+generator:
+    enableChestRenaming:  true   # Decides if all pasted chests should be named and randomly placed to fit chestlootz scheme
+    enableSpawnerPlacing: true   # If sponges should be replaced with spawners, more configuration in schematic config
+    enableDirectionFallbackPlacing: false # no purpose atm
+    iterations: 10    # how many times the generator tries to partition a district, higher might give better results but slows down generations
+    buildChance: 80   # the chance in percent that a schematic gets placed and the spot not further partitioned
+    fillerChance: 80  #  the chance in percent that a filler schematic gets placed and the spot not further partitioned
+    blockSize: 14     # after what size the generator stops to partition space with roads inbetween
+    sigmaCut: 6       # the number of standart deviations the probability of a partition of a space has from the mean of size/2
+    cloneRadius: 7    # the number of chunks in which placing checks for duplicates, distance is measured with the infinity norm
+```
+
 ## Schematic Configuration
 
 #### buildName

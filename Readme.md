@@ -32,7 +32,7 @@ generator:
     enableChestRenaming:  true   # Decides if all pasted chests should be named and randomly placed to fit chestlootz scheme
     enableSpawnerPlacing: true   # If sponges should be replaced with spawners, more configuration in schematic config
     enableDirectionFallbackPlacing: false # no purpose atm
-    iterations: 10    # how many times the generator tries to partition a district, higher might give better results but slows down generations
+    iterations: 10    # how many times the generator tries to partition a district, higher might give denser districts but slows down generations
     buildChance: 80   # the chance in percent that a schematic gets placed and the spot not further partitioned
     fillerChance: 80  #  the chance in percent that a filler schematic gets placed and the spot not further partitioned
     blockSize: 14     # after what size the generator stops to partition space with roads inbetween

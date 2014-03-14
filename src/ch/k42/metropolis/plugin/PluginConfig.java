@@ -29,7 +29,26 @@ public class PluginConfig {
     private static final String pathBuildChance = "generator.buildChance";
     private static int buildChance = 80;
 
+    private static final String pathFillerChance = "generator.fillerChance";
+    private static int fillerChance = 80;
+
+    private static final String pathIterations = "generator.iterations";
+    private static int iterations = 10;
+
+    private static final String pathBlockSize = "generator.blockSize";
+    private static int blockSize = 14;
+
+    private static final String pathSigmaCut = "generator.sigmaCut";
+    private static int sigmaCut = 6;
+
+    private static final String pathCloneRadius = "generator.cloneRadius";
+    private static int cloneRadius = 7;
+
     private PluginConfig() {}
+
+    public static int getCloneRadius() {
+        return cloneRadius;
+    }
 
     public static int getBuildChance() {
         return buildChance;
@@ -51,6 +70,22 @@ public class PluginConfig {
         return directionFallbackPlacing;
     }
 
+    public static int getIterations() {
+        return iterations;
+    }
+
+    public static int getBlockSize() {
+        return blockSize;
+    }
+
+    public static int getSigmaCut() {
+        return sigmaCut;
+    }
+
+    public static int getFillerChance() {
+        return fillerChance;
+    }
+
     public static void loadFromFile(FileConfiguration configFile){
         debugOutput = configFile.getBoolean(pathDebug, debugOutput);
         chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
@@ -58,6 +93,11 @@ public class PluginConfig {
         crossContextPlacing = configFile.getBoolean(pathCrossContextPlacing, crossContextPlacing);
         directionFallbackPlacing = configFile.getBoolean(pathDirectionFallbackPlacing, directionFallbackPlacing);
         buildChance = configFile.getInt(pathBuildChance,buildChance);
+        fillerChance = configFile.getInt(pathFillerChance,fillerChance);
+        iterations = configFile.getInt(pathIterations,iterations);
+        blockSize = configFile.getInt(pathBlockSize,blockSize);
+        sigmaCut = configFile.getInt(pathSigmaCut,sigmaCut);
+        cloneRadius = configFile.getInt(pathCloneRadius,cloneRadius);
     }
 
 }

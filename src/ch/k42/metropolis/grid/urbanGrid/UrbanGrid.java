@@ -16,6 +16,7 @@ import ch.k42.metropolis.grid.urbanGrid.statistics.GridStatistics;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 
@@ -134,13 +135,12 @@ public class UrbanGrid extends Grid {
         return contextProvider;
     }
 
-    private static final int blockSize = 14;
+    private static final int blockSize = PluginConfig.getBlockSize();
 
 
     public void recSetDistricts(Cartesian2D base,Cartesian2D size) {
         if (size.X > size.Y) {
             if (size.X < blockSize) {
-                //recPartitionX(base,size);
                 addDistrict(base, size);
             } else {
                 int cut = Minions.makeCut(random, size.X);
@@ -149,11 +149,9 @@ public class UrbanGrid extends Grid {
         } else {
             if (size.Y < blockSize) { // No place for streets
                 //place a new Block
-                //recPartitionZ(base,size);
                 addDistrict(base,size);
             } else {                 //put a street inbetween
                 int cut = Minions.makeCut(random, size.Y);
-
                 partitionZwithRoads(base,size,cut);
             }
         }
@@ -213,7 +211,7 @@ public class UrbanGrid extends Grid {
                 Parcel p = parcels[x][y];
                 if(p==null) continue;
                 if(!(p instanceof  ClipboardParcel)) continue;
-                neighbours.add((ClipboardParcel)p);
+                neighbours.add((ClipboardParcel) p);
             }
         }
         return neighbours;

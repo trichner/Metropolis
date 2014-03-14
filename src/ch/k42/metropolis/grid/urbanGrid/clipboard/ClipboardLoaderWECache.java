@@ -237,13 +237,14 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
             String thash = hash + "." + direction.name();
             clipstore.put(thash,clip);
-            if(!dao.containsHash(thash)){ // check if already in
-                //DAO
-                Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
-                dao.storeClipboard(thash,file.getName(), direction,config,size);
-                if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
-                    dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
-                }
+            if(dao.containsHash(thash)){ // check if already in, if yes, delete the old one
+               dao.deleteClipboardHash(thash);
+            }
+            //DAO
+            Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
+            dao.storeClipboard(thash,file.getName(), direction,config,size);
+            if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
+                dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
             }
             return true;
         } catch (IOException e) {

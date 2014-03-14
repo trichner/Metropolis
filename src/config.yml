@@ -7,3 +7,9 @@ generator:
     enableChestRenaming:  true
     enableSpawnerPlacing: true
     enableDirectionFallbackPlacing: false
+    iterations: 10
+    buildChance: 80
+    fillerChance: 80
+    blockSize: 14
+    sigmaCut: 6
+    cloneRadius: 7

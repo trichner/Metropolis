@@ -6,7 +6,6 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.grid.urbanGrid.parcel.ClipboardParcel;
-import ch.k42.metropolis.grid.urbanGrid.parcel.EmptyParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
@@ -16,9 +15,11 @@ import java.util.*;
 
 /**
  * Created by Thomas on 06.03.14.
+ *
+ * FIXME Some spots seem to stay empty, not sure why...
  */
 public class District implements IDistrict {
-    public static final int MAX_TRY = 5;
+    private static final int MAX_ITERATIONS = PluginConfig.getIterations();
 
     private Cartesian2D base,size;
     private UrbanGrid grid;
@@ -31,13 +32,9 @@ public class District implements IDistrict {
         Set<ClipboardParcel> max = null;
 
         int score=Integer.MIN_VALUE,tscore;
-        for(int i=0;i<10;i++){ // if we fail, try again
+        for(int i=0;i< MAX_ITERATIONS;i++){ // if we fail, try again
             Set<ClipboardParcel> parcels = new HashSet<>();
-            if(size.X>size.Y){
-                tscore = recPartitionX(parcels, base,size);
-            }else {
-                tscore = recPartitionZ(parcels,base,size);
-            }
+            tscore = nextRecPartition(parcels,base,size);
             if(tscore>=score)
                 max = parcels;
         }
@@ -45,7 +42,7 @@ public class District implements IDistrict {
         for(Parcel parcel : max){
             grid.fillParcels(parcel.getChunkX(),parcel.getChunkZ(),parcel);
         }
-        //Check for empty spots
+        //Check for empty spots, this is more a workaround than a solution
         for(int x = base.X; x<base.X+size.X;x++){
             for(int y = base.Y; y<base.Y+size.Y;y++){
                 Parcel p=grid.getParcel(x,y);
@@ -55,6 +52,7 @@ public class District implements IDistrict {
                     if(p==null){
                         Minions.d("Can't find any clipboard for this spot? Seriously?");
                     }else {
+
                         grid.setParcel(x,y,p);
                     }
                 }
@@ -62,24 +60,23 @@ public class District implements IDistrict {
         }
     }
 
-    private static final int CLONERADIUS = 7;
-    private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous){
+    private static final int CLONERADIUS = PluginConfig.getCloneRadius();
+
+    private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous,SchematicType schematicType){
         Direction direction = findRoad(base, size);
 
         Set<ClipboardParcel> neighbours = grid.getNeighbours(new Cartesian2D(base.X + size.X/2,base.Y+size.Y/2),CLONERADIUS);
         neighbours.addAll(previous);
         //try to place a build
-        List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context,SchematicType.BUILD, direction);
-        ClipboardParcel p = placeRandomRec(base, size, direction, clips, neighbours, SchematicType.FILLER);
-
-        if(p!=null) return p;
-
-        clips = grid.getClipboardProvider().getFit(size, context,SchematicType.FILLER, direction);
-        return placeRandomRec(base, size, direction, clips, neighbours, SchematicType.FILLER);
+        List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context,schematicType, direction);
+        ClipboardParcel p = placeRandomRec(base, size, direction, clips, neighbours, schematicType);
+        return p;
     }
 
     private ClipboardParcel placeRandomBuildForSure(Cartesian2D base,Cartesian2D size,Set<ClipboardParcel> previous){
-        ClipboardParcel p = placeRandomBuild(base,size,previous);
+        ClipboardParcel p = placeRandomBuild(base,size,previous,SchematicType.BUILD);
+        if(p!=null) return p;
+        p = placeRandomBuild(base,size,previous,SchematicType.FILLER);
         if(p!=null) return p;
 
         Direction direction = findRoad(base, size);
@@ -104,7 +101,7 @@ public class District implements IDistrict {
             if(neighbours.contains(p)){
                 //Minions.d("found duplicate");
                 clips.remove(clip);
-                placeRandomRec(base, size, direction, clips, neighbours, type);
+                return placeRandomRec(base, size, direction, clips, neighbours, type);
             }else {
                 return p;
             }
@@ -120,79 +117,58 @@ public class District implements IDistrict {
         return weights;
     }
 
-    private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous, int buildChance){
-        if(!(grid.getRandom().getChance(buildChance))) return null;
-        return placeRandomBuild(base,size,previous);
+    private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous){
+        if(!(grid.getRandom().getChance(BUILD_CHANCE))) return null;
+        ClipboardParcel p = placeRandomBuild(base,size,previous,SchematicType.BUILD);
+        if(!(grid.getRandom().getChance(FILLER_CHANCE))) return null;
+        if(p!=null) return p;
+        p = placeRandomBuild(base,size,previous,SchematicType.FILLER);
+        return p;
     }
 
     private int BUILD_CHANCE = PluginConfig.getBuildChance();
+    private int FILLER_CHANCE = PluginConfig.getFillerChance();
 
-    private int recPartitionX(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
+    private int nextRecPartition(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
         ClipboardParcel parcel;
-        if(size.X<2){ // can't make smaller
-            if((parcel= placeRandomBuild(base, size, parcels, BUILD_CHANCE))!=null){
+
+        if(size.X<=1 && size.Y<=1){ // are we already at smalles possible size?
+            if((parcel= placeRandomBuildForSure(base, size,parcels))!=null){
                 parcels.add(parcel);
-                return scoreParcel(parcel, size);
-            }
-            if(size.Y<2){
-                if((parcel= placeRandomBuildForSure(base, size,parcels))==null){
-                    parcels.add(new ClipboardParcel(grid, base, size, null, context,SchematicType.FILLER, Direction.NONE));
-                    return Integer.MIN_VALUE;
-                }else {
-                    parcels.add(parcel);
-                    return scoreParcel(parcel,size);
-                }
-            }
-            return recPartitionZ(parcels,base, size);
-        }else {
-            if((parcel= placeRandomBuild(base, size,parcels, BUILD_CHANCE))!=null){
-                parcels.add(parcel);
-                return scoreParcel(parcel, size);
+                return scoreParcel(parcel,size);
             }else {
-                int cut = Minions.makeCut(grid.getRandom(), size.X);
-                int score = recPartitionZ(parcels,base, new Cartesian2D(cut, size.Y));
-                return score + recPartitionZ(parcels,new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+                Minions.d("Found absolutely no schems for context '%s' and size '%s' ",context,size);
+                parcels.add(new ClipboardParcel(grid, base, size, null, context,SchematicType.FILLER, Direction.NONE));
+                return Integer.MIN_VALUE;
             }
         }
+
+        // let's try to place a schem
+        if((parcel= placeRandomBuild(base, size,parcels))!=null){
+            parcels.add(parcel);
+            return scoreParcel(parcel, size);
+        }
+
+        if(size.X<size.Y){      //partition Y side
+            int cut = Minions.makeCut(grid.getRandom(), size.Y);
+            int score = nextRecPartition(parcels,base, new Cartesian2D(size.X, cut));
+            return score + nextRecPartition(parcels,new Cartesian2D(base.X , base.Y+ cut), new Cartesian2D(size.X, size.Y - cut));
+        }else {                 //partition X side
+            int cut = Minions.makeCut(grid.getRandom(), size.X);
+            int score = nextRecPartition(parcels,base, new Cartesian2D(cut, size.Y));
+            return score + nextRecPartition(parcels,new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+        }
     }
+
 
     private static final int scoreParcel(ClipboardParcel parcel,Cartesian2D size){
         if(parcel.getSchematicType().equals(SchematicType.BUILD))
             return scoreArea(size)*parcel.getClipboard().getConfig().getOddsOfAppearance(); //might keep OddsOfAppearance out, they are veeery fuzzy
-        return 0;
+        return -scoreArea(size);
     }
 
     private static final int scoreArea(Cartesian2D size){
         return (size.X*size.Y);
-    }
-
-    private int recPartitionZ(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
-        ClipboardParcel parcel;
-        if(size.Y<2){ // can't make smaller
-            if((parcel= placeRandomBuild(base, size,parcels, BUILD_CHANCE))!=null){
-                parcels.add(parcel);
-                return scoreParcel(parcel, size);
-            }
-            if(size.X<2){
-                if((parcel= placeRandomBuildForSure(base, size,parcels))==null){
-                    parcels.add(new ClipboardParcel(grid, base, size, null, context,SchematicType.FILLER, Direction.NONE));
-                    return Integer.MIN_VALUE;
-                }else {
-                    parcels.add(parcel);
-                    return scoreParcel(parcel, size);
-                }
-            }
-            return recPartitionX(parcels,base, size);
-        }else {
-            if((parcel= placeRandomBuild(base, size,parcels, BUILD_CHANCE))!=null){
-                parcels.add(parcel);
-                return scoreParcel(parcel, size);
-            }else {
-                int cut = Minions.makeCut(grid.getRandom(), size.Y);
-                int score = recPartitionX(parcels,base, new Cartesian2D(size.X, cut));
-                return score + recPartitionX(parcels,new Cartesian2D(base.X , base.Y+ cut), new Cartesian2D(size.X, size.Y - cut));
-            }
-        }
     }
 
     private Direction findRoad(Cartesian2D base,Cartesian2D size) {

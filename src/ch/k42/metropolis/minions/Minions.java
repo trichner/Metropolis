@@ -129,7 +129,7 @@ public class Minions {
         return result;
     }
 
-    private static final int sigma_factor = 5;
+    private static final int sigma_factor = PluginConfig.getSigmaCut();
 
     public static final int makeCut(GridRandom random,int x){
         double  mean = x / 2.0;

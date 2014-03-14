@@ -165,10 +165,10 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
                     // reload them and put them into memory
                     boolean success;
-                    success = loadFromCache(eastFile,hash,Direction.EAST,config);
-                    success = success && loadFromCache(westFile,hash,Direction.WEST,config);
-                    success = success && loadFromCache(southFile,hash,Direction.SOUTH,config);
-                    success = success && loadFromCache(northFile,hash,Direction.NORTH,config);
+                    success = loadFromCache(file.getName(),eastFile,hash,Direction.EAST,config);
+                    success = success && loadFromCache(file.getName(),westFile,hash,Direction.WEST,config);
+                    success = success && loadFromCache(file.getName(),southFile,hash,Direction.SOUTH,config);
+                    success = success && loadFromCache(file.getName(),northFile,hash,Direction.NORTH,config);
 
                     if(!success){
                         Minions.w("Failed to load cached file for schematic '%s'", file.getName());
@@ -230,7 +230,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         return hashes;
     }
 
-    private boolean loadFromCache(File file,String hash,Direction direction,SchematicConfig config){
+    private boolean loadFromCache(String name,File file,String hash,Direction direction,SchematicConfig config){
         try {
             SchematicFormat format = SchematicFormat.getFormat(file);
             CuboidClipboard cuboid = format.load(file);
@@ -244,7 +244,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
             dao.storeClipboard(thash,file.getName(), direction,config,size);
             if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
-                dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
+                dao.storeClipboard(thash,name, Direction.NONE,config,size);
             }
             return true;
         } catch (IOException e) {

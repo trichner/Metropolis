@@ -35,9 +35,13 @@ public class District implements IDistrict {
         for(int i=0;i< MAX_ITERATIONS;i++){ // if we fail, try again
             Set<ClipboardParcel> parcels = new HashSet<>();
             tscore = nextRecPartition(parcels,base,size);
-            if(tscore>=score)
+            if(tscore>=score){
                 max = parcels;
+                score=tscore;
+            }
         }
+
+        Minions.d("Final score: " + score);
 
         for(Parcel parcel : max){
             grid.fillParcels(parcel.getChunkX(),parcel.getChunkZ(),parcel);
@@ -118,12 +122,15 @@ public class District implements IDistrict {
     }
 
     private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous){
-        if(!(grid.getRandom().getChance(BUILD_CHANCE))) return null;
-        ClipboardParcel p = placeRandomBuild(base,size,previous,SchematicType.BUILD);
-        if(!(grid.getRandom().getChance(FILLER_CHANCE))) return null;
-        if(p!=null) return p;
-        p = placeRandomBuild(base,size,previous,SchematicType.FILLER);
-        return p;
+        if((grid.getRandom().getChance(BUILD_CHANCE))){
+            ClipboardParcel p = placeRandomBuild(base,size,previous,SchematicType.BUILD);
+            if(p!=null) return p;
+        }
+
+        if((grid.getRandom().getChance(FILLER_CHANCE))){
+            return placeRandomBuild(base,size,previous,SchematicType.FILLER);
+        }
+        return null;
     }
 
     private int BUILD_CHANCE = PluginConfig.getBuildChance();
@@ -163,7 +170,7 @@ public class District implements IDistrict {
 
     private static final int scoreParcel(ClipboardParcel parcel,Cartesian2D size){
         if(parcel.getSchematicType().equals(SchematicType.BUILD))
-            return scoreArea(size)*parcel.getClipboard().getConfig().getOddsOfAppearance(); //might keep OddsOfAppearance out, they are veeery fuzzy
+            return scoreArea(size);//*parcel.getClipboard().getConfig().getOddsOfAppearance(); //might keep OddsOfAppearance out, they are veeery fuzzy
         return -scoreArea(size);
     }
 

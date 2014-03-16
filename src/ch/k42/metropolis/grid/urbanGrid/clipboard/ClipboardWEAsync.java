@@ -111,11 +111,11 @@ public class ClipboardWEAsync implements Clipboard {
                                 name = validateChestName(rand, name);
                                 nameChest(chest, name);
                             }catch (NullPointerException e){
-                                generator.reportDebug("NPE while naming chest.");
+                                Minions.d("NPE while naming chest.");
                             }
                         }
                     } else {
-                        generator.reportDebug("Chest coordinates were wrong! (" + block + ")");
+                        Minions.d("Chest coordinates were wrong! (" + block + ")");
                     }
                 }
             }
@@ -141,12 +141,12 @@ public class ClipboardWEAsync implements Clipboard {
                             }
                         }
                     } else {
-                        generator.reportDebug("Spawner coordinates were wrong!");
+                        Minions.d("Spawner coordinates were wrong!");
                     }
                 }
             }
         } catch (Exception e) { //FIXME don't catch generic Exception!!!!
-            generator.logException("placing schematic failed", e);
+            Minions.d("placing schematic failed");
         }
     }
 

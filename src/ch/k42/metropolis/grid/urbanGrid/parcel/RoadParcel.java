@@ -10,6 +10,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.minions.Minions;
 import org.bukkit.Chunk;
 
 import java.util.List;
@@ -105,7 +106,7 @@ public class RoadParcel extends StreetParcel {
                         if (hasWest) { // W
                             //no deadends
                         } else { // none, is an isolated road
-                            generator.reportDebug("found an isolated roadcell, nothing placed"); // better solution?
+                            Minions.d("found an isolated roadcell, nothing placed"); // better solution?
                         }
                     }
                 }
@@ -117,11 +118,11 @@ public class RoadParcel extends StreetParcel {
                 decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
                 decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
             }else{
-                generator.reportDebug("Couldn't find road fit.");
+                Minions.d("Couldn't find road fit.");
             }
 
         } else {
-            generator.reportDebug("Wanted to place road where it should not belong...");
+            Minions.d("Wanted to place road where it should not belong...");
         }
     }
 

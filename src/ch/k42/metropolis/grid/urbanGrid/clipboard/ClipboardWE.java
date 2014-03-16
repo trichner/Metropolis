@@ -4,13 +4,11 @@ import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.provider.EnvironmentProvider;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.Cartesian3D;
-import ch.k42.metropolis.minions.DirtyHacks;
-import ch.k42.metropolis.minions.GridRandom;
+import ch.k42.metropolis.minions.*;
 import ch.k42.metropolis.plugin.PluginConfig;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
@@ -80,11 +78,11 @@ public class ClipboardWE implements Clipboard {
                                 name = validateChestName(rand, name);
                                 nameChest(chest, name);
                             }catch (NullPointerException e){
-                                generator.reportDebug("NPE while naming chest.");
+                                Minions.d("NPE while naming chest.");
                             }
                         }
                     } else {
-                        generator.reportDebug("Chest coordinates were wrong! (" + block + ")");
+                        Minions.d("Chest coordinates were wrong! (" + block + ")");
                     }
                 }
             }
@@ -110,12 +108,13 @@ public class ClipboardWE implements Clipboard {
                             }
                         }
                     } else {
-                        generator.reportDebug("Spawner coordinates were wrong!");
+                        Minions.w("Spawner coordinates were wrong!");
                     }
                 }
             }
-        } catch (Exception e) { //FIXME don't catch generic Exception!!!!
-            generator.logException("placing schematic failed", e);
+        } catch (MaxChangedBlocksException e) { //FIXME don't catch generic Exception!!!!
+            Minions.w("Placing schematic failed. WorldEdit fucked up.");
+            Minions.e(e);
         }
     }
 
@@ -125,7 +124,7 @@ public class ClipboardWE implements Clipboard {
     }
 
 
-    private void place(MetropolisGenerator generator, EditSession editSession, Vector pos) throws Exception {
+    private void place(MetropolisGenerator generator, EditSession editSession, Vector pos) throws MaxChangedBlocksException {
         EnvironmentProvider natureDecay = generator.getNatureDecayProvider();
         chests.clear();
         spawners.clear();

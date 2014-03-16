@@ -9,6 +9,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
+import ch.k42.metropolis.minions.Minions;
 import org.bukkit.Chunk;
 import sun.net.www.content.image.gif;
 
@@ -65,7 +66,7 @@ public class HighwayParcel extends StreetParcel {
             decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
             decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
         } else {
-            generator.reportDebug("Haven't found any HIGHWAY schem for: " + roadType.toString());
+            Minions.d("Haven't found any HIGHWAY schem for: " + roadType.toString());
         }
     }
 

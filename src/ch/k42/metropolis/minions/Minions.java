@@ -32,6 +32,13 @@ public class Minions {
     }
 
 
+    public static void e(Exception e) {
+        Bukkit.getLogger().warning(TAG+"Exception: " + e.getMessage());
+        if(PluginConfig.isDebugEnabled()){
+            e.printStackTrace();
+        }
+    }
+
 
     public static final void i(String msg){
         Bukkit.getLogger().info(TAG+msg);
@@ -165,4 +172,5 @@ public class Minions {
         }
         return 0; // something went wrong
     }
+
 }

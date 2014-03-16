@@ -47,6 +47,7 @@ public class GridRandom {
      * @return true in 'percent' tries
      */
     public boolean getChance(int percent) {
+        if(percent<=0) return false;
         return random.nextInt(100) < percent;
     }
 

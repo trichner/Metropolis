@@ -8,6 +8,7 @@ import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.provider.*;
+import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
@@ -151,8 +152,8 @@ public class MetropolisGenerator extends ChunkGenerator {
             }
             return chunk;//byteChunk.blocks;
 
-        } catch (Exception e) {
-            logException("ChunkPopulator FAILED: " + e.getMessage(), e);
+        } catch (NullPointerException e) {
+            Minions.e(e);
             return null;
         }
     }
@@ -197,13 +198,4 @@ public class MetropolisGenerator extends ChunkGenerator {
         return new Location(world, spawnX, spawnY, spawnZ);
     }
 
-    public void reportDebug(String message) {
-        if (PluginConfig.isDebugEnabled())
-            plugin.getLogger().info("[====DEBUG====]" + message);
-    }
-
-    public void logException(String message, Exception e) {
-        plugin.getLogger().throwing(MetropolisGenerator.class.getName(), message + " ---- " + e.getMessage(), e);
-        e.printStackTrace();
-    }
 }

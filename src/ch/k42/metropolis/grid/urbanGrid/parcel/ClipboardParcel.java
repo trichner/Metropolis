@@ -13,7 +13,7 @@ import ch.k42.metropolis.minions.Constants;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_7_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_7_R2.CraftChunk;
 
 /**
  * Represents a Parcel with a schematic/clipboard as building.

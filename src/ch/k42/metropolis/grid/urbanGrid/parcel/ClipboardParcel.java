@@ -64,7 +64,7 @@ public class ClipboardParcel extends Parcel {
     }
 
     private final int cutoutDepth = 8;
-    private final int cutoutHeight = 8;
+    private final int cutoutHeight = 11;
 
     public Clipboard getClipboard() {
         return clipboard;

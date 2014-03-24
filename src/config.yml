@@ -13,3 +13,4 @@ generator:
     blockSize: 14                         # after what size the generator stops to partition space with roads inbetween
     sigmaCut: 6                           # the number of standart deviations the probability of a partition of a space has from the mean of size/2
     cloneRadius: 7                        # the number of chunks in which placing checks for duplicates, distance is measured with the infinity norm
+    buildHeight: 65                       # The level of the streets

@@ -1,4 +1,6 @@
 TODO
 
-- Use Cache, don't always load schems again
+- Use Cache, don't always load schems again DONE
 - Make loading concurrent
+- Don't load all schems into memory
+- Convert to Maven project

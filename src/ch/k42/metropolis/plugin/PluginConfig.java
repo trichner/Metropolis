@@ -44,6 +44,10 @@ public class PluginConfig {
     private static final String pathCloneRadius = "generator.cloneRadius";
     private static int cloneRadius = 7;
 
+    private static final String pathBuildHeight = "generator.buildHeight";
+    private static int buildHeight = 65;
+
+
     private PluginConfig() {}
 
     public static int getCloneRadius() {
@@ -86,6 +90,10 @@ public class PluginConfig {
         return fillerChance;
     }
 
+    public static int getBuildHeight() {
+        return buildHeight;
+    }
+
     public static void loadFromFile(FileConfiguration configFile){
         debugOutput = configFile.getBoolean(pathDebug, debugOutput);
         chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
@@ -98,6 +106,7 @@ public class PluginConfig {
         blockSize = configFile.getInt(pathBlockSize,blockSize);
         sigmaCut = configFile.getInt(pathSigmaCut,sigmaCut);
         cloneRadius = configFile.getInt(pathCloneRadius,cloneRadius);
+        buildHeight = configFile.getInt(pathBuildHeight,buildHeight);
     }
 
 }

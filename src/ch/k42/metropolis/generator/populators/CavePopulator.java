@@ -34,7 +34,7 @@ public class CavePopulator extends BlockPopulator {
     @Override
     public void populate(final World world, final Random random, Chunk source) {
 
-        if (random.nextInt(100) < 30) {
+        if (random.nextInt(100) < 20) {
             final int x = 4 + random.nextInt(8) + source.getX() * 16;
             final int z = 4 + random.nextInt(8) + source.getZ() * 16;
             int maxY = world.getHighestBlockYAt(x, z);

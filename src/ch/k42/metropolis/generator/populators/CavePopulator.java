@@ -2,6 +2,7 @@ package ch.k42.metropolis.generator.populators;
 
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.XYZ;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -34,7 +35,7 @@ public class CavePopulator extends BlockPopulator {
     @Override
     public void populate(final World world, final Random random, Chunk source) {
 
-        if (random.nextInt(100) < 20) {
+        if (random.nextInt(100) < PluginConfig.getCaveChance()) {
             final int x = 4 + random.nextInt(8) + source.getX() * 16;
             final int z = 4 + random.nextInt(8) + source.getZ() * 16;
             int maxY = world.getHighestBlockYAt(x, z);

@@ -47,6 +47,9 @@ public class PluginConfig {
     private static final String pathBuildHeight = "generator.buildHeight";
     private static int buildHeight = 65;
 
+    private static final String pathCaveChance = "generator.caveChance";
+    private static int caveChance = 20;
+
 
     private PluginConfig() {}
 
@@ -94,6 +97,10 @@ public class PluginConfig {
         return buildHeight;
     }
 
+    public static int getCaveChance() {
+        return caveChance;
+    }
+
     public static void loadFromFile(FileConfiguration configFile){
         debugOutput = configFile.getBoolean(pathDebug, debugOutput);
         chestRenaming = configFile.getBoolean(pathChestRenaming, chestRenaming);
@@ -107,6 +114,7 @@ public class PluginConfig {
         sigmaCut = configFile.getInt(pathSigmaCut,sigmaCut);
         cloneRadius = configFile.getInt(pathCloneRadius,cloneRadius);
         buildHeight = configFile.getInt(pathBuildHeight,buildHeight);
+        caveChance = configFile.getInt(pathCaveChance,caveChance);
     }
 
 }

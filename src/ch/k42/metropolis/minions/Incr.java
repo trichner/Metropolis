@@ -7,8 +7,9 @@ package ch.k42.metropolis.minions;
 public class Incr {
     private int value=0;
 
-    public void incr(){
+    public Incr incr(){
         value++;
+        return this;
     }
 
     public void decr(){

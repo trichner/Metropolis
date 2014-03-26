@@ -83,6 +83,10 @@ public abstract class Parcel {
         this.chunkSizeZ = chunkSizeZ;
     }
 
+    public Cartesian2D getChunkSize(){
+        return new Cartesian2D(chunkX,chunkZ);
+    }
+
     @Override
     public String toString() {
         return "Parcel{" +

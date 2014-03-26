@@ -1,11 +1,9 @@
 package ch.k42.metropolis.grid.urbanGrid;
 
-import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.common.Grid;
 import ch.k42.metropolis.grid.common.GridProvider;
-import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardWE;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.districts.District;
 import ch.k42.metropolis.grid.urbanGrid.districts.IDistrict;
@@ -20,6 +18,7 @@ import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 
+import java.io.*;
 import java.util.*;
 
 /**
@@ -31,9 +30,9 @@ public class UrbanGrid extends Grid {
 
     private Parcel[][] parcels = new Parcel[GRID_SIZE][GRID_SIZE];
 
-    private ContextProvider contextProvider;
-    private GridStatistics statistics;
-    private ClipboardProvider clipboardProvider;
+    private final ContextProvider contextProvider;
+    private final GridStatistics statistics;
+    private final ClipboardProvider clipboardProvider;
 
     private Set<IDistrict> districtSet = new HashSet<>();
 
@@ -47,7 +46,25 @@ public class UrbanGrid extends Grid {
         for(IDistrict district :districtSet){
             district.fillDistrict();
         }
-        Bukkit.getLogger().info("Set new grid.");
+        Minions.i("Set new grid.");
+        if(PluginConfig.isDebugEnabled()){
+            Bukkit.getScheduler().runTaskAsynchronously(generator.getPlugin(),new Runnable() {
+                @Override
+                public void run() {
+                    String filename = UrbanGrid.this.generator.getPlugin().getDataFolder().getAbsolutePath() + File.separator+"gridlog "+UrbanGrid.this.root.X +"_" + UrbanGrid.this.root.Y + ".txt";
+                    try {
+                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename)));
+                        writer.write(statistics.printStatistics());
+                        writer.close();
+                    } catch (FileNotFoundException e) {
+                        Minions.e(e);
+                    } catch (IOException e) {
+                        Minions.e(e);
+                    }
+                }
+            });
+        }
+
     }
 
     private void placeHighways() { // places roads all around the grid
@@ -224,4 +241,7 @@ public class UrbanGrid extends Grid {
     public ClipboardProvider getClipboardProvider() {
         return clipboardProvider;
     }
+
+
+
 }

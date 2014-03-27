@@ -35,9 +35,7 @@ public class ClipboardParcel extends Parcel {
         super(base,size,contextType,schematicType,grid);
         this.clipboard = clipboard;
         this.direction = direction;
-        if (clipboard != null) {
-            grid.getStatistics().logSchematic(clipboard);
-        }
+        grid.getStatistics().logSchematic(clipboard);
     }
 
     /*

@@ -16,11 +16,11 @@ abstract public class Grid {
 
     public static final int GRID_SIZE = GridProvider.GRID_SIZE;
 
-    protected GridRandom random;
-    protected GridProvider gridProvider;
-    protected MetropolisGenerator generator;
+    protected final GridRandom random;
+    protected final GridProvider gridProvider;
+    protected final MetropolisGenerator generator;
 
-    protected Cartesian2D root;
+    protected final Cartesian2D root;
 
     protected Grid(GridRandom random, GridProvider gridProvider, MetropolisGenerator generator, Cartesian2D root) {
         this.random = random;

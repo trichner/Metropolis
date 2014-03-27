@@ -6,7 +6,7 @@ authors: [AthmosPrime, trichner, spaceribs]
 website: k42.ch
 description: Metropolis (1927)
 softdepend: [WorldEdit]
-loadbefore: [Multiverse-Core, dimension-door, multiworld]
+loadbefore: [NoLagg, Multiverse-Core, dimension-door, multiworld]
 database: true
 prefix: Metropolis
 commands:

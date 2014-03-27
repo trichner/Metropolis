@@ -10,10 +10,14 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
+import com.bergerkiller.bukkit.common.bases.IntVector2;
+import com.bergerkiller.bukkit.nolagg.itembuffer.ItemMap;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_7_R2.CraftChunk;
+import com.bergerkiller.bukkit.nolagg.lighting.LightingService;
+
+import java.util.List;
 
 /**
  * Represents a Parcel with a schematic/clipboard as building.
@@ -25,12 +29,15 @@ public class ClipboardParcel extends Parcel {
 
     private Clipboard clipboard;
     private Direction direction;
+    private List<IntVector2> lightchunk;
 
     public ClipboardParcel(UrbanGrid grid, Cartesian2D base, Cartesian2D size, Clipboard clipboard, ContextType contextType, SchematicType schematicType, Direction direction) {
         super(base,size,contextType,schematicType,grid);
         this.clipboard = clipboard;
         this.direction = direction;
-        grid.getStatistics().logSchematic(clipboard);
+        if (clipboard != null) {
+            grid.getStatistics().logSchematic(clipboard);
+        }
     }
 
     /*
@@ -59,7 +66,6 @@ public class ClipboardParcel extends Parcel {
             clipboard.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT);
             // TODO use config, don't always destroy
             generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(streetLevel), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
-
         }
     }
 
@@ -122,7 +128,18 @@ public class ClipboardParcel extends Parcel {
                     break;
             }
         }
-        ((CraftChunk)chunk).getHandle().initLighting(); //FIXME does it work?
+
+        //NoLagg Entity Removal
+        ItemMap.clear(generator.getWorld());
+
+        //NoLagg Lighting Fix
+        lightchunk.add(new IntVector2(chunk));
+        LightingService.schedule(generator.getWorld(), lightchunk);
+
+        //Refresh and Force Garbage Collection
+        generator.getWorld().refreshChunk(chunkX, chunkZ);
+        Runtime.getRuntime().gc();
+
     }
 
     /**

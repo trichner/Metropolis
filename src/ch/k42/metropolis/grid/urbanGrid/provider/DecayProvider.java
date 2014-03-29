@@ -5,7 +5,10 @@ import ch.k42.metropolis.minions.DecayOption;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Provides decay to area of blocks.
@@ -72,21 +75,27 @@ public abstract class DecayProvider {
     public void destroyWithin(int x1, int x2, int y1, int y2, int z1, int z2, DecayOption options) {
     }
 
+    private static Set<Material> invalidBlocks;
+    private static Set<Material> unsupportingBlocks;
+
+    static {
+        Set<Material> set = new HashSet<>();
+        set.add(Material.GRASS);
+        set.add(Material.LEAVES);
+        set.add(Material.LOG);
+        invalidBlocks = Collections.unmodifiableSet(set);
+        set = new HashSet<>();
+        set.add(Material.LEAVES);
+        set.add(Material.VINE);
+        set.add(Material.LOG);
+        unsupportingBlocks = Collections.unmodifiableSet(set);
+    }
+
     protected boolean isValid(Block block) {
-        return (
-                block.getType() != Material.GRASS
-                        //&& block.getType() != Material.DIRT
-                        && block.getType() != Material.LEAVES
-                        && block.getType() != Material.LOG
-        );
+        return !invalidBlocks.contains(block.getType());
     }
 
     protected boolean isSupporting(Block block) {
-        return (
-                block.getType() != Material.LEAVES
-                        && block.getType() != Material.VINE
-                        && block.getType() != Material.LOG
-                        && !block.isEmpty()
-        );
+        return !unsupportingBlocks.contains(block.getType()) && !block.isEmpty();
     }
 }

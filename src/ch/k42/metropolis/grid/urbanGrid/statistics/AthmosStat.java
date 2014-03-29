@@ -79,9 +79,11 @@ public class AthmosStat implements GridStatistics {
 
     @Override
     public void logSchematic(Clipboard p) {
-        logByName(p);
-        logBySize(p);
-        count.incr();
+        if (p != null) {
+            logByName(p);
+            logBySize(p);
+            count.incr();
+        }
     }
 
 

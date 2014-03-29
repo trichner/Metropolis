@@ -5,8 +5,8 @@ load: startup
 authors: [AthmosPrime, trichner, spaceribs]
 website: k42.ch
 description: Metropolis (1927)
-softdepend: [WorldEdit]
-loadbefore: [NoLagg, Multiverse-Core, dimension-door, multiworld]
+softdepend: [WorldEdit, NoLagg]
+loadbefore: [Multiverse-Core, dimension-door, multiworld]
 database: true
 prefix: Metropolis
 commands:

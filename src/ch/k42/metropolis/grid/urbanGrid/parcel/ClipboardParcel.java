@@ -11,12 +11,14 @@ import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
 import com.bergerkiller.bukkit.common.bases.IntVector2;
-import com.bergerkiller.bukkit.nolagg.itembuffer.ItemMap;
+//import com.bergerkiller.bukkit.nolagg.itembuffer.ItemMap;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import com.bergerkiller.bukkit.nolagg.lighting.LightingService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +31,6 @@ public class ClipboardParcel extends Parcel {
 
     private Clipboard clipboard;
     private Direction direction;
-    private List<IntVector2> lightchunk;
 
     public ClipboardParcel(UrbanGrid grid, Cartesian2D base, Cartesian2D size, Clipboard clipboard, ContextType contextType, SchematicType schematicType, Direction direction) {
         super(base,size,contextType,schematicType,grid);
@@ -127,16 +128,19 @@ public class ClipboardParcel extends Parcel {
             }
         }
 
-        //NoLagg Entity Removal
-        ItemMap.clear(generator.getWorld());
+//        //NoLagg Entity Removal
+//        ItemMap.clear(generator.getWorld());
 
         //NoLagg Lighting Fix
-        lightchunk.add(new IntVector2(chunk));
-        LightingService.schedule(generator.getWorld(), lightchunk);
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg")) {
+            List<IntVector2> lightchunk = new ArrayList<>();
+            lightchunk.add(new IntVector2(chunk));
+            LightingService.schedule(generator.getWorld(), lightchunk);
+        }
 
-        //Refresh and Force Garbage Collection
-        generator.getWorld().refreshChunk(chunkX, chunkZ);
-        Runtime.getRuntime().gc();
+//        //Refresh and Force Garbage Collection
+//        generator.getWorld().refreshChunk(chunkX, chunkZ);
+//        Runtime.getRuntime().gc();
 
     }
 

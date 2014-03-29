@@ -184,9 +184,13 @@ public class DecayProviderNormal extends DecayProvider {
     protected boolean isValid(Block block) {
         return (
                 block.getType() != Material.GRASS
+                && block.getType() != Material.LONG_GRASS
+                && block.getType() != Material.DOUBLE_PLANT
                 && block.getType() != Material.DIRT
                 && block.getType() != Material.LEAVES
+                && block.getType() != Material.LEAVES_2
                 && block.getType() != Material.LOG
+                && block.getType() != Material.LOG_2
                 && block.getType() != Material.WATER
                 && block.getType() != Material.STATIONARY_WATER
                 && block.getType() != Material.LAVA
@@ -198,8 +202,12 @@ public class DecayProviderNormal extends DecayProvider {
         return (
 
                 block.getType() != Material.LEAVES
+                        && block.getType() != Material.LEAVES_2
+                        && block.getType() != Material.DOUBLE_PLANT
+                        && block.getType() != Material.LONG_GRASS
                         && block.getType() != Material.VINE
                         && block.getType() != Material.LOG
+                        && block.getType() != Material.LOG_2
                         && block.getType() != Material.WATER
                         && block.getType() != Material.STATIONARY_WATER
                         && block.getType() != Material.LAVA

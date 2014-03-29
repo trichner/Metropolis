@@ -161,6 +161,7 @@ public class DecayProviderNether extends DecayProvider {
                 type == Material.DOUBLE_PLANT
                 || type == Material.LONG_GRASS
                 || type == Material.LEAVES
+                || type == Material.LEAVES_2
                 || type == Material.LOG
                 || type == Material.LOG_2
                 || type == Material.VINE

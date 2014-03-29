@@ -37,10 +37,8 @@ public class AthmosStat implements GridStatistics {
 
             Size size = (Size) o;
 
-            if (x != size.x) return false;
-            if (z != size.z) return false;
+            return x == size.x && z == size.z;
 
-            return true;
         }
 
         @Override
@@ -52,8 +50,8 @@ public class AthmosStat implements GridStatistics {
         }
     }
 
-    private Map<Clipboard,Incr> statsByName = new HashMap<Clipboard,Incr>();
-    private Map<Size,Incr> statsBySize = new HashMap<Size,Incr>();
+    private Map<Clipboard,Incr> statsByName = new HashMap<>();
+    private Map<Size,Incr> statsBySize = new HashMap<>();
     private Incr count = new Incr();
 
     private void logByName(Clipboard p){
@@ -106,7 +104,7 @@ public class AthmosStat implements GridStatistics {
 
     @Override
     public String printStatistics() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("- Statistics -----------\n");
         sb.append(" global count: ").append(count).append('\n');
 

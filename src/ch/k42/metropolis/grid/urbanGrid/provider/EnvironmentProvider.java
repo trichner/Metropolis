@@ -16,7 +16,5 @@ public abstract class EnvironmentProvider {
         this.seed = newSeed;
     }
 
-    public Material checkBlock(World world, int posX, int posY, int posZ) {
-        return null;
-    }
+    public abstract Material checkBlock(World world, int posX, int posY, int posZ);
 }

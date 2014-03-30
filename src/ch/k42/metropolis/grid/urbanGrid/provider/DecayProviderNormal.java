@@ -3,6 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.provider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
 import org.bukkit.TreeType;
@@ -11,7 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.material.LongGrass;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Provides decay to area of blocks.
@@ -171,7 +174,6 @@ public class DecayProviderNormal extends DecayProvider {
                                 vineMeta += 8;
                             if (neighbors[4].getType().isSolid() && neighbors[4].getType() != Material.VINE)
                                 vineMeta += 2;
-
                             if (vineMeta > 0)
                                 block.setTypeIdAndData(Material.VINE.getId(), vineMeta, true);
                         }
@@ -181,39 +183,18 @@ public class DecayProviderNormal extends DecayProvider {
         }
     }
 
+
+
     protected boolean isValid(Block block) {
-        return (
-                block.getType() != Material.GRASS
-                && block.getType() != Material.LONG_GRASS
-                && block.getType() != Material.DOUBLE_PLANT
-                && block.getType() != Material.DIRT
-                && block.getType() != Material.LEAVES
-                && block.getType() != Material.LEAVES_2
-                && block.getType() != Material.LOG
-                && block.getType() != Material.LOG_2
-                && block.getType() != Material.WATER
-                && block.getType() != Material.STATIONARY_WATER
-                && block.getType() != Material.LAVA
-                && block.getType() != Material.STATIONARY_LAVA
-        );
+        return !invalidBlocks.contains(block.getType());
     }
 
-    protected boolean isSupporting(Block block) {
-        return (
+    private static Set<Material> unsupportingBlocks = ImmutableSet.of(Material.LEAVES_2, Material.LEAVES, Material.DOUBLE_PLANT,Material.LONG_GRASS,Material.VINE,Material.LOG,Material.LOG_2,Material.WATER,Material.STATIONARY_WATER,Material.LAVA,Material.STATIONARY_LAVA);
 
-                block.getType() != Material.LEAVES
-                        && block.getType() != Material.LEAVES_2
-                        && block.getType() != Material.DOUBLE_PLANT
-                        && block.getType() != Material.LONG_GRASS
-                        && block.getType() != Material.VINE
-                        && block.getType() != Material.LOG
-                        && block.getType() != Material.LOG_2
-                        && block.getType() != Material.WATER
-                        && block.getType() != Material.STATIONARY_WATER
-                        && block.getType() != Material.LAVA
-                        && block.getType() != Material.STATIONARY_LAVA
-                        && !block.isEmpty()
-        );
+    private static Set<Material> invalidBlocks = ImmutableSet.<Material>builder().addAll(unsupportingBlocks).add(Material.GRASS).build();
+
+    protected boolean isSupporting(Block block) {
+        return !unsupportingBlocks.contains(block.getType()) && !block.isEmpty();
     }
 
     protected boolean isSupporting(Block block, double holeAbove, double fullDecay) {

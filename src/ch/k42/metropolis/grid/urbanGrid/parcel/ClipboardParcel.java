@@ -10,16 +10,11 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
-import com.bergerkiller.bukkit.common.bases.IntVector2;
-//import com.bergerkiller.bukkit.nolagg.itembuffer.ItemMap;
-import org.bukkit.Bukkit;
+import ch.k42.metropolis.minions.NoLaggAPI;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import com.bergerkiller.bukkit.nolagg.lighting.LightingService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Represents a Parcel with a schematic/clipboard as building.
@@ -132,10 +127,8 @@ public class ClipboardParcel extends Parcel {
 //        ItemMap.clear(generator.getWorld());
 
         //NoLagg Lighting Fix
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg")) {
-            List<IntVector2> lightchunk = new ArrayList<>();
-            lightchunk.add(new IntVector2(chunk));
-            LightingService.schedule(generator.getWorld(), lightchunk);
+        if (generator.isNoLaggEnabled() && PluginConfig.getNoLaggRelighting()) {
+            NoLaggAPI.relightChunk(chunk);
         }
 
 //        //Refresh and Force Garbage Collection

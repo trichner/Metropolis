@@ -11,10 +11,7 @@ import ch.k42.metropolis.grid.urbanGrid.provider.*;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import ch.k42.metropolis.plugin.PluginConfig;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.ChunkGenerator;
@@ -54,10 +51,13 @@ public class MetropolisGenerator extends ChunkGenerator {
     public DecayProvider decayProvider;
     public EnvironmentProvider natureDecay;
 
+    private boolean noLaggEnabled;
+
     public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProvider clipboardProvider) {
         this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;
         this.worldName = worldName;
+        this.noLaggEnabled = Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg");
         plugin.getLogger().info("Running MetropolisGenerator.");
     }
 
@@ -92,6 +92,8 @@ public class MetropolisGenerator extends ChunkGenerator {
     public Long getWorldSeed() {
         return worldSeed;
     }
+
+    public boolean isNoLaggEnabled() { return noLaggEnabled; }
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {

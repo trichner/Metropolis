@@ -51,7 +51,7 @@ public class PluginConfig {
     private static int caveChance = 20;
 
     private static final String pathNoLaggRelighting = "generator.noLaggRelighting";
-    private static boolean  noLaggRelighting = true;
+    private static boolean  noLaggRelighting = false;
 
     private PluginConfig() {}
 

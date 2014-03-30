@@ -24,6 +24,23 @@ import java.util.Set;
  */
 public class DecayProviderNormal extends DecayProvider {
 
+    private static Set<Material> unsupportingBlocks = ImmutableSet.of(
+            Material.LEAVES,
+            Material.LEAVES_2,
+            Material.DOUBLE_PLANT,
+            Material.GRASS,
+            Material.LONG_GRASS,
+            Material.VINE,
+            Material.LOG,
+            Material.LOG_2,
+            Material.WATER,
+            Material.STATIONARY_WATER,
+            Material.LAVA,
+            Material.STATIONARY_LAVA
+    );
+
+    private static Set<Material> invalidBlocks = ImmutableSet.<Material>builder().addAll(unsupportingBlocks).build();
+
     public DecayProviderNormal(MetropolisGenerator generator, Random random) {
         super(generator, random);
     }
@@ -135,8 +152,11 @@ public class DecayProviderNormal extends DecayProvider {
                                 } else if (n == 3) {
                                     double holeAsideNoise = noiseGen.noise((x+1) * holeScale, y * holeScale, z * holeScale, 0.3D, 0.6D, true);
                                     support += this.isSupporting(neighbors[n], holeAsideNoise, fulldecay) ? 1 : 0;
+                                } else if (n == 2) {
+                                    double holeAsideNoise = noiseGen.noise(x * holeScale, y * holeScale, (z+1) * holeScale, 0.3D, 0.6D, true);
+                                    support += this.isSupporting(neighbors[n], holeAsideNoise, fulldecay) ? 1 : 0;
                                 } else {
-                                support += this.isSupporting(neighbors[n]) ? 1 : 0;
+                                    support += this.isSupporting(neighbors[n]) ? 1 : 0;
                                 }
                             }
 
@@ -188,10 +208,6 @@ public class DecayProviderNormal extends DecayProvider {
     protected boolean isValid(Block block) {
         return !invalidBlocks.contains(block.getType());
     }
-
-    private static Set<Material> unsupportingBlocks = ImmutableSet.of(Material.LEAVES_2, Material.LEAVES, Material.DOUBLE_PLANT,Material.LONG_GRASS,Material.VINE,Material.LOG,Material.LOG_2,Material.WATER,Material.STATIONARY_WATER,Material.LAVA,Material.STATIONARY_LAVA);
-
-    private static Set<Material> invalidBlocks = ImmutableSet.<Material>builder().addAll(unsupportingBlocks).add(Material.GRASS).build();
 
     protected boolean isSupporting(Block block) {
         return !unsupportingBlocks.contains(block.getType()) && !block.isEmpty();

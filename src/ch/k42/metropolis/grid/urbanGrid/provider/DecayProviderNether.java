@@ -3,12 +3,14 @@ package ch.k42.metropolis.grid.urbanGrid.provider;
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.DecayOption;
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Provides decay to area of blocks.
@@ -39,6 +41,7 @@ public class DecayProviderNether extends DecayProvider {
         if (y2 < 0) y2 = 0;
 
         int MAX = Constants.WORLD_HEIGHT;
+        int groundHeight = Constants.BUILD_HEIGHT;
         if (y1 > MAX) y1 = MAX;
         if (y2 > MAX) y2 = MAX;
 
@@ -87,7 +90,7 @@ public class DecayProviderNether extends DecayProvider {
                         block.setType(Material.LONG_GRASS);
                     }
 
-                    if (isRemoved(block)) {
+                    if (isDeleted(block)) {
                         block.setType(Material.AIR);
                     }
 
@@ -105,33 +108,39 @@ public class DecayProviderNether extends DecayProvider {
 //                        neighbors[0].setType(Material.FIRE);
 //                    }
 
-                    if (!block.isEmpty() && (holeNoise > fulldecay)) {
-                        block.setType(Material.AIR);
-                    } else if (isValid(block) && holeNoise > partialdecay) {
-                        switch (block.getType()) { //TODO too many hardcoded values
-                            case STONE:
-                            case SANDSTONE:
-                            case COBBLESTONE:
-                            case CLAY_BRICK:
-                            case BRICK:
-                            case SMOOTH_BRICK:
-                                if (random.nextInt(100) < 40) break; // 40% nothing
-                                block.setType(Material.NETHERRACK);
-                                break;
-                            default:
-                                block.setType(Material.AIR);
-                                break;
+                    if (y < groundHeight && holeNoise > partialdecay) {
+                        block.setType(Material.LAVA);
+                    } else {
+
+                        if (!block.isEmpty() && (holeNoise > fulldecay)) {
+                            block.setType(Material.AIR);
+                        } else if (isValid(block) && holeNoise > partialdecay) {
+                            switch (block.getType()) { //TODO too many hardcoded values
+                                case STONE:
+                                case SANDSTONE:
+                                case COBBLESTONE:
+                                case CLAY_BRICK:
+                                case BRICK:
+                                case SMOOTH_BRICK:
+                                    if (random.nextInt(100) < 40) break; // 40% nothing
+                                    block.setType(Material.NETHERRACK);
+                                    break;
+                                default:
+                                    block.setType(Material.AIR);
+                                    break;
+                            }
+
+                            if (block.isEmpty() && !neighbors[5].isEmpty()) {
+                                int prob = 0;
+                                for (int i = 0; i < neighbors.length; i++) {
+                                    prob += neighbors[i].isEmpty() ? 1 : 0;
+                                }
+                                if (random.nextInt(500) < prob) {
+                                    block.setType(Material.LAVA);
+                                }
+                            }
                         }
 
-                        if (block.isEmpty() && !neighbors[5].isEmpty()) {
-                            int prob = 0;
-                            for (int i = 0; i < neighbors.length; i++) {
-                                prob += neighbors[i].isEmpty() ? 1 : 0;
-                            }
-                            if (random.nextInt(500) < prob) {
-                                block.setType(Material.LAVA);
-                            }
-                        }
                     }
                 }
             }
@@ -145,30 +154,32 @@ public class DecayProviderNether extends DecayProvider {
         );
     }
 
-
+    private static Set<Material> removableBlocks = ImmutableSet.of(
+            Material.THIN_GLASS,
+            Material.GLASS,
+            Material.STAINED_GLASS,
+            Material.STAINED_GLASS_PANE,
+            Material.WOODEN_DOOR
+    );
 
     protected static boolean isRemovable(Block block) {
-        return (
-            block.getType() != Material.THIN_GLASS
-                && block.getType() != Material.GLASS
-                && block.getType() != Material.STAINED_GLASS
-                && block.getType() != Material.STAINED_GLASS_PANE
-                && block.getType() != Material.WOODEN_DOOR
-        );
+        return removableBlocks.contains(block.getType());
     }
 
-    protected static boolean isRemoved(Block block) {
-        Material type = block.getType();
-        return (
-                type == Material.DOUBLE_PLANT
-                || type == Material.LONG_GRASS
-                || type == Material.LEAVES
-                || type == Material.LEAVES_2
-                || type == Material.LOG
-                || type == Material.LOG_2
-                || type == Material.VINE
-                || type == Material.WATER
-                || type == Material.STATIONARY_WATER
-        );
+    private static Set<Material> deletedBlocks = ImmutableSet.of(
+            Material.LEAVES,
+            Material.LEAVES_2,
+            Material.DOUBLE_PLANT,
+            Material.GRASS,
+            Material.LONG_GRASS,
+            Material.VINE,
+            Material.LOG,
+            Material.LOG_2,
+            Material.WATER,
+            Material.STATIONARY_WATER
+    );
+
+    protected static boolean isDeleted(Block block) {
+        return deletedBlocks.contains(block.getType());
     }
 }

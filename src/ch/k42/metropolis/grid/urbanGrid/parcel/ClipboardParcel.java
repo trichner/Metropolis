@@ -79,6 +79,25 @@ public class ClipboardParcel extends Parcel {
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         //To change body of implemented methods use File | Settings | File Templates.
         if(clipboard==null) return;
+        makeCutouts(generator,chunk);
+
+//        //NoLagg Entity Removal
+//        ItemMap.clear(generator.getWorld());
+
+        //NoLagg Lighting Fix
+        if (Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg")) {
+            List<IntVector2> lightchunk = new ArrayList<>();
+            lightchunk.add(new IntVector2(chunk));
+            LightingService.schedule(generator.getWorld(), lightchunk);
+        }
+
+//        //Refresh and Force Garbage Collection
+//        generator.getWorld().refreshChunk(chunkX, chunkZ);
+//        Runtime.getRuntime().gc();
+
+    }
+
+    private void makeCutouts(MetropolisGenerator generator, Chunk chunk) {
         //---- make sidewalk cutouts
         SchematicConfig.RoadCutout[] cuts = clipboard.getConfig().getCutouts();
 
@@ -127,21 +146,6 @@ public class ClipboardParcel extends Parcel {
                     break;
             }
         }
-
-//        //NoLagg Entity Removal
-//        ItemMap.clear(generator.getWorld());
-
-        //NoLagg Lighting Fix
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg")) {
-            List<IntVector2> lightchunk = new ArrayList<>();
-            lightchunk.add(new IntVector2(chunk));
-            LightingService.schedule(generator.getWorld(), lightchunk);
-        }
-
-//        //Refresh and Force Garbage Collection
-//        generator.getWorld().refreshChunk(chunkX, chunkZ);
-//        Runtime.getRuntime().gc();
-
     }
 
     /**

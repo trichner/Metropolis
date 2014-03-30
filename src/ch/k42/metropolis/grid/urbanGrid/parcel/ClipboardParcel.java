@@ -79,7 +79,7 @@ public class ClipboardParcel extends Parcel {
         generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(Constants.BUILD_HEIGHT), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
 
         //NoLagg Lighting Fix
-        if (generator.isNoLaggEnabled() && PluginConfig.getNoLaggRelighting()) {
+        if (PluginConfig.getNoLaggRelighting()) {
             NoLaggAPI.relightChunk(chunk);
         }
 

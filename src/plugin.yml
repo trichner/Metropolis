@@ -1,11 +1,11 @@
 name: Metropolis
 main: ch.k42.metropolis.plugin.MetropolisPlugin
-version: 0.1.4
+version: 0.1.5
 load: startup
 authors: [AthmosPrime, trichner, spaceribs]
 website: k42.ch
 description: Metropolis (1927)
-softdepend: [WorldEdit, NoLagg]
+softdepend: [WorldEdit]
 loadbefore: [Multiverse-Core, dimension-door, multiworld]
 database: true
 prefix: Metropolis

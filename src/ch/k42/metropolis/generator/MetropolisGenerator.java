@@ -57,7 +57,6 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;
         this.worldName = worldName;
-        this.noLaggEnabled = Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg");
         plugin.getLogger().info("Running MetropolisGenerator.");
     }
 
@@ -92,8 +91,6 @@ public class MetropolisGenerator extends ChunkGenerator {
     public Long getWorldSeed() {
         return worldSeed;
     }
-
-    public boolean isNoLaggEnabled() { return noLaggEnabled; }
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {

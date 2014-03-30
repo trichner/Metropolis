@@ -1,7 +1,9 @@
 package ch.k42.metropolis.grid.urbanGrid.provider;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.DecayOption;
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
@@ -61,6 +63,10 @@ public abstract class DecayProvider {
         destroyWithin(x1, x2, y1, y2, z1, z2, options);
     }
 
+    public void destroyWithin(Cartesian3D start,Cartesian3D end, DecayOption options) {
+        destroyWithin(start.X,end.X,start.Y,end.Y,start.Z,end.Z,options);
+    }
+
     /**
      * Destroys an area with custom decay scale
      *
@@ -72,24 +78,12 @@ public abstract class DecayProvider {
      * @param z2      end z coordinate
      * @param options decay options
      */
+    @Deprecated
     public void destroyWithin(int x1, int x2, int y1, int y2, int z1, int z2, DecayOption options) {
     }
 
-    private static Set<Material> invalidBlocks;
-    private static Set<Material> unsupportingBlocks;
-
-    static {
-        Set<Material> set = new HashSet<>();
-        set.add(Material.GRASS);
-        set.add(Material.LEAVES);
-        set.add(Material.LOG);
-        invalidBlocks = Collections.unmodifiableSet(set);
-        set = new HashSet<>();
-        set.add(Material.LEAVES);
-        set.add(Material.VINE);
-        set.add(Material.LOG);
-        unsupportingBlocks = Collections.unmodifiableSet(set);
-    }
+    private static Set<Material> invalidBlocks = ImmutableSet.of(Material.GRASS,Material.LEAVES,Material.LOG);
+    private static Set<Material> unsupportingBlocks = ImmutableSet.of(Material.VINE,Material.LEAVES,Material.LOG);
 
     protected boolean isValid(Block block) {
         return !invalidBlocks.contains(block.getType());

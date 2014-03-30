@@ -4,3 +4,5 @@ TODO
 - Make loading concurrent
 - Don't load all schems into memory
 - Convert to Maven project
+- move to mysql
+- log placements into db for persistence

@@ -145,6 +145,8 @@ public class DecayProviderNether extends DecayProvider {
         );
     }
 
+
+
     protected static boolean isRemovable(Block block) {
         return (
             block.getType() != Material.THIN_GLASS

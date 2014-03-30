@@ -13,19 +13,28 @@ import java.util.List;
  */
 public class NoLaggAPI {
 
+    private static final NoLaggAPI _instance = new NoLaggAPI();
+
+    public NoLaggAPI() {
+        if(!Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg")){
+            throw new UnsupportedOperationException("NoLagg Plugin not found. Make sure you have NoLagg plugin loaded or disable the option in 'config.yml'");
+        }
+    }
+
+    private final void fixChunk(Chunk chunk) {
+        List<IntVector2> lightchunk = new ArrayList<>();
+        lightchunk.add(new IntVector2(chunk));
+        LightingService.schedule(chunk.getWorld(), lightchunk);
+    }
+
     /**
      * Queues chunks to be relit in the near future
+     *
      *
      * @param chunk bukkit chunk to be relit
      */
     public static final void relightChunk(Chunk chunk) {
-        if(!Bukkit.getServer().getPluginManager().isPluginEnabled("NoLagg")){
-            Minions.w("Unable to fix light, NoLagg plugin not found.");
-        }else {
-            List<IntVector2> lightchunk = new ArrayList<>();
-            lightchunk.add(new IntVector2(chunk));
-            LightingService.schedule(chunk.getWorld(), lightchunk);
-        }
+        _instance.fixChunk(chunk);
     }
 
 }

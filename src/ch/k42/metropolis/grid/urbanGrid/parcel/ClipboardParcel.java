@@ -61,15 +61,14 @@ public class ClipboardParcel extends Parcel {
     public void populate(MetropolisGenerator generator, Chunk chunk) {
         if (chunk.getX() == (chunkX) && chunk.getZ() == (chunkZ)) {
             if(clipboard==null) return;
-            int streetLevel = Constants.BUILD_HEIGHT;
             clipboard.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT);
             // TODO use config, don't always destroy
-            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(streetLevel), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
+
         }
     }
 
-    private final int cutoutDepth = 8;
-    private final int cutoutHeight = 11;
+    private static final int cutoutDepth = 8;
+    private static final int cutoutHeight = 11;
 
     public Clipboard getClipboard() {
         return clipboard;
@@ -80,6 +79,8 @@ public class ClipboardParcel extends Parcel {
         //To change body of implemented methods use File | Settings | File Templates.
         if(clipboard==null) return;
         makeCutouts(generator,chunk);
+
+        generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(Constants.BUILD_HEIGHT), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
 
 //        //NoLagg Entity Removal
 //        ItemMap.clear(generator.getWorld());

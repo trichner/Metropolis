@@ -78,7 +78,7 @@ public class ClipboardParcel extends Parcel {
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         //To change body of implemented methods use File | Settings | File Templates.
         if(clipboard==null) return;
-        makeCutouts(generator,chunk);
+        makeCutouts(generator);
 
         generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(Constants.BUILD_HEIGHT), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
 
@@ -98,7 +98,7 @@ public class ClipboardParcel extends Parcel {
 
     }
 
-    private void makeCutouts(MetropolisGenerator generator, Chunk chunk) {
+    private void makeCutouts(MetropolisGenerator generator) {
         //---- make sidewalk cutouts
         SchematicConfig.RoadCutout[] cuts = clipboard.getConfig().getCutouts();
 

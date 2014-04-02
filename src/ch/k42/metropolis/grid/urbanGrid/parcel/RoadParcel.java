@@ -7,10 +7,8 @@ import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.Constants;
-import ch.k42.metropolis.minions.GridRandom;
-import ch.k42.metropolis.minions.Minions;
+import ch.k42.metropolis.minions.*;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
 
 import java.util.List;
@@ -30,6 +28,19 @@ public class RoadParcel extends StreetParcel {
     }
 
     private Clipboard road;
+
+    @Override
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+        // Do nothing.
+        if (road != null) {
+            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, road.getBottom(Constants.BUILD_HEIGHT), road.getSize().Y, road.getConfig().getDecayOption());
+        }
+
+        //NoLagg Lighting Fix
+        if (PluginConfig.getNoLaggRelighting()) {
+            NoLaggAPI.relightChunk(chunk);
+        }
+    }
 
     @Override
     public void populate(MetropolisGenerator generator, Chunk chunk) {

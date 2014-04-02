@@ -26,6 +26,9 @@ public class PluginConfig {
     private static final String pathDirectionFallbackPlacing = "generator.enableDirectionFallbackPlacing";
     private static boolean directionFallbackPlacing = false;
 
+    private static final String pathFastPlacement = "generator.enableFastPlacement";
+    private static boolean fastPlacement = false;
+
     private static final String pathBuildChance = "generator.buildChance";
     private static int buildChance = 80;
 
@@ -51,7 +54,7 @@ public class PluginConfig {
     private static int caveChance = 20;
 
     private static final String pathNoLaggRelighting = "generator.noLaggRelighting";
-    private static boolean  noLaggRelighting = false;
+    private static boolean noLaggRelighting = false;
 
     private PluginConfig() {}
 
@@ -77,6 +80,10 @@ public class PluginConfig {
 
     public static boolean allowDirectionFallbackPlacing() {
         return directionFallbackPlacing;
+    }
+
+    public static boolean fastPlacementEnabled() {
+        return fastPlacement;
     }
 
     public static boolean getNoLaggRelighting() {
@@ -122,6 +129,7 @@ public class PluginConfig {
         buildHeight = configFile.getInt(pathBuildHeight,buildHeight);
         caveChance = configFile.getInt(pathCaveChance,caveChance);
         noLaggRelighting = configFile.getBoolean(pathNoLaggRelighting, noLaggRelighting);
+        fastPlacement = configFile.getBoolean(pathFastPlacement, fastPlacement);
     }
 
 }

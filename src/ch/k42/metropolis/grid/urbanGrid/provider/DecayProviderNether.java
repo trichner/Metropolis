@@ -108,7 +108,7 @@ public class DecayProviderNether extends DecayProvider {
 //                        neighbors[0].setType(Material.FIRE);
 //                    }
 
-                    if (y < groundHeight && holeNoise > partialdecay) {
+                    if (y < groundHeight - 1 && holeNoise > fulldecay) {
                         block.setType(Material.LAVA);
                     } else {
 
@@ -170,6 +170,8 @@ public class DecayProviderNether extends DecayProvider {
             Material.LEAVES,
             Material.LEAVES_2,
             Material.DOUBLE_PLANT,
+            Material.YELLOW_FLOWER,
+            Material.RED_ROSE,
             Material.GRASS,
             Material.LONG_GRASS,
             Material.VINE,

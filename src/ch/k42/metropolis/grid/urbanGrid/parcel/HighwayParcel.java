@@ -10,6 +10,8 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.Minions;
+import ch.k42.metropolis.minions.NoLaggAPI;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
 import sun.net.www.content.image.gif;
 
@@ -52,6 +54,20 @@ public class HighwayParcel extends StreetParcel {
     }
 
     private Clipboard road;
+
+    @Override
+    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
+        // Do nothing.
+
+        if (road != null) {
+            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, road.getBottom(Constants.BUILD_HEIGHT), road.getSize().Y, road.getConfig().getDecayOption());
+        }
+
+        //NoLagg Lighting Fix
+        if (PluginConfig.getNoLaggRelighting()) {
+            NoLaggAPI.relightChunk(chunk);
+        }
+    }
 
     private void findAndPlaceClip(MetropolisGenerator generator, Chunk chunk, RoadType roadType) {
         List<Clipboard> clips = getFits(generator.getClipboardProvider(), roadType);

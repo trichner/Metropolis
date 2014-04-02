@@ -43,12 +43,15 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     public String worldName;
 
+
+    //TODO those don't belong here -> MetropolisBlockPopulator
     private ClipboardProvider clipboardProvider;
     private GridProvider gridProvider;
     private ContextProvider contextProvider;
 
-    public DecayProvider decayProvider;
-    public EnvironmentProvider natureDecay;
+    public DecayProvider decayProvider; //NOT PUBLIC!
+    public EnvironmentProvider natureDecay; //NOT PUBLIC!
+    // ENDTODO
 
     public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProvider clipboardProvider) {
         this.clipboardProvider = clipboardProvider;

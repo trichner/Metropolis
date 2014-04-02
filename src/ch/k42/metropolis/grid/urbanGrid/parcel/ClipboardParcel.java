@@ -85,7 +85,7 @@ public class ClipboardParcel extends Parcel {
 
     }
 
-    private void makeCutouts(MetropolisGenerator generator) {
+    private void makeCutouts(MetropolisGenerator generator) { //FIXME Not all chunks are ready! Those on corners might not be ready....
         //---- make sidewalk cutouts
         SchematicConfig.RoadCutout[] cuts = clipboard.getConfig().getCutouts();
 

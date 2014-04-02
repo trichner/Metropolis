@@ -31,7 +31,7 @@ public class MetropolisGenerator extends ChunkGenerator {
     private class MetropolisBlockPopulator extends BlockPopulator {
 
         @Override
-        public void populate(World aWorld, Random random, Chunk chunk) {
+        public void populate(World aWorld, Random random, Chunk chunk) { // we should make sure that the whol
             gridProvider.getGrid(chunk.getX(),chunk.getZ()).populate(chunk);
             gridProvider.getGrid(chunk.getX(),chunk.getZ()).postPopulate(chunk);
         }

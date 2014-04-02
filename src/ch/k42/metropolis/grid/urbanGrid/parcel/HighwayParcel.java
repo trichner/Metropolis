@@ -86,23 +86,6 @@ public class HighwayParcel extends StreetParcel {
         }
     }
 
-//    @Override
-//    public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
-//        if (roadType.equals(RoadType.HIGHWAY_SIDE_E) && isStreet(grid.getParcel(chunkX + 1, chunkZ))){
-//            roadType = RoadType.HIGHWAY_T_E;
-//            findAndPlaceClip(generator, chunk, roadType);
-//        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_W) && isStreet(grid.getParcel(chunkX - 1, chunkZ))){
-//            roadType = RoadType.HIGHWAY_T_W;
-//            findAndPlaceClip(generator, chunk, roadType);
-//        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_S) && isStreet(grid.getParcel(chunkX, chunkZ + 1))){
-//            roadType = RoadType.HIGHWAY_T_S;
-//            findAndPlaceClip(generator, chunk, roadType);
-//        } else if (roadType.equals(RoadType.HIGHWAY_SIDE_N) && isStreet(grid.getParcel(chunkX, chunkZ - 1))){
-//            roadType = RoadType.HIGHWAY_T_N;
-//            findAndPlaceClip(generator, chunk, roadType);
-//        }
-//    }
-
     private List<Clipboard> getFits(ClipboardProvider cprovider, RoadType type) {
         return cprovider.getRoadFit(type);
     }

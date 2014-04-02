@@ -125,7 +125,7 @@ public class MetropolisGenerator extends ChunkGenerator {
                 decayProvider = new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
                 natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());
             } else {
-                decayProvider = new DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
+                decayProvider = new DecayProviderNone(this,new Random(0));//DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
                 natureDecay = new NormalEnvironmentProvider(aWorld.getSeed());
             }
         }

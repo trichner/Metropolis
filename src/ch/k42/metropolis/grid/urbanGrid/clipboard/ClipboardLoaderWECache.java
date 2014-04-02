@@ -105,8 +105,6 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             try {
                 hash = Minions.getMD5Checksum(file);
 
-
-
                 /*
                  * Now the loader should check if the schematic is already cached and
                  * load it from there
@@ -130,12 +128,16 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
                     File streetFile =    new File(cacheSchemFolder, "STREET.schematic");
                     // load the actual blocks
-                    cuboid = format.load(file);
+
                     if(!cached){
-                        cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
+                        cuboid = format.load(file);
                         format.save(cuboid, streetFile);
+                    }else{
+                        cuboid = format.load(streetFile);
                     }
+
                     Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
+                    cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
                     hash += ".STREET";
                     clipstore.put( hash,clip);
                     if(dao.containsHash(hash)){// delete old entries
@@ -151,8 +153,6 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
                     boolean cached = cachedHashes.contains(hash);
                     if(!cached){ // not cached? rotate and save
-                        cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
-
                         // load the actual blocks
                         cuboid = format.load(file);
 
@@ -181,6 +181,8 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
                     if(!success){
                         Minions.w("Failed to load cached file for schematic '%s'", file.getName());
+                    }else{
+                        cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
                     }
                 }
             } catch (IOException e) {

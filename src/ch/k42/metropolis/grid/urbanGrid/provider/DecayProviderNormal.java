@@ -133,7 +133,7 @@ public class DecayProviderNormal extends DecayProvider {
                                 break;
                         }
 
-                        Block[] neighbors = {
+                        Block[] neighbors = { //three or more, use a for
                                 block.getRelative(0, 1, 0),
                                 block.getRelative(0, 0, -1),
                                 block.getRelative(0, 0, 1),

@@ -20,13 +20,14 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.entity.EntityType;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Thomas on 07.03.14.
  */
-public class ClipboardWE implements Clipboard {
+public class ClipboardWE implements Clipboard{
     private CuboidClipboard cuboid;
     private SchematicConfig config;
     private GlobalSchematicConfig globalConfig;

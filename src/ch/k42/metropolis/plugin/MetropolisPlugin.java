@@ -11,7 +11,6 @@ import ch.k42.metropolis.generator.populators.PopulatorConfig;
 import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import ch.k42.metropolis.minions.Nimmersatt;
-import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -53,6 +52,7 @@ public class MetropolisPlugin extends JavaPlugin {
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
+        //TODO CHECK ID HERE!
         return new MetropolisGenerator(this, worldName, clipboardProvider);
     }
 
@@ -175,13 +175,6 @@ public class MetropolisPlugin extends JavaPlugin {
                     t.playSound(t.getLocation(), Sound.ENDERDRAGON_GROWL,3,2);
                 }
             }catch (NullPointerException e){}
-//            if (k.getMessage().startsWith("!!!!")) {
-//                StringBuilder g = new StringBuilder();
-//                for (int i = 0; i < digest.length; i++) {
-//                    g.append(String.format("%#02x ", digest[i]));
-//                }
-//                k.getPlayer().sendMessage("version code: " + g.toString());
-//            }
         }
 
     }

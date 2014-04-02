@@ -6,6 +6,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
+import com.google.inject.Inject;
 import com.sk89q.worldedit.CuboidClipboard;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
@@ -29,6 +30,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
     private Map<String,SchematicConfig> configs;
     private GlobalSchematicConfig globalConfig;
+    //@Inject
     private ClipboardDAO dao;
     private Map<String,Clipboard> clipstore ;
 
@@ -40,9 +42,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         configs = new HashMap<>();
         List<File> configFiles = Minions.findAllFilesRecursively(folder,new ArrayList<File>(),new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String name) {
-                return name.endsWith(JSON_FILE);
-            }
+            public boolean accept(File dir, String name) {return name.endsWith(JSON_FILE);}
         });
 
         for(File file : configFiles){
@@ -50,8 +50,8 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             if(config!=null){
 
                 configs.put(file.getName(), config);
-                for(String schems : config.getSchematics()){
-                    configs.put(schems,config);
+                for(String schem : config.getSchematics()){
+                    configs.put(schem,config);
                 }
             }else {
                 Minions.w("Couldn't read config file: " + file.getName());
@@ -126,14 +126,23 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
                 format = SchematicFormat.getFormat(file);
                 if(config.getContext().contains(ContextType.STREET) || config.getContext().contains(ContextType.HIGHWAY)){ // TODO we could get rid of rotated roads...
+                    boolean cached = cachedHashes.contains(hash);
+
                     File streetFile =    new File(cacheSchemFolder, "STREET.schematic");
                     // load the actual blocks
                     cuboid = format.load(file);
-                    format.save(cuboid, streetFile);
+                    if(!cached){
+                        cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
+                        format.save(cuboid, streetFile);
+                    }
                     Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
                     hash += ".STREET";
                     clipstore.put( hash,clip);
+                    if(dao.containsHash(hash)){// delete old entries
+                       dao.deleteClipboardHashes(hash);
+                    }
                     dao.storeClipboard(hash,file.getName(), Direction.NONE,config, new Cartesian2D(1,1));
+
                 }else {
                     File northFile =    new File(cacheSchemFolder, "NORTH.schematic");
                     File eastFile =     new File(cacheSchemFolder, "EAST.schematic");
@@ -175,13 +184,13 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
                     }
                 }
             } catch (IOException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
+                Minions.e(e);
                 continue;
             } catch (DataException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
+                Minions.e(e);
                 continue;
             } catch (NoSuchAlgorithmException e) {
-                Bukkit.getLogger().throwing(ClipboardLoaderWECache.class.getName(),"loadSchematics",e);
+                Minions.e(e);
                 continue;
             }
         }
@@ -195,7 +204,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         List<String> dbhashes = dao.findAllClipboardHashes();
         for(String hash : dbhashes){
             if(!clipstore.containsKey(hash)){ // not loaded?
-                dao.deleteClipboardHash(hash);
+                dao.deleteClipboardHashes(hash);
             }
         }
     }
@@ -212,7 +221,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
     private void removeUnusedCache(Set<String> cachedHashes,File cacheFolder) {
         for(String hash : cachedHashes){
-            dao.deleteClipboardHash(hash);
+            dao.deleteClipboardHashes(hash);
             try {
                 Files.delete(Paths.get(cacheFolder.getAbsolutePath()+File.separator+hash));
             } catch (IOException e) {
@@ -239,7 +248,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             clipstore.put(thash,clip);
 
             if(dao.containsHash(thash)){ // check if already in, if yes, delete the old one
-               dao.deleteClipboardHash(thash);
+               dao.deleteClipboardHashes(thash);
             }
             //DAO, store in db
             Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);

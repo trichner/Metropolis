@@ -11,6 +11,7 @@ import ch.k42.metropolis.generator.populators.PopulatorConfig;
 import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import ch.k42.metropolis.minions.Nimmersatt;
+import com.google.inject.Singleton;
 import org.bukkit.Sound;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;

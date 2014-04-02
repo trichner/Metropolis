@@ -192,7 +192,7 @@ public class ClipboardLoaderConcurrent implements ClipboardLoader{
         List<String> dbhashes = dao.findAllClipboardHashes();
         for(String hash : dbhashes){
             if(!clipstore.containsKey(hash)){ // not loaded?
-                dao.deleteClipboardHash(hash);
+                dao.deleteClipboardHashes(hash);
             }
         }
     }
@@ -209,7 +209,7 @@ public class ClipboardLoaderConcurrent implements ClipboardLoader{
 
     private void removeUnusedCache(Set<String> cachedHashes,File cacheFolder) {
         for(String hash : cachedHashes){
-            dao.deleteClipboardHash(hash);
+            dao.deleteClipboardHashes(hash);
             try {
                 Files.delete(Paths.get(cacheFolder.getAbsolutePath()+File.separator+hash));
             } catch (IOException e) {

@@ -35,28 +35,27 @@ public class District implements IDistrict {
         for(int i=0;i< MAX_ITERATIONS;i++){ // if we fail, try again
             Set<ClipboardParcel> parcels = new HashSet<>();
             tscore = nextRecPartition(parcels,base,size);
-            if(tscore>=score){
+            if(tscore >= score){
                 max = parcels;
-                score=tscore;
+                score = tscore;
             }
         }
-
         Minions.d("Final score: " + score);
 
         for(Parcel parcel : max){
             grid.fillParcels(parcel.getChunkX(),parcel.getChunkZ(),parcel);
         }
+
         //Check for empty spots, this is more a workaround than a solution
-        for(int x = base.X; x<base.X+size.X;x++){
-            for(int y = base.Y; y<base.Y+size.Y;y++){
+        for(int x = base.X; x<base.X+size.X; x++){
+            for(int y = base.Y; y<base.Y+size.Y; y++){
                 Parcel p=grid.getParcel(x,y);
                 if(p==null){
                     Minions.d("Parcel wasn't filled by district, what wen't wrong here??? Context '%s'",context);
                     p = placeRandomBuildForSure(new Cartesian2D(x,y),new Cartesian2D(1,1),new HashSet<ClipboardParcel>());
                     if(p==null){
                         Minions.d("Can't find any clipboard for this spot? Seriously?");
-                    }else {
-
+                    } else {
                         grid.setParcel(x,y,p);
                     }
                 }
@@ -139,7 +138,7 @@ public class District implements IDistrict {
     private int nextRecPartition(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
         ClipboardParcel parcel;
 
-        if(size.X<=1 && size.Y<=1){ // are we already at smalles possible size?
+        if(size.X<=1 && size.Y<=1){ // are we already at smallest possible size?
             if((parcel= placeRandomBuildForSure(base, size,parcels))!=null){
                 parcels.add(parcel);
                 return scoreParcel(parcel,size);
@@ -150,7 +149,7 @@ public class District implements IDistrict {
             }
         }
 
-        // let's try to place a schem
+        // let's try to place a schematic
         if((parcel= placeRandomBuild(base, size,parcels))!=null){
             parcels.add(parcel);
             return scoreParcel(parcel, size);
@@ -164,6 +163,19 @@ public class District implements IDistrict {
             int cut = Minions.makeCut(grid.getRandom(), size.X);
             int score = nextRecPartition(parcels,base, new Cartesian2D(cut, size.Y));
             return score + nextRecPartition(parcels,new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+        }
+    }
+
+
+
+    private void fastPartition(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
+        ClipboardParcel parcel;
+
+        if((parcel = placeRandomBuildForSure(base, size, parcels)) != null){
+            parcels.add(parcel);
+        } else {
+            Minions.d("Found absolutely no schems for context '%s' and size '%s' ",context,size);
+            parcels.add(new ClipboardParcel(grid, base, size, null, context,SchematicType.FILLER, Direction.NONE));
         }
     }
 

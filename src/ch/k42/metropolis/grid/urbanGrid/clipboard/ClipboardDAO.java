@@ -9,6 +9,7 @@ import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.avaje.ebean.Query;
+import com.google.inject.Singleton;
 import org.bukkit.Bukkit;
 
 import javax.persistence.PersistenceException;
@@ -24,6 +25,7 @@ import java.util.List;
 /**
  * Created by Thomas on 07.03.14.
  */
+@Singleton
 public class ClipboardDAO {
 
    private final MetropolisPlugin plugin;
@@ -121,9 +123,13 @@ public class ClipboardDAO {
     }
 
 
-
-    public boolean deleteClipboardHash(String hash){
-        Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).where().like("fileHash",hash).query();
+    /**
+     * Deletes all similar hashes
+     * @param hash deletes all clips with a hash and some postfix (where hash like 'hash%')
+     * @return always true
+     */
+    public boolean deleteClipboardHashes(String hash){
+        Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).where().like("fileHash",hash+"%").query();
         List<ClipboardBean> beans = query.findList();
         List<Integer> ids = getIDs(beans);
         plugin.getDatabase().delete(ClipboardBean.class,ids);

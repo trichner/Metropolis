@@ -90,6 +90,7 @@ public class DecayProviderNether extends DecayProvider {
                         block.setType(Material.LONG_GRASS);
                     }
 
+
                     if (isDeleted(block)) {
                         block.setType(Material.AIR);
                     }

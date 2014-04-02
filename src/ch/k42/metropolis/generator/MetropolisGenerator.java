@@ -10,7 +10,6 @@ import ch.k42.metropolis.grid.urbanGrid.context.ContextProvider;
 import ch.k42.metropolis.grid.urbanGrid.provider.*;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
-import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.generator.BlockPopulator;
@@ -93,7 +92,7 @@ public class MetropolisGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
-        plugin.getLogger().info("getDefaultPopulators: " + world.toString());
+        Minions.d("getDefaultPopulators: " + world.toString());
 
         this.world = world;
         this.worldSeed = world.getSeed();
@@ -120,9 +119,9 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
-        if (natureDecay == null || decayProvider == null) { // memoization of providers
+        if (natureDecay == null || decayProvider == null) { // memoization of providers, singletons
             if (aWorld.getEnvironment() == World.Environment.NETHER) {
-                decayProvider = new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
+                decayProvider = new DecayProviderNone(this,new Random(0));//new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
                 natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());
             } else {
                 decayProvider = new DecayProviderNone(this,new Random(0));//DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
@@ -153,25 +152,15 @@ public class MetropolisGenerator extends ChunkGenerator {
 
         } catch (NullPointerException e) {
             Minions.e(e);
-            return null;
+            return super.generateBlockSections(world,random,chunkX,chunkZ,biomes);
         }
-    }
-
-    @Override
-    public byte[] generate(World world, Random random, int x, int z) {
-        return super.generate(world, random, x, z);    //To change body of overridden methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public short[][] generateExtBlockSections(World world, Random random, int x, int z, BiomeGrid biomes) {
-        return super.generateExtBlockSections(world, random, x, z, biomes);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     private void setBlock(int x, int y, int z, byte[][] chunk, Material material) {
         if (chunk[y >> 4] == null)
             chunk[y >> 4] = new byte[16 * 16 * 16];
 
-        if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0)) // out of bounds?
+        if (!isOutOfChunkBounds(x,y,z)) // out of bounds?
             return;
 
         chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x] = (byte) material.getId();
@@ -181,19 +170,15 @@ public class MetropolisGenerator extends ChunkGenerator {
         return (y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0);
     }
 
-    private final static int spawnRadius = 100;
+    private final static int SPAWN_RADIUS = 100;
 
     @Override
     public Location getFixedSpawnLocation(World world, Random random) {
-        int spawnX = random.nextInt(spawnRadius * 2) - spawnRadius;
-        int spawnZ = random.nextInt(spawnRadius * 2) - spawnRadius;
+        int spawnX = random.nextInt(SPAWN_RADIUS * 2) - SPAWN_RADIUS;
+        int spawnZ = random.nextInt(SPAWN_RADIUS * 2) - SPAWN_RADIUS;
 
         // find the first non empty spot;
-        int spawnY = world.getMaxHeight();
-        while ((spawnY > 0) && world.getBlockAt(spawnX, spawnY - 1, spawnZ).isEmpty()) {
-            spawnY--;
-        }
-
+        int spawnY = world.getHighestBlockYAt(spawnX,spawnZ);
         // return the location
         return new Location(world, spawnX, spawnY, spawnZ);
     }

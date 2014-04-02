@@ -54,6 +54,8 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;
         this.worldName = worldName;
+
+
         Minions.i("Running MetropolisGenerator for world: %s",worldName);
     }
 
@@ -119,7 +121,7 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
-        if (natureDecay == null || decayProvider == null) { // memoization of providers, singletons
+        if (natureDecay == null || decayProvider == null) { //FIXME TODO FUCKUP THIS IS NOT NECESSARY, use generator id (see MetropolisPlugin) memoization of providers, singletons
             if (aWorld.getEnvironment() == World.Environment.NETHER) {
                 decayProvider = new DecayProviderNone(this,new Random(0));//new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
                 natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());

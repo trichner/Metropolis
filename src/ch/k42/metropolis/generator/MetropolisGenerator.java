@@ -51,8 +51,6 @@ public class MetropolisGenerator extends ChunkGenerator {
     public DecayProvider decayProvider;
     public EnvironmentProvider natureDecay;
 
-    private boolean noLaggEnabled;
-
     public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProvider clipboardProvider) {
         this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;

@@ -97,7 +97,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         for(int i=0;i<length;i++){ // TODO use threads http://www.javapractices.com/topic/TopicAction.do?Id=247, maybe even load async in Clipboard
             File file = schematicFiles.get(i);
 
-            Bukkit.getLogger().info(String.format("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName()));
+            Minions.i("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName());
             SchematicConfig config = findConfig(file.getName());
             if(config==null) continue;
 
@@ -142,7 +142,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
                     boolean cached = cachedHashes.contains(hash);
                     if(!cached){ // not cached? rotate and save
-                        cachedHashes.remove(hash); // take it out, we wan't to delete unused caches
+                        cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
 
                         // load the actual blocks
                         cuboid = format.load(file);
@@ -160,15 +160,15 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
                         cuboid.rotate2D(90);
                         format.save(cuboid, westFile);
                     }else{
-                        Bukkit.getLogger().info("Schematic already cached, no need to rotate.");
+                        Minions.i("Schematic already cached, no need to rotate.");
                     }
 
                     // reload them and put them into memory
                     boolean success;
-                    success = loadFromCache(file.getName(),eastFile,hash,Direction.EAST,config);
-                    success = success && loadFromCache(file.getName(),westFile,hash,Direction.WEST,config);
-                    success = success && loadFromCache(file.getName(),southFile,hash,Direction.SOUTH,config);
-                    success = success && loadFromCache(file.getName(),northFile,hash,Direction.NORTH,config);
+                    success = loadFromCache(eastFile,hash,Direction.EAST,config);
+                    success = success && loadFromCache(westFile,hash,Direction.WEST,config);
+                    success = success && loadFromCache(southFile,hash,Direction.SOUTH,config);
+                    success = success && loadFromCache(northFile,hash,Direction.NORTH,config);
 
                     if(!success){
                         Minions.w("Failed to load cached file for schematic '%s'", file.getName());
@@ -223,34 +223,36 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
     private Set<String> getCachedHashes(File cacheFolder){
         Set<String> hashes = new HashSet<>();
-        File[] subfolders = cacheFolder.listFiles(Minions.isDirectory());
-        for(File folder : subfolders){
-            hashes.add(folder.getName());
+        File[] subdirs = cacheFolder.listFiles(Minions.isDirectory());
+        for(File dir : subdirs){
+            hashes.add(dir.getName()); // folder names are the hashes
         }
         return hashes;
     }
 
-    private boolean loadFromCache(String name,File file,String hash,Direction direction,SchematicConfig config){
+    private boolean loadFromCache(File file,String hash,Direction direction,SchematicConfig config){
         try {
             SchematicFormat format = SchematicFormat.getFormat(file);
             CuboidClipboard cuboid = format.load(file);
             Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
             String thash = hash + "." + direction.name();
             clipstore.put(thash,clip);
+
             if(dao.containsHash(thash)){ // check if already in, if yes, delete the old one
                dao.deleteClipboardHash(thash);
             }
-            //DAO
+            //DAO, store in db
             Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
             dao.storeClipboard(thash,file.getName(), direction,config,size);
+
             if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
-                dao.storeClipboard(thash,name, Direction.NONE,config,size);
+                dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
             }
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Minions.e(e);
         } catch (DataException e) {
-            e.printStackTrace();
+            Minions.e(e);
         }
         return false;
     }

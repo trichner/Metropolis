@@ -2,6 +2,7 @@ test
 out
 .metadata
 .idea
+.idea/
 Metropolis.iml
 metropolis.properties
 bin

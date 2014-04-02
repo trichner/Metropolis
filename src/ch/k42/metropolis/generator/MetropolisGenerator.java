@@ -55,7 +55,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.clipboardProvider = clipboardProvider;
         this.plugin = plugin;
         this.worldName = worldName;
-        plugin.getLogger().info("Running MetropolisGenerator.");
+        Minions.i("Running MetropolisGenerator for world: %s",worldName);
     }
 
     public ClipboardProvider getClipboardProvider() {
@@ -94,10 +94,12 @@ public class MetropolisGenerator extends ChunkGenerator {
     public List<BlockPopulator> getDefaultPopulators(World world) {
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
         plugin.getLogger().info("getDefaultPopulators: " + world.toString());
+
         this.world = world;
         this.worldSeed = world.getSeed();
         this.gridProvider = new GridProvider(this);
         this.contextProvider = Factory.getDefaultContextProvider(this, plugin.getContextConfig());
+
 
         /*
          * We should decouple them from here and decouple
@@ -118,9 +120,9 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
-        if (natureDecay == null || decayProvider == null) {
+        if (natureDecay == null || decayProvider == null) { // memoization of providers
             if (aWorld.getEnvironment() == World.Environment.NETHER) {
-                decayProvider = new DecayProviderNether(this, new Random(aWorld.getSeed() + 6));
+                decayProvider = new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
                 natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());
             } else {
                 decayProvider = new DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
@@ -130,7 +132,7 @@ public class MetropolisGenerator extends ChunkGenerator {
 
         try {
 
-            byte[][] chunk = new byte[aWorld.getMaxHeight() / 16][];
+            byte[][] chunk = new byte[aWorld.getMaxHeight() / 16][]; // TODO is this correct? This only works if height is 256
             for (int x = 0; x < 16; x++) { //loop through all of the blocks in the chunk that are lower than maxHeight
                 for (int z = 0; z < 16; z++) {
 
@@ -147,7 +149,7 @@ public class MetropolisGenerator extends ChunkGenerator {
                     }
                 }
             }
-            return chunk;//byteChunk.blocks;
+            return chunk;
 
         } catch (NullPointerException e) {
             Minions.e(e);
@@ -168,14 +170,15 @@ public class MetropolisGenerator extends ChunkGenerator {
     private void setBlock(int x, int y, int z, byte[][] chunk, Material material) {
         if (chunk[y >> 4] == null)
             chunk[y >> 4] = new byte[16 * 16 * 16];
-        if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0))
+
+        if (!(y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0)) // out of bounds?
             return;
-        try {
-            chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x] = (byte) material
-                    .getId();
-        } catch (Exception e) {
-            // do nothing
-        }
+
+        chunk[y >> 4][((y & 0xF) << 8) | (z << 4) | x] = (byte) material.getId();
+    }
+
+    private boolean isOutOfChunkBounds(int x, int y, int z){
+        return (y <= 256 && y >= 0 && x <= 16 && x >= 0 && z <= 16 && z >= 0);
     }
 
     private final static int spawnRadius = 100;

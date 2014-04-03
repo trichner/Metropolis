@@ -59,9 +59,10 @@ public class HighwayParcel extends StreetParcel {
     public void postPopulate(MetropolisGenerator generator, Chunk chunk) {
         // Do nothing.
 
-        if (road != null) {
-            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, road.getBottom(Constants.BUILD_HEIGHT), road.getSize().Y, road.getConfig().getDecayOption());
-        }
+        // to contain all operations only on this chunk
+//        if (road != null) {
+//            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, road.getBottom(Constants.BUILD_HEIGHT), road.getSize().Y, road.getConfig().getDecayOption());
+//        }
 
         //NoLagg Lighting Fix
         if (PluginConfig.getNoLaggRelighting()) {

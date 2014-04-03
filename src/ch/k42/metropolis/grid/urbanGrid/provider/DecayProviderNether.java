@@ -95,6 +95,7 @@ public class DecayProviderNether extends DecayProvider {
                         block.setType(Material.AIR);
                     }
 
+                    if(true) return; //FIXME omitting problematic part
                     Block[] neighbors = {
                             block.getRelative(0, 1, 0),
                             block.getRelative(0, 0, -1),

@@ -49,8 +49,8 @@ public class MetropolisGenerator extends ChunkGenerator {
     private GridProvider gridProvider;
     private ContextProvider contextProvider;
 
-    public DecayProvider decayProvider; //NOT PUBLIC!
-    public EnvironmentProvider natureDecay; //NOT PUBLIC!
+    private DecayProvider decayProvider; //NOT PUBLIC!
+    private EnvironmentProvider natureDecay; //NOT PUBLIC!
     // ENDTODO
 
     public MetropolisGenerator(MetropolisPlugin plugin, String worldName, ClipboardProvider clipboardProvider) {
@@ -126,10 +126,10 @@ public class MetropolisGenerator extends ChunkGenerator {
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {
         if (natureDecay == null || decayProvider == null) { //FIXME TODO FUCKUP THIS IS NOT NECESSARY, use generator id (see MetropolisPlugin) memoization of providers, singletons
             if (aWorld.getEnvironment() == World.Environment.NETHER) {
-                decayProvider = new DecayProviderNone(this,new Random(0));//new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
-                natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());
+                decayProvider = new DecayProviderNether(this,new Random(aWorld.getSeed()));//new DecayProviderNether(this, new Random(aWorld.getSeed() + 6)); // why add 6 ?
+                natureDecay = new NetherEnvironmentProvider(aWorld.getSeed());//new NetherEnvironmentProvider(aWorld.getSeed());
             } else {
-                decayProvider = new DecayProviderNone(this,new Random(0));//DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
+                decayProvider = new DecayProviderNormal(this,new Random(aWorld.getSeed()+10));//DecayProviderNormal(this, new Random(aWorld.getSeed() + 6));
                 natureDecay = new NormalEnvironmentProvider(aWorld.getSeed());
             }
         }

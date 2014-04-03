@@ -110,6 +110,9 @@ public class UrbanGrid extends Grid {
 
     public Parcel getParcel(int chunkX, int chunkZ) {
         // make sure it's positive and between [0, GRID_SIZE)
+        if(!inRange(chunkX)) return null;
+        if(!inRange(chunkZ)) return null;
+
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
         return parcels[x][z];
@@ -117,6 +120,9 @@ public class UrbanGrid extends Grid {
 
     public void setParcel(int chunkX, int chunkZ, Parcel parcel) {
         // make sure it's positive and between [0, GRID_SIZE)
+        if(!inRange(chunkX)) return;
+        if(!inRange(chunkZ)) return;
+
         int x = getChunkOffset(chunkX);
         int z = getChunkOffset(chunkZ);
         parcels[x][z] = parcel;

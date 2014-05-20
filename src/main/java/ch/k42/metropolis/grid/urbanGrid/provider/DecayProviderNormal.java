@@ -132,7 +132,10 @@ public class DecayProviderNormal extends DecayProvider {
                                 block.setType(Material.AIR);
                                 break;
                         }
-                        //if(true) return; //FIXME omitting problematic part
+
+
+                        if(true) return; //FIXME omitting problematic part
+
 
                         Block[] neighbors = { //three or more, use a for
                                 block.getRelative(0, 1, 0),

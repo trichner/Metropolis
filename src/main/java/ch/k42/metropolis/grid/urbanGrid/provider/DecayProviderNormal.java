@@ -1,14 +1,15 @@
 package ch.k42.metropolis.grid.urbanGrid.provider;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
-import org.bukkit.TreeType;
+import org.bukkit.TreeSpecies;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.material.LongGrass;
+import org.bukkit.material.Leaves;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
@@ -63,150 +64,165 @@ public class DecayProviderNormal extends DecayProvider {
         World world = generator.getWorld();
 
         long seed = generator.getWorldSeed();
-        SimplexOctaveGenerator noiseGen = new SimplexOctaveGenerator(seed, 2);
+        SimplexOctaveGenerator simplexOctaveGenerator = new SimplexOctaveGenerator(seed, 2);
 
         for (int z = z1; z < z2; z++) {
             for (int x = x1; x < x2; x++) {
                 for (int y = y1; y < y2; y++) {
-
-                    double holeNoise = noiseGen.noise(x * holeScale, y * holeScale, z * holeScale, 0.3D, 0.6D, true);
-                    double leavesNoise = noiseGen.noise(x * leavesScale, y * leavesScale, z * leavesScale, 0.3D, 0.6D, false);
-
                     Block block = world.getBlockAt(x, y, z);
 
-                    if (options.getExceptions().contains(block.getType())) { // do we ignore this type of block?
-                        continue;
-                    }
+                    // do we ignore this type of block? is it already empty?
 
-                    if (block.getType() == Material.WOODEN_DOOR && block.getRelative(0, 1, 0).getType() == Material.WOODEN_DOOR) {
-                        if (random.nextInt(100) < 80) {
-                            byte data = block.getData();
-                            data ^= 4;
-                            block.setData(data);
-                        }
-                    }
+                    if (!isValid(block) || !block.isEmpty() || !options.getExceptions().contains(block.getType())) {
 
-                    if (!block.isEmpty() && isValid(block) && (holeNoise > fulldecay)) {
-                        block.setType(Material.AIR);
-                    } else if (isValid(block) && holeNoise > partialdecay) {
-                        switch (block.getType()) { //TODO too many hardcoded values
-                            case STONE:
-                                if (random.nextInt(100) < 40) break; // 20% happens nothing
-                                if (random.nextBoolean())
-                                    block.setType(Material.COBBLESTONE);
-                                else
-                                    block.setType(Material.MOSSY_COBBLESTONE);
-                                break;
-                            case SANDSTONE:
-                                if (random.nextBoolean()) break; // not too much stairs
-                                block.setTypeIdAndData(Material.SANDSTONE_STAIRS.getId(), (byte) random.nextInt(4), true);
-                                break;
-                            case BRICK:
-                                if (random.nextBoolean()) break; // not too much stairs
-                                block.setTypeIdAndData(Material.BRICK_STAIRS.getId(), (byte) random.nextInt(4), true);
-                                break;
-                            case COBBLESTONE:
-                                block.setTypeIdAndData(Material.MOSSY_COBBLESTONE.getId(), (byte) random.nextInt(4), true);
-                                break;
-                            case SMOOTH_BRICK:
-                                block.setTypeIdAndData(Material.SMOOTH_BRICK.getId(), (byte) random.nextInt(3), true);
-                                break;
-                            case WOOD:
-                                if (random.nextBoolean()) break; // not too much stairs
-                                switch (block.getData()) {
-                                    case 0:
-                                        block.setTypeIdAndData(Material.WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
-                                        break;
-                                    case 1:
-                                        block.setTypeIdAndData(Material.SPRUCE_WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
-                                        break;
-                                    case 2:
-                                        block.setTypeIdAndData(Material.BIRCH_WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
-                                        break;
-                                    default:
-                                        block.setTypeIdAndData(Material.JUNGLE_WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
-                                        break;
-                                }
-                                break;
-                            default:
-                                block.setType(Material.AIR);
-                                break;
-                        }
+                        double noise = simplexOctaveGenerator.noise(x * holeScale, y * holeScale, z * holeScale, 0.3D, 0.6D, true);
 
+                        if (noise > fulldecay) {
+                            block.setType(Material.AIR);
+                            // we may add leaves if it's supporting
 
-                        if(true) return; //FIXME omitting problematic part
+                        }else if (noise > partialdecay) {
 
-
-                        Block[] neighbors = { //three or more, use a for
-                                block.getRelative(0, 1, 0),
-                                block.getRelative(0, 0, -1),
-                                block.getRelative(0, 0, 1),
-                                block.getRelative(1, 0, 0),
-                                block.getRelative(-1, 0, 0),
-                                block.getRelative(0, -1, 0)
-                        };
-
-                        if (leavesNoise > leavesdecay && holeNoise > partialdecay && block.isEmpty()) {
-                            int support = 0;
-
-                            for (int n = 0; n < neighbors.length; n++) {
-                                if (n == 0) {
-                                    double holeAboveNoise = noiseGen.noise(x * holeScale, (y+1) * holeScale, z * holeScale, 0.3D, 0.6D, true);
-                                    support += this.isSupporting(neighbors[n], holeAboveNoise, fulldecay) ? 1 : 0;
-                                } else if (n == 3) {
-                                    double holeAsideNoise = noiseGen.noise((x+1) * holeScale, y * holeScale, z * holeScale, 0.3D, 0.6D, true);
-                                    support += this.isSupporting(neighbors[n], holeAsideNoise, fulldecay) ? 1 : 0;
-                                } else if (n == 2) {
-                                    double holeAsideNoise = noiseGen.noise(x * holeScale, y * holeScale, (z+1) * holeScale, 0.3D, 0.6D, true);
-                                    support += this.isSupporting(neighbors[n], holeAsideNoise, fulldecay) ? 1 : 0;
-                                } else {
-                                    support += this.isSupporting(neighbors[n]) ? 1 : 0;
-                                }
-                            }
-
-                            if (support == 1) {
-                                if (random.nextBoolean())
-                                    block.setTypeIdAndData(Material.LEAVES.getId(), (byte) (4 + random.nextInt(4)), true);
-                            } else if (support > 2 && block.getLightLevel() > 7 && neighbors[0].isEmpty()) {
-                                block.setType(Material.GRASS);
-                                if (random.nextDouble() < 0.1) {
-                                    world.generateTree(neighbors[0].getLocation(), TreeType.TREE);
-                                } else {
-                                    if (random.nextDouble() < 0.1) {
-                                        neighbors[0].setTypeIdAndData(Material.RED_ROSE.getId(), (byte) random.nextInt(8), true);
-                                    } else {
-                                        LongGrass grass = new LongGrass();
-                                        grass.setSpecies(GrassSpecies.NORMAL);
-                                        neighbors[0].setType(grass.getItemType());
-                                        neighbors[0].setData(grass.getData());
+                            // alter block
+                            switch (block.getType()) { //TODO too many hardcoded values
+                                case STONE:
+                                    if (random.nextInt(100) > 40) { // 40% happens nothing
+                                        if (random.nextBoolean()){
+                                            block.setType(Material.COBBLESTONE);
+                                        }else{
+                                            block.setType(Material.MOSSY_COBBLESTONE);
+                                        }
                                     }
+                                    break;
+                                case SANDSTONE:
+                                    if (random.nextBoolean()){
+                                        block.setTypeIdAndData(Material.SANDSTONE_STAIRS.getId(), (byte) random.nextInt(4), true);
+                                    }
+                                    break;
+                                case BRICK:
+                                    if (random.nextBoolean()) {
+                                        block.setTypeIdAndData(Material.BRICK_STAIRS.getId(), (byte) random.nextInt(4), true);
+                                    }
+                                    break;
+                                case COBBLESTONE:
+                                    block.setTypeIdAndData(Material.MOSSY_COBBLESTONE.getId(), (byte) random.nextInt(4), true);
+                                    break;
+                                case SMOOTH_BRICK:
+                                    block.setTypeIdAndData(Material.SMOOTH_BRICK.getId(), (byte) random.nextInt(3), true);
+                                    break;
+                                case WOOD:
+                                    if (random.nextBoolean()) break; // not too much stairs
+                                    switch (block.getData()) {
+                                        case 0:
+                                            block.setTypeIdAndData(Material.WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
+                                            break;
+                                        case 1:
+                                            block.setTypeIdAndData(Material.SPRUCE_WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
+                                            break;
+                                        case 2:
+                                            block.setTypeIdAndData(Material.BIRCH_WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
+                                            break;
+                                        default:
+                                            block.setTypeIdAndData(Material.JUNGLE_WOOD_STAIRS.getId(), (byte) random.nextInt(4), true);
+                                            break;
+                                    }
+                                    break;
+                                case WOODEN_DOOR: // randomly open wooden doors
+                                    if (Material.WOODEN_DOOR.equals(block.getRelative(0, 1, 0).getType())) {
+                                        if (random.nextInt(100) < 80) {
+                                            byte data = block.getData();
+                                            data ^= 4;
+                                            block.setData(data);
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    block.setType(Material.AIR);
+                                    break;
+                            }
+
+                            // can we attach leaves?
+                            if(isSupporting(block)){
+                                for(Block n1 : getNeighbours(block)){
+                                    // add them leaves
+                                    addLeavesRec(n1,options,2);
                                 }
-                            } else if (support > 1) {
-                                block.setTypeIdAndData(Material.LEAVES.getId(), (byte) (4 + random.nextInt(4)), true);
                             }
                         }
 
-                        if (block.isEmpty() && random.nextBoolean() && !neighbors[5].isEmpty()) {
-
-                            byte vineMeta = 0;
-
-                            if (neighbors[1].getType().isSolid() && neighbors[1].getType() != Material.VINE)
-                                vineMeta += 4;
-                            if (neighbors[2].getType().isSolid() && neighbors[2].getType() != Material.VINE)
-                                vineMeta += 1;
-                            if (neighbors[3].getType().isSolid() && neighbors[3].getType() != Material.VINE)
-                                vineMeta += 8;
-                            if (neighbors[4].getType().isSolid() && neighbors[4].getType() != Material.VINE)
-                                vineMeta += 2;
-                            if (vineMeta > 0)
-                                block.setTypeIdAndData(Material.VINE.getId(), vineMeta, true);
-                        }
                     }
                 }
             }
         }
     }
 
+    private void addLeavesRec(Block block, DecayOption option, int depth){
+        // recursion done?
+        if(depth>0){
+            // block free?
+            if(block.isEmpty()){
+                // should we set a leaf?
+                if(random.nextDouble()<option.getLeavesScale()) { // should we add leaves?
+                    //set leaf here
+                    Leaves leaf = getRandomLeaves();
+                    block.setType(leaf.getItemType());
+                    block.setData(leaf.getData());
+                    //since this is now supporting, set leafes around
+                    for (Block n2 : getNeighbours(block)) {
+                        addLeavesRec(n2, option, depth - 1);
+                    }
+                }
+            }
+        }
+    }
+
+    private TreeSpecies[] treeSpecies =  TreeSpecies.values();
+
+    private Leaves getRandomLeaves(){
+        return new Leaves(treeSpecies[random.nextInt(treeSpecies.length)]);
+    }
+
+    /**
+     * Calculates all directly connected blocks, without
+     * blocks that would cross chunk borders (prevent endless recursion)
+     * @param block
+     * @return at maximum 6 blocks, all facing 'block'
+     */
+    private List<Block> getNeighbours(Block block){
+        List<Block> neighbours = new ArrayList<>(6);
+
+        // block above
+        if(block.getY()<(block.getWorld().getMaxHeight()-1)){
+            neighbours.add(block.getRelative(0,1,0));
+        }
+
+        // block below
+        if(block.getY()>0){
+            neighbours.add(block.getRelative(0,-1,0));
+        }
+
+        //block in x direction
+
+        // on chunk border?
+        if(block.getX()%16!=0){
+            neighbours.add(block.getRelative(-1,0,0));
+        }
+
+        if(block.getX()%16!=15){
+            neighbours.add(block.getRelative(1,0,0));
+        }
+
+        // Z direction
+        if(block.getZ()%16!=0){
+            neighbours.add(block.getRelative(0,0,-1));
+        }
+
+        if(block.getZ()%16!=15){
+            neighbours.add(block.getRelative(0,0,1));
+        }
+
+        return neighbours;
+    }
 
 
     protected boolean isValid(Block block) {
@@ -215,9 +231,5 @@ public class DecayProviderNormal extends DecayProvider {
 
     protected boolean isSupporting(Block block) {
         return !unsupportingBlocks.contains(block.getType()) && !block.isEmpty();
-    }
-
-    protected boolean isSupporting(Block block, double holeAbove, double fullDecay) {
-        return (isSupporting(block) && (holeAbove < fullDecay));
     }
 }

@@ -267,6 +267,9 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too
                 dao.storeClipboard(thash,file.getName(), Direction.NONE,config,size);
             }
+
+            System.gc();
+
             return true;
         } catch (IOException e) {
             Minions.e(e);

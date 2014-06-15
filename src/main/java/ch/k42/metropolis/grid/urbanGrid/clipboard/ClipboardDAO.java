@@ -74,8 +74,6 @@ public class ClipboardDAO {
         plugin.getDatabase().save(bean);
     }
 
-
-
     public boolean containsHash(String hash){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class).where().eq("fileHash",hash).query();
         return query.findRowCount()!=0;

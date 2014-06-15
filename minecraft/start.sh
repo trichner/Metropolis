@@ -1,8 +1,8 @@
 #!/bin/bash
 cd "$( dirname "$0" )"
 java -server \
-    -Xms3G \
-    -Xmx4G \
+    -Xms5G \
+    -Xmx6G \
     -XX:+UseG1GC \
     -XX:+AggressiveOpts \
     -XX:+UseFastAccessorMethods \

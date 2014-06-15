@@ -47,6 +47,26 @@ stats:
 world-settings:
   default:
     verbose: true
+    anti-xray:
+      enabled: true
+      engine-mode: 1
+      hide-blocks:
+      - 14
+      - 15
+      - 16
+      - 21
+      - 48
+      - 49
+      - 54
+      - 56
+      - 73
+      - 74
+      - 82
+      - 129
+      - 130
+      replace-blocks:
+      - 1
+      - 5
     growth:
       cactus-modifier: 100
       cane-modifier: 100
@@ -71,26 +91,6 @@ world-settings:
       hopper-check: 8
     hopper-amount: 1
     random-light-updates: false
-    anti-xray:
-      enabled: true
-      engine-mode: 1
-      hide-blocks:
-      - 14
-      - 15
-      - 16
-      - 21
-      - 48
-      - 49
-      - 54
-      - 56
-      - 73
-      - 74
-      - 82
-      - 129
-      - 130
-      replace-blocks:
-      - 1
-      - 5
     save-structure-info: true
     max-bulk-chunks: 5
     max-entity-collisions: 8
@@ -103,8 +103,8 @@ world-settings:
       item: 2.5
     mob-spawn-range: 4
     nerf-spawner-mobs: false
-    item-despawn-rate: 6000
     arrow-despawn-rate: 1200
+    item-despawn-rate: 6000
     enable-zombie-pigmen-portal-spawns: true
     wither-spawn-sound-radius: 0
     zombie-aggressive-towards-villager: true

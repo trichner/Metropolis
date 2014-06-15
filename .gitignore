@@ -23,3 +23,7 @@ minecraft/plugins/PluginMetrics
 minecraft/plugins/Updater
 minecraft/plugins/WorldEdit
 minecraft/world
+minecraft/plugins/Metropolis/disabled
+Metropolis.jar
+minecraft/world_nether
+minecraft/world_the_end

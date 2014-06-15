@@ -67,7 +67,6 @@ public class MetropolisGenerator extends ChunkGenerator {
         this.plugin = plugin;
         this.worldName = worldName;
 
-
         Minions.i("Running MetropolisGenerator for world: %s",worldName);
     }
 

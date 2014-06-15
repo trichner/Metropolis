@@ -51,10 +51,6 @@ public class MetropolisPlugin extends JavaPlugin {
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        //TODO CHECK ID HERE!
-        loadJsonConfigs();
-        loadPluginConfig();
-        loadClipboards();
         return new MetropolisGenerator(this, worldName, clipboardProvider);
     }
 
@@ -122,7 +118,9 @@ public class MetropolisPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
 
-
+        loadJsonConfigs();
+        loadPluginConfig();
+        loadClipboards();
 
         getServer().getPluginManager().registerEvents(new l(), this);
         registerCommands();

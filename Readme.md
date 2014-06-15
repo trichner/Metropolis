@@ -21,6 +21,14 @@ As of commit [48aee](https://github.com/trichner/Metropolis/commit/48aee8f0a946d
 
 Space partitioning is done by 'Binary Space Partitioning', the cuts follow a normal distribution with mean size/2.
 
+## Vagrant Development
+Getting started with the plugin in a development environment is now done via [Vagrant](http://www.vagrantup.com/).
+
+1. Download and install Vagrant: http://www.vagrantup.com/
+2. Go to the /minecraft directory in your terminal.
+3. Run "vagrant up" to start the server, it will grab Ubuntu 12 remotely and install all the dependencies as well as start the server on the default minecraft port.
+4. Enter the virtual machine using "vagrant ssh", the minecraft folder is automounted at /vagrant.
+5. run "./start.sh" to start the server, and "./rebuild.sh" to reset the database/delete world folders before starting.
  
 ## Plugin Configuration
 

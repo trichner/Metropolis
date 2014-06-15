@@ -1,8 +1,6 @@
 TODO
 
-- Use Cache, don't always load schems again DONE
 - Make loading concurrent
 - Don't load all schems into memory
-- Convert to Maven project
-- move to mysql
+- move to mysql -> question of settings, see bukkit.yml
 - log placements into db for persistence

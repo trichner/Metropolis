@@ -7,7 +7,7 @@
 In the future, wealthy industrialists rule the vast city of Metropolis from high-rise tower complexes, while a lower class of underground-dwelling workers toil constantly to operate the machines that provide its power. The Master of Metropolis is the ruthless Joh Fredersen (Alfred Abel), whose son Freder (Gustav Fröhlich) idles away his time in a pleasure garden with the other children of the rich. Freder is interrupted by the arrival of a young woman named Maria (Brigitte Helm), who has brought a group of workers' children to see the privileged lifestyle led by the rich. Maria and the children are quickly ushered away, but Freder is fascinated by Maria and descends to the workers' city in an attempt to find her.
 
 ## Basic Flow
-As of commit [48aee](https://github.com/trichner/Metropolis/commit/48aee8f0a946d5edde7055ba6da30d85cba55de5). Most logic can be found in [District.java](https://github.com/trichner/Metropolis/blob/master/src/ch/k42/metropolis/grid/urbanGrid/districts/District.java). 
+As of commit [48aee](https://github.com/trichner/Metropolis/commit/48aee8f0a946d5edde7055ba6da30d85cba55de5). Most logic can be found in [District.java](https://github.com/trichner/Metropolis/blob/master/src/ch/k42/ch.k42.metropolis/grid/urbanGrid/districts/District.java).
 
 1. start with a 64x64 chunk sized 'grid'
 2. place half of a highway around the whole grid

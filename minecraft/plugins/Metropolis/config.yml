@@ -1,0 +1,12 @@
+# Default config
+
+consoleOutput:
+    debug: true
+
+generator:
+    enableChestRenaming:  true
+    enableSpawnerPlacing: true
+    enableDirectionFallbackPlacing: true
+    enableFastPlacement: true
+    iterations: 1
+    buildChance: 80

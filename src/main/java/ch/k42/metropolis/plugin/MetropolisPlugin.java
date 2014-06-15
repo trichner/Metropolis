@@ -29,8 +29,8 @@ import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProviderDB;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import ch.k42.metropolis.minions.Nimmersatt;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
 
 
 /**
@@ -42,7 +42,6 @@ public class MetropolisPlugin extends JavaPlugin {
 
     private PopulatorConfig populatorConfig = new PopulatorConfig();
     private ContextConfig contextConfig = new ContextConfig();
-
     private ClipboardProvider clipboardProvider;
 
     @Override

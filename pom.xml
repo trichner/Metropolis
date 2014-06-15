@@ -13,13 +13,17 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public</url>
         </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>http://repo.md-5.net/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.7.2-R0.3</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.7.9-R0.3-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
@@ -33,13 +37,6 @@
         </dependency>
         -->
 
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.2.4</version>
-            <scope>compile</scope>
-        </dependency>
-
         <!-- Local Libraries-->
 
         <dependency>
@@ -47,7 +44,7 @@
             <artifactId>worldedit</artifactId>
             <version>0.0.1</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/worldedit.jar</systemPath>
+            <systemPath>${project.basedir}/minecraft/plugins/worldedit.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -55,7 +52,7 @@
             <artifactId>chestlootz</artifactId>
             <version>1.9.4</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/ChestLootz_1-9-4.jar</systemPath>
+            <systemPath>${project.basedir}/minecraft/plugins/ChestLootz_1-9-4.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -63,7 +60,7 @@
             <artifactId>nolagg</artifactId>
             <version>1.90.4</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/NoLagg-1.90.4.jar</systemPath>
+            <systemPath>${project.basedir}/minecraft/plugins/NoLagg-1.90.4.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -71,7 +68,7 @@
             <artifactId>bkcommon</artifactId>
             <version>1.57.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/lib/BKCommonLib-1.57.jar</systemPath>
+            <systemPath>${project.basedir}/minecraft/plugins/BKCommonLib.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -106,6 +103,32 @@
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>net.ju-n.maven.plugins</groupId>
+                <artifactId>vagrant-maven-plugin</artifactId>
+                <version>1.0.1</version>
+                <executions>
+                    <execution>
+                        <id>setup-and-start-vagrant-vm</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>box-add</goal>
+                            <goal>up</goal>
+                        </goals>
+                        <configuration>
+                            <box>mytestbox</box>
+                            <url>${project.basedir}/src/test/resources/mytestbox.box</url>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>destroy-vagrant-vm</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>destroy</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

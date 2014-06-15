@@ -1,0 +1,40 @@
+{
+  "scale": 1.0,
+  "scatterScale": 0.05,
+  "scatterAmount": 0.5,
+  "mainScale": 0.01,
+  "recurseScale": 5.0,
+  "contextZones": [
+    {
+      "contextType": "RESIDENTIAL",
+      "weight": 1.0,
+      "totalWeight": 0.0
+    },
+    {
+      "contextZones": [
+        {
+          "contextType": "LOWRISE",
+          "weight": 3.0,
+          "totalWeight": 0.0
+        },
+        {
+          "contextType": "INDUSTRIAL",
+          "weight": 2.0,
+          "totalWeight": 0.0
+        }
+      ],
+      "weight": 1.0,
+      "totalWeight": 0.0
+    },
+    {
+      "contextType": "MIDRISE",
+      "weight": 1.0,
+      "totalWeight": 0.0
+    },
+    {
+      "contextType": "HIGHRISE",
+      "weight": 1.0,
+      "totalWeight": 0.0
+    }
+  ]
+}

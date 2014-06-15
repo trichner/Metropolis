@@ -1,0 +1,53 @@
+{
+  "ores": [
+    {
+      "ore": "GRAVEL",
+      "amount": 32,
+      "num": 10,
+      "range": 1.0,
+      "offset": 0.0
+    },
+    {
+      "ore": "COAL_ORE",
+      "amount": 16,
+      "num": 21,
+      "range": 1.0,
+      "offset": 0.0
+    },
+    {
+      "ore": "IRON_ORE",
+      "amount": 8,
+      "num": 21,
+      "range": 0.8,
+      "offset": 0.0
+    },
+    {
+      "ore": "GOLD_ORE",
+      "amount": 8,
+      "num": 8,
+      "range": 0.75,
+      "offset": 0.0
+    },
+    {
+      "ore": "REDSTONE_ORE",
+      "amount": 7,
+      "num": 10,
+      "range": 0.7,
+      "offset": 0.0
+    },
+    {
+      "ore": "DIAMOND_ORE",
+      "amount": 7,
+      "num": 1,
+      "range": 0.4,
+      "offset": 0.0
+    },
+    {
+      "ore": "LAPIS_ORE",
+      "amount": 6,
+      "num": 3,
+      "range": 0.5,
+      "offset": 0.0
+    }
+  ]
+}

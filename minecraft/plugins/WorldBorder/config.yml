@@ -1,0 +1,41 @@
+cfg-version: 10
+message: '&cYou have reached the edge of this world.'
+round-border: false
+debug-mode: false
+whoosh-effect: true
+knock-back-dist: 1.0
+timer-delay-ticks: 20
+dynmap-border-enabled: true
+dynmap-border-message: The Edge
+portal-redirection: true
+remount-delay-ticks: 0
+player-killed-bad-spawn: false
+deny-enderpearl: true
+fill-autosave-frequency: 30
+bypass-list: []
+fill-memory-tolerance: 500
+worlds:
+  world:
+    x: 0.0
+    z: 0.0
+    radiusX: 500
+    radiusZ: 500
+    wrapping: false
+  Metropolis:
+    x: 0.0
+    z: 0.0
+    radiusX: 3000
+    radiusZ: 3000
+    wrapping: false
+  Metropolis_nether:
+    x: 0.0
+    z: 0.0
+    radiusX: 1250
+    radiusZ: 1250
+    wrapping: false
+  Metropolis_the_end:
+    x: 0.0
+    z: 0.0
+    radiusX: 1000
+    radiusZ: 1000
+    wrapping: false

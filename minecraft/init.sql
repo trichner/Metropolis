@@ -1,0 +1,2 @@
+DROP DATABASE IF EXISTS bukkit_dev;
+CREATE DATABASE bukkit_dev;

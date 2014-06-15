@@ -19,8 +19,8 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.DecayOption;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Nimmersatt;
-import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
+import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
+import org.bukkit.craftbukkit.libs.com.google.gson.JsonSyntaxException;
 
 
 /**

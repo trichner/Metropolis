@@ -31,9 +31,9 @@ settings:
   user-cache-size: 1000
   player-shuffle: 0
   bungeecord: false
-  late-bind: false
-  filter-creative-items: true
   sample-count: 12
+  filter-creative-items: true
+  late-bind: false
 messages:
   restart: Server is restarting
   whitelist: You are not whitelisted on this server!

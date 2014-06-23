@@ -1,6 +1,5 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

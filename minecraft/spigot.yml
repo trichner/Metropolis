@@ -11,42 +11,55 @@
 # Forums: http://www.spigotmc.org/forum/
 
 config-version: 6
+settings:
+  user-cache-size: 1000
+  player-shuffle: 0
+  bungeecord: false
+  save-user-cache-on-stop-only: false
+  late-bind: false
+  sample-count: 12
+  filter-creative-items: true
+  timeout-time: 600
+  restart-on-crash: true
+  restart-script: ./start.sh
+  netty-threads: 4
+stats:
+  disable-saving: false
+  forced-stats: {}
 commands:
-  replace-commands:
-  - setblock
-  - summon
-  - testforblock
-  - tellraw
   tab-complete: 0
   silent-commandblock-console: false
   spam-exclusions:
   - /skill
   log: true
-settings:
-  timeout-time: 600
-  restart-on-crash: true
-  restart-script: ./start.sh
-  netty-threads: 4
-  save-user-cache-on-stop-only: false
-  user-cache-size: 1000
-  player-shuffle: 0
-  bungeecord: false
-  sample-count: 12
-  filter-creative-items: true
-  late-bind: false
+  replace-commands:
+  - setblock
+  - summon
+  - testforblock
+  - tellraw
 messages:
-  restart: Server is restarting
   whitelist: You are not whitelisted on this server!
   unknown-command: Unknown command. Type "/help" for help.
   server-full: The server is full!
   outdated-client: Outdated client! Please use {}
   outdated-server: Outdated server! I'm still on {0}
-stats:
-  disable-saving: false
-  forced-stats: {}
+  restart: Server is restarting
 world-settings:
   default:
     verbose: true
+    mob-spawn-range: 4
+    view-distance: 10
+    chunks-per-tick: 650
+    clear-tick-list: false
+    merge-radius:
+      exp: 3.0
+      item: 2.5
+    nerf-spawner-mobs: false
+    item-despawn-rate: 6000
+    arrow-despawn-rate: 1200
+    enable-zombie-pigmen-portal-spawns: true
+    wither-spawn-sound-radius: 0
+    zombie-aggressive-towards-villager: true
     anti-xray:
       enabled: true
       engine-mode: 1
@@ -95,16 +108,3 @@ world-settings:
     max-bulk-chunks: 5
     max-entity-collisions: 8
     dragon-death-sound-radius: 0
-    view-distance: 10
-    chunks-per-tick: 650
-    clear-tick-list: false
-    merge-radius:
-      exp: 3.0
-      item: 2.5
-    mob-spawn-range: 4
-    nerf-spawner-mobs: false
-    arrow-despawn-rate: 1200
-    item-despawn-rate: 6000
-    enable-zombie-pigmen-portal-spawns: true
-    wither-spawn-sound-radius: 0
-    zombie-aggressive-towards-villager: true

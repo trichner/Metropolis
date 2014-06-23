@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.avaje.ebean.EbeanServer;
 import org.bukkit.Bukkit;
 
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
@@ -29,19 +30,22 @@ import com.avaje.ebean.Query;
  */
 public class ClipboardDAO {
 
-   private final ch.k42.metropolis.plugin.MetropolisPlugin plugin;
+    private final ch.k42.metropolis.plugin.MetropolisPlugin plugin;
+    private final EbeanServer database;
 
     public ClipboardDAO(MetropolisPlugin plugin) {
+        EbeanServer database = plugin.getDatabase();
         try {
-            plugin.getDatabase().find(ClipboardBean.class).findRowCount();
+            database.find(ClipboardBean.class).findRowCount();
         } catch (PersistenceException e){
             plugin.installDDL();
             try {
-                Files.deleteIfExists(Paths.get(plugin.getDataFolder()+ File.separator+"cache"));
+                Files.deleteIfExists(Paths.get(plugin.getDataFolder() + File.separator + "cache"));
             } catch (IOException e1) {
                 Minions.w("Recreating database, couldn't delete old cache");
             }
         }
+        this.database = database;
         this.plugin = plugin;
     }
 
@@ -63,7 +67,9 @@ public class ClipboardDAO {
     }
 
     public void storeClipboard(String fileHash,String fileName, Direction direction, ContextType context, SchematicType schematicType, RoadType roadType, Cartesian2D size){
-        ClipboardBean bean = plugin.getDatabase().createEntityBean(ClipboardBean.class);
+
+        ClipboardBean bean = database.createEntityBean(ClipboardBean.class);
+
         bean.setContext(context);
         bean.setDirection(direction);
         bean.setFileHash(fileHash);
@@ -71,7 +77,8 @@ public class ClipboardDAO {
         bean.setFileName(fileName);
         bean.setRoadType(roadType);
         bean.setSchematicType(schematicType);
-        plugin.getDatabase().save(bean);
+
+        database.save(bean);
     }
 
     public boolean containsHash(String hash){
@@ -95,14 +102,17 @@ public class ClipboardDAO {
         return getHashes(findAllClipboards(size,schematicType, direction));
     }
 
-    public List<ClipboardBean> findAllClipboards(Cartesian2D size, SchematicType schematicType,Direction direction){
+    public List<ClipboardBean> findAllClipboards(Cartesian2D size, SchematicType schematicType, Direction direction){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
-        query.where().eq("size_x",size.X).eq("size_y",size.Y).eq("direction",direction).eq("schematicType",schematicType);
+        query.where()
+                .eq("size_x",size.X)
+                .eq("size_y",size.Y)
+                .eq("direction",direction)
+                .eq("schematicType",schematicType);
         query.select("fileHash,fileName");
         List<ClipboardBean> beans = query.findList();
         return beans;
     }
-
 
     public List<ClipboardBean> findAllClipboardRoads(RoadType roadType){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);

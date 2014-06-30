@@ -105,32 +105,6 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>net.ju-n.maven.plugins</groupId>
-                <artifactId>vagrant-maven-plugin</artifactId>
-                <version>1.0.1</version>
-                <executions>
-                    <execution>
-                        <id>setup-and-start-vagrant-vm</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>box-add</goal>
-                            <goal>up</goal>
-                        </goals>
-                        <configuration>
-                            <box>mytestbox</box>
-                            <url>${project.basedir}/src/test/resources/mytestbox.box</url>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>destroy-vagrant-vm</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>destroy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>

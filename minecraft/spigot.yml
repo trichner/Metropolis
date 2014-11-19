@@ -10,9 +10,10 @@
 # IRC: #spigot @ irc.esper.net ( http://webchat.esper.net/?channel=spigot )
 # Forums: http://www.spigotmc.org/forum/
 
-config-version: 5
+config-version: 6
 commands:
-  tab-complete: true
+  tab-complete: 0
+  silent-commandblock-console: false
   spam-exclusions:
   - /skill
   log: true
@@ -21,7 +22,6 @@ commands:
   - summon
   - testforblock
   - tellraw
-  silent-commandblock-console: false
 messages:
   whitelist: You are not whitelisted on this server!
   unknown-command: Unknown command. Type "/help" for help.
@@ -31,20 +31,35 @@ messages:
   restart: Server is restarting
 settings:
   player-shuffle: 0
+  bungeecord: false
+  late-bind: false
+  sample-count: 12
   filter-creative-items: true
   timeout-time: 600
   restart-on-crash: true
   restart-script: ./start.sh
   netty-threads: 4
-  bungeecord: false
-  late-bind: false
-  sample-count: 12
 stats:
   disable-saving: false
   forced-stats: {}
 world-settings:
   default:
     verbose: true
+    mob-spawn-range: 4
+    wither-spawn-sound-radius: 0
+    view-distance: 10
+    chunks-per-tick: 650
+    clear-tick-list: false
+    merge-radius:
+      exp: 3.0
+      item: 2.5
+    nerf-spawner-mobs: false
+    item-despawn-rate: 6000
+    arrow-despawn-rate: 1200
+    enable-zombie-pigmen-portal-spawns: true
+    zombie-aggressive-towards-villager: true
+    random-light-updates: false
+    save-structure-info: true
     anti-xray:
       enabled: true
       engine-mode: 1
@@ -65,18 +80,6 @@ world-settings:
       replace-blocks:
       - 1
       - 5
-    zombie-aggressive-towards-villager: true
-    view-distance: 10
-    chunks-per-tick: 650
-    clear-tick-list: false
-    merge-radius:
-      exp: 3.0
-      item: 2.5
-    enable-zombie-pigmen-portal-spawns: true
-    mob-spawn-range: 4
-    nerf-spawner-mobs: false
-    arrow-despawn-rate: 1200
-    item-despawn-rate: 6000
     growth:
       cactus-modifier: 100
       cane-modifier: 100
@@ -98,7 +101,6 @@ world-settings:
     ticks-per:
       hopper-transfer: 8
       hopper-check: 8
-    random-light-updates: false
-    save-structure-info: true
     max-bulk-chunks: 5
     max-entity-collisions: 8
+    dragon-death-sound-radius: 0

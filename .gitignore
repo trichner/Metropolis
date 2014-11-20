@@ -3,7 +3,7 @@ out
 .metadata
 .idea
 .idea/
-Metropolis.iml
+*.iml
 metropolis.properties
 bin
 .vagrant

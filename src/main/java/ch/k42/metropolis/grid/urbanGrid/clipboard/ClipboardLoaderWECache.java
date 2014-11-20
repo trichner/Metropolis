@@ -1,6 +1,17 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 
+import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
+import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
+import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.minions.Cartesian2D;
+import ch.k42.metropolis.minions.Minions;
+import com.sk89q.worldedit.CuboidClipboard;
+import com.sk89q.worldedit.data.DataException;
+import com.sk89q.worldedit.schematic.SchematicFormat;
+import org.bukkit.Bukkit;
+
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -13,18 +24,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import org.bukkit.Bukkit;
-
-import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
-import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.Minions;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.data.DataException;
-import com.sk89q.worldedit.schematic.SchematicFormat;
 
 /**
  * Created by Thomas on 07.03.14.
@@ -102,7 +101,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
         Set<String> cachedHashes = getCachedHashes(cacheFolder);
 
-        for(int i=0;i<length;i++){ // TODO use threads http://www.javapractices.com/topic/TopicAction.do?Id=247, maybe even load async in Clipboard
+        for(int i=0;i<length;i++){
             File file = schematicFiles.get(i);
 
             Minions.i("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName());
@@ -193,13 +192,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
                         cachedHashes.remove(hash); // caching it now, take it out, we wan't to delete unused caches
                     }
                 }
-            } catch (IOException e) {
-                Minions.e(e);
-                continue;
-            } catch (DataException e) {
-                Minions.e(e);
-                continue;
-            } catch (NoSuchAlgorithmException e) {
+            } catch (IOException | DataException | NoSuchAlgorithmException e) {
                 Minions.e(e);
                 continue;
             }
@@ -253,7 +246,11 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         try {
             SchematicFormat format = SchematicFormat.getFormat(file);
             CuboidClipboard cuboid = format.load(file);
-            Clipboard clip = new ClipboardWE(cuboid,config,globalConfig,hash);
+
+            Clipboard clip = new FileClipboard(file,config,globalConfig,hash);//new ClipboardWE(cuboid,config,
+            // globalConfig,
+            // hash);
+
             String thash = hash + "." + direction.name();
             clipstore.put(thash,clip);
 
@@ -271,9 +268,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
             System.gc();
 
             return true;
-        } catch (IOException e) {
-            Minions.e(e);
-        } catch (DataException e) {
+        } catch (IOException | DataException e) {
             Minions.e(e);
         }
         return false;

@@ -89,6 +89,7 @@ public class FileClipboard implements Clipboard{
                 for (Cartesian3D c : chests) {
                     Cartesian3D temp = base3.add(c);
                     Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
+
                     if (block.getType() == Material.CHEST) {
                         if (!rand.getChance(config.getChestOdds())) { //we were unlucky, chest doesn't get placed{
                             block.setType(Material.AIR);
@@ -107,6 +108,7 @@ public class FileClipboard implements Clipboard{
                     } else {
                         Minions.d("Chest coordinates were wrong! (" + block + ")");
                     }
+
                 }
             }
 

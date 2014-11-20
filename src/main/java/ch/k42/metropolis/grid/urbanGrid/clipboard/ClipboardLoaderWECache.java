@@ -102,6 +102,8 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         Set<String> cachedHashes = getCachedHashes(cacheFolder);
 
         for(int i=0;i<length;i++){
+
+
             File file = schematicFiles.get(i);
 
             Minions.i("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName());

@@ -97,7 +97,7 @@ public class ClipboardImporter {
         }
 
         //copy config file
-        File configFile = new File(ClipboardConstants.CACHE_FOLDER,ClipboardConstants.CONFIG_FILE);
+        File configFile   = new File(cacheFolder,ClipboardConstants.CONFIG_FILE);
         Files.copy(Paths.get(configPath),configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
         //cache schematics
@@ -122,8 +122,9 @@ public class ClipboardImporter {
         format.save(cuboid, westFile);
 
         //move imported files
-        Files.move(schematicFile.toPath(),Paths.get(ClipboardConstants.DONE_FOLDER));
-        Files.move(configFile.toPath(),Paths.get(ClipboardConstants.DONE_FOLDER));
+        Files.move(schematicFile.toPath(),Paths.get(ClipboardConstants.DONE_FOLDER).resolve(schematicFile
+                .getName()),StandardCopyOption.REPLACE_EXISTING);
+        Files.move(configFile.toPath(),Paths.get(ClipboardConstants.DONE_FOLDER).resolve(Paths.get(configPath).getFileName()),StandardCopyOption.REPLACE_EXISTING);
         return true;
     }
 
@@ -137,6 +138,15 @@ public class ClipboardImporter {
         // copy config
         String configPath = config.getPath();
         File cacheFolder = new File(ClipboardConstants.CACHE_FOLDER,Minions.getMD5Checksum(file));
+        // delete any old schematics
+        if (cacheFolder.isDirectory()) {
+            FileUtils.deleteDirectory(cacheFolder);
+        }
+
+        if (!cacheFolder.mkdir()){
+            Minions.w("Cannot create directory '" + cacheFolder.getName() + "'");
+            return false;
+        }
 
         File streetFile =    new File(cacheFolder, ClipboardConstants.STREET_FILE);
         // load the actual blocks

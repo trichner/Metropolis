@@ -6,7 +6,7 @@
 
     <groupId>ch.k42.metropolis</groupId>
     <artifactId>metropolis</artifactId>
-    <version>1.0.1-1001</version>
+    <version>1.0.1-1002</version>
 
     <repositories>
         <repository>

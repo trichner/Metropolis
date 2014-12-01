@@ -1,5 +1,12 @@
 package ch.k42.metropolis.minions;
 
+import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.plugin.PluginConfig;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.generator.ChunkGenerator;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileInputStream;
@@ -10,14 +17,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.generator.ChunkGenerator;
-
-import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.plugin.PluginConfig;
 
 /**
  * Created by Thomas on 06.03.14.
@@ -102,6 +101,10 @@ public class Minions {
             findAllFilesRecursively(folder, files, filter); // this could lead to a endless loop, maybe a max_depth would be clever...
         }
         return files;
+    }
+
+    public static List<File> findAllFilesRecursively(String path, List<File> files, FilenameFilter filter) {
+        return findAllFilesRecursively(new File(path),files,filter);
     }
 
     public static FileFilter isDirectory() {

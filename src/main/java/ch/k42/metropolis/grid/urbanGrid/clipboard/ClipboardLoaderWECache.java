@@ -108,10 +108,16 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
 
             Minions.i("Loading schematic %4d of %d (%.2f%%) : %s" ,i,length,(i/(double) length)*100,file.getName());
             SchematicConfig config = findConfig(file.getName());
-            if(config==null) continue;
+
+            // if we have no config the schem is of no use to us
+            if(config==null){
+                Minions.d("No config for '" + file.getName() + "' found.");
+                continue;
+            }
 
             String hash;
             try {
+
                 hash = Minions.getMD5Checksum(file);
 
                 /*
@@ -195,8 +201,8 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
                     }
                 }
             } catch (IOException | DataException | NoSuchAlgorithmException e) {
+                // move on to next schem
                 Minions.e(e);
-                continue;
             }
         }
 
@@ -219,7 +225,7 @@ public class ClipboardLoaderWECache implements ClipboardLoader{
         File cacheSchemFolder = new File(cacheFolder,hash);
         if (!cacheSchemFolder.isDirectory()) {
             if (!cacheSchemFolder.mkdir())
-                throw new UnsupportedOperationException("[WorldEdit] Could not create/find the folder: " + cacheSchemFolder.getAbsolutePath() + File.separator + hash);
+                throw new UnsupportedOperationException("Could not create/find the folder: " + cacheSchemFolder.getAbsolutePath() + File.separator + hash);
         }
         return cacheSchemFolder;
     }

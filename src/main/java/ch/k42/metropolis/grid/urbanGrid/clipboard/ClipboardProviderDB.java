@@ -1,15 +1,5 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
-
 import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
@@ -20,12 +10,21 @@ import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Thomas on 07.03.14.
  */
 public class ClipboardProviderDB implements ClipboardProvider {
-    public static class PluginNotFoundException extends Exception{
+    public static class PluginNotFoundException extends RuntimeException{
         public PluginNotFoundException(String message) {
             super(message);
         }
@@ -40,64 +39,41 @@ public class ClipboardProviderDB implements ClipboardProvider {
 
     private boolean isLoaded = false;
 
-    public ClipboardProviderDB() throws PluginNotFoundException {
-        //==== First load the plugin
-        WorldEditPlugin worldEditPlugin = null;
-        PluginManager pm = Bukkit.getServer().getPluginManager();
-        worldEditPlugin = (WorldEditPlugin) pm.getPlugin(WE_PLUGIN);
-
-        // not there? darn
-        if (worldEditPlugin == null) {
-            Minions.w("No WorldEdit found!");
+    @Override
+    public void loadClips(MetropolisPlugin plugin) throws FileNotFoundException {
+        // make sure WorldEdit is ready
+        if(!assertWorldEditLoaded()){
             throw new PluginNotFoundException("Couldn't find WorldEdit plugin.");
         }
 
-        // make sure it is enabled
-        if (!pm.isPluginEnabled(worldEditPlugin))  pm.enablePlugin(worldEditPlugin);
-
-        this.worldEdit = worldEditPlugin.getWorldEdit();
-    }
-
-    @Override
-    public void loadClips(MetropolisPlugin plugin) throws FileNotFoundException {
         dao = new ClipboardDAO(plugin);
+
         File schematicsFolder,cacheFolder;
         // find the files
         File pluginFolder = plugin.getDataFolder();
-        plugin.getLogger().info("looking for PluginFolder");
+        Minions.i("looking for PluginFolder");
 
         if (!pluginFolder.isDirectory()) {
             pluginFolder.mkdir();
         }
 
-        if (pluginFolder.isDirectory()) {
-            plugin.getLogger().info("found PluginFolder");
-            // forget all those shape and ore type and just go for the world name
-            schematicsFolder = Minions.findFolder(pluginFolder, SCHEMATIC_FOLDER);
-            cacheFolder = Minions.findFolder(pluginFolder, CACHE_FOLDER);
-            if (schematicsFolder == null || cacheFolder == null)
-                throw new FileNotFoundException("Couldn't find required folders.");
-            // Delete all files in the Cache folder
-//            try {
-//                FileUtils.cleanDirectory(cacheFolder);
-//            } catch (IOException e) {
-//                plugin.getLogger().warning("Can't clear cache folder. File permissions wrong?");
-//            }
+        ClipboardImporter importer = new ClipboardImporter();
+        importer.importSchematics();
+        importer = null; // release it
 
-            plugin.getLogger().info("loading clips");
-            ClipboardLoader loader = Factory.getDefaultLoader(dao);
-            clipstore = loader.loadSchematics(schematicsFolder,cacheFolder);
+        ClipboardLoader loader = Factory.getDefaultLoader(dao);
+        clipstore = loader.loadSchematics(null,null);
 
-            plugin.getLogger().info("loaded clips");
+        Minions.i("loaded clips");
 
-            for(String clip : clipstore.keySet()){
-                Minions.d("clipstore: " + clip);
-            }
-            List<String> beans = dao.findAllClipboardHashes();
-            for(String clip : beans){
-                Minions.d("dao hash: "+clip);
-            }
+        for(String clip : clipstore.keySet()){
+            Minions.d("clipstore: " + clip);
         }
+        List<String> beans = dao.findAllClipboardHashes();
+        for(String clip : beans){
+            Minions.d("dao hash: "+clip);
+        }
+
         isLoaded = true;
     }
 
@@ -135,5 +111,25 @@ public class ClipboardProviderDB implements ClipboardProvider {
             clips.add(clipstore.get(hash));
         }
         return clips;
+    }
+
+    private boolean assertWorldEditLoaded(){
+        //==== First load the plugin
+        WorldEditPlugin worldEditPlugin = null;
+        PluginManager pm = Bukkit.getServer().getPluginManager();
+        worldEditPlugin = (WorldEditPlugin) pm.getPlugin(WE_PLUGIN);
+
+        // not there? darn
+        if (worldEditPlugin == null) {
+            Minions.w("No WorldEdit found!");
+            return false;
+        }
+
+        // make sure it is enabled
+        if (!pm.isPluginEnabled(worldEditPlugin)) {
+            pm.enablePlugin(worldEditPlugin);
+        }
+        this.worldEdit = worldEditPlugin.getWorldEdit();
+        return true;
     }
 }

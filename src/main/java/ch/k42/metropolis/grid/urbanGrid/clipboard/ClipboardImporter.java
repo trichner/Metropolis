@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,14 +90,15 @@ public class ClipboardImporter {
             FileUtils.deleteDirectory(cacheFolder);
         }
 
-        if (!cacheFolder.mkdir()){
+        if (!cacheFolder.mkdirs()){
             Minions.w("Cannot create directory '" + cacheFolder.getName() + "'");
             return false;
         }
 
         //copy config file
         File configFile   = new File(cacheFolder,ClipboardConstants.CONFIG_FILE);
-        Files.copy(Paths.get(configPath),configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        Minions.d("Copying config from " + Paths.get(configPath).toString() + " to " + configFile.toPath());
+        Files.copy(Paths.get(configPath), cacheFolder.toPath().resolve(ClipboardConstants.CONFIG_FILE));
 
         //cache schematics
         File northFile =    new File(cacheFolder, ClipboardConstants.NORTH_FILE);
@@ -121,10 +121,6 @@ public class ClipboardImporter {
         cuboid.rotate2D(90);
         format.save(cuboid, westFile);
 
-        //move imported files
-        Files.move(schematicFile.toPath(),Paths.get(ClipboardConstants.DONE_FOLDER).resolve(schematicFile
-                .getName()),StandardCopyOption.REPLACE_EXISTING);
-        Files.move(configFile.toPath(),Paths.get(ClipboardConstants.DONE_FOLDER).resolve(Paths.get(configPath).getFileName()),StandardCopyOption.REPLACE_EXISTING);
         return true;
     }
 
@@ -147,6 +143,11 @@ public class ClipboardImporter {
             Minions.w("Cannot create directory '" + cacheFolder.getName() + "'");
             return false;
         }
+
+        //copy config file
+        File configFile   = new File(cacheFolder,ClipboardConstants.CONFIG_FILE);
+        Minions.d("Copying config from " + Paths.get(configPath).toString() + " to " + configFile.toPath());
+        Files.copy(Paths.get(configPath), cacheFolder.toPath().resolve(ClipboardConstants.CONFIG_FILE));
 
         File streetFile =    new File(cacheFolder, ClipboardConstants.STREET_FILE);
         // load the actual blocks
@@ -194,6 +195,14 @@ public class ClipboardImporter {
                 // move on to next schem
                 Minions.e(e);
             }
+        }
+
+        //move imported files
+        try {
+            FileUtils.moveDirectoryToDirectory(new File(ClipboardConstants.IMPORT_FOLDER),new File(ClipboardConstants
+                    .DONE_FOLDER),true);
+        } catch (IOException e) {
+            Minions.d("Failed to move imported files %s",e.getMessage());
         }
     }
 }

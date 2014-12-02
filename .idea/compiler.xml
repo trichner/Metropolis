@@ -23,11 +23,12 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="Metropolis" />
+        <module name="metropolis" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Metropolis" target="1.7" />
+      <module name="metropolis" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
-

@@ -10,6 +10,7 @@ import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -41,8 +42,12 @@ public class ClipboardImporter {
     private boolean loadSchematicConfigs(){
         configs = new HashMap<>();
         List<File> configFiles = Minions.findAllFilesRecursively(ClipboardConstants.IMPORT_FOLDER, new
-                        ArrayList<>(),
-                (dir, name) -> name.endsWith(ClipboardConstants.JSON_FILE));
+                ArrayList<File>(), new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(ClipboardConstants.JSON_FILE);
+            }
+        });
 
         for(File file : configFiles){
             SchematicConfig config = SchematicConfig.fromFile(file);
@@ -167,8 +172,14 @@ public class ClipboardImporter {
         loadSchematicConfigs();
 
         // find all schematics to import
-        List<File> schematicFiles = Minions.findAllFilesRecursively(schematicsFolder, new ArrayList<>(),
-                (dir, name) -> name.endsWith(ClipboardConstants.SCHEMATIC_FILE));
+        List<File> schematicFiles = Minions.findAllFilesRecursively(schematicsFolder, new ArrayList<File>(), new
+                FilenameFilter() {
+                    @Override
+                    public boolean accept(File dir, String name) {
+                        return name.endsWith(ClipboardConstants.SCHEMATIC_FILE);
+                    }
+                }
+        );
 
         int length = schematicFiles.size();
 

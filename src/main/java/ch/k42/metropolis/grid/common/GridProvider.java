@@ -1,11 +1,8 @@
 package ch.k42.metropolis.grid.common;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.GridRandom;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
+import org.bukkit.World;
 
 /**
  * This Class provides storage for all parcels.
@@ -20,10 +17,10 @@ public class GridProvider {
 
     private Table<Integer,Integer,Grid> grids = HashBasedTable.create();
 
-    private MetropolisGenerator generator;
+    private World world;
 
-    public GridProvider(MetropolisGenerator generator) {
-        this.generator = generator;
+    public GridProvider(World world) {
+        this.world = world;
     }
 
     /**
@@ -51,8 +48,13 @@ public class GridProvider {
         int originX = getGridOrigin(chunkX);
         int originZ = getGridOrigin(chunkZ);
 
-        long seed = generator.getWorldSeed();
-        return new UrbanGrid(this, new GridRandom(seed, originX, originZ),generator, new Cartesian2D(originX,originZ)); // FIXME mooaaar grids
+        long seed = world.getSeed();
+        return null; //FIXME
+        /*
+        new UrbanGrid(this, new GridRandom(seed, originX, originZ),world, new Cartesian2D(originX,
+                originZ)
+        ); // FIXME mooaaar grids
+        */
     }
 
     private static int getGridOrigin(int chunk) {

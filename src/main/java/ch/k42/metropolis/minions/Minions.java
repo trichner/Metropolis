@@ -1,11 +1,7 @@
 package ch.k42.metropolis.minions;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.generator.ChunkGenerator;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -73,16 +69,6 @@ public class Minions {
         if(max==0) return 0;
         if(x>=max) return max-1;
         return x;
-    }
-
-    public static final MetropolisGenerator getGeneratorForPlayer(Player player){
-        World world = player.getWorld();
-        ChunkGenerator cgenerator = world.getGenerator();
-        if(cgenerator instanceof MetropolisGenerator){
-            MetropolisGenerator generator = (MetropolisGenerator) cgenerator;
-            return generator;
-        }
-        return null;
     }
 
     public static final File findFolder(File parent, String name){

@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>ch.k42.metropolis</groupId>
-    <artifactId>metropolis</artifactId>
-    <version>1.0.1-1002</version>
+    <groupId>ch.k42.vault42</groupId>
+    <artifactId>vault42</artifactId>
+    <version>1.0.1-1002-vault</version>
 
     <repositories>
         <repository>

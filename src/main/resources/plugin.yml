@@ -1,10 +1,9 @@
-name: Metropolis
+name: Vault42
 main: ch.k42.metropolis.plugin.MetropolisPlugin
 version: 0.1.6
 load: startup
 authors: [AthmosPrime, trichner, spaceribs]
 website: k42.ch
-description: Metropolis (1927)
 softdepend: [WorldEdit]
 loadbefore: [Multiverse-Core, dimension-door, multiworld]
 database: true

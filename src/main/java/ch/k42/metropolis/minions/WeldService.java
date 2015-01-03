@@ -18,12 +18,6 @@ import javax.inject.Singleton;
 @Singleton
 public class WeldService {
 
-    class ShutdownHook extends Thread {
-        public void run() {
-            weld.shutdown();
-        }
-    }
-
     private Weld weld;
     private WeldContainer container;
 
@@ -32,7 +26,16 @@ public class WeldService {
         container = weld.initialize();
 
         // register a hook to shut down weld properly
-        Runtime.getRuntime().addShutdownHook(new ShutdownHook());
+        Runtime.getRuntime().addShutdownHook(new Thread(){
+            @Override
+            public void run() {
+                weld.shutdown();
+            }
+        });
+    }
+
+    public void shutdown(){
+        weld.shutdown();
     }
 
     public <T> T get(Class<T> clazz) {

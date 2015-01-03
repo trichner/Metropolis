@@ -1,6 +1,5 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
-import ch.k42.metropolis.grid.common.Factory;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
@@ -61,7 +60,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
         importer.importSchematics();
         importer = null; // release it
 
-        ClipboardLoader loader = Factory.getDefaultLoader(dao);
+        ClipboardLoader loader = new ClipboardLoaderMkII(dao);
         clipstore = loader.loadSchematics(null,null);
 
         Minions.i("loaded clips");

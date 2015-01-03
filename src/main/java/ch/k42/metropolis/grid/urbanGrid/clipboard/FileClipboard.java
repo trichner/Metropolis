@@ -1,10 +1,8 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.grid.urbanGrid.provider.EnvironmentProvider;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.DirtyHacks;
@@ -70,19 +68,18 @@ public class FileClipboard implements Clipboard{
     }
 
     @Override
-    public void paste(MetropolisGenerator generator, Cartesian2D base, int streetLevel) {
+    public void paste(World world, Cartesian2D base, int streetLevel) {
         int blockY = getBottom(streetLevel);
         Vector at = new Vector(base.X << 4, blockY , base.Y << 4);
         try {
-            EditSession editSession = getEditSession(generator);
+            EditSession editSession = getEditSession(world);
             editSession.setFastMode(true);
 
             //place Schematic
-            place(generator, editSession, at);
+            place(editSession, at);
 
             //fill chests
-            World world = generator.getWorld();
-            GridRandom rand = generator.getGridProvider().getGrid(base.X,base.Y).getRandom();
+            GridRandom rand = new GridRandom(0x1337L,base.X,base.Y);
             Cartesian3D base3 = new Cartesian3D(base.X<< 4, blockY,  base.Y<< 4);
 
             if (PluginConfig.isChestRenaming()) { //do we really want to name them all?
@@ -150,9 +147,8 @@ public class FileClipboard implements Clipboard{
     }
 
 
-    private void place(MetropolisGenerator generator, EditSession editSession, Vector pos) throws MaxChangedBlocksException {
+    private void place(EditSession editSession, Vector pos) throws MaxChangedBlocksException {
         CuboidClipboard cuboid = loadCuboid();
-        EnvironmentProvider natureDecay = generator.getNatureDecayProvider();
         chests.clear();
         spawners.clear();
         for (int x = 0; x < cuboid.getWidth(); x++) {
@@ -161,12 +157,6 @@ public class FileClipboard implements Clipboard{
 
                     BaseBlock block = cuboid.getBlock(new Vector(x, y, z));
                     Vector vec = new Vector(x, y, z).add(pos);
-                    Material decay = natureDecay.checkBlock(generator.getWorld(), (int) vec.getX(), (int) vec.getY(), (int) vec.getZ());
-
-                    if (decay != null) {
-                        block.setType(decay.getId());
-                        continue;
-                    }
 
                     if (block.getId() == Material.CHEST.getId()) {
                         chests.add(new Cartesian3D(x, y, z));
@@ -194,8 +184,8 @@ public class FileClipboard implements Clipboard{
         return groupId;
     }
 
-    private EditSession getEditSession(MetropolisGenerator generator) {
-        return new EditSession(new BukkitWorld(generator.getWorld()), blockCount);
+    private EditSession getEditSession(World world) {
+        return new EditSession(new BukkitWorld(world), blockCount);
     }
 
     private EntityType getSpawnedEntity(GridRandom random) {

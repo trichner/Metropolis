@@ -2,8 +2,8 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.Cartesian3D;
+import ch.k42.metropolis.minions.Vec2D;
+import ch.k42.metropolis.minions.Vec3D;
 import org.bukkit.World;
 
 /**
@@ -16,8 +16,8 @@ public interface Clipboard {
      * @param base absolute chunk coordinates
      * @param streetLevel
      */
-    public void paste(World world, Cartesian2D base, int streetLevel);
-    public Cartesian3D getSize();
+    public void paste(World world, Vec2D base, int streetLevel);
+    public Vec3D getSize();
     public int getBottom(int streetlevel);
     public SchematicConfig getConfig();
 

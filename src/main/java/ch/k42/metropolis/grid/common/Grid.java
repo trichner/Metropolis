@@ -1,7 +1,7 @@
 package ch.k42.metropolis.grid.common;
 
 
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.k42.metropolis.minions.Vec2D;
 import ch.k42.metropolis.minions.GridRandom;
 import org.bukkit.Chunk;
 
@@ -19,9 +19,9 @@ abstract public class Grid {
     protected final GridRandom random;
     protected final GridProvider gridProvider;
 
-    protected final Cartesian2D root;
+    protected final Vec2D root;
 
-    protected Grid(GridRandom random, GridProvider gridProvider, Cartesian2D root) {
+    protected Grid(GridRandom random, GridProvider gridProvider, Vec2D root) {
         this.random = random;
         this.gridProvider = gridProvider;
         this.root = root;

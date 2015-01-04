@@ -1,6 +1,6 @@
 package ch.k42.metropolis.generator.cuboid;
 
-import ch.k42.metropolis.minions.Cartesian3D;
+import ch.k42.metropolis.minions.Vec3D;
 import com.sk89q.worldedit.CuboidClipboard;
 
 import java.util.Random;
@@ -11,5 +11,5 @@ import java.util.Random;
  * @author Thomas
  */
 public interface CuboidGenerator {
-    CuboidClipboard generate(Cartesian3D size,Random random);
+    CuboidClipboard generate(Vec3D size,Random random);
 }

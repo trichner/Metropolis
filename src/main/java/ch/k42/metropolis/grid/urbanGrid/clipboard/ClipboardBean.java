@@ -10,7 +10,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.k42.metropolis.minions.Vec2D;
 
 /**
  * Created by Thomas on 07.03.14.
@@ -96,13 +96,13 @@ public class ClipboardBean {
         this.size_y = size_y;
     }
 
-    public void setSize(Cartesian2D size) {
+    public void setSize(Vec2D size) {
         this.size_x = size.X;
         this.size_y = size.Y;
     }
 
-    public Cartesian2D getSize() {
-        return new Cartesian2D(size_x,size_y);
+    public Vec2D getSize() {
+        return new Vec2D(size_x,size_y);
     }
 
     public String getFileName() {

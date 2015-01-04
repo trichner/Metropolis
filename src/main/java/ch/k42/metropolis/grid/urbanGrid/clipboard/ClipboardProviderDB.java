@@ -4,7 +4,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.k42.metropolis.minions.Vec2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.sk89q.worldedit.WorldEdit;
@@ -93,7 +93,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
     }
 
     @Override
-    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction direction) {
+    public List<Clipboard> getFit(Vec2D size, ContextType contextType,SchematicType schematicType, Direction direction) {
         if(!isLoaded) Minions.w("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,contextType,schematicType,direction)){
@@ -103,7 +103,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
     }
 
     @Override
-    public List<Clipboard> getFit(Cartesian2D size, SchematicType schematicType, Direction roadDir) {
+    public List<Clipboard> getFit(Vec2D size, SchematicType schematicType, Direction roadDir) {
         if(!isLoaded) Minions.w("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,schematicType,roadDir)){

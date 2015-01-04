@@ -3,8 +3,8 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.Cartesian3D;
+import ch.k42.metropolis.minions.Vec2D;
+import ch.k42.metropolis.minions.Vec3D;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;
@@ -33,8 +33,8 @@ public class ClipboardWE implements Clipboard{
     private CuboidClipboard cuboid;
     private SchematicConfig config;
     private GlobalSchematicConfig globalConfig;
-    private List<Cartesian3D> chests = new ArrayList<>();
-    private List<Cartesian3D> spawners = new ArrayList<>();
+    private List<Vec3D> chests = new ArrayList<>();
+    private List<Vec3D> spawners = new ArrayList<>();
     private int blockCount;
     private String groupId;
 
@@ -50,7 +50,7 @@ public class ClipboardWE implements Clipboard{
     }
 
     @Override
-    public void paste(World world, Cartesian2D base, int streetLevel) {
+    public void paste(World world, Vec2D base, int streetLevel) {
         int blockY = getBottom(streetLevel);
         Vector at = new Vector(base.X << 4, blockY , base.Y << 4);
         try {
@@ -63,11 +63,11 @@ public class ClipboardWE implements Clipboard{
             //fill chests
 
             GridRandom rand = new GridRandom(world.getSeed(),base.X,base.Y);
-            Cartesian3D base3 = new Cartesian3D(base.X<< 4, blockY,  base.Y<< 4);
+            Vec3D base3 = new Vec3D(base.X<< 4, blockY,  base.Y<< 4);
 
             if (PluginConfig.isChestRenaming()) { //do we really want to name them all?
-                for (Cartesian3D c : chests) {
-                    Cartesian3D temp = base3.add(c);
+                for (Vec3D c : chests) {
+                    Vec3D temp = base3.add(c);
                     Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
                     if (block.getType() == Material.CHEST) {
                         if (!rand.getChance(config.getChestOdds())) { //we were unlucky, chest doesn't get placed{
@@ -93,8 +93,8 @@ public class ClipboardWE implements Clipboard{
             //set spawners
 
             if (PluginConfig.isSpawnerPlacing()) { // do we even place any?
-                for (Cartesian3D c : spawners) {
-                    Cartesian3D temp = base3.add(c);
+                for (Vec3D c : spawners) {
+                    Vec3D temp = base3.add(c);
                     Block block = world.getBlockAt(temp.X, temp.Y, temp.Z);
 
                     if (block.getType() == Material.SPONGE) {
@@ -122,8 +122,8 @@ public class ClipboardWE implements Clipboard{
     }
 
     @Override
-    public Cartesian3D getSize() {
-        return new Cartesian3D(cuboid.getWidth(),cuboid.getHeight(),cuboid.getLength());
+    public Vec3D getSize() {
+        return new Vec3D(cuboid.getWidth(),cuboid.getHeight(),cuboid.getLength());
     }
 
 
@@ -138,9 +138,9 @@ public class ClipboardWE implements Clipboard{
                     Vector vec = new Vector(x, y, z).add(pos);
 
                     if (block.getId() == Material.CHEST.getId()) {
-                        chests.add(new Cartesian3D(x, y, z));
+                        chests.add(new Vec3D(x, y, z));
                     } else if (block.getId() == Material.SPONGE.getId()) {
-                        spawners.add(new Cartesian3D(x, y, z));
+                        spawners.add(new Vec3D(x, y, z));
                     }
                     editSession.setBlock(vec, block);
                 }

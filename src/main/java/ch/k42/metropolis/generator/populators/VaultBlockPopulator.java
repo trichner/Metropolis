@@ -1,5 +1,6 @@
 package ch.k42.metropolis.generator.populators;
 
+import ch.k42.metropolis.minions.Minions;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -16,6 +17,11 @@ public class VaultBlockPopulator extends BlockPopulator {
 
     @Override
     public void populate(World aWorld, Random random, Chunk chunk) { // we should make sure that the whol
-       chunk.getBlock(0,0,0).setType(Material.DIAMOND);
+        Minions.i("Placing diamond!");
+       chunk.getBlock(0,10,0).setType(Material.DIAMOND_BLOCK);
+
+        if(chunk.getX() == 0 && chunk.getZ() == 0){
+            //place a fat cuboid
+        }
     }
 }

@@ -43,8 +43,8 @@ public class VaultGenerator extends ChunkGenerator {
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
         List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
-        Minions.d("getDefaultPopulators: " + world.toString());
-
+        Minions.i("getDefaultPopulators: " + world.toString());
+        Minions.i("blockPopulator: " + blockPopulator);
         this.world = world;
 
         /*

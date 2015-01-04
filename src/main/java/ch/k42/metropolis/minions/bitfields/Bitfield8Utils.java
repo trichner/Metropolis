@@ -1,4 +1,4 @@
-package ch.k42.metropolis.minions;
+package ch.k42.metropolis.minions.bitfields;
 
 /**
  * Utils to handle 8x8 Bitfields

@@ -1,4 +1,6 @@
-package ch.k42.metropolis.minions;
+package ch.k42.metropolis.minions.bitfields;
+
+import ch.k42.metropolis.minions.vectors.Vec2D;
 
 /**
  * Created on 04.01.2015.

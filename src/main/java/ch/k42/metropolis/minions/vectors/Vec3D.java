@@ -1,4 +1,4 @@
-package ch.k42.metropolis.minions;
+package ch.k42.metropolis.minions.vectors;
 
 import com.sk89q.worldedit.Vector;
 

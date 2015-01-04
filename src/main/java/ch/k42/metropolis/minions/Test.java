@@ -1,5 +1,9 @@
 package ch.k42.metropolis.minions;
 
+import ch.k42.metropolis.minions.bitfields.Bitfield4x4;
+import ch.k42.metropolis.minions.bitfields.Bitfield8Utils;
+import ch.k42.metropolis.minions.bitfields.Bitfield8x8;
+
 /**
  * Created on 04.01.2015.
  *

@@ -3,8 +3,8 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.minions.Vec2D;
-import ch.k42.metropolis.minions.Vec3D;
+import ch.k42.metropolis.minions.vectors.Vec2D;
+import ch.k42.metropolis.minions.vectors.Vec3D;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;

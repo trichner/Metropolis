@@ -1,4 +1,4 @@
-package ch.k42.metropolis.minions;
+package ch.k42.metropolis.minions.bitfields;
 
 /**
  * Created on 04.01.2015.

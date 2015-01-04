@@ -24,8 +24,8 @@ public final class Vec3D {
         return new Vec3D(X + c.X, Y + c.Y, Z + c.Z);
     }
 
-    public final Vec2D get2D(){
-        return new Vec2D(X,Z);
+    public final int dot(Vec3D c) {
+        return X * c.X + Y * c.Y + Z * c.Z;
     }
 
     public static final Vec3D fromVector(Vector v){

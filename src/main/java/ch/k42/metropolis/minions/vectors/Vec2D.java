@@ -23,8 +23,16 @@ public final class Vec2D {
         return new Vec2D(X + c.X, Y + c.Y);
     }
 
-    public final  int manhattanDistance(Vec2D c){
-        return Math.abs(c.X-X)+Math.abs(c.Y-Y);
+    public final int dot(Vec2D c) {
+        return X * c.X + Y * c.Y;
+    }
+
+    public final Vec2D mult(int m) {
+        return new Vec2D(X*m,Y*m);
+    }
+
+    public final  int norm1(){
+        return Math.abs(X)+Math.abs(Y);
     }
 
     @Override

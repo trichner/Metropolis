@@ -6,7 +6,7 @@
 
     <groupId>ch.k42.vault42</groupId>
     <artifactId>vault42</artifactId>
-    <version>1.1.1-1001-vault</version>
+    <version>1.1.1</version>
 
     <repositories>
         <!-- bukkit is dead! long live spigot! -->

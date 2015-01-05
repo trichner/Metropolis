@@ -1,8 +1,8 @@
 package ch.k42.metropolis.grid.common;
 
 
-import ch.k42.metropolis.minions.vectors.Vec2D;
 import ch.k42.metropolis.minions.GridRandom;
+import ch.n1b.vector.Vec2D;
 import org.bukkit.Chunk;
 
 /**

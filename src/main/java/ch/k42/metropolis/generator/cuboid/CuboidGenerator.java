@@ -1,6 +1,6 @@
 package ch.k42.metropolis.generator.cuboid;
 
-import ch.k42.metropolis.minions.vectors.Vec3D;
+import ch.n1b.vector.Vec3D;
 import com.sk89q.worldedit.CuboidClipboard;
 
 import java.util.Random;

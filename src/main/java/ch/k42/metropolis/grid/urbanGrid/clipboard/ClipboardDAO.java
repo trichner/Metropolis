@@ -1,7 +1,18 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
-import javax.persistence.PersistenceException;
+import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
+import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
+import ch.k42.metropolis.minions.Minions;
+import ch.k42.metropolis.plugin.MetropolisPlugin;
+import ch.n1b.vector.Vec2D;
+import com.avaje.ebean.EbeanServer;
+import com.avaje.ebean.Query;
+import org.bukkit.Bukkit;
 
+import javax.persistence.PersistenceException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,19 +21,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
-import com.avaje.ebean.EbeanServer;
-import org.bukkit.Bukkit;
-
-import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
-import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
-import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.vectors.Vec2D;
-import ch.k42.metropolis.minions.Minions;
-import ch.k42.metropolis.plugin.MetropolisPlugin;
-import com.avaje.ebean.Query;
 
 
 /**

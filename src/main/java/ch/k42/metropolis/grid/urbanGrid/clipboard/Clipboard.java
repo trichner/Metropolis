@@ -2,8 +2,8 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
-import ch.k42.metropolis.minions.vectors.Vec2D;
-import ch.k42.metropolis.minions.vectors.Vec3D;
+import ch.n1b.vector.Vec2D;
+import ch.n1b.vector.Vec3D;
 import org.bukkit.World;
 
 /**

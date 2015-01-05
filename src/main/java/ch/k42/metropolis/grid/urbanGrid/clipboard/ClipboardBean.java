@@ -1,16 +1,16 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
+import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
+import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
+import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
+import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
+import ch.n1b.vector.Vec2D;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
-import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
-import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.vectors.Vec2D;
 
 /**
  * Created by Thomas on 07.03.14.

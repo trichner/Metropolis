@@ -6,13 +6,10 @@
 
     <groupId>ch.k42.vault42</groupId>
     <artifactId>vault42</artifactId>
-    <version>1.1.0-1001-vault</version>
+    <version>1.1.1-1001-vault</version>
 
     <repositories>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
-        </repository>
+        <!-- bukkit is dead! long live spigot! -->
         <repository>
             <id>spigot-repo</id>
             <url>http://repo.md-5.net/content/groups/public/</url>
@@ -26,9 +23,8 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.7.9-R0.3-SNAPSHOT</version>
-            <type>jar</type>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8-R0.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
 
@@ -38,15 +34,12 @@
             <version>0.1.1</version>
         </dependency>
 
-        <!-- Local Libraries-->
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1649</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot1649.jar</systemPath>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
         </dependency>
-
+        <!-- Local Libraries-->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -69,14 +62,7 @@
             <systemPath>${project.basedir}/minecraft/plugins/ChestLootz_1-9-4.jar</systemPath>
         </dependency>
 
-        <dependency>
-            <groupId>org.nolagg</groupId>
-            <artifactId>nolagg</artifactId>
-            <version>1.90.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/minecraft/plugins/NoLagg-1.90.4.jar</systemPath>
-        </dependency>
-
+        <!-- Not a direct dependency! -->
         <dependency>
             <groupId>org.bkcommon</groupId>
             <artifactId>bkcommon</artifactId>

@@ -6,7 +6,7 @@
 
     <groupId>ch.k42.vault42</groupId>
     <artifactId>vault42</artifactId>
-    <version>1.0.1-1002-vault</version>
+    <version>1.1.0-1001-vault</version>
 
     <repositories>
         <repository>

@@ -31,6 +31,12 @@
         <dependency>
             <groupId>ch.n1b.common-n1b</groupId>
             <artifactId>common-n1b</artifactId>
+            <version>0.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.n1b.libschem</groupId>
+            <artifactId>libschem</artifactId>
             <version>0.1.1</version>
         </dependency>
 
@@ -44,6 +50,12 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
             <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
         </dependency>
 
         <dependency>

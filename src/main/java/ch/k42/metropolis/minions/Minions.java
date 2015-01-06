@@ -1,6 +1,8 @@
 package ch.k42.metropolis.minions;
 
 import ch.k42.metropolis.plugin.PluginConfig;
+import ch.n1b.vector.Vec3D;
+import ch.n1b.worldedit.schematic.vector.Vector;
 import org.bukkit.Bukkit;
 
 import java.io.File;
@@ -166,4 +168,7 @@ public class Minions {
         return 0; // something went wrong
     }
 
+    public static Vec3D toVec3D(Vector vector){
+        return new Vec3D(vector.getBlockX(),vector.getBlockY(),vector.getBlockZ());
+    }
 }

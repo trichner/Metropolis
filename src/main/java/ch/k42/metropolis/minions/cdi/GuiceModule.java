@@ -1,5 +1,6 @@
 package ch.k42.metropolis.minions.cdi;
 
+import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.google.inject.AbstractModule;
 import com.google.inject.MembersInjector;
@@ -30,13 +31,14 @@ public class GuiceModule extends AbstractModule {
 
 
     static class LoggerTypeListener implements TypeListener {
+        @Override
         public <T> void hear(TypeLiteral<T> typeLiteral, TypeEncounter<T> typeEncounter) {
             Class<?> clazz = typeLiteral.getRawType();
             while (clazz != null) {
                 for (Field field : clazz.getDeclaredFields()) {
                     if (field.getType() == Logger.class &&
                             field.isAnnotationPresent(InjectLogger.class)) {
-                        typeEncounter.register(new LoggerInjector<T>(field));
+                        typeEncounter.register(new LoggerInjector<>(field));
                     }
                 }
                 clazz = clazz.getSuperclass();
@@ -54,7 +56,9 @@ public class GuiceModule extends AbstractModule {
             field.setAccessible(true);
         }
 
+        @Override
         public void injectMembers(T t) {
+            Minions.i("injecting logger!");
             try {
                 field.set(t, logger);
             } catch (IllegalAccessException e) {

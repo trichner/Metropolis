@@ -1,5 +1,7 @@
 package ch.k42.metropolis.generator.cuboid;
 
+import ch.k42.metropolis.minions.Minions;
+import ch.n1b.vector.Vec3D;
 import ch.n1b.worldedit.schematic.schematic.Cuboid;
 import com.google.common.collect.Multimap;
 
@@ -25,5 +27,9 @@ public class PortaledCuboid {
 
     public Multimap<PortalKey, Portal> getPortals() {
         return portals;
+    }
+
+    public Vec3D getSize(){
+        return Minions.toVec3D(cuboid.getSize());
     }
 }

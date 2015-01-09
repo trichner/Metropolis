@@ -1,5 +1,7 @@
 package ch.k42.metropolis.generator.populators;
 
+import ch.k42.metropolis.generator.cuboid.GlaDOS;
+import ch.k42.metropolis.generator.cuboid.PortaledCuboid;
 import ch.k42.metropolis.minions.cdi.InjectLogger;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import ch.n1b.worldedit.schematic.data.DataException;
@@ -35,17 +37,21 @@ public class VaultBlockPopulator extends BlockPopulator {
        chunk.getBlock(0,10,0).setType(Material.DIAMOND_BLOCK);
 
         if(chunk.getX() == 0 && chunk.getZ() == 0){
-            Path schematic = plugin.getDataFolder().toPath().resolve("schem.schematic");
-
             try {
-                int BASE = 50;
+                //logger.info("We are at 0/0!");
+                Path schematic = plugin.getDataFolder().toPath().resolve("vault2_corridor_T3.schematic");
                 Cuboid cuboid = SchematicFormat.getFormat(schematic.toFile()).load(schematic.toFile());
-                for (int x = 0; x < cuboid.getSize().getX(); x++) {
-                    for (int y = 0; y < cuboid.getSize().getY(); y++) {
-                        for (int z = 0; z < cuboid.getSize().getZ(); z++) {
+                GlaDOS glaDOS = new GlaDOS();
+                PortaledCuboid pcuboid = glaDOS.apply(cuboid);
+                //logger.info("We have " + pcuboid.getPortals().size() + " doors!");
+                int BASE = 50;
+
+                for (int x = 0; x < pcuboid.getSize().X; x++) {
+                    for (int y = 0; y < pcuboid.getSize().Y; y++) {
+                        for (int z = 0; z < pcuboid.getSize().Z; z++) {
                             chunk.getWorld().getBlockAt(x,BASE+y,z).setTypeIdAndData(
                                     cuboid.getBlock(new Vector(x, y, z)).getType(),
-                                    (byte) cuboid.getBlock(new Vector(x, y, z)).getData(),
+                                    (byte) pcuboid.getCuboid().getBlock(new Vector(x, y, z)).getData(),
                                     false);
                         }
                     }

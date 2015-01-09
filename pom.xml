@@ -31,7 +31,7 @@
         <dependency>
             <groupId>ch.n1b.common-n1b</groupId>
             <artifactId>common-n1b</artifactId>
-            <version>0.3.4</version>
+            <version>0.3.5</version>
         </dependency>
 
         <dependency>

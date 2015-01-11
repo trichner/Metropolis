@@ -32,34 +32,48 @@ public class GlaDOS implements Function<Cuboid, PortaledCuboid> {
         //;
         //scan faces
         //add portals
+        Minions.i("Scanning face 1");
         Collection<Portal> portals = Sets.newHashSet();
         Vec3D e1 = new Vec3D(0,1,0);
         Vec3D e2 = new Vec3D(1,0,0);
         Vec3D origin = new Vec3D(0,0,0);
         portals.addAll(scanFace(cuboid,e1,e2,origin));
 
-        
+        Minions.i("Scanning face 2");
+
         e1 = new Vec3D(1,0,0);
         e2 = new Vec3D(0,1,0);
-        origin = new Vec3D(0,0,cuboid.getSize().getBlockZ());
+        origin = new Vec3D(0,0,cuboid.getSize().getBlockZ()-1);
         portals.addAll(scanFace(cuboid,e1,e2,origin));
+
+        Minions.i("Scanning face 3");
 
         e1 = new Vec3D(0,0,1);
         e2 = new Vec3D(0,1,0);
         origin = new Vec3D(0,0,0);
         portals.addAll(scanFace(cuboid,e1,e2,origin));
 
+        Minions.i("Scanning face 4");
+
         e1 = new Vec3D(0,1,0);
         e2 = new Vec3D(0,0,1);
-        origin = new Vec3D(cuboid.getSize().getBlockX(),0,0);
+        origin = new Vec3D(cuboid.getSize().getBlockX()-1,0,0);
         portals.addAll(scanFace(cuboid,e1,e2,origin));
+
+        Minions.i("Mapping and wrapping up");
 
         Multimap<PortalKey,Portal> portalMap = Multimaps.index(portals,p -> new PortalKey(p.getType(),p
                 .getNormal()));
 
-        cuboid = Cuboids.cut(cuboid,new Vec3D(1,1,1),Minions.toVec3D(cuboid.getSize()).add(new Vec3D(-2,-2,
-                -2)));
+        Minions.i("Cut help layer");
 
+        Vec3D newSize = (Minions.toVec3D(cuboid.getSize()).add(new Vec3D(-2,-2,
+                -2)));
+        cuboid = Cuboids.cut(cuboid,new Vec3D(1,1,1),newSize);
+
+        cuboid = Cuboids.cut(cuboid,new Vec3D(0,0,0),Minions.toVec3D(cuboid.getSize()));
+
+        Minions.i("Return new one");
         return new PortaledCuboid(cuboid,portalMap);
     }
 
@@ -67,6 +81,8 @@ public class GlaDOS implements Function<Cuboid, PortaledCuboid> {
         // the two limits
         int sizeX = e1.dot(Minions.toVec3D(cuboid.getSize()));
         int sizeY = e2.dot(Minions.toVec3D(cuboid.getSize()));
+        Minions.i("Size: " + cuboid.getSize());
+        Minions.i("Populating bitfield. Face: " + e1.toString() + e2.toString() + " origin:" + origin);
 
         Bitfield field = new Bitfield();
         for (int x = 0; x < sizeX; x++) {
@@ -79,6 +95,7 @@ public class GlaDOS implements Function<Cuboid, PortaledCuboid> {
                 }
             }
         }
+        Minions.i("Reducing field");
 
         List<Portal> portals = new ArrayList<>();
         while (field.reduce()){

@@ -2,6 +2,7 @@ package ch.k42.metropolis.generator.populators;
 
 import ch.k42.metropolis.generator.cuboid.GlaDOS;
 import ch.k42.metropolis.generator.cuboid.PortaledCuboid;
+import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.minions.cdi.InjectLogger;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import ch.n1b.worldedit.schematic.data.DataException;
@@ -39,18 +40,19 @@ public class VaultBlockPopulator extends BlockPopulator {
         if(chunk.getX() == 0 && chunk.getZ() == 0){
             try {
                 //logger.info("We are at 0/0!");
-                Path schematic = plugin.getDataFolder().toPath().resolve("vault2_corridor_T3.schematic");
+                Path schematic = plugin.getDataFolder().toPath().resolve("vault3_hallway_T_intersection.schematic");
                 Cuboid cuboid = SchematicFormat.getFormat(schematic.toFile()).load(schematic.toFile());
                 GlaDOS glaDOS = new GlaDOS();
+                Minions.i("Cutting cuboid");
                 PortaledCuboid pcuboid = glaDOS.apply(cuboid);
-                //logger.info("We have " + pcuboid.getPortals().size() + " doors!");
+                Minions.i("We have " + pcuboid.getPortals().size() + " doors!");
                 int BASE = 50;
 
                 for (int x = 0; x < pcuboid.getSize().X; x++) {
                     for (int y = 0; y < pcuboid.getSize().Y; y++) {
                         for (int z = 0; z < pcuboid.getSize().Z; z++) {
                             chunk.getWorld().getBlockAt(x,BASE+y,z).setTypeIdAndData(
-                                    cuboid.getBlock(new Vector(x, y, z)).getType(),
+                                    pcuboid.getCuboid().getBlock(new Vector(x, y, z)).getType(),
                                     (byte) pcuboid.getCuboid().getBlock(new Vector(x, y, z)).getData(),
                                     false);
                         }

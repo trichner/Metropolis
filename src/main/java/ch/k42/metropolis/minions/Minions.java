@@ -168,10 +168,4 @@ public class Minions {
         return 0; // something went wrong
     }
 
-    public static Vec3D toVec3D(Vector vector){
-        return new Vec3D(vector.getBlockX(),vector.getBlockY(),vector.getBlockZ());
-    }
-    public static Vector toVector(Vec3D vector){
-        return new Vector(vector.X,vector.Y,vector.Z);
-    }
 }

@@ -1,4 +1,4 @@
-package ch.k42.metropolis.generator.cuboid;
+package ch.k42.metropolis.generator.vault.cuboid;
 
 import ch.k42.metropolis.minions.Minions;
 import ch.n1b.bitfield.Bitfield;
@@ -30,7 +30,7 @@ public class GlaDOS implements Function<Cuboid, PortaledCuboid> {
 
     @Override
     public PortaledCuboid apply(Cuboid cuboid){
-        //scan faces
+        //---- scan faces
         //add portals
         Minions.d("Scanning face 1");
         Collection<Portal> portals = Sets.newHashSet();
@@ -60,11 +60,11 @@ public class GlaDOS implements Function<Cuboid, PortaledCuboid> {
         origin = new Vec3D(cuboid.getSize().X-1,0,0);
         portals.addAll(scanFace(cuboid,e1,e2,origin));
 
-        // map portals to a real map
-        Multimap<PortalKey,Portal> portalMap = Multimaps.index(portals,p -> new PortalKey(p.getType(),p
+        //--- map portals to a real map
+        Multimap<PortalType,Portal> portalMap = Multimaps.index(portals,p -> new PortalType(p.getType(),p
                 .getNormal()));
 
-        // cutout the helper-layer
+        //--- cutout the helper-layer
         Vec3D newSize = (cuboid.getSize().add(new Vec3D(-2,-2,
                 -2)));
         cuboid = Cuboids.cut(cuboid,new Vec3D(1,1,1),newSize);

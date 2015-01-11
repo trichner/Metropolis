@@ -1,4 +1,4 @@
-package ch.k42.metropolis.generator.cuboid;
+package ch.k42.metropolis.generator.vault.cuboid;
 
 import ch.n1b.vector.Vec2D;
 import ch.n1b.vector.Vec3D;

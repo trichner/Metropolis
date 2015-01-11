@@ -1,4 +1,4 @@
-package ch.k42.metropolis.generator.cuboid;
+package ch.k42.metropolis.generator.vault.cuboid;
 
 import ch.n1b.worldedit.schematic.schematic.Cuboid;
 

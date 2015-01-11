@@ -1,8 +1,8 @@
 package ch.k42.metropolis.generator.populators;
 
-import ch.k42.metropolis.generator.cuboid.Cuboids;
-import ch.k42.metropolis.generator.cuboid.GlaDOS;
-import ch.k42.metropolis.generator.cuboid.PortaledCuboid;
+import ch.k42.metropolis.generator.vault.cuboid.Cuboids;
+import ch.k42.metropolis.generator.vault.cuboid.GlaDOS;
+import ch.k42.metropolis.generator.vault.cuboid.PortaledCuboid;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import ch.n1b.vector.Vec3D;

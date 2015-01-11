@@ -1,4 +1,4 @@
-package ch.k42.metropolis.generator.cuboid;
+package ch.k42.metropolis.generator.vault.cuboid;
 
 import ch.n1b.worldedit.schematic.schematic.Cuboid;
 import com.google.common.collect.Multimap;
@@ -10,14 +10,14 @@ import com.google.common.collect.Multimap;
  */
 public class PortaledCuboid extends Cuboid {
 
-    private Multimap<PortalKey,Portal> portals;
+    private Multimap<PortalType,Portal> portals;
 
-    public PortaledCuboid(Cuboid cuboid,Multimap<PortalKey,Portal> portals) {
+    public PortaledCuboid(Cuboid cuboid,Multimap<PortalType,Portal> portals) {
         super(cuboid);
         this.portals = portals;
     }
 
-    public Multimap<PortalKey, Portal> getPortals() {
+    public Multimap<PortalType, Portal> getPortals() {
         return portals;
     }
 }

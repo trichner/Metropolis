@@ -6,13 +6,9 @@
 
     <groupId>ch.k42.metropolis</groupId>
     <artifactId>metropolis</artifactId>
-    <version>1.0.1-1002</version>
+    <version>1.1.0</version>
 
     <repositories>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
-        </repository>
         <repository>
             <id>spigot-repo</id>
             <url>http://repo.md-5.net/content/groups/public/</url>
@@ -22,10 +18,8 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.7.9-R0.3-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Already in bukkit
@@ -37,27 +31,12 @@
         </dependency>
         -->
 
-        <!-- Local Libraries-->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1649</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot1649.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se</artifactId>
-            <version>2.2.1.Final</version>
-        </dependency>
-
         <dependency>
             <groupId>org.worldedit</groupId>
             <artifactId>worldedit</artifactId>
-            <version>0.0.1</version>
+            <version>6.0.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/minecraft/plugins/worldedit.jar</systemPath>
+            <systemPath>${project.basedir}/lib/worldedit-core-6.0.2-SNAPSHOT-dist.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -66,28 +45,6 @@
             <version>1.9.4</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/minecraft/plugins/ChestLootz_1-9-4.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.nolagg</groupId>
-            <artifactId>nolagg</artifactId>
-            <version>1.90.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/minecraft/plugins/NoLagg-1.90.4.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bkcommon</groupId>
-            <artifactId>bkcommon</artifactId>
-            <version>1.57.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/minecraft/plugins/BKCommonLib.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-            <version>1.2.1</version>
         </dependency>
 
         <dependency>
@@ -101,6 +58,24 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>18.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.3.1</version>
         </dependency>
     </dependencies>
 
@@ -134,8 +109,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.0</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
         </plugins>

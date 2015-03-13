@@ -1,10 +1,6 @@
 package ch.k42.metropolis.grid.urbanGrid.parcel;
 
 
-import java.util.List;
-
-import org.bukkit.Chunk;
-
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
@@ -15,8 +11,9 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.Minions;
-import ch.k42.metropolis.minions.NoLaggAPI;
-import ch.k42.metropolis.plugin.PluginConfig;
+import org.bukkit.Chunk;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,11 +61,6 @@ public class HighwayParcel extends StreetParcel {
 //        if (road != null) {
 //            generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, road.getBottom(Constants.BUILD_HEIGHT), road.getSize().Y, road.getConfig().getDecayOption());
 //        }
-
-        //NoLagg Lighting Fix
-        if (PluginConfig.getNoLaggRelighting()) {
-            NoLaggAPI.relightChunk(chunk);
-        }
     }
 
     private void findAndPlaceClip(MetropolisGenerator generator, Chunk chunk, RoadType roadType) {

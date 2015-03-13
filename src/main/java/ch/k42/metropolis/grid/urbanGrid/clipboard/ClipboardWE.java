@@ -1,17 +1,6 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.EntityType;
-
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
@@ -27,7 +16,16 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Thomas on 07.03.14.
@@ -57,7 +55,7 @@ public class ClipboardWE implements Clipboard{
         int blockY = getBottom(streetLevel);
         Vector at = new Vector(base.X << 4, blockY , base.Y << 4);
         try {
-            EditSession editSession = getEditSession(generator);
+            EditSession editSession = null;//getEditSession(generator);
             editSession.setFastMode(true);
 
             //place Schematic
@@ -171,10 +169,6 @@ public class ClipboardWE implements Clipboard{
     @Override
     public String getGroupId() {
         return groupId;
-    }
-
-    private EditSession getEditSession(MetropolisGenerator generator) {
-        return new EditSession(new BukkitWorld(generator.getWorld()), blockCount);
     }
 
     private EntityType getSpawnedEntity(GridRandom random) {

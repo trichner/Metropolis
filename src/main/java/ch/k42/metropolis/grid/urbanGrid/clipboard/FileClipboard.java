@@ -16,7 +16,6 @@ import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 import org.bukkit.ChatColor;
@@ -74,7 +73,8 @@ public class FileClipboard implements Clipboard{
         int blockY = getBottom(streetLevel);
         Vector at = new Vector(base.X << 4, blockY , base.Y << 4);
         try {
-            EditSession editSession = getEditSession(generator);
+            // TODO paste
+            EditSession editSession = null;// getEditSession(generator);
             editSession.setFastMode(true);
 
             //place Schematic
@@ -192,10 +192,6 @@ public class FileClipboard implements Clipboard{
     @Override
     public String getGroupId() {
         return groupId;
-    }
-
-    private EditSession getEditSession(MetropolisGenerator generator) {
-        return new EditSession(new BukkitWorld(generator.getWorld()), blockCount);
     }
 
     private EntityType getSpawnedEntity(GridRandom random) {

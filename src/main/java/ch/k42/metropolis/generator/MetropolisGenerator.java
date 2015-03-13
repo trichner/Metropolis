@@ -1,17 +1,5 @@
 package ch.k42.metropolis.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
@@ -27,6 +15,18 @@ import ch.k42.metropolis.grid.urbanGrid.provider.NetherEnvironmentProvider;
 import ch.k42.metropolis.grid.urbanGrid.provider.NormalEnvironmentProvider;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
+import com.google.inject.Inject;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,6 +46,7 @@ public class MetropolisGenerator extends ChunkGenerator {
         }
     }
 
+    @Inject
     private MetropolisPlugin plugin;
     private Long worldSeed;
     private World world;
@@ -70,6 +71,10 @@ public class MetropolisGenerator extends ChunkGenerator {
         Minions.i("Running MetropolisGenerator for world: %s",worldName);
     }
 
+    public MetropolisGenerator(String worldName){
+        this.worldName = worldName;
+    }
+
     public ClipboardProvider getClipboardProvider() {
         return clipboardProvider;
     }
@@ -92,6 +97,10 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     public World getWorld() {
         return world;
+    }
+
+    public void setWorld(String worldName){
+        this.worldName = worldName;
     }
 
     public MetropolisPlugin getPlugin() {

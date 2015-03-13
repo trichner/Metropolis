@@ -1,23 +1,5 @@
 package ch.k42.metropolis.plugin;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.nio.file.Files;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.Sound;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import ch.k42.metropolis.commands.CommandMetropolisFreder;
 import ch.k42.metropolis.commands.CommandMetropolisGrot;
 import ch.k42.metropolis.commands.CommandMetropolisMaria;
@@ -29,8 +11,28 @@ import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProviderDB;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import ch.k42.metropolis.minions.Nimmersatt;
-import org.bukkit.craftbukkit.libs.com.google.gson.Gson;
-import org.bukkit.craftbukkit.libs.com.google.gson.GsonBuilder;
+import ch.k42.metropolis.minions.cdi.GuiceModule;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import org.bukkit.Sound;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -44,6 +46,10 @@ public class MetropolisPlugin extends JavaPlugin {
     private ContextConfig contextConfig = new ContextConfig();
     private ClipboardProvider clipboardProvider;
 
+    private Injector injector = null;
+
+    private static MetropolisPlugin _instance;
+
     @Override
     public void installDDL() {
         super.installDDL();
@@ -51,7 +57,14 @@ public class MetropolisPlugin extends JavaPlugin {
 
     @Override
     public ChunkGenerator getDefaultWorldGenerator(String worldName, String id) {
-        return new MetropolisGenerator(this, worldName, clipboardProvider);
+        // single threaded, no need for lock
+        if(injector==null) {
+            injector = Guice.createInjector(new GuiceModule());
+        }
+
+        MetropolisGenerator generator = injector.getInstance(MetropolisGenerator.class);
+        generator.setWorld(worldName);
+        return generator;
     }
 
     @Override
@@ -118,10 +131,13 @@ public class MetropolisPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        _instance = this;
+
         loadJsonConfigs();
         loadPluginConfig();
         loadClipboards();
 
+        //Perk
         getServer().getPluginManager().registerEvents(new l(), this);
         registerCommands();
 
@@ -140,6 +156,10 @@ public class MetropolisPlugin extends JavaPlugin {
     public PopulatorConfig getPopulatorConfig() { return populatorConfig; }
 
     public ContextConfig getContextConfig() { return contextConfig; }
+
+    public static MetropolisPlugin getInstance() {
+        return _instance;
+    }
 
     /*
      * Dev Perk, gives the developer of this plugin the power to slap other players with fishes

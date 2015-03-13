@@ -1,9 +1,5 @@
 package ch.k42.metropolis.grid.urbanGrid.parcel;
 
-import org.bukkit.Chunk;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.clipboard.Clipboard;
@@ -14,8 +10,9 @@ import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Cartesian3D;
 import ch.k42.metropolis.minions.Constants;
-import ch.k42.metropolis.minions.NoLaggAPI;
-import ch.k42.metropolis.plugin.PluginConfig;
+import org.bukkit.Chunk;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 /**
  * Represents a Parcel with a schematic/clipboard as building.
@@ -78,11 +75,6 @@ public class ClipboardParcel extends Parcel {
         makeCutouts(generator);
 
         generator.getDecayProvider().destroyChunks(chunkX, chunkZ, chunkSizeX, chunkSizeZ, clipboard.getBottom(Constants.BUILD_HEIGHT), clipboard.getSize().Y, clipboard.getConfig().getDecayOption());
-
-        //NoLagg Lighting Fix
-        if (PluginConfig.getNoLaggRelighting()) {
-            NoLaggAPI.relightChunk(chunk);
-        }
 
     }
 

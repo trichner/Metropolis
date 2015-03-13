@@ -9,9 +9,6 @@ import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,10 +39,11 @@ public class ClipboardProviderDB implements ClipboardProvider {
     @Override
     public void loadClips(MetropolisPlugin plugin) throws FileNotFoundException {
         // make sure WorldEdit is ready
+        /*
         if(!assertWorldEditLoaded()){
             throw new PluginNotFoundException("Couldn't find WorldEdit plugin.");
         }
-
+        */
         dao = new ClipboardDAO(plugin);
 
         File schematicsFolder,cacheFolder;
@@ -113,6 +111,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
         return clips;
     }
 
+    /*
     private boolean assertWorldEditLoaded(){
         //==== First load the plugin
         WorldEditPlugin worldEditPlugin = null;
@@ -132,4 +131,5 @@ public class ClipboardProviderDB implements ClipboardProvider {
         this.worldEdit = worldEditPlugin.getWorldEdit();
         return true;
     }
+    */
 }

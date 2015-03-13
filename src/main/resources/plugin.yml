@@ -1,8 +1,8 @@
 name: Metropolis
 main: ch.k42.metropolis.plugin.MetropolisPlugin
-version: 0.1.6
+version: ${project.version}
 load: startup
-authors: [AthmosPrime, trichner, spaceribs]
+authors: [n1bblonian, trichner, spaceribs]
 website: k42.ch
 description: Metropolis (1927)
 softdepend: [WorldEdit]

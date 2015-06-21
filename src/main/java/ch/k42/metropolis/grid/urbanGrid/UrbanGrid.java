@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.HashSet;
 import java.util.Set;
 
+import ch.n1b.vector.Vec2D;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 
@@ -27,7 +28,6 @@ import ch.k42.metropolis.grid.urbanGrid.parcel.RoadParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.StreetParcel;
 import ch.k42.metropolis.grid.urbanGrid.statistics.AthmosStat;
 import ch.k42.metropolis.grid.urbanGrid.statistics.GridStatistics;
-import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.PluginConfig;
@@ -47,13 +47,13 @@ public class UrbanGrid extends Grid {
 
     private Set<IDistrict> districtSet = new HashSet<>();
 
-    public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Cartesian2D root) {
+    public UrbanGrid(GridProvider provider, GridRandom random,MetropolisGenerator generator, Vec2D root) {
         super(random,provider,generator, root);
         this.statistics = new AthmosStat();
         contextProvider = generator.getContextProvider();
         this.clipboardProvider = generator.getClipboardProvider();
         placeHighways();
-        recSetDistricts(new Cartesian2D(root.X + 1, root.Y + 1), new Cartesian2D(GRID_SIZE - 2, GRID_SIZE - 2));
+        recSetDistricts(new Vec2D(root.X + 1, root.Y + 1), new Vec2D(GRID_SIZE - 2, GRID_SIZE - 2));
         for(IDistrict district :districtSet){
             district.fillDistrict();
         }
@@ -84,16 +84,16 @@ public class UrbanGrid extends Grid {
 
         // fill in the corners with Highway
         setParcel(0, 0, new HighwayParcel(this, root, RoadType.HIGHWAY_C_SE));
-        setParcel(0, maxidx, new HighwayParcel(this, new Cartesian2D(root.X, root.Y + maxidx), RoadType.HIGHWAY_C_NE));
-        setParcel(maxidx, 0, new HighwayParcel(this, new Cartesian2D(root.X + maxidx, root.Y), RoadType.HIGHWAY_C_SW));
-        setParcel(maxidx, maxidx, new HighwayParcel(this, new Cartesian2D(root.X + maxidx, root.Y + maxidx), RoadType.HIGHWAY_C_NW));
+        setParcel(0, maxidx, new HighwayParcel(this, new Vec2D(root.X, root.Y + maxidx), RoadType.HIGHWAY_C_NE));
+        setParcel(maxidx, 0, new HighwayParcel(this, new Vec2D(root.X + maxidx, root.Y), RoadType.HIGHWAY_C_SW));
+        setParcel(maxidx, maxidx, new HighwayParcel(this, new Vec2D(root.X + maxidx, root.Y + maxidx), RoadType.HIGHWAY_C_NW));
 
         // fill in all highways
         for (int i = 1; i < maxidx; i++) {
-            setParcel(0, i, new HighwayParcel(this, new Cartesian2D( root.X, root.Y + i), RoadType.HIGHWAY_SIDE_E)); //
-            setParcel(i, 0, new HighwayParcel(this, new Cartesian2D(root.X + i, root.Y), RoadType.HIGHWAY_SIDE_S));
-            setParcel(i, maxidx, new HighwayParcel(this, new Cartesian2D(root.X + i, root.Y + maxidx), RoadType.HIGHWAY_SIDE_N));
-            setParcel(maxidx, i, new HighwayParcel(this, new Cartesian2D(root.X + maxidx, root.Y + i), RoadType.HIGHWAY_SIDE_W));
+            setParcel(0, i, new HighwayParcel(this, new Vec2D( root.X, root.Y + i), RoadType.HIGHWAY_SIDE_E)); //
+            setParcel(i, 0, new HighwayParcel(this, new Vec2D(root.X + i, root.Y), RoadType.HIGHWAY_SIDE_S));
+            setParcel(i, maxidx, new HighwayParcel(this, new Vec2D(root.X + i, root.Y + maxidx), RoadType.HIGHWAY_SIDE_N));
+            setParcel(maxidx, i, new HighwayParcel(this, new Vec2D(root.X + maxidx, root.Y + i), RoadType.HIGHWAY_SIDE_W));
         }
     }
 
@@ -172,7 +172,7 @@ public class UrbanGrid extends Grid {
     private static final int blockSize = PluginConfig.getBlockSize();
 
 
-    public void recSetDistricts(Cartesian2D base,Cartesian2D size) {
+    public void recSetDistricts(Vec2D base,Vec2D size) {
         if (size.X > size.Y) {
             if (size.X < blockSize) {
                 addDistrict(base, size);
@@ -190,26 +190,26 @@ public class UrbanGrid extends Grid {
             }
         }
     } 
-    private void addDistrict(Cartesian2D base,Cartesian2D size){
+    private void addDistrict(Vec2D base,Vec2D size){
         IDistrict district = new District();
         district.initDistrict(base,size,this);
         districtSet.add(district);
     }
 
-    private void partitionXwithRoads(Cartesian2D base,Cartesian2D initSize, int cut) {
+    private void partitionXwithRoads(Vec2D base,Vec2D initSize, int cut) {
         for (int i = base.Y; i < base.Y + initSize.Y; i++) {
-            this.setParcel(base.X + cut, i, new RoadParcel(this,new Cartesian2D(base.X + cut, i)));
+            this.setParcel(base.X + cut, i, new RoadParcel(this,new Vec2D(base.X + cut, i)));
         }
-        recSetDistricts(base,new Cartesian2D(cut,initSize.Y));
-        recSetDistricts(new Cartesian2D(base.X+cut+1,base.Y),new Cartesian2D(initSize.X-cut-1,initSize.Y));
+        recSetDistricts(base,new Vec2D(cut,initSize.Y));
+        recSetDistricts(new Vec2D(base.X+cut+1,base.Y),new Vec2D(initSize.X-cut-1,initSize.Y));
     }
 
-    private void partitionZwithRoads(Cartesian2D base,Cartesian2D initSize, int cut) {
+    private void partitionZwithRoads(Vec2D base,Vec2D initSize, int cut) {
         for (int i = base.X; i < base.X + initSize.X; i++) {
-            this.setParcel(i, base.Y + cut, new RoadParcel(this, new Cartesian2D(i, base.Y + cut)));
+            this.setParcel(i, base.Y + cut, new RoadParcel(this, new Vec2D(i, base.Y + cut)));
         }
-        recSetDistricts(base,new Cartesian2D(initSize.X,cut));
-        recSetDistricts(new Cartesian2D(base.X,base.Y+cut+1),new Cartesian2D(initSize.X,initSize.Y-cut-1));
+        recSetDistricts(base,new Vec2D(initSize.X,cut));
+        recSetDistricts(new Vec2D(base.X,base.Y+cut+1),new Vec2D(initSize.X,initSize.Y-cut-1));
     }
 
     @Override
@@ -234,7 +234,7 @@ public class UrbanGrid extends Grid {
         return sb.toString();
     }
 
-    public Set<ClipboardParcel> getNeighbours(Cartesian2D center,int radius){
+    public Set<ClipboardParcel> getNeighbours(Vec2D center,int radius){
         int centerX = getChunkOffset(center.X);
         int centerY = getChunkOffset(center.Y);
         Set<ClipboardParcel> neighbours = new HashSet<>();

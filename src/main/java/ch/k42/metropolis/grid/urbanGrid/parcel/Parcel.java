@@ -1,13 +1,13 @@
 package ch.k42.metropolis.grid.urbanGrid.parcel;
 
 
+import ch.n1b.vector.Vec2D;
 import org.bukkit.Chunk;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
 
 /**
  * A Parcel represents one structure of Metropolis.
@@ -26,7 +26,8 @@ public abstract class Parcel {
     protected UrbanGrid grid;
     protected SchematicType schematicType;
 
-    protected Parcel(Cartesian2D base, Cartesian2D size, ContextType contextType, SchematicType schematicType,UrbanGrid grid) {
+    protected Parcel(Vec2D base, Vec2D size, ContextType contextType, SchematicType schematicType,UrbanGrid
+            grid) {
         this.chunkX = base.X;
         this.chunkZ = base.Y;
         this.chunkSizeX = size.X;
@@ -85,8 +86,8 @@ public abstract class Parcel {
         this.chunkSizeZ = chunkSizeZ;
     }
 
-    public Cartesian2D getChunkSize(){
-        return new Cartesian2D(chunkX,chunkZ);
+    public Vec2D getChunkSize(){
+        return new Vec2D(chunkX,chunkZ);
     }
 
     @Override

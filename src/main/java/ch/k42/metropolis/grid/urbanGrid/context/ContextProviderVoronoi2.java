@@ -8,7 +8,7 @@ import java.util.Set;
 
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.voronoi.Pnt;
 import ch.k42.metropolis.minions.voronoi.Triangle;
@@ -32,7 +32,7 @@ public class ContextProviderVoronoi2 implements ContextProvider {
         CONTEXTS.add(ContextType.INDUSTRIAL);
     }
 
-    private Set<Cartesian2D> delauneyNodes = new HashSet<>();
+    private Set<Vec2D> delauneyNodes = new HashSet<>();
     private Triangulation dt;
     private GridRandom random;
 
@@ -74,11 +74,11 @@ public class ContextProviderVoronoi2 implements ContextProvider {
 
     @Override
     public ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level) {
-        return getContext(new Cartesian2D(chunkX,chunkZ));
+        return getContext(new Vec2D(chunkX,chunkZ));
     }
 
     @Override
-    public ContextType getContext(Cartesian2D place) {
+    public ContextType getContext(Vec2D place) {
         return null;
     }
 }

@@ -4,7 +4,7 @@ package ch.k42.metropolis.grid.urbanGrid.districts;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.context.ContextConfig;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 
 /**
  * Created by Thomas on 06.03.14.
@@ -19,7 +19,7 @@ public class Context {
         this.config = config;
     }
 
-    public static Context getRandom(UrbanGrid grid,Cartesian2D place){
+    public static Context getRandom(UrbanGrid grid,Vec2D place){
         return new Context(grid.getContextProvider().getContext(place),null);
     }
 

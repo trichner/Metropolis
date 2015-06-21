@@ -13,7 +13,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
 import ch.k42.metropolis.grid.urbanGrid.parcel.ClipboardParcel;
 import ch.k42.metropolis.grid.urbanGrid.parcel.Parcel;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.PluginConfig;
 
@@ -25,7 +25,7 @@ import ch.k42.metropolis.plugin.PluginConfig;
 public class District implements IDistrict {
     private static final int MAX_ITERATIONS = PluginConfig.getIterations();
 
-    private Cartesian2D base,size;
+    private Vec2D base,size;
     private UrbanGrid grid;
     private ContextType context;
 
@@ -56,7 +56,7 @@ public class District implements IDistrict {
                 Parcel p=grid.getParcel(x,y);
                 if(p==null){
                     Minions.d("Parcel wasn't filled by district, what wen't wrong here??? Context '%s'",context);
-                    p = placeRandomBuildForSure(new Cartesian2D(x,y),new Cartesian2D(1,1),new HashSet<ClipboardParcel>());
+                    p = placeRandomBuildForSure(new Vec2D(x,y),new Vec2D(1,1),new HashSet<ClipboardParcel>());
                     if(p==null){
                         Minions.d("Can't find any clipboard for this spot? Seriously?");
                     } else {
@@ -69,10 +69,10 @@ public class District implements IDistrict {
 
     private static final int CLONERADIUS = PluginConfig.getCloneRadius();
 
-    private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous,SchematicType schematicType){
+    private ClipboardParcel placeRandomBuild(Vec2D base, Vec2D size,Set<ClipboardParcel> previous,SchematicType schematicType){
         Direction direction = findRoad(base, size);
 
-        Set<ClipboardParcel> neighbours = grid.getNeighbours(new Cartesian2D(base.X + size.X/2,base.Y+size.Y/2),CLONERADIUS);
+        Set<ClipboardParcel> neighbours = grid.getNeighbours(new Vec2D(base.X + size.X/2,base.Y+size.Y/2),CLONERADIUS);
         neighbours.addAll(previous);
         //try to place a build
         List<Clipboard> clips = grid.getClipboardProvider().getFit(size, context,schematicType, direction);
@@ -80,7 +80,7 @@ public class District implements IDistrict {
         return p;
     }
 
-    private ClipboardParcel placeRandomBuildForSure(Cartesian2D base,Cartesian2D size,Set<ClipboardParcel> previous){
+    private ClipboardParcel placeRandomBuildForSure(Vec2D base,Vec2D size,Set<ClipboardParcel> previous){
         ClipboardParcel p = placeRandomBuild(base,size,previous,SchematicType.BUILD);
         if(p!=null) return p;
         p = placeRandomBuild(base,size,previous,SchematicType.FILLER);
@@ -100,7 +100,7 @@ public class District implements IDistrict {
         return new ClipboardParcel(grid, base, size, clips.get(grid.getRandom().getRandomInt(clips.size())), context,SchematicType.BUILD, direction);
     }
 
-    private ClipboardParcel placeRandomRec(Cartesian2D base, Cartesian2D size, Direction direction, List<Clipboard> clips, Set<ClipboardParcel> neighbours, SchematicType type){
+    private ClipboardParcel placeRandomRec(Vec2D base, Vec2D size, Direction direction, List<Clipboard> clips, Set<ClipboardParcel> neighbours, SchematicType type){
         if(clips.size()!=0){ // can we place anything?
             List<Integer> weights = getWeights(clips);
             Clipboard clip =clips.get(Minions.getRandomWeighted(weights,grid.getRandom()));
@@ -124,7 +124,7 @@ public class District implements IDistrict {
         return weights;
     }
 
-    private ClipboardParcel placeRandomBuild(Cartesian2D base, Cartesian2D size,Set<ClipboardParcel> previous){
+    private ClipboardParcel placeRandomBuild(Vec2D base, Vec2D size,Set<ClipboardParcel> previous){
         if((grid.getRandom().getChance(BUILD_CHANCE))){
             ClipboardParcel p = placeRandomBuild(base,size,previous,SchematicType.BUILD);
             if(p!=null) return p;
@@ -139,7 +139,7 @@ public class District implements IDistrict {
     private int BUILD_CHANCE = PluginConfig.getBuildChance();
     private int FILLER_CHANCE = PluginConfig.getFillerChance();
 
-    private int nextRecPartition(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
+    private int nextRecPartition(Set<ClipboardParcel> parcels,Vec2D base, Vec2D size){
         ClipboardParcel parcel;
 
         if(size.X<=1 && size.Y<=1){ // are we already at smallest possible size?
@@ -161,18 +161,18 @@ public class District implements IDistrict {
 
         if(size.X<size.Y){      //partition Y side
             int cut = Minions.makeCut(grid.getRandom(), size.Y);
-            int score = nextRecPartition(parcels,base, new Cartesian2D(size.X, cut));
-            return score + nextRecPartition(parcels,new Cartesian2D(base.X , base.Y+ cut), new Cartesian2D(size.X, size.Y - cut));
+            int score = nextRecPartition(parcels,base, new Vec2D(size.X, cut));
+            return score + nextRecPartition(parcels,new Vec2D(base.X , base.Y+ cut), new Vec2D(size.X, size.Y - cut));
         }else {                 //partition X side
             int cut = Minions.makeCut(grid.getRandom(), size.X);
-            int score = nextRecPartition(parcels,base, new Cartesian2D(cut, size.Y));
-            return score + nextRecPartition(parcels,new Cartesian2D(base.X + cut, base.Y), new Cartesian2D(size.X - cut, size.Y));
+            int score = nextRecPartition(parcels,base, new Vec2D(cut, size.Y));
+            return score + nextRecPartition(parcels,new Vec2D(base.X + cut, base.Y), new Vec2D(size.X - cut, size.Y));
         }
     }
 
 
 
-    private void fastPartition(Set<ClipboardParcel> parcels,Cartesian2D base, Cartesian2D size){
+    private void fastPartition(Set<ClipboardParcel> parcels,Vec2D base, Vec2D size){
         ClipboardParcel parcel;
 
         if((parcel = placeRandomBuildForSure(base, size, parcels)) != null){
@@ -184,17 +184,17 @@ public class District implements IDistrict {
     }
 
 
-    private static final int scoreParcel(ClipboardParcel parcel,Cartesian2D size){
+    private static final int scoreParcel(ClipboardParcel parcel,Vec2D size){
         if(parcel.getSchematicType().equals(SchematicType.BUILD))
             return scoreArea(size);//*parcel.getClipboard().getConfig().getOddsOfAppearance(); //might keep OddsOfAppearance out, they are veeery fuzzy
         return -scoreArea(size);
     }
 
-    private static final int scoreArea(Cartesian2D size){
+    private static final int scoreArea(Vec2D size){
         return (size.X*size.Y);
     }
 
-    private Direction findRoad(Cartesian2D base,Cartesian2D size) {
+    private Direction findRoad(Vec2D base,Vec2D size) {
         List<Direction> directions = new LinkedList<>();
 
         if(this.base.Y == base.Y)
@@ -215,7 +215,7 @@ public class District implements IDistrict {
     }
 
     @Override
-    public void initDistrict(Cartesian2D base, Cartesian2D size, UrbanGrid grid) {
+    public void initDistrict(Vec2D base, Vec2D size, UrbanGrid grid) {
         this.base = base;
         this.size = size;
         this.grid = grid;

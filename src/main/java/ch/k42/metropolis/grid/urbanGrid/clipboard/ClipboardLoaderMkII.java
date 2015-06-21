@@ -4,11 +4,12 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
-import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.data.DataException;
-import com.sk89q.worldedit.schematic.SchematicFormat;
+import ch.n1b.libschem.LibschemAPI;
+import ch.n1b.vector.Vec2D;
+import ch.n1b.worldedit.schematic.data.DataException;
+import ch.n1b.worldedit.schematic.schematic.Cuboid;
+import ch.n1b.worldedit.schematic.schematic.SchematicFormat;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,9 +82,8 @@ public class ClipboardLoaderMkII implements ClipboardLoader{
         if(!streetFile.exists()){
             return Collections.emptyList();
         }
-        SchematicFormat format = SchematicFormat.getFormat(streetFile);
-        CuboidClipboard cuboid = format.load(streetFile);
-        format.save(cuboid, streetFile);
+        Cuboid cuboid = LibschemAPI.loadSchematic(streetFile);
+        LibschemAPI.saveSchematic(streetFile, cuboid);
 
         SchematicConfig config = getConfig(folder);
         String hash = folder.getName();
@@ -93,7 +93,7 @@ public class ClipboardLoaderMkII implements ClipboardLoader{
         if(dao.containsHash(hash)){// delete old entries
             dao.deleteClipboardHashes(hash);
         }
-        dao.storeClipboard(hash, streetFile.getName(), Direction.NONE, config, new Cartesian2D(1, 1));
+        dao.storeClipboard(hash, streetFile.getName(), Direction.NONE, config, new Vec2D(1, 1));
         return Collections.singletonList(clip);
     }
 
@@ -121,7 +121,7 @@ public class ClipboardLoaderMkII implements ClipboardLoader{
     private Clipboard loadFromCache(File file,String hash,Direction direction,SchematicConfig config){
         try {
             SchematicFormat format = SchematicFormat.getFormat(file);
-            CuboidClipboard cuboid = format.load(file);
+            Cuboid cuboid = format.load(file);
 
             Clipboard clip = new FileClipboard(file,config,globalConfig,hash);
 
@@ -132,7 +132,7 @@ public class ClipboardLoaderMkII implements ClipboardLoader{
                dao.deleteClipboardHashes(thash);
             }
             //DAO, store in db
-            Cartesian2D size = new Cartesian2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
+            Vec2D size = new Vec2D(cuboid.getWidth()>>4,cuboid.getLength()>>4);
             dao.storeClipboard(thash,file.getName(), direction,config,size);
 
             if(!config.getRoadFacing()){ // if it doesn't need roads, store it for 'non-road' usage too

@@ -7,7 +7,7 @@ import ch.k42.metropolis.grid.urbanGrid.clipboard.ClipboardProvider;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 import ch.k42.metropolis.minions.Constants;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;
@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class RoadParcel extends StreetParcel {
 
-    private static final Cartesian2D size = new Cartesian2D(1,1);
+    private static final Vec2D size = new Vec2D(1,1);
 
-    public RoadParcel(UrbanGrid grid, Cartesian2D base) {
+    public RoadParcel(UrbanGrid grid, Vec2D base) {
         super(base, size, ContextType.STREET, SchematicType.ROAD,grid);
         grid.fillParcels(chunkX, chunkZ, this);
     }
@@ -122,7 +122,7 @@ public class RoadParcel extends StreetParcel {
 
             if ((clips != null) && (clips.size()>0)) {
                 road = clips.get(random.getRandomInt(clips.size()));
-                road.paste(generator, new Cartesian2D(chunkX,chunkZ), Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
+                road.paste(generator, new Vec2D(chunkX,chunkZ), Constants.BUILD_HEIGHT); // FIXME Hardcoded street level
                 decayRoadChunk(generator, chunk, Constants.BUILD_HEIGHT - 2);
                 decaySidewalk(generator, chunk, Constants.BUILD_HEIGHT - 1);
             }else{

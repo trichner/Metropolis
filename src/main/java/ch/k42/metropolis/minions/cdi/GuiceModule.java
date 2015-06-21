@@ -1,10 +1,11 @@
 package ch.k42.metropolis.minions.cdi;
 
+import ch.k42.metropolis.minions.BlockAdapter;
 import ch.k42.metropolis.minions.Minions;
+import ch.k42.metropolis.minions.SpigotBlockAdapter;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.google.inject.AbstractModule;
 import com.google.inject.MembersInjector;
-import com.google.inject.Provides;
 import com.google.inject.TypeLiteral;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.spi.TypeEncounter;
@@ -22,11 +23,12 @@ public class GuiceModule extends AbstractModule {
     @Override
     protected void configure() {
         bindListener(Matchers.any(), new LoggerTypeListener());
-    }
-
-    @Provides
-    public static MetropolisPlugin getPlugin(){
-        return MetropolisPlugin.getInstance();
+        try {
+            bind(BlockAdapter.class).toInstance(new SpigotBlockAdapter());
+        } catch (NoSuchFieldException | NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        bind(MetropolisPlugin.class).toInstance(MetropolisPlugin.getInstance());
     }
 
     static class LoggerTypeListener implements TypeListener {

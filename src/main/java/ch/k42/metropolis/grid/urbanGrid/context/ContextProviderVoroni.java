@@ -6,7 +6,7 @@ import java.util.List;
 
 import ch.k42.metropolis.grid.common.GridProvider;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 import ch.k42.metropolis.minions.GridRandom;
 
 /**
@@ -29,10 +29,10 @@ public class ContextProviderVoroni implements ContextProvider {
 
     private static final class VoronoiVertex{
 
-        private Cartesian2D vertex;
+        private Vec2D vertex;
         private ContextType context;
 
-        private VoronoiVertex(Cartesian2D vertex, ContextType context) {
+        private VoronoiVertex(Vec2D vertex, ContextType context) {
             this.vertex = vertex;
             this.context = context;
         }
@@ -57,7 +57,7 @@ public class ContextProviderVoroni implements ContextProvider {
                 y+= random.getRandomGaussian()*DIAMETER_STDDEVIATION;
                 x = limit(x);
                 y = limit(y);
-                voronoiVertices.add(new VoronoiVertex(new Cartesian2D(x,y),getRandomContext(random)));
+                voronoiVertices.add(new VoronoiVertex(new Vec2D(x,y),getRandomContext(random)));
             }
         }
     }
@@ -71,11 +71,11 @@ public class ContextProviderVoroni implements ContextProvider {
 
     @Override
     public ContextType getContext(ContextZone[] zones, int chunkX, int chunkZ, int level) {
-        return getContext(new Cartesian2D(chunkX,chunkZ));
+        return getContext(new Vec2D(chunkX,chunkZ));
     }
 
     @Override
-    public ContextType getContext(Cartesian2D vertex) {
+    public ContextType getContext(Vec2D vertex) {
         ContextType context = ContextType.HIGHRISE;
         int distance;
         int minDistance = Integer.MAX_VALUE;

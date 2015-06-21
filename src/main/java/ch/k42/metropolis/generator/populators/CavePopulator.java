@@ -1,19 +1,17 @@
 package ch.k42.metropolis.generator.populators;
 
 
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-
+import ch.k42.metropolis.minions.Constants;
+import ch.k42.metropolis.plugin.PluginConfig;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.generator.BlockPopulator;
 
-import ch.k42.metropolis.minions.Constants;
-import ch.k42.metropolis.minions.XYZ;
-import ch.k42.metropolis.plugin.PluginConfig;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Adds caves within the stone. Based on the Nordic world plugin.
@@ -156,6 +154,50 @@ public class CavePopulator extends BlockPopulator {
                     }
                 }
             }
+        }
+    }
+
+    private static class XYZ {
+        public int x,y,z;
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + x;
+            result = prime * result + y;
+            result = prime * result + z;
+            return result;
+        }
+
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (!(obj instanceof XYZ)) {
+                return false;
+            }
+            XYZ other = (XYZ) obj;
+            if (x != other.x) {
+                return false;
+            }
+            if (y != other.y) {
+                return false;
+            }
+            if (z != other.z) {
+                return false;
+            }
+            return true;
         }
     }
 }

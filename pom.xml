@@ -22,6 +22,14 @@
             <version>1.8-R0.1-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.8.7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/craftbukkit-1.8.7.jar</systemPath>
+        </dependency>
+
         <!-- Already in bukkit
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -31,12 +39,18 @@
         </dependency>
         -->
 
+        <!--<dependency>-->
+            <!--<groupId>org.worldedit</groupId>-->
+            <!--<artifactId>worldedit</artifactId>-->
+            <!--<version>6.0.2</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>${project.basedir}/lib/worldedit-core-6.0.2-SNAPSHOT-dist.jar</systemPath>-->
+        <!--</dependency>-->
+
         <dependency>
-            <groupId>org.worldedit</groupId>
-            <artifactId>worldedit</artifactId>
-            <version>6.0.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/worldedit-core-6.0.2-SNAPSHOT-dist.jar</systemPath>
+            <groupId>ch.n1b.libschem</groupId>
+            <artifactId>libschem</artifactId>
+            <version>0.4.0</version>
         </dependency>
 
         <dependency>

@@ -5,17 +5,17 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.provider.EnvironmentProvider;
-import ch.k42.metropolis.minions.Cartesian2D;
-import ch.k42.metropolis.minions.Cartesian3D;
+
+import ch.k42.metropolis.minions.BlockAdapter;
 import ch.k42.metropolis.minions.DirtyHacks;
 import ch.k42.metropolis.minions.GridRandom;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.PluginConfig;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.MaxChangedBlocksException;
-import com.sk89q.worldedit.Vector;
-import com.sk89q.worldedit.blocks.BaseBlock;
+import ch.n1b.vector.Vec2D;
+import ch.n1b.vector.Vec3D;
+import ch.n1b.worldedit.schematic.block.BaseBlock;
+import ch.n1b.worldedit.schematic.schematic.Cuboid;
+import com.google.inject.Inject;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -31,15 +31,18 @@ import java.util.List;
  * Created by Thomas on 07.03.14.
  */
 public class ClipboardWE implements Clipboard{
-    private CuboidClipboard cuboid;
+    private Cuboid cuboid;
     private SchematicConfig config;
     private GlobalSchematicConfig globalConfig;
-    private List<Cartesian3D> chests = new ArrayList<>();
-    private List<Cartesian3D> spawners = new ArrayList<>();
+    private List<Vec3D> chests = new ArrayList<>();
+    private List<Vec3D> spawners = new ArrayList<>();
     private int blockCount;
     private String groupId;
 
-    public ClipboardWE(CuboidClipboard cuboid, SchematicConfig config, GlobalSchematicConfig globalConfig,String groupId) {
+    @Inject
+    private BlockAdapter adapter;
+
+    public ClipboardWE(Cuboid cuboid, SchematicConfig config, GlobalSchematicConfig globalConfig,String groupId) {
         this.cuboid = cuboid;
         this.config = config;
         this.globalConfig = globalConfig;
@@ -51,10 +54,10 @@ public class ClipboardWE implements Clipboard{
     }
 
     @Override
-    public void paste(MetropolisGenerator generator, Cartesian2D base, int streetLevel) {
+    public void paste(MetropolisGenerator generator, Vec2D base, int streetLevel) {
         int blockY = getBottom(streetLevel);
-        Vector at = new Vector(base.X << 4, blockY , base.Y << 4);
-        try {
+        Vec3D at = new Vec3D(base.X << 4, blockY , base.Y << 4);
+
             EditSession editSession = null;//getEditSession(generator);
             editSession.setFastMode(true);
 
@@ -116,19 +119,16 @@ public class ClipboardWE implements Clipboard{
                     }
                 }
             }
-        } catch (MaxChangedBlocksException e) { //FIXME don't catch generic Exception!!!!
-            Minions.w("Placing schematic failed. WorldEdit fucked up.");
-            Minions.e(e);
-        }
+
     }
 
     @Override
-    public Cartesian3D getSize() {
-        return new Cartesian3D(cuboid.getWidth(),cuboid.getHeight(),cuboid.getLength());
+    public Vec3D getSize() {
+        return new Vec3D(cuboid.getWidth(),cuboid.getHeight(),cuboid.getLength());
     }
 
 
-    private void place(MetropolisGenerator generator, EditSession editSession, Vector pos) throws MaxChangedBlocksException {
+    private void place(MetropolisGenerator generator, Vec3D pos) {
         EnvironmentProvider natureDecay = generator.getNatureDecayProvider();
         chests.clear();
         spawners.clear();
@@ -136,9 +136,9 @@ public class ClipboardWE implements Clipboard{
             for (int y = 0; y < cuboid.getHeight(); y++) {
                 for (int z = 0; z < cuboid.getLength(); z++) {
 
-                    BaseBlock block = cuboid.getBlock(new Vector(x, y, z));
-                    Vector vec = new Vector(x, y, z).add(pos);
-                    Material decay = natureDecay.checkBlock(generator.getWorld(), (int) vec.getX(), (int) vec.getY(), (int) vec.getZ());
+                    BaseBlock block = cuboid.getBlock(new Vec3D(x, y, z));
+                    Vec3D vec = new Vec3D(x, y, z).add(pos);
+                    Material decay = natureDecay.checkBlock(generator.getWorld(), vec.X, vec.Y, vec.Z);
 
                     if (decay != null) {
                         block.setType(decay.getId());
@@ -146,11 +146,12 @@ public class ClipboardWE implements Clipboard{
                     }
 
                     if (block.getId() == Material.CHEST.getId()) {
-                        chests.add(new Cartesian3D(x, y, z));
+                        chests.add(new Vec3D(x, y, z));
                     } else if (block.getId() == Material.SPONGE.getId()) {
-                        spawners.add(new Cartesian3D(x, y, z));
+                        spawners.add(new Vec3D(x, y, z));
                     }
                     editSession.setBlock(vec, block);
+
                 }
             }
         }

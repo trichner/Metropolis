@@ -5,10 +5,9 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
-import com.sk89q.worldedit.WorldEdit;
+import ch.n1b.vector.Vec2D;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,7 +29,6 @@ public class ClipboardProviderDB implements ClipboardProvider {
     private static final String SCHEMATIC_FOLDER = "schematics";
     private static final String CACHE_FOLDER = "cache";
 
-    private WorldEdit worldEdit;
     private ClipboardDAO dao;
     private Map<String,Clipboard> clipstore = new HashMap<>();
 
@@ -92,7 +90,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
     }
 
     @Override
-    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction direction) {
+    public List<Clipboard> getFit(Vec2D size, ContextType contextType,SchematicType schematicType, Direction direction) {
         if(!isLoaded) Minions.w("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,contextType,schematicType,direction)){
@@ -102,7 +100,7 @@ public class ClipboardProviderDB implements ClipboardProvider {
     }
 
     @Override
-    public List<Clipboard> getFit(Cartesian2D size, SchematicType schematicType, Direction roadDir) {
+    public List<Clipboard> getFit(Vec2D size, SchematicType schematicType, Direction roadDir) {
         if(!isLoaded) Minions.w("Schematics not loaded!");
         List<Clipboard> clips = new LinkedList<>();
         for(String hash : dao.findAllClipboardHashes(size,schematicType,roadDir)){
@@ -110,26 +108,4 @@ public class ClipboardProviderDB implements ClipboardProvider {
         }
         return clips;
     }
-
-    /*
-    private boolean assertWorldEditLoaded(){
-        //==== First load the plugin
-        WorldEditPlugin worldEditPlugin = null;
-        PluginManager pm = Bukkit.getServer().getPluginManager();
-        worldEditPlugin = (WorldEditPlugin) pm.getPlugin(WE_PLUGIN);
-
-        // not there? darn
-        if (worldEditPlugin == null) {
-            Minions.w("No WorldEdit found!");
-            return false;
-        }
-
-        // make sure it is enabled
-        if (!pm.isPluginEnabled(worldEditPlugin)) {
-            pm.enablePlugin(worldEditPlugin);
-        }
-        this.worldEdit = worldEditPlugin.getWorldEdit();
-        return true;
-    }
-    */
 }

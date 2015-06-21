@@ -1,10 +1,10 @@
 package ch.k42.metropolis.grid.urbanGrid.context;
 
+import ch.n1b.vector.Vec2D;
 import org.bukkit.util.noise.SimplexOctaveGenerator;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import ch.k42.metropolis.minions.Cartesian2D;
 
 /**
  * Created with IntelliJ IDEA.
@@ -71,7 +71,7 @@ public class ContextProviderSimplex implements ContextProvider {
      */
 
     @Override
-    public ContextType getContext(Cartesian2D place) {
+    public ContextType getContext(Vec2D place) {
         return getContext(contextZones, place.X, place.Y, 1);
     }
 

@@ -1,5 +1,6 @@
 package ch.k42.metropolis.grid.urbanGrid.parcel;
 
+import ch.n1b.vector.Vec2D;
 import org.bukkit.Chunk;
 import org.bukkit.Material;
 
@@ -7,7 +8,6 @@ import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.UrbanGrid;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.GridRandom;
 
 /**
@@ -18,7 +18,7 @@ import ch.k42.metropolis.minions.GridRandom;
  */
 public abstract class StreetParcel extends Parcel {
 
-    protected StreetParcel(Cartesian2D base, Cartesian2D size, ContextType contextType, SchematicType schematicType, UrbanGrid grid) {
+    protected StreetParcel(Vec2D base, Vec2D size, ContextType contextType, SchematicType schematicType, UrbanGrid grid) {
         super(base, size, contextType, schematicType, grid);
     }
 

@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.n1b.vector.Vec2D;
 import com.avaje.ebean.EbeanServer;
 import org.bukkit.Bukkit;
 
@@ -19,7 +20,6 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 import com.avaje.ebean.Query;
@@ -49,7 +49,7 @@ public class ClipboardDAO {
         this.plugin = plugin;
     }
 
-    public boolean storeClipboard(String fileHash,String fileName, Direction direction, SchematicConfig config, Cartesian2D size){
+    public boolean storeClipboard(String fileHash,String fileName, Direction direction, SchematicConfig config, Vec2D size){
         if(config==null){
             Minions.w(String.format("Schematic '%s' has no valid config file.", fileName));
             return false;
@@ -66,7 +66,7 @@ public class ClipboardDAO {
         return true;
     }
 
-    public void storeClipboard(String fileHash,String fileName, Direction direction, ContextType context, SchematicType schematicType, RoadType roadType, Cartesian2D size){
+    public void storeClipboard(String fileHash,String fileName, Direction direction, ContextType context, SchematicType schematicType, RoadType roadType, Vec2D size){
 
         ClipboardBean bean = database.createEntityBean(ClipboardBean.class);
 
@@ -86,11 +86,11 @@ public class ClipboardDAO {
         return query.findRowCount()!=0;
     }
 
-    public List<String> findAllClipboardHashes(Cartesian2D size, ContextType context, SchematicType schematicType, Direction direction){
+    public List<String> findAllClipboardHashes(Vec2D size, ContextType context, SchematicType schematicType, Direction direction){
         return getHashes(findAllClipboards(size, context,schematicType, direction));
     }
 
-    public List<ClipboardBean> findAllClipboards(Cartesian2D size,ContextType context, SchematicType schematicType,Direction direction){
+    public List<ClipboardBean> findAllClipboards(Vec2D size,ContextType context, SchematicType schematicType,Direction direction){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
         query.where().eq("size_x",size.X).eq("size_y",size.Y).eq("context",context).eq("direction",direction).eq("schematicType",schematicType);
         query.select("fileHash,fileName");
@@ -98,11 +98,11 @@ public class ClipboardDAO {
         return beans;
     }
 
-    public List<String> findAllClipboardHashes(Cartesian2D size, SchematicType schematicType, Direction direction){
+    public List<String> findAllClipboardHashes(Vec2D size, SchematicType schematicType, Direction direction){
         return getHashes(findAllClipboards(size,schematicType, direction));
     }
 
-    public List<ClipboardBean> findAllClipboards(Cartesian2D size, SchematicType schematicType, Direction direction){
+    public List<ClipboardBean> findAllClipboards(Vec2D size, SchematicType schematicType, Direction direction){
         Query<ClipboardBean> query = plugin.getDatabase().find(ClipboardBean.class);
         query.where()
                 .eq("size_x",size.X)

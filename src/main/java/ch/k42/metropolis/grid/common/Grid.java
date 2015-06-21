@@ -4,7 +4,7 @@ package ch.k42.metropolis.grid.common;
 import org.bukkit.Chunk;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 import ch.k42.metropolis.minions.GridRandom;
 
 /**
@@ -22,9 +22,9 @@ abstract public class Grid {
     protected final GridProvider gridProvider;
     protected final MetropolisGenerator generator;
 
-    protected final Cartesian2D root;
+    protected final Vec2D root;
 
-    protected Grid(GridRandom random, GridProvider gridProvider, MetropolisGenerator generator, Cartesian2D root) {
+    protected Grid(GridRandom random, GridProvider gridProvider, MetropolisGenerator generator, Vec2D root) {
         this.random = random;
         this.gridProvider = gridProvider;
         this.generator = generator;

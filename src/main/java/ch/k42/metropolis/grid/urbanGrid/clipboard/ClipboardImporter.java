@@ -4,9 +4,9 @@ package ch.k42.metropolis.grid.urbanGrid.clipboard;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.minions.Minions;
-import com.sk89q.worldedit.CuboidClipboard;
-import com.sk89q.worldedit.data.DataException;
-import com.sk89q.worldedit.schematic.SchematicFormat;
+import ch.n1b.libschem.LibschemAPI;
+import ch.n1b.worldedit.schematic.data.DataException;
+import ch.n1b.worldedit.schematic.schematic.Cuboid;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -78,7 +78,6 @@ public class ClipboardImporter {
 
     private boolean rotateAndCacheSchematic(File schematicFile)
             throws IOException, DataException, NoSuchAlgorithmException {
-        SchematicFormat format = SchematicFormat.getFormat(schematicFile);
 
         SchematicConfig config = findConfig(schematicFile.getName());
         if(config==null){
@@ -111,20 +110,20 @@ public class ClipboardImporter {
         File southFile =    new File(cacheFolder, ClipboardConstants.SOUTH_FILE);
         File westFile =     new File(cacheFolder, ClipboardConstants.WEST_FILE);
 
-        CuboidClipboard cuboid;
-        cuboid = format.load(schematicFile);
+        Cuboid cuboid;
+        cuboid = LibschemAPI.loadSchematic(schematicFile);
         //cache the north face first
-        format.save(cuboid, northFile);
+        LibschemAPI.saveSchematic(northFile, cuboid);
 
         //get each cuboid direction and save them
         cuboid.rotate2D(90);
-        format.save(cuboid, eastFile);
+        LibschemAPI.saveSchematic(eastFile, cuboid);
 
         cuboid.rotate2D(90);
-        format.save(cuboid, southFile);
+        LibschemAPI.saveSchematic(southFile, cuboid);
 
         cuboid.rotate2D(90);
-        format.save(cuboid, westFile);
+        LibschemAPI.saveSchematic(westFile, cuboid);
 
         return true;
     }

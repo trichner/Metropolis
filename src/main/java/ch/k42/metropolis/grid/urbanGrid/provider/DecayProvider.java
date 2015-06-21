@@ -1,15 +1,14 @@
 package ch.k42.metropolis.grid.urbanGrid.provider;
 
-import java.util.Random;
-import java.util.Set;
-
+import ch.k42.metropolis.generator.MetropolisGenerator;
+import ch.k42.metropolis.minions.DecayOption;
+import ch.n1b.vector.Vec3D;
+import com.google.common.collect.ImmutableSet;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Cartesian3D;
-import ch.k42.metropolis.minions.DecayOption;
-import com.google.common.collect.ImmutableSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Provides decay to area of blocks.
@@ -17,7 +16,7 @@ import com.google.common.collect.ImmutableSet;
  *
  * @author spaceribs, Thomas Richner
  */
-public abstract class DecayProvider {
+public abstract class  DecayProvider {
 
     protected MetropolisGenerator generator;
     protected Random random;
@@ -62,7 +61,7 @@ public abstract class DecayProvider {
         destroyWithin(x1, x2, y1, y2, z1, z2, options);
     }
 
-    public void destroyWithin(Cartesian3D start,Cartesian3D end, DecayOption options) {
+    public void destroyWithin(Vec3D start,Vec3D end, DecayOption options) {
         destroyWithin(start.X,end.X,start.Y,end.Y,start.Z,end.Z,options);
     }
 

@@ -4,7 +4,7 @@ package ch.k42.metropolis.grid.urbanGrid.provider;
 import java.util.Random;
 
 import ch.k42.metropolis.generator.MetropolisGenerator;
-import ch.k42.metropolis.minions.Cartesian3D;
+import ch.n1b.vector.Vec3D;
 import ch.k42.metropolis.minions.DecayOption;
 
 /**
@@ -26,7 +26,7 @@ public class DecayProviderNone extends DecayProvider {
     }
 
     @Override
-    public void destroyWithin(Cartesian3D start, Cartesian3D end, DecayOption options) {
+    public void destroyWithin(Vec3D start, Vec3D end, DecayOption options) {
 
     }
 

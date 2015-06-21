@@ -8,7 +8,7 @@ import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
 import ch.k42.metropolis.grid.urbanGrid.enums.Direction;
 import ch.k42.metropolis.grid.urbanGrid.enums.RoadType;
 import ch.k42.metropolis.grid.urbanGrid.enums.SchematicType;
-import ch.k42.metropolis.minions.Cartesian2D;
+import ch.n1b.vector.Vec2D;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
 
 /**
@@ -56,7 +56,7 @@ public interface ClipboardProvider {
      * @param contextType context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(Cartesian2D size, ContextType contextType,SchematicType schematicType, Direction roadDir);
+    public List<Clipboard> getFit(Vec2D size, ContextType contextType,SchematicType schematicType, Direction roadDir);
 
     /**
      * Returns a list containing all available clipboards that match the size and context
@@ -65,6 +65,6 @@ public interface ClipboardProvider {
      * @param schematicType the type of the schematic context of the structure
      * @return list containing all matching clipboards, might be empty but never null
      */
-    public List<Clipboard> getFit(Cartesian2D size, SchematicType schematicType, Direction roadDir);
+    public List<Clipboard> getFit(Vec2D size, SchematicType schematicType, Direction roadDir);
 
 }

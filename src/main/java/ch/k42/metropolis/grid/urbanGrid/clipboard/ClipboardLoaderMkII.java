@@ -11,7 +11,6 @@ import com.sk89q.worldedit.data.DataException;
 import com.sk89q.worldedit.schematic.SchematicFormat;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,11 +48,8 @@ public class ClipboardLoaderMkII implements ClipboardLoader{
 
         File cacheFolder = new File(ClipboardConstants.CACHE_FOLDER);
 
-        File[] schematicFolders = cacheFolder.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String name) {
-                return new File(dir, name).isDirectory();
-            }
+        File[] schematicFolders = cacheFolder.listFiles((dir, name) -> {
+            return new File(dir, name).isDirectory();
         });
 
         int length = schematicFolders.length;

@@ -242,7 +242,7 @@ public class FileClipboard implements Clipboard{
     private String getNameAndLevel(GridRandom rand) {
         StringBuffer buf = new StringBuffer();
         if (config.getLootCollections().length > 0) {
-            buf.append('§')
+            buf.append('\u00a7')
                     .append(COLOR)
                     .append(config.getRandomLootCollection(rand).name)
                     .append('_')

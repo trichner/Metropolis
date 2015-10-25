@@ -1,17 +1,6 @@
 package ch.k42.metropolis.grid.urbanGrid.clipboard;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.block.CreatureSpawner;
-import org.bukkit.entity.EntityType;
-
 import ch.k42.metropolis.generator.MetropolisGenerator;
 import ch.k42.metropolis.grid.urbanGrid.config.GlobalSchematicConfig;
 import ch.k42.metropolis.grid.urbanGrid.config.SchematicConfig;
@@ -28,6 +17,16 @@ import com.sk89q.worldedit.MaxChangedBlocksException;
 import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.CreatureSpawner;
+import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Thomas on 07.03.14.
@@ -221,7 +220,7 @@ public class ClipboardWE implements Clipboard{
     private String getNameAndLevel(GridRandom rand) {
         StringBuffer buf = new StringBuffer();
         if (config.getLootCollections().length > 0) {
-            buf.append('§')
+            buf.append('\u00a7')
                     .append(COLOR)
                     .append(config.getRandomLootCollection(rand).name)
                     .append('_')

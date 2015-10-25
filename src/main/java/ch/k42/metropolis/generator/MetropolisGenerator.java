@@ -1,17 +1,5 @@
 package ch.k42.metropolis.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.block.Biome;
-import org.bukkit.generator.BlockPopulator;
-import org.bukkit.generator.ChunkGenerator;
-
 import ch.k42.metropolis.generator.populators.BedrockFloorPopulator;
 import ch.k42.metropolis.generator.populators.CavePopulator;
 import ch.k42.metropolis.generator.populators.OrePopulator;
@@ -27,6 +15,17 @@ import ch.k42.metropolis.grid.urbanGrid.provider.NetherEnvironmentProvider;
 import ch.k42.metropolis.grid.urbanGrid.provider.NormalEnvironmentProvider;
 import ch.k42.metropolis.minions.Minions;
 import ch.k42.metropolis.plugin.MetropolisPlugin;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.generator.BlockPopulator;
+import org.bukkit.generator.ChunkGenerator;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -104,7 +103,7 @@ public class MetropolisGenerator extends ChunkGenerator {
 
     @Override
     public List<BlockPopulator> getDefaultPopulators(World world) {
-        List<BlockPopulator> populators = new ArrayList<BlockPopulator>();
+        List<BlockPopulator> populators = new ArrayList<>();
         Minions.d("getDefaultPopulators: " + world.toString());
 
         this.world = world;
@@ -129,6 +128,20 @@ public class MetropolisGenerator extends ChunkGenerator {
     public boolean canSpawn(World world, int x, int z) {
         return true;
     }
+
+//    @Override
+//    public ChunkData generateChunkData(World world, Random random, int x, int z, BiomeGrid biome) {
+//        //return super.generateChunkData(world, random, x, z, biome);
+//        ChunkData chunk = super.generateChunkData(world, random, x, z, biome);
+//        biome.setBiome(x,z, Biome.PLAINS);
+//
+//
+//        int maxHeight = 65; //how thick we want out flat terrain to be
+//
+//        chunk.setRegion(0,0,0,16,maxHeight,16,Material.STONE);
+//
+//        return chunk;
+//    }
 
     @Override
     public byte[][] generateBlockSections(World aWorld, Random random, int chunkX, int chunkZ, BiomeGrid biomes) {

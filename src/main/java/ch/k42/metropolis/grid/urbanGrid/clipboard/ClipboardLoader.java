@@ -7,5 +7,5 @@ import java.util.Map;
  * Created by Thomas on 10.03.14.
  */
 public interface ClipboardLoader {
-    public Map<String,Clipboard> loadSchematics(File schematicsFolder, File cacheFolder);
+    Map<String,Clipboard> loadSchematics(File schematicsFolder, File cacheFolder);
 }

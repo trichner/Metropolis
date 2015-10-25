@@ -3,7 +3,7 @@ package ch.k42.metropolis.grid.urbanGrid.context;
 import java.util.Arrays;
 
 import ch.k42.metropolis.grid.urbanGrid.enums.ContextType;
-import org.bukkit.craftbukkit.libs.com.google.gson.annotations.Expose;
+import com.google.gson.annotations.Expose;
 
 /**
  * Created by aaronbrewer on 2/4/14.

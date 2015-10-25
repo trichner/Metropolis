@@ -1,8 +1,9 @@
 package ch.k42.metropolis.generator.populators;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Arrays;
 
-import org.bukkit.craftbukkit.libs.com.google.gson.annotations.Expose;
 
 
 /**

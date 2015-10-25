@@ -6,26 +6,15 @@
 
     <groupId>ch.k42.metropolis</groupId>
     <artifactId>metropolis</artifactId>
-    <version>1.0.1-1002</version>
-
-    <repositories>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public</url>
-        </repository>
-        <repository>
-            <id>spigot-repo</id>
-            <url>http://repo.md-5.net/content/groups/public/</url>
-        </repository>
-    </repositories>
+    <version>1.0.2</version>
 
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.7.9-R0.3-SNAPSHOT</version>
-            <type>jar</type>
-            <scope>compile</scope>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/spigot-api-1.8.8-R0.1-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <!-- Already in bukkit
@@ -38,20 +27,6 @@
         -->
 
         <!-- Local Libraries-->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1649</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/lib/spigot1649.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se</artifactId>
-            <version>2.2.1.Final</version>
-        </dependency>
-
         <dependency>
             <groupId>org.worldedit</groupId>
             <artifactId>worldedit</artifactId>
@@ -101,6 +76,11 @@
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
